@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="Vincent&#39;s Notes">
 <meta property="og:description" content="安装环境 Ndoe.js: 在官网下载，直接安装即可。 Hexo: 按照官网的指令npm install hexo-cli -g安装即可。">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2017-10-03T12:45:11.304Z">
+<meta property="og:updated_time" content="2020-12-13T10:07:25.641Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Mac上搭建基于Github的Hexo博客">
 <meta name="twitter:description" content="安装环境 Ndoe.js: 在官网下载，直接安装即可。 Hexo: 按照官网的指令npm install hexo-cli -g安装即可。">
@@ -379,6 +379,20 @@
 <blockquote>
 <p>以上为Hexo博客的基础配置，其他配置可以参考Hexo和对应Theme的文档来进行配置。</p>
 </blockquote>
+<h1 id="换Blog目录或者换电脑后如何同步blog"><a href="#换Blog目录或者换电脑后如何同步blog" class="headerlink" title="换Blog目录或者换电脑后如何同步blog"></a>换Blog目录或者换电脑后如何同步blog</h1><ol>
+<li>安装好nodejs和hexo的环境，具体可以参考上面的步骤。</li>
+<li>初始化hexo blog的环境，新建目录，比如hexo-blog，接着在该目录里面执行如下步骤：</li>
+</ol>
+<blockquote>
+<ul>
+<li>初始化博客：<code>Hexo init</code></li>
+<li>安装npm：<code>npm install</code></li>
+<li>本地启动Hexo：<code>hexo s</code>，在浏览器中打开本地网页即可看到效果。</li>
+</ul>
+</blockquote>
+<ol start="3">
+<li>确定没问题后，就可以<code>hexo g &amp;&amp; hexo d</code>来上传到git了。</li>
+</ol>
 <p>参考链接：</p>
 <ul>
 <li><a href="http://jeasonstudio.github.io/2016/05/26/Mac%E4%B8%8A%E6%90%AD%E5%BB%BA%E5%9F%BA%E4%BA%8EGitHub-Page%E7%9A%84Hexo%E5%8D%9A%E5%AE%A2/" target="_blank" rel="noopener">Mac上搭建基于GitHub-Page的Hexo博客</a></li>
@@ -578,7 +592,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#安装环境"><span class="nav-number">1.</span> <span class="nav-text">安装环境</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#初始化博客环境"><span class="nav-number">2.</span> <span class="nav-text">初始化博客环境</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#关联Github"><span class="nav-number">3.</span> <span class="nav-text">关联Github</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#创建仓库"><span class="nav-number">3.1.</span> <span class="nav-text">创建仓库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#写博客"><span class="nav-number">3.2.</span> <span class="nav-text">写博客</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#上传ssh-key"><span class="nav-number">3.3.</span> <span class="nav-text">上传ssh key</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#个性化Theme"><span class="nav-number">4.</span> <span class="nav-text">个性化Theme</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#访问量统计"><span class="nav-number">4.1.</span> <span class="nav-text">访问量统计</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置评论"><span class="nav-number">4.2.</span> <span class="nav-text">配置评论</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#安装环境"><span class="nav-number">1.</span> <span class="nav-text">安装环境</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#初始化博客环境"><span class="nav-number">2.</span> <span class="nav-text">初始化博客环境</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#关联Github"><span class="nav-number">3.</span> <span class="nav-text">关联Github</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#创建仓库"><span class="nav-number">3.1.</span> <span class="nav-text">创建仓库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#写博客"><span class="nav-number">3.2.</span> <span class="nav-text">写博客</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#上传ssh-key"><span class="nav-number">3.3.</span> <span class="nav-text">上传ssh key</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#个性化Theme"><span class="nav-number">4.</span> <span class="nav-text">个性化Theme</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#访问量统计"><span class="nav-number">4.1.</span> <span class="nav-text">访问量统计</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置评论"><span class="nav-number">4.2.</span> <span class="nav-text">配置评论</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#换Blog目录或者换电脑后如何同步blog"><span class="nav-number">5.</span> <span class="nav-text">换Blog目录或者换电脑后如何同步blog</span></a></li></ol></div>
             
 
           </div>

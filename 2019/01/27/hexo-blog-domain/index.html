@@ -89,7 +89,7 @@
 <meta property="og:locale" content="en">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g9p5v2hrbsj21li0de41k.jpg">
 <meta property="og:image" content="http://ww1.sinaimg.cn/mw690/a18449c6gy1g9p5yjyxy1j20j40a4jst.jpg">
-<meta property="og:updated_time" content="2019-12-08T03:50:24.429Z">
+<meta property="og:updated_time" content="2020-12-13T10:37:15.082Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="域名购买与配置">
 <meta name="twitter:description" content="Github绑定域名需要完成以下两步  1. 域名解析购买域名之后，设置CNAME记录指向github博客。比如在阿里云购买域名之后，直接增加一条CNAME记录指向 teckee.github.io即可">
@@ -357,6 +357,7 @@
 <p>注意这样配置以后，还是可能出现每次<code>hexo g &amp;&amp; hexo d</code>时，在public目录下生成的CNAME文件为空，这个时候需要去主题目录下，删除默认的空CNAME文件.</p>
 <p>举例，我用的next主题，这样的话需要到themes/next/source下将空的CNAME文件删除。</p>
 <p>这样以后每次更新博客，就会从source目录进行拷贝CNAME，确保了CNAME不会被覆盖。</p>
+<h2 id="如何去掉绑定的域名"><a href="#如何去掉绑定的域名" class="headerlink" title="如何去掉绑定的域名"></a>如何去掉绑定的域名</h2><p>首先运行<code>hexo clean</code>清除public文件夹，接着手动删除source目录下的CNAME文件，最后<code>hexo g &amp;&amp; hexo d</code>来deploy最新的改动即可。</p>
 
       
     </div>
@@ -556,7 +557,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-域名解析"><span class="nav-number">1.</span> <span class="nav-text">1. 域名解析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-github增加CNAME记录"><span class="nav-number">2.</span> <span class="nav-text">2. github增加CNAME记录</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-域名解析"><span class="nav-number">1.</span> <span class="nav-text">1. 域名解析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-github增加CNAME记录"><span class="nav-number">2.</span> <span class="nav-text">2. github增加CNAME记录</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#如何去掉绑定的域名"><span class="nav-number">3.</span> <span class="nav-text">如何去掉绑定的域名</span></a></li></ol></div>
             
 
           </div>
