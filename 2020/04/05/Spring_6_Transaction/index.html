@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+<meta name="referrer" content="no-referrer">
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Spring,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="6 声明式事务6.1 Spring中事务的使用在进行数据操作事，通常会将多条SQL语句作为整体进行操作，这一条或者多条SQL语句就称为数据库事务。数据库事务可以确保该事务范围内的所有操作都可以全部成功或者全部失败。如果事务失败，那么效果就和没有执行这些SQL一样，不会对数据库数据有任何改动。 事务是恢复和并发控制的基本单位。 事务应该具有4个属性：原子性、一致性、隔离性、持久性。这四个属性通常称">
+<meta name="keywords" content="Spring">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spring MVC系列-(6) 声明式事务">
+<meta property="og:url" content="http://yoursite.com/2020/04/05/Spring_6_Transaction/index.html">
+<meta property="og:site_name" content="Vincent&#39;s Notes">
+<meta property="og:description" content="6 声明式事务6.1 Spring中事务的使用在进行数据操作事，通常会将多条SQL语句作为整体进行操作，这一条或者多条SQL语句就称为数据库事务。数据库事务可以确保该事务范围内的所有操作都可以全部成功或者全部失败。如果事务失败，那么效果就和没有执行这些SQL一样，不会对数据库数据有任何改动。 事务是恢复和并发控制的基本单位。 事务应该具有4个属性：原子性、一致性、隔离性、持久性。这四个属性通常称">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1gco2xb0bj9j20nn0cet8m.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1gbzr9rp1crj21de0h0tlx.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1gbzrnoadbpj21cu0wagz2.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1gbztdtzc19j21bk0tgajv.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1gbztc95ghlj21800owh72.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g9v9luujswj21n10l9jux.jpg">
+<meta property="og:updated_time" content="2020-05-28T04:08:18.947Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Spring MVC系列-(6) 声明式事务">
+<meta name="twitter:description" content="6 声明式事务6.1 Spring中事务的使用在进行数据操作事，通常会将多条SQL语句作为整体进行操作，这一条或者多条SQL语句就称为数据库事务。数据库事务可以确保该事务范围内的所有操作都可以全部成功或者全部失败。如果事务失败，那么效果就和没有执行这些SQL一样，不会对数据库数据有任何改动。 事务是恢复和并发控制的基本单位。 事务应该具有4个属性：原子性、一致性、隔离性、持久性。这四个属性通常称">
+<meta name="twitter:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1gco2xb0bj9j20nn0cet8m.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/04/05/Spring_6_Transaction/">
+
+
+
+
+
+  <title>Spring MVC系列-(6) 声明式事务 | Vincent's Notes</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Vincent's Notes</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/04/05/Spring_6_Transaction/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Vincent">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Vincent's Notes">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Spring MVC系列-(6) 声明式事务</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-04-05T21:43:49+08:00">
+                2020-04-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Spring/" itemprop="url" rel="index">
+                    <span itemprop="name">Spring</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2020/04/05/Spring_6_Transaction/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2020/04/05/Spring_6_Transaction/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2020/04/05/Spring_6_Transaction/" class="leancloud_visitors" data-flag-title="Spring MVC系列-(6) 声明式事务">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">Visitors&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1gco2xb0bj9j20nn0cet8m.jpg" alt="Spring.png"></p>
+<h2 id="6-声明式事务"><a href="#6-声明式事务" class="headerlink" title="6 声明式事务"></a>6 声明式事务</h2><h3 id="6-1-Spring中事务的使用"><a href="#6-1-Spring中事务的使用" class="headerlink" title="6.1 Spring中事务的使用"></a>6.1 Spring中事务的使用</h3><p>在进行数据操作事，通常会将多条SQL语句作为整体进行操作，这一条或者多条SQL语句就称为数据库事务。数据库事务可以确保该事务范围内的所有操作都可以全部成功或者全部失败。如果事务失败，那么效果就和没有执行这些SQL一样，不会对数据库数据有任何改动。</p>
+<p>事务是恢复和并发控制的基本单位。</p>
+<p>事务应该具有4个属性：<strong>原子性、一致性、隔离性、持久性</strong>。这四个属性通常称为ACID特性。</p>
+<ul>
+<li>原子性（atomicity）。一个事务是一个不可分割的工作单位，事务中包括的操作要么都做，要么都不做。</li>
+<li>一致性（consistency）。事务必须是使数据库从一个一致性状态变到另一个一致性状态。一致性与原子性是密切相关的。</li>
+<li>隔离性（isolation）。一个事务的执行不能被其他事务干扰。即一个事务内部的操作及使用的数据对并发的其他事务是隔离的，并发执行的各个事务之间不能互相干扰。</li>
+<li>持久性（durability）。持久性也称永久性（permanence），指一个事务一旦提交，它对数据库中数据的改变就应该是永久性的。接下来的其他操作或故障不应该对其有任何影响。</li>
+</ul>
+<a id="more"></a>
+<p>Spring中可以通过<code>@Transactional</code>注解，实现了对事务的支持。</p>
+<p>首先定义配置类，配置类中创建了数据源，封装了jdbcTemplate和事务管理器。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">@Configuration</span><br><span class="line">@ComponentScan(&quot;com.enjoy.cap11&quot;)</span><br><span class="line">@EnableTransactionManagement  //开启事务管理功能，对@Transactional起作用</span><br><span class="line">public class Cap11MainConfig &#123;</span><br><span class="line">	//创建数据源</span><br><span class="line">	@Bean</span><br><span class="line">	public DataSource dataSource() throws PropertyVetoException&#123;</span><br><span class="line">		//这个c3p0封装了JDBC, dataSource接口的实现</span><br><span class="line">		ComboPooledDataSource dataSource = new ComboPooledDataSource();</span><br><span class="line">		dataSource.setUser(&quot;root&quot;);</span><br><span class="line">		dataSource.setPassword(&quot;xxxxx&quot;);</span><br><span class="line">		dataSource.setDriverClass(&quot;com.mysql.jdbc.Driver&quot;);</span><br><span class="line">		dataSource.setJdbcUrl(&quot;jdbc:mysql://localhost:3306/Spring?useSSL=false&quot;);</span><br><span class="line">		return dataSource;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	//jdbcTemplate能简化增删改查的操作</span><br><span class="line">	@Bean</span><br><span class="line">	public JdbcTemplate jdbcTemplate() throws PropertyVetoException&#123;</span><br><span class="line">		return new JdbcTemplate(dataSource());</span><br><span class="line">	&#125;</span><br><span class="line">	//注册事务管理器</span><br><span class="line">	@Bean</span><br><span class="line">	public PlatformTransactionManager platformTransactionManager() throws PropertyVetoException&#123;</span><br><span class="line">		return new DataSourceTransactionManager(dataSource());</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>新建Order测试表：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">CREATE TABLE `order` (</span><br><span class="line">  `orderid` int(11) DEFAULT NULL,</span><br><span class="line">  `ordertime` datetime DEFAULT NULL,</span><br><span class="line">  `ordermoney` decimal(20,0) DEFAULT NULL,</span><br><span class="line">  `orderstatus` char(1) DEFAULT NULL</span><br><span class="line">) ENGINE=InnoDB DEFAULT CHARSET=utf8</span><br></pre></td></tr></table></figure>
+<p>新建OrderDao操作数据库，</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">@Repository</span><br><span class="line">public class OrderDao &#123;</span><br><span class="line">	@Autowired</span><br><span class="line">	private JdbcTemplate jdbcTemplate;</span><br><span class="line">	//操作数据的方法</span><br><span class="line">	public void insert()&#123;</span><br><span class="line">		String sql = &quot;insert into `order` (ordertime, ordermoney, orderstatus) values(?,?,?)&quot;;</span><br><span class="line">		jdbcTemplate.update(sql,new Date(),20,0);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>新建 OrderService类，将orderDao注入进来</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">@Service</span><br><span class="line">public class OrderService &#123;</span><br><span class="line">    @Autowired</span><br><span class="line">	private OrderDao orderDao;</span><br><span class="line">    @Transactional</span><br><span class="line">    public void addOrder()&#123;</span><br><span class="line">    	orderDao.insert();</span><br><span class="line">    	System.out.println(&quot;操作完成.........&quot;);</span><br><span class="line">    	</span><br><span class="line">    	//int a = 1/0;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在下面的测试用例中，正常的向数据库中插入一条数据，查询数据库可以发现插入正常。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">public class Cap11Test &#123;</span><br><span class="line">	@Test</span><br><span class="line">	public void test01()&#123;</span><br><span class="line">		AnnotationConfigApplicationContext app = new AnnotationConfigApplicationContext(Cap11MainConfig.class);</span><br><span class="line">		</span><br><span class="line">		OrderService bean = app.getBean(OrderService.class);</span><br><span class="line">		bean.addOrder();</span><br><span class="line">		</span><br><span class="line">		app.close();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>但是接着测试，在addOrder方法中手动设置一个异常，下面的代码中，在运行时会抛出除数为0的异常。从运行结果可以看到，这种情况下数据库的插入操作没有成功，说明Spring对insert操作进行了回滚，保证了事务的一致性。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">@Service</span><br><span class="line">public class OrderService &#123;</span><br><span class="line">    @Autowired</span><br><span class="line">	private OrderDao orderDao;</span><br><span class="line">    @Transactional</span><br><span class="line">    public void addOrder()&#123;</span><br><span class="line">    	orderDao.insert();</span><br><span class="line">    	System.out.println(&quot;操作完成.........&quot;);</span><br><span class="line">    	</span><br><span class="line">    	int a = 1/0;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="6-2-Spring事务原理分析"><a href="#6-2-Spring事务原理分析" class="headerlink" title="6.2 Spring事务原理分析"></a>6.2 Spring事务原理分析</h3><p>在上面的例子中，为了使事务能够生效，需要加上<code>@EnableTransactionManagement</code>注解，整个源码实现和AOP原理一致，在注册Bean时对对象进行包装，生成增强的Bean，返回代理对象。在执行阶段，利用事务拦截器来运行有事务注解的代码，当出现异常时进行回滚。</p>
+<p>通过<code>@EnableTransactionManagement</code>引入的class可以看到，默认PROXY模式下，会引入<code>AutoProxyRegistrar.class</code>和<code>ProxyTransactionManagementConfiguration.class</code>，下面分析这两个组件的功能。 </p>
+<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1gbzr9rp1crj21de0h0tlx.jpg" alt="Screen Shot 2020-02-17 at 10.14.19 PM.png"></p>
+<h4 id="AutoProxyRegistrar-class"><a href="#AutoProxyRegistrar-class" class="headerlink" title="AutoProxyRegistrar.class"></a>AutoProxyRegistrar.class</h4><p>从下面的代码可以看到，和AOP类似，该组件会往容器中注册InfrastructureAdvisorAutoProxyCreator，利用后置处理器机制在对象创建以后，包装对象，返回一个代理对象（增强器），代理对象执行方法利用拦截器链进行调用。</p>
+<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1gbzrnoadbpj21cu0wagz2.jpg" alt="Screen Shot 2020-02-17 at 10.25.28 PM.png"></p>
+<h4 id="ProxyTransactionManagementConfiguration-class"><a href="#ProxyTransactionManagementConfiguration-class" class="headerlink" title="ProxyTransactionManagementConfiguration.class"></a>ProxyTransactionManagementConfiguration.class</h4><p>事务增强器要用事务注解的信息，AnnotationTransactionAttributeSource解析事务注解。</p>
+<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1gbztdtzc19j21bk0tgajv.jpg" alt="Screen Shot 2020-02-17 at 11.27.29 PM.png"></p>
+<h4 id="拦截执行流程"><a href="#拦截执行流程" class="headerlink" title="拦截执行流程"></a>拦截执行流程</h4><p>和AOP类似，在拦截执行的时候，首先会获取拦截链，然后依次执行拦截器的proceed方法。</p>
+<p>事务拦截器是TransactionInterceptor，它也是MethodInterceptor的子类，下面是其执行时的主要逻辑，归纳可以分为如下几步：</p>
+<ol>
+<li>先获取事务相关的属性</li>
+<li>再获取PlatformTransactionManager，如果事先没有添加指定任何transactionmanger<br>最终会从容器中按照类型获取一个PlatformTransactionManager；</li>
+<li>执行目标方法</li>
+</ol>
+<ul>
+<li>如果异常，获取到事务管理器，利用事务管理回滚操作；</li>
+<li>如果正常，利用事务管理器，提交事务。</li>
+</ul>
+<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1gbztc95ghlj21800owh72.jpg" alt="Screen Shot 2020-02-17 at 11.25.32 PM.png"></p>
+<h3 id="6-3-Spring的事务隔离级别与传播性"><a href="#6-3-Spring的事务隔离级别与传播性" class="headerlink" title="6.3 Spring的事务隔离级别与传播性"></a>6.3 Spring的事务隔离级别与传播性</h3><h4 id="隔离级别"><a href="#隔离级别" class="headerlink" title="隔离级别"></a>隔离级别</h4><p>隔离性（Isolation）作为事务特性的一个关键特性，它要求每个读写事务的对象对其他事务的操作对象能相互分离，即该事务提交前对其他事务都不可见，在数据库层面都是使用锁来实现。</p>
+<p>在辨析不同的隔离级别之前，引入几个基本概念：</p>
+<p><strong>1. 脏读</strong> ：脏读就是指当一个事务正在访问数据，并且对数据进行了修改，而这种修改还没有提交到数据库中，这时，另外一个事务也访问这个数据，然后使用了这个数据。</p>
+<p><strong>2. 不可重复读</strong> ：是指在一个事务内，多次读同一数据。在这个事务还没有结束时，另外一个事务也访问该同一数据。那么，在第一个事务中的两次读数据之间，由于第二个事务的修改，那么第一个事务两次读到的的数据可能是不一样的。这样就发生了在一个事务内两次读到的数据是不一样的，因此称为是不可重复读。简单来讲就是，<strong>事务 A 读取了事务 B 已提交的更改数据。</strong></p>
+<p><strong>3. 幻读</strong> : 是指当事务不是独立执行时发生的一种现象，例如第一个事务对一个表中的数据进行了修改，这种修改涉及到表中的全部数据行。 同时，第二个事务也修改这个表中的数据，这种修改是向表中插入一行新数据。那么，以后就会发生操作第一个事务的用户发现表中还有没有修改的数据行，就好象 发生了幻觉一样。简单来讲就是，<strong>事务 A 读取了事务 B 已提交的新增数据。</strong></p>
+<p>事务的隔离级别从低到高有以下四种：</p>
+<ul>
+<li><strong>READ UNCOMMITTED（未提交读）</strong>：这是最低的隔离级别，其含义是允许一个事务读取另外一个事务没有提交的数据。READ UNCOMMITTED是一种危险的隔离级别，在实际开发中基本不会使用，主要是由于它会带来脏读问题。</li>
+</ul>
+<blockquote>
+<p>脏读对于要求数据一致性的应用来说是致命的，目前主流的数据库的隔离级别都不会设置成READ UNCOMMITTED。不过脏读虽然看起来毫无用处，但是它主要优点是并发能力高，适合那些对数据一致性没有要求而追求高并发的场景。</p>
+</blockquote>
+<ul>
+<li><strong>READ COMMITTED（读写提交）</strong>: 它是指一个事务只能读取另外一个事务已经提交的数据，不能读取未提交的数据。READ COMMITTED会带来不可重复读的问题。</li>
+</ul>
+<blockquote>
+<p>一般来说，不可重复读的问题是可以接受的，因为其读到的是已经提交的数据，本身并不会带来很大的问题。因此，很多数据库如（ORACLE，SQL SERVER）将其默认隔离级别设置为READ COMMITTED，允许不可重复读的现象。</p>
+</blockquote>
+<ul>
+<li><p><strong>REPEATABLE READ （可重复读）</strong>：对相同字段的多次读取的结果是一致的，除非数据被当前事务本身改变。可防止脏读和不可重复读，但幻影读仍可能发生。</p>
+</li>
+<li><p><strong>SERIALIZABLE（串行化）</strong>：数据库最高的隔离级别，它要求所有的SQL都会按照顺序执行，这样可以克服上述所有隔离出现的各种问题，能够完全包住数据的一致性。</p>
+</li>
+</ul>
+<p>Spring中可以配置5种隔离级别：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">DEFAULT(-1),  ## 数据库默认级别</span><br><span class="line">READ_UNCOMMITTED(1),</span><br><span class="line">READ_COMMITTED(2),</span><br><span class="line">REPEATABLE_READ(4),</span><br><span class="line">SERIALIZABLE(8);</span><br></pre></td></tr></table></figure>
+<p>可以使用类似下面的注解，很方便的配置隔离级别：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">@Transactional(isolation = Isolation.SERIALIZABLE)</span><br><span class="line">public int insertUser(User user)&#123;</span><br><span class="line">    return userDao.insertUser(user);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面的代码中我们使用了串行化的隔离级别来包住数据的一致性，这使它将阻塞其他的事务进行并发，所以它只能运用在那些低并发而又需要保证数据一致性的场景下。</p>
+<h4 id="传播行为"><a href="#传播行为" class="headerlink" title="传播行为"></a>传播行为</h4><p>在Spring中，当一个方法调用另外一个方法时，可以让事务采取不同的策略工作，如新建事务或者挂起当前事务等，这便是事务的传播行为。</p>
+<p>在Spring的事务机制中对数据库存在7种传播行为，通过枚举类<code>Propagation</code>定义。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">public enum Propagation &#123;</span><br><span class="line">    /**</span><br><span class="line">     * 需要事务，默认传播性行为。</span><br><span class="line">     * 如果当前存在事务，就沿用当前事务，否则新建一个事务运行子方法</span><br><span class="line">     */</span><br><span class="line">    REQUIRED(0),</span><br><span class="line">    /**</span><br><span class="line">     * 支持事务，如果当前存在事务，就沿用当前事务，</span><br><span class="line">     * 如果不存在，则继续采用无事务的方式运行子方法</span><br><span class="line">     */</span><br><span class="line">    SUPPORTS(1),</span><br><span class="line">    /**</span><br><span class="line">     * 必须使用事务，如果当前没有事务，抛出异常</span><br><span class="line">     * 如果存在当前事务,就沿用当前事务</span><br><span class="line">     */</span><br><span class="line">    MANDATORY(2),</span><br><span class="line">    /**</span><br><span class="line">     * 无论当前事务是否存在，都会创建新事务允许方法</span><br><span class="line">     * 这样新事务就可以拥有新的锁和隔离级别等特性，与当前事务相互独立</span><br><span class="line">     */</span><br><span class="line">    REQUIRES_NEW(3),</span><br><span class="line">    /**</span><br><span class="line">     * 不支持事务，当前存在事务时，将挂起事务，运行方法</span><br><span class="line">     */</span><br><span class="line">    NOT_SUPPORTED(4),</span><br><span class="line">    /**</span><br><span class="line">     * 不支持事务，如果当前方法存在事务，将抛出异常，否则继续使用无事务机制运行</span><br><span class="line">     */</span><br><span class="line">    NEVER(5),</span><br><span class="line">    /**</span><br><span class="line">     * 在当前方法调用子方法时，如果子方法发生异常</span><br><span class="line">     * 只回滚子方法执行过的SQL，而不回滚当前方法的事务</span><br><span class="line">     */</span><br><span class="line">    NESTED(6);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>日常开发中基本只会使用到<code>REQUIRED(0)</code>,<code>REQUIRES_NEW(3)</code>,<code>NESTED(6)</code>三种。</p>
+<p><code>NESTED</code>和<code>REQUIRES_NEW</code>是有区别的。NESTED传播行为会沿用当前事务的隔离级别和锁等特性，而REQUIRES_NEW则可以拥有自己独立的隔离级别和锁等特性。</p>
+<p><code>NESTED</code>的实现主要依赖于数据库的保存点（SAVEPOINT）技术，SAVEPOINT记录了一个保存点，可以通过ROLLBACK TO SAVEPOINT来回滚到某个保存点。如果数据库支持保存点技术时就启用保存点技术；如果不支持就会新建一个事务去执行代码，也就相当于REQUIRES_NEW。</p>
+<h4 id="Transactional自调用失效"><a href="#Transactional自调用失效" class="headerlink" title="Transactional自调用失效"></a>Transactional自调用失效</h4><p>如果一个类中自身方法的调用，我们称之为自调用。如一个订单业务实现类OrderServiceImpl中有methodA方法调用了自身类的methodB方法就是自调用，如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">@Transactional</span><br><span class="line">public void methodA()&#123;</span><br><span class="line">    for (int i = 0; i &lt; 10; i++) &#123;</span><br><span class="line">        methodB();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">    </span><br><span class="line">@Transactional(isolation = Isolation.READ_COMMITTED,propagation = Propagation.REQUIRES_NEW)</span><br><span class="line">public int methodB()&#123;</span><br><span class="line">    ......</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在上面方法中不管methodB如何设置隔离级别和传播行为都是不生效的。即自调用失效。</p>
+<p>这主要是由于@Transactional的底层实现原理是基于AOP实现，而AOP的原理是动态代理，在自调用的过程中是类自身的调用，而不是代理对象去调用，那么就不会产生AOP，于是就发生了自调用失败的现象。</p>
+<p>要克服这个问题，有2种方法：</p>
+<ul>
+<li>编写两个Service,用一个Service的methodA去调用另外一个Service的methodB方法，这样就是代理对象的调用，不会有问题；</li>
+<li>在同一个Service中，methodA不直接调用methodB，而是先从Spring IOC容器中重新获取代理对象<code>OrderServiceImpl</code>,获取到后再去调用methodB。说起来有点乱，还是show you the code。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">public class OrderServiceImpl implements OrderService,ApplicationContextAware &#123;</span><br><span class="line">    private ApplicationContext applicationContext = null;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void setApplicationContext(ApplicationContext applicationContext) &#123;</span><br><span class="line">        this.applicationContext = applicationContext;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Transactional</span><br><span class="line">    public void methodA()&#123;</span><br><span class="line">        OrderService orderService = applicationContext.getBean(OrderService.class);</span><br><span class="line">        for (int i = 0; i &lt; 10; i++) &#123;</span><br><span class="line">            orderService.methodB();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Transactional(isolation = Isolation.READ_COMMITTED,propagation = Propagation.REQUIRES_NEW)</span><br><span class="line">    public int methodB()&#123;</span><br><span class="line">        ......</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面代码中我们先实现了<code>ApplicationContextAware</code>接口，然后通过<code>applicationContext.getBean()</code>获取了<code>OrderService</code>的接口对象。这个时候获取到的是一个代理对象，也就能正常使用AOP的动态代理了。</p>
+<hr>
+<p>参考：</p>
+<ul>
+<li><a href="https://juejin.im/post/5d909a98518825092046e83b" target="_blank" rel="noopener">https://juejin.im/post/5d909a98518825092046e83b</a></li>
+</ul>
+<hr>
+<p>本文由『后端精进之路』原创，首发于博客 <a href="http://teckee.github.io/" target="_blank" rel="noopener">http://teckee.github.io/</a> , 转载请注明出处</p>
+<p>搜索『后端精进之路』关注公众号，立刻获取最新文章和<strong>价值2000元的BATJ精品面试课程</strong>。</p>
+<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1g9v9luujswj21n10l9jux.jpg" alt="后端精进之路.png"></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Spring/" rel="tag"># Spring</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/03/31/Spring_5_AOP/" rel="next" title="Spring MVC系列-(5) AOP">
+                <i class="fa fa-chevron-left"></i> Spring MVC系列-(5) AOP
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/04/10/Spring_7_IOC/" rel="prev" title="Spring MVC系列-(7) IOC初始化流程">
+                Spring MVC系列-(7) IOC初始化流程 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Vincent</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">55</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">categories</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">22</span>
+                  <span class="site-state-item-name">tags</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/teckee" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:h0ck@foxmail.com" target="_blank" title="E-Mail">
+                    
+                      <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#6-声明式事务"><span class="nav-number">1.</span> <span class="nav-text">6 声明式事务</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#6-1-Spring中事务的使用"><span class="nav-number">1.1.</span> <span class="nav-text">6.1 Spring中事务的使用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-2-Spring事务原理分析"><span class="nav-number">1.2.</span> <span class="nav-text">6.2 Spring事务原理分析</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#AutoProxyRegistrar-class"><span class="nav-number">1.2.1.</span> <span class="nav-text">AutoProxyRegistrar.class</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ProxyTransactionManagementConfiguration-class"><span class="nav-number">1.2.2.</span> <span class="nav-text">ProxyTransactionManagementConfiguration.class</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#拦截执行流程"><span class="nav-number">1.2.3.</span> <span class="nav-text">拦截执行流程</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-3-Spring的事务隔离级别与传播性"><span class="nav-number">1.3.</span> <span class="nav-text">6.3 Spring的事务隔离级别与传播性</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#隔离级别"><span class="nav-number">1.3.1.</span> <span class="nav-text">隔离级别</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#传播行为"><span class="nav-number">1.3.2.</span> <span class="nav-text">传播行为</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Transactional自调用失效"><span class="nav-number">1.3.3.</span> <span class="nav-text">Transactional自调用失效</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Vincent</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://frankier-me.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://yoursite.com/2020/04/05/Spring_6_Transaction/';
+          this.page.identifier = '2020/04/05/Spring_6_Transaction/';
+          this.page.title = 'Spring MVC系列-(6) 声明式事务';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://frankier-me.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("D1FSFUo2Xco7NLfkEF2KRu4x-gzGzoHsz", "t0gAn7CG0IuQuatwXySKh0Lx");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

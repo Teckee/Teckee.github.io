@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+<meta name="referrer" content="no-referrer">
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Python,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="虽然不是美剧的忠实爱好者，但是还是关注了一些比较有意思的美剧，很多时候由于比较忙或者忘记了去查看美剧更新，错过了这些精彩剧集。">
+<meta name="keywords" content="Python">
+<meta property="og:type" content="article">
+<meta property="og:title" content="美剧更新提醒 by Python">
+<meta property="og:url" content="http://yoursite.com/2015/12/21/Check-Series-Update-by-Python/index.html">
+<meta property="og:site_name" content="Vincent&#39;s Notes">
+<meta property="og:description" content="虽然不是美剧的忠实爱好者，但是还是关注了一些比较有意思的美剧，很多时候由于比较忙或者忘记了去查看美剧更新，错过了这些精彩剧集。">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6jw1ez76tlp8hmj20jq0b4q5u.jpg">
+<meta property="og:updated_time" content="2015-12-21T05:00:52.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="美剧更新提醒 by Python">
+<meta name="twitter:description" content="虽然不是美剧的忠实爱好者，但是还是关注了一些比较有意思的美剧，很多时候由于比较忙或者忘记了去查看美剧更新，错过了这些精彩剧集。">
+<meta name="twitter:image" content="http://ww1.sinaimg.cn/large/a18449c6jw1ez76tlp8hmj20jq0b4q5u.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2015/12/21/Check-Series-Update-by-Python/">
+
+
+
+
+
+  <title>美剧更新提醒 by Python | Vincent's Notes</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Vincent's Notes</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/12/21/Check-Series-Update-by-Python/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Vincent">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Vincent's Notes">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">美剧更新提醒 by Python</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2015-12-21T12:47:49+08:00">
+                2015-12-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python/" itemprop="url" rel="index">
+                    <span itemprop="name">Python</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2015/12/21/Check-Series-Update-by-Python/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/12/21/Check-Series-Update-by-Python/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2015/12/21/Check-Series-Update-by-Python/" class="leancloud_visitors" data-flag-title="美剧更新提醒 by Python">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">Visitors&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>虽然不是美剧的忠实爱好者，但是还是关注了一些比较有意思的美剧，很多时候由于比较忙或者忘记了去查看美剧更新，错过了这些精彩剧集。<br><img src="http://ww1.sinaimg.cn/large/a18449c6jw1ez76tlp8hmj20jq0b4q5u.jpg" alt="walking dead"></p>
+</blockquote>
+<a id="more"></a>
+<p>这里用python+VPS实现了在线检查美剧页面是否有剧集更新，有的话就发邮件提醒。这里以《行尸走肉》和《生活大爆炸》为例。</p>
+<h2 id="依赖"><a href="#依赖" class="headerlink" title="依赖"></a>依赖</h2><ul>
+<li><p><strong>windows</strong></p>
+<blockquote>
+<p><code>pip</code>:<a href="http://www.cnblogs.com/yuanzm/p/4089856.html" target="_blank" rel="noopener">windows下面安装Python和pip终极教程</a><br><code>requests</code>:pip install requests<br><code>lxml</code>: <a href="http://stackoverflow.com/questions/33785755/getting-could-not-find-function-xmlcheckversion-in-library-libxml2-is-libxml2" target="_blank" rel="noopener">stackoverflow</a></p>
+</blockquote>
+</li>
+<li><p><strong>Linux(Ubuntu为例)</strong></p>
+<blockquote>
+<p><code>pip</code>: sudo apt-get install python-pip<br><code>requests</code>: pip install requests<br><code>lxml</code>:<a href="http://www.cnblogs.com/numbbbbb/p/3434519.html" target="_blank" rel="noopener">Ubuntu/Debian 安装lxml的正确方式</a></p>
+</blockquote>
+</li>
+</ul>
+<h2 id="检查更新"><a href="#检查更新" class="headerlink" title="检查更新"></a>检查更新</h2><blockquote>
+<p>这部分主要就是简单的html页面解析，将相对应的剧集名称存在txt中，每次解析一次网页，并将得到的结果与txt中的结果进行比较，如果不同，则有更新，返回最新的剧集和百度网盘地址</p>
+</blockquote>
+<ul>
+<li>整体代码</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> requests			<span class="comment"># 获取html</span></span><br><span class="line"><span class="keyword">from</span> lxml <span class="keyword">import</span> etree  <span class="comment"># 解析html</span></span><br><span class="line"><span class="keyword">import</span> os 				<span class="comment"># 文件相关操作</span></span><br><span class="line"><span class="keyword">import</span> smtplib			<span class="comment"># 发邮件</span></span><br><span class="line"><span class="keyword">from</span> email.mime.text <span class="keyword">import</span> MIMEText  </span><br><span class="line"><span class="keyword">import</span> time 			<span class="comment"># 延时</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 发邮件</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">send_email</span><span class="params">(series, download_url)</span>:</span></span><br><span class="line">	_user = <span class="string">"xxx@163.com"</span> 	<span class="comment"># 网易邮箱需开启smtp服务</span></span><br><span class="line">	_pwd  = <span class="string">"xxxx"</span>  </span><br><span class="line">	_to   = <span class="string">"xxxxxxxxxxxxx"</span></span><br><span class="line"></span><br><span class="line">	content = series + <span class="string">' 已更新'</span> + <span class="string">'\n\n'</span> + <span class="string">'百度网盘地址: '</span> + download_url</span><br><span class="line">	msg = MIMEText(content)  </span><br><span class="line">	msg[<span class="string">"Subject"</span>] = <span class="string">'剧集更新提醒'</span></span><br><span class="line">	msg[<span class="string">"From"</span>]    = _user  </span><br><span class="line">	msg[<span class="string">"To"</span>]      = _to  </span><br><span class="line"></span><br><span class="line">	s = smtplib.SMTP(<span class="string">"smtp.163.com"</span>, timeout=<span class="number">30</span>)	<span class="comment">#连接smtp邮件服务器,端口默认是25  </span></span><br><span class="line">	s.login(_user, _pwd)							<span class="comment">#登陆服务器  </span></span><br><span class="line">	s.sendmail(_user, _to, msg.as_string())			<span class="comment">#发送邮件  </span></span><br><span class="line">	s.close()  </span><br><span class="line"></span><br><span class="line"><span class="comment"># 获取剧集文件</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">check_series_update</span><span class="params">(url)</span>:</span></span><br><span class="line">	r = requests.get(url)</span><br><span class="line">	page = etree.HTML(r.text)</span><br><span class="line">	hrefs = page.xpath(<span class="string">u"//a"</span>)</span><br><span class="line">	current = []</span><br><span class="line">	<span class="keyword">for</span> index, href <span class="keyword">in</span> enumerate(hrefs):</span><br><span class="line">		txt = href.text</span><br><span class="line">		<span class="keyword">if</span> txt <span class="keyword">and</span> <span class="string">'SCG'</span> <span class="keyword">in</span> txt:</span><br><span class="line">			current.append(txt.encode(<span class="string">'utf-8'</span>))  <span class="comment"># 剧集名称</span></span><br><span class="line">			current.append(hrefs[index+<span class="number">1</span>].attrib[<span class="string">'href'</span>])  <span class="comment"># 百度网盘地址</span></span><br><span class="line"></span><br><span class="line">	curText = <span class="string">''</span>.join(current)	</span><br><span class="line"></span><br><span class="line">	<span class="comment"># 剧集文件名</span></span><br><span class="line">	series = url.split(<span class="string">'/'</span>)[<span class="number">-1</span>]</span><br><span class="line">	series_file = series[<span class="number">0</span>:<span class="number">-5</span>] + <span class="string">'.txt'</span></span><br><span class="line"></span><br><span class="line">	<span class="comment"># 剧集文件已存在</span></span><br><span class="line">	<span class="keyword">if</span> os.path.isfile(series_file):</span><br><span class="line">		<span class="comment"># read</span></span><br><span class="line">		f = open(series_file)</span><br><span class="line">		lastText = f.read()</span><br><span class="line">		f.close()</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span> curText == lastText:</span><br><span class="line">			<span class="keyword">print</span> <span class="string">'No update'</span></span><br><span class="line">		<span class="keyword">else</span>:</span><br><span class="line">			<span class="comment"># write</span></span><br><span class="line">			f = open(series_file, <span class="string">'w'</span>)</span><br><span class="line">			f.write(curText)</span><br><span class="line">			f.close()</span><br><span class="line">			send_email(current[<span class="number">0</span>], current[<span class="number">1</span>])</span><br><span class="line">	<span class="keyword">else</span>:</span><br><span class="line">		<span class="comment"># write</span></span><br><span class="line">		f = open(series_file, <span class="string">'w'</span>)</span><br><span class="line">		f.write(curText)</span><br><span class="line">		f.close()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 获取更新</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">check_update</span><span class="params">(urls)</span>:</span></span><br><span class="line">	<span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">		<span class="keyword">for</span> url <span class="keyword">in</span> urls:</span><br><span class="line">			check_series_update(url)</span><br><span class="line">			time.sleep(<span class="number">5</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">	urls = [<span class="string">"http://www.ttmeiju.com/meiju/The.Big.Bang.Theory.html"</span>, <span class="string">"http://www.ttmeiju.com/meiju/THE.Walking.Dead.html"</span>]</span><br><span class="line">	check_update(urls)</span><br></pre></td></tr></table></figure>
+<h2 id="vps运行"><a href="#vps运行" class="headerlink" title="vps运行"></a>vps运行</h2><p>将脚本放在服务器上，利用<code>screen</code>指令创建新窗口，在该窗口中运行脚本，即可实现实时监控</p>
+<h3 id="相关参考内容"><a href="#相关参考内容" class="headerlink" title="相关参考内容"></a>相关参考内容</h3><ul>
+<li><p>lxml解析html</p>
+<blockquote>
+<p><a href="http://www.crifan.com/python_try_lxml_parse_html/" target="_blank" rel="noopener">Python中尝试用lxml去解析html</a><br><a href="http://www.cnblogs.com/descusr/archive/2012/06/20/2557075.html" target="_blank" rel="noopener">用lxml解析HTML</a></p>
+</blockquote>
+</li>
+<li><p>发送邮件</p>
+<blockquote>
+<p><a href="http://www.liaoxuefeng.com/wiki/001374738125095c955c1e6d8bb493182103fac9270762a000/001386832745198026a685614e7462fb57dbf733cc9f3ad000" target="_blank" rel="noopener">SMTP发送邮件</a><br><a href="http://blog.csdn.net/handsomekang/article/details/9785411" target="_blank" rel="noopener">发送qq邮件</a></p>
+</blockquote>
+</li>
+</ul>
+<hr>
+<blockquote>
+<p>由于可以直接获取到百度网盘的链接，后期考虑看可否直接将该链接中的内容保存到自己的百度网盘指定目录，那样就更加方便了</p>
+</blockquote>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Python/" rel="tag"># Python</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/07/21/extern-c/" rel="next" title="extern " c"解析">
+                <i class="fa fa-chevron-left"></i> extern "c"解析
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/02/05/VPS-PPTP-VPN/" rel="prev" title="VPS设置PPTP VPN">
+                VPS设置PPTP VPN <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Vincent</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">55</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">categories</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">22</span>
+                  <span class="site-state-item-name">tags</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/teckee" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:h0ck@foxmail.com" target="_blank" title="E-Mail">
+                    
+                      <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#依赖"><span class="nav-number">1.</span> <span class="nav-text">依赖</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#检查更新"><span class="nav-number">2.</span> <span class="nav-text">检查更新</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#vps运行"><span class="nav-number">3.</span> <span class="nav-text">vps运行</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#相关参考内容"><span class="nav-number">3.1.</span> <span class="nav-text">相关参考内容</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Vincent</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://frankier-me.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://yoursite.com/2015/12/21/Check-Series-Update-by-Python/';
+          this.page.identifier = '2015/12/21/Check-Series-Update-by-Python/';
+          this.page.title = '美剧更新提醒 by Python';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://frankier-me.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("D1FSFUo2Xco7NLfkEF2KRu4x-gzGzoHsz", "t0gAn7CG0IuQuatwXySKh0Lx");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

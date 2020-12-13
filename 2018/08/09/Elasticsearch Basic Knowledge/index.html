@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+<meta name="referrer" content="no-referrer">
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Database,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Elasticsearch 是一个分布式的RESTful风格的搜索和数据分析工具,是当前流行的企业级搜索引擎。  基本概念Cluster集群通过独一无二的名称来进行区分，每个集群是由一个或者多个Node组成。不能在不同的环境中使用相同的cluster名，否则node可能错误地划分到某个cluster中。 Node作为集群（cluster）的一部分，存储数据。">
+<meta name="keywords" content="Database">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Elasticsearch 入门">
+<meta property="og:url" content="http://yoursite.com/2018/08/09/Elasticsearch Basic Knowledge/index.html">
+<meta property="og:site_name" content="Vincent&#39;s Notes">
+<meta property="og:description" content="Elasticsearch 是一个分布式的RESTful风格的搜索和数据分析工具,是当前流行的企业级搜索引擎。  基本概念Cluster集群通过独一无二的名称来进行区分，每个集群是由一个或者多个Node组成。不能在不同的环境中使用相同的cluster名，否则node可能错误地划分到某个cluster中。 Node作为集群（cluster）的一部分，存储数据。">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2018-08-09T14:48:18.520Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Elasticsearch 入门">
+<meta name="twitter:description" content="Elasticsearch 是一个分布式的RESTful风格的搜索和数据分析工具,是当前流行的企业级搜索引擎。  基本概念Cluster集群通过独一无二的名称来进行区分，每个集群是由一个或者多个Node组成。不能在不同的环境中使用相同的cluster名，否则node可能错误地划分到某个cluster中。 Node作为集群（cluster）的一部分，存储数据。">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/08/09/Elasticsearch Basic Knowledge/">
+
+
+
+
+
+  <title>Elasticsearch 入门 | Vincent's Notes</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Vincent's Notes</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/09/Elasticsearch Basic Knowledge/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Vincent">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Vincent's Notes">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Elasticsearch 入门</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-08-09T21:34:49+08:00">
+                2018-08-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Database/" itemprop="url" rel="index">
+                    <span itemprop="name">Database</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/08/09/Elasticsearch Basic Knowledge/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/08/09/Elasticsearch Basic Knowledge/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2018/08/09/Elasticsearch Basic Knowledge/" class="leancloud_visitors" data-flag-title="Elasticsearch 入门">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">Visitors&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>Elasticsearch 是一个分布式的RESTful风格的搜索和数据分析工具,是当前流行的企业级搜索引擎。</p>
+</blockquote>
+<h2 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h2><h3 id="Cluster"><a href="#Cluster" class="headerlink" title="Cluster"></a>Cluster</h3><p>集群通过独一无二的名称来进行区分，每个集群是由一个或者多个Node组成。不能在不同的环境中使用相同的cluster名，否则node可能错误地划分到某个cluster中。</p>
+<h3 id="Node"><a href="#Node" class="headerlink" title="Node"></a>Node</h3><p>作为集群（cluster）的一部分，存储数据。</p>
+<a id="more"></a>
+<h3 id="Index"><a href="#Index" class="headerlink" title="Index"></a>Index</h3><p>索引是某些具有相同特征的文档的集合，可以对于不同的数据来建立不同的索引。当进行创建索引、搜索、更新和删除等操作时，需要通过该索引名来访问其对应的文件。</p>
+<h3 id="Document"><a href="#Document" class="headerlink" title="Document"></a>Document</h3><p>一个Document是可以被索引的最小单元，不同的Document可以对应不同的数据，例如客户信息，产品信息等等。</p>
+<h3 id="Shards-amp-Replicas"><a href="#Shards-amp-Replicas" class="headerlink" title="Shards &amp; Replicas"></a>Shards &amp; Replicas</h3><p>考虑到一个index可能存储大量的数据以至于超出硬件的限制，因此Elasticsearch可以将一个index划分为多个块称为shards，每个shards可以看做是一个独立的index。通过Shards的机制，一方面可以用于将数据进行分片；另一方面也可以将数据通过不同的Shards进行分发，进而提升了输入输出的性能。</p>
+<p>另外为了防止网络等原因导致的某个Shards/Node无法正常工作，Elasticsearch中可以通过生成一个或多个Shards的副本，来保证可靠性，这些副本称为replica shards，或者简称replicas。</p>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">curl -L -O https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-6.3.2.tar.gz</span><br><span class="line">tar -xvf elasticsearch-6.3.2.tar.gz</span><br><span class="line">cd elasticsearch-6.3.2/bin</span><br><span class="line">./elasticsearch</span><br></pre></td></tr></table></figure>
+<h2 id="基本操作"><a href="#基本操作" class="headerlink" title="基本操作"></a>基本操作</h2><ul>
+<li>集群健康状况</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">GET /_cat/health?v</span><br></pre></td></tr></table></figure>
+<ul>
+<li>获取集群节点</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">GET /_cat/nodes?v</span><br></pre></td></tr></table></figure>
+<ul>
+<li>获取索引信息</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">GET /_cat/indices?v</span><br></pre></td></tr></table></figure>
+<ul>
+<li>创建索引</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">PUT /customer?pretty</span><br><span class="line">GET /_cat/indices?v</span><br></pre></td></tr></table></figure>
+<p>第一句通过<code>PUT</code>操作在集群中创建一个customer的索引，末尾加上<code>pretty</code>表示<code>pretty-print</code>该操作返回的jason数据。</p>
+<ul>
+<li>索引和查找数据</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">PUT /customer/_doc/1?pretty</span><br><span class="line">&#123;</span><br><span class="line">  &quot;name&quot;: &quot;John Doe&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面这条指令将一个简单的文档加入到customer索引中，并且id为1。可以通过id来查找刚索引好的数据，具体指令如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;_index&quot; : &quot;customer&quot;,</span><br><span class="line">  &quot;_type&quot; : &quot;_doc&quot;,</span><br><span class="line">  &quot;_id&quot; : &quot;1&quot;,</span><br><span class="line">  &quot;_version&quot; : 1,</span><br><span class="line">  &quot;found&quot; : true,</span><br><span class="line">  &quot;_source&quot; : &#123; &quot;name&quot;: &quot;John Doe&quot; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>删除索引</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DELETE /customer?pretty</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>通过上述简单的指令可以看到，我们可以使用比较固定的模式<code>&lt;REST Verb&gt; /&lt;Index&gt;/&lt;Type&gt;/&lt;ID&gt;</code>从Elasticsearch获取数据。</p>
+</blockquote>
+<h2 id="修改数据"><a href="#修改数据" class="headerlink" title="修改数据"></a>修改数据</h2><h3 id="索引-替换数据"><a href="#索引-替换数据" class="headerlink" title="索引/替换数据"></a>索引/替换数据</h3><h4 id="索引数据"><a href="#索引数据" class="headerlink" title="索引数据"></a>索引数据</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">PUT /customer/_doc/1?pretty</span><br><span class="line">&#123;</span><br><span class="line">  &quot;name&quot;: &quot;John Doe&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>在索引数据时，ID这一项是可选的。如果不指定ID，Elasticsearch会生成一个随机的ID来索引数据，这个ID也会在索引完成后返回在结果中。</p>
+</blockquote>
+<h4 id="替换数据"><a href="#替换数据" class="headerlink" title="替换数据"></a>替换数据</h4><p>在索引了一条数据之后，再使用相同的ID来索引一条数据，新的数据将会替换掉之前索引的数据。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">PUT /customer/_doc/1?pretty</span><br><span class="line">&#123;</span><br><span class="line">  &quot;name&quot;: &quot;Jane Doe&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="更新数据"><a href="#更新数据" class="headerlink" title="更新数据"></a>更新数据</h3><p>我们可以使用下面的指令来更新之前例子中插入的数据。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">POST /customer/_doc/1/_update?pretty</span><br><span class="line">&#123;</span><br><span class="line">  &quot;doc&quot;: &#123; &quot;name&quot;: &quot;Jane Doe&quot;, &quot;age&quot;: 20 &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>除此之外，也可以通过简单的script来更新数据，</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">POST /customer/_doc/1/_update?pretty</span><br><span class="line">&#123;</span><br><span class="line">  &quot;script&quot; : &quot;ctx._source.age += 5&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>ctx._source</code>表示将被更新的文档。</p>
+<h3 id="删除数据"><a href="#删除数据" class="headerlink" title="删除数据"></a>删除数据</h3><p>下面的语句将会删除ID为2的数据<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DELETE /customer/_doc/2?pretty</span><br></pre></td></tr></table></figure></p>
+<h3 id="批量操作"><a href="#批量操作" class="headerlink" title="批量操作"></a>批量操作</h3><p>除了上述对数据进行分开操作以外，Elasticsearch也提供了<code>_bulk</code>API来进行批量操作，如下的例子中将会首先更新ID为1对应的文档，另外删除ID为2对应的文档。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">POST /customer/_doc/_bulk?pretty</span><br><span class="line">&#123;&quot;update&quot;:&#123;&quot;_id&quot;:&quot;1&quot;&#125;&#125;</span><br><span class="line">&#123;&quot;doc&quot;: &#123; &quot;name&quot;: &quot;John Doe becomes Jane Doe&quot; &#125; &#125;</span><br><span class="line">&#123;&quot;delete&quot;:&#123;&quot;_id&quot;:&quot;2&quot;&#125;&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="搜索数据"><a href="#搜索数据" class="headerlink" title="搜索数据"></a>搜索数据</h2><p>在介绍搜索数据的API之前，你可以参考<a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/_exploring_your_data.html" target="_blank" rel="noopener">官方教程</a>来索引部分数据。</p>
+<h3 id="搜索API"><a href="#搜索API" class="headerlink" title="搜索API"></a>搜索API</h3><ul>
+<li>使用类似于如下例子的REST request URI来进行搜索。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">GET /bank/_search?q=*&amp;sort=account_number:asc&amp;pretty</span><br></pre></td></tr></table></figure>
+<p>注意到搜索时都需要使用到<code>_search</code>这个endpoint，bank为索引名。<code>q=*</code>表示匹配该索引下的所有文档。<code>sort=account_number</code>表示将返回的结果按照account_number来进行升序排列。同样的<code>pretty</code>表示将返回的结果pretty-print。</p>
+<ul>
+<li>使用request body如下，可以达到同样的效果</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">GET /bank/_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123; &quot;match_all&quot;: &#123;&#125; &#125;,</span><br><span class="line">  &quot;sort&quot;: [</span><br><span class="line">    &#123; &quot;account_number&quot;: &quot;asc&quot; &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Request-Body语法"><a href="#Request-Body语法" class="headerlink" title="Request Body语法"></a>Request Body语法</h3><ul>
+<li>限制返回结果数目</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">GET /bank/_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123; &quot;match_all&quot;: &#123;&#125; &#125;,</span><br><span class="line">  &quot;size&quot;: 1</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>限制查找范围，如下例子返回10-19之间的文档</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">GET /bank/_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123; &quot;match_all&quot;: &#123;&#125; &#125;,</span><br><span class="line">  &quot;from&quot;: 10,</span><br><span class="line">  &quot;size&quot;: 10</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>对返回值进行排序</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">GET /bank/_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123; &quot;match_all&quot;: &#123;&#125; &#125;,</span><br><span class="line">  &quot;sort&quot;: &#123; &quot;balance&quot;: &#123; &quot;order&quot;: &quot;desc&quot; &#125; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>限制返回的列</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">GET /bank/_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123; &quot;match_all&quot;: &#123;&#125; &#125;,</span><br><span class="line">  &quot;_source&quot;: [&quot;account_number&quot;, &quot;balance&quot;]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>匹配某个字段，注意<code>match</code>和<code>match_phrase</code>的区别</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">GET /bank/_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123; &quot;match&quot;: &#123; &quot;address&quot;: &quot;mill lane&quot; &#125; &#125;  # 包含mill或者lane</span><br><span class="line">  &quot;query&quot;: &#123; &quot;match_phrase&quot;: &#123; &quot;address&quot;: &quot;mill lane&quot; &#125; &#125; # 包含mill lane</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>组合多个匹配条件，<code>must</code>表示必须匹配两个条件，如果改成<code>should</code>则为两个条件之一满足即可，<code>must_not</code>则为两个条件均不匹配。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">GET /bank/_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;bool&quot;: &#123;</span><br><span class="line">      &quot;must&quot;: [</span><br><span class="line">        &#123; &quot;match&quot;: &#123; &quot;address&quot;: &quot;mill&quot; &#125; &#125;,</span><br><span class="line">        &#123; &quot;match&quot;: &#123; &quot;address&quot;: &quot;lane&quot; &#125; &#125;</span><br><span class="line">      ]</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>组合多个匹配语句</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">GET /bank/_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;bool&quot;: &#123;</span><br><span class="line">      &quot;must&quot;: [</span><br><span class="line">        &#123; &quot;match&quot;: &#123; &quot;age&quot;: &quot;40&quot; &#125; &#125;</span><br><span class="line">      ],</span><br><span class="line">      &quot;must_not&quot;: [</span><br><span class="line">        &#123; &quot;match&quot;: &#123; &quot;state&quot;: &quot;ID&quot; &#125; &#125;</span><br><span class="line">      ]</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>过滤结果</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">GET /bank/_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;bool&quot;: &#123;</span><br><span class="line">      &quot;must&quot;: &#123; &quot;match_all&quot;: &#123;&#125; &#125;,</span><br><span class="line">      &quot;filter&quot;: &#123;</span><br><span class="line">        &quot;range&quot;: &#123;</span><br><span class="line">          &quot;balance&quot;: &#123;</span><br><span class="line">            &quot;gte&quot;: 20000,</span><br><span class="line">            &quot;lte&quot;: 30000</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>聚合数据，类似于sql语句中的group by等语句</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">GET /bank/_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;size&quot;: 0,</span><br><span class="line">  &quot;aggs&quot;: &#123;</span><br><span class="line">    &quot;group_by_state&quot;: &#123;</span><br><span class="line">      &quot;terms&quot;: &#123;</span><br><span class="line">        &quot;field&quot;: &quot;state.keyword&quot;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>本文只是对Elasticsearch的基础知识进行了介绍，更多的API接口可以参考官方的<a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/index.html" target="_blank" rel="noopener">reference</a>。</p>
+</blockquote>
+<p>参考链接：</p>
+<ul>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/getting-started.html" target="_blank" rel="noopener">https://www.elastic.co/guide/en/elasticsearch/reference/current/getting-started.html</a></li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Database/" rel="tag"># Database</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/07/08/SQL optimazation/" rel="next" title="SQL调优">
+                <i class="fa fa-chevron-left"></i> SQL调优
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/11/29/Clean Code/" rel="prev" title="代码整洁之道">
+                代码整洁之道 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Vincent</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">55</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">categories</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">22</span>
+                  <span class="site-state-item-name">tags</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/teckee" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:h0ck@foxmail.com" target="_blank" title="E-Mail">
+                    
+                      <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#基本概念"><span class="nav-number">1.</span> <span class="nav-text">基本概念</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Cluster"><span class="nav-number">1.1.</span> <span class="nav-text">Cluster</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Node"><span class="nav-number">1.2.</span> <span class="nav-text">Node</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Index"><span class="nav-number">1.3.</span> <span class="nav-text">Index</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Document"><span class="nav-number">1.4.</span> <span class="nav-text">Document</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Shards-amp-Replicas"><span class="nav-number">1.5.</span> <span class="nav-text">Shards &amp; Replicas</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装"><span class="nav-number">2.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#基本操作"><span class="nav-number">3.</span> <span class="nav-text">基本操作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#修改数据"><span class="nav-number">4.</span> <span class="nav-text">修改数据</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#索引-替换数据"><span class="nav-number">4.1.</span> <span class="nav-text">索引/替换数据</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#索引数据"><span class="nav-number">4.1.1.</span> <span class="nav-text">索引数据</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#替换数据"><span class="nav-number">4.1.2.</span> <span class="nav-text">替换数据</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#更新数据"><span class="nav-number">4.2.</span> <span class="nav-text">更新数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#删除数据"><span class="nav-number">4.3.</span> <span class="nav-text">删除数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#批量操作"><span class="nav-number">4.4.</span> <span class="nav-text">批量操作</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#搜索数据"><span class="nav-number">5.</span> <span class="nav-text">搜索数据</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#搜索API"><span class="nav-number">5.1.</span> <span class="nav-text">搜索API</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Request-Body语法"><span class="nav-number">5.2.</span> <span class="nav-text">Request Body语法</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Vincent</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://frankier-me.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://yoursite.com/2018/08/09/Elasticsearch Basic Knowledge/';
+          this.page.identifier = '2018/08/09/Elasticsearch Basic Knowledge/';
+          this.page.title = 'Elasticsearch 入门';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://frankier-me.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("D1FSFUo2Xco7NLfkEF2KRu4x-gzGzoHsz", "t0gAn7CG0IuQuatwXySKh0Lx");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,975 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+<meta name="referrer" content="no-referrer">
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Spring,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="8. Spring MVC 流程8.1 Spring MVC 介绍Spring MVC 是目前主流的MVC框架之一。两个核心点：  处理器映射：选择使用哪个控制器来处理请求 视图解析器：选择结果应该如何渲染  运行原理可以用下图表示：">
+<meta name="keywords" content="Spring">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spring MVC系列-(8) Spring MVC 流程">
+<meta property="og:url" content="http://yoursite.com/2020/04/15/Spring_8_MVC/index.html">
+<meta property="og:site_name" content="Vincent&#39;s Notes">
+<meta property="og:description" content="8. Spring MVC 流程8.1 Spring MVC 介绍Spring MVC 是目前主流的MVC框架之一。两个核心点：  处理器映射：选择使用哪个控制器来处理请求 视图解析器：选择结果应该如何渲染  运行原理可以用下图表示：">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1gco2xb0bj9j20nn0cet8m.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1gc2443w4ecj20lw0af0ui.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1gc24ehn0kij20ga0dm3zs.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlgy1gewwm4qqn4j31300k0nby.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlgy1gewwp1eiufj31i40bamzv.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/007xAsPigy1gc429qm5t4j30hq0nw42e.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g9v9luujswj21n10l9jux.jpg">
+<meta property="og:updated_time" content="2020-05-28T04:12:43.526Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Spring MVC系列-(8) Spring MVC 流程">
+<meta name="twitter:description" content="8. Spring MVC 流程8.1 Spring MVC 介绍Spring MVC 是目前主流的MVC框架之一。两个核心点：  处理器映射：选择使用哪个控制器来处理请求 视图解析器：选择结果应该如何渲染  运行原理可以用下图表示：">
+<meta name="twitter:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1gco2xb0bj9j20nn0cet8m.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/04/15/Spring_8_MVC/">
+
+
+
+
+
+  <title>Spring MVC系列-(8) Spring MVC 流程 | Vincent's Notes</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Vincent's Notes</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/04/15/Spring_8_MVC/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Vincent">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Vincent's Notes">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Spring MVC系列-(8) Spring MVC 流程</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-04-15T21:43:49+08:00">
+                2020-04-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Spring/" itemprop="url" rel="index">
+                    <span itemprop="name">Spring</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2020/04/15/Spring_8_MVC/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2020/04/15/Spring_8_MVC/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2020/04/15/Spring_8_MVC/" class="leancloud_visitors" data-flag-title="Spring MVC系列-(8) Spring MVC 流程">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">Visitors&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1gco2xb0bj9j20nn0cet8m.jpg" alt="Spring.png"></p>
+<h2 id="8-Spring-MVC-流程"><a href="#8-Spring-MVC-流程" class="headerlink" title="8. Spring MVC 流程"></a>8. Spring MVC 流程</h2><h4 id="8-1-Spring-MVC-介绍"><a href="#8-1-Spring-MVC-介绍" class="headerlink" title="8.1 Spring MVC 介绍"></a>8.1 Spring MVC 介绍</h4><p>Spring MVC 是目前主流的MVC框架之一。两个核心点：</p>
+<ul>
+<li>处理器映射：选择使用哪个控制器来处理请求</li>
+<li>视图解析器：选择结果应该如何渲染</li>
+</ul>
+<p>运行原理可以用下图表示：</p>
+<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1gc2443w4ecj20lw0af0ui.jpg" alt="160870009-5aae79b0723bb_articlex.png"></p>
+<a id="more"></a>
+<ol>
+<li><p>首先用户发送请求，DispatcherServlet实现了Servlet接口，整个请求处理流：HttpServlet.service<br>-&gt; FrameworkServlet.doGet<br>-&gt; FrameworkServlet.processRequest<br>-&gt; DispatcherServlet.doService<br>-&gt; DispatcherServlet.doDispatch。<br>-&gt; doDispatch(HttpServletRequest request, HttpServletResponse response)方法<br>即为整个spring mvc的处理流程。</p>
+</li>
+<li><p>获取url请求对应的处理方法，遍历handlerMappings列表，获取对象HandlerExecutionChain(包含一个处理器 handler 如HandlerMethod 对象、多个 HandlerInterceptor 拦截器对象)。此处的handlerMappings列表为上下文中所有HandlerMapping接口的实现类（如图中列举了4个），遍历handlerMappings列表，针对每个handlerMapping试图获取HandlerExecutionChain，一旦成功（不为null），即返回。</p>
+</li>
+<li><p>取对应的 HandlerAdapter，HandlerAdapter 将会把2中的handler包装为适配器，从而支持多种类型的处理器，即适配器设计模式的应用，从而很容易支持很多类型的处理器。DispatcherServlet中的HandlerAdapter列表如图中所列的3种，依次遍历，调用HanderAdapter.supports判断是否支持。</p>
+</li>
+<li><p>调用Controller的具体方法处理请求，并返回一个 ModelAndView。HandlerAdapter会为每一个请求生成一个ServletInvocableHandlerMethod实例，核心方法invokeAndHandle，包括输入参数的处理和返回数据的解析。</p>
+</li>
+<li><p>视图解析，遍历DispatcherServlet的ViewResolver列表，获取对应的View对象，入口方法DispatcherServlet.processDispatchResult</p>
+</li>
+<li>渲染，调用5中获取的View的render方法，完成对Model数据的渲染。此处的 Model 实际是一个 Map 数据结构。</li>
+<li>DispatcherServlet 将6中渲染后的数据返回响应给用户，到此一个流程结束。</li>
+</ol>
+<p>从代码角度讲，可以分为如下几步：</p>
+<p>其中灰色标识主流程，绿色为DispathcerServlet.doDispatch方法中的流程，红色为HandlerAdapter.handler方法中的流程</p>
+<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1gc24ehn0kij20ga0dm3zs.jpg" alt="392441468-5aae7a3d0f372_articlex.png"></p>
+<hr>
+<p>参考：</p>
+<ul>
+<li><a href="https://segmentfault.com/a/1190000013816079" target="_blank" rel="noopener">https://segmentfault.com/a/1190000013816079</a></li>
+</ul>
+<h3 id="8-2-Servlet"><a href="#8-2-Servlet" class="headerlink" title="8.2 Servlet"></a>8.2 Servlet</h3><p>在介绍如何手动实现Spring MVC之前，首先介绍下Servlet的相关概念，因为后续的实现Spring MVC也是基于DispatcherServle实现的。</p>
+<h4 id="8-2-1-Servlet的生命周期"><a href="#8-2-1-Servlet的生命周期" class="headerlink" title="8.2.1 Servlet的生命周期"></a>8.2.1 Servlet的生命周期</h4><p>Servlet的生命周期分为4个阶段：实例化–&gt;初始化–&gt;执行处理–&gt;销毁。</p>
+<p>（1）<strong>实例化——new</strong>：服务器第一次被访问时，加载一个Servlet容器，而且只会被加载一次。<br>（2）<strong>初始化——init</strong>：创建完Servlet容器后，会调用仅执行一次的init()初始化方法，用于初始化Servlet对象，无论多少台客户端在服务器运行期间访问都不会再执行init()方法。<br>（3）<strong>执行处理——service()方法</strong>：HttpServlet的抽象类提供了doGet()、doPost()……等方法。对应了request请求的发送方法，与之相匹配：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">doGet</span><span class="params">(HttpServletRequest req, HttpServletResponse resp)</span> <span class="keyword">throws</span> ServletException, IOException </span>&#123;</span><br><span class="line">    String protocol = req.getProtocol();</span><br><span class="line">    String msg = lStrings.getString(<span class="string">"http.method_get_not_supported"</span>);</span><br><span class="line">    <span class="keyword">if</span> (protocol.endsWith(<span class="string">"1.1"</span>)) &#123;</span><br><span class="line">        resp.sendError(<span class="number">405</span>, msg);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        resp.sendError(<span class="number">400</span>, msg);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">doPost</span><span class="params">(HttpServletRequest req, HttpServletResponse resp)</span> <span class="keyword">throws</span> ServletException, IOException </span>&#123;</span><br><span class="line">    String protocol = req.getProtocol();</span><br><span class="line">    String msg = lStrings.getString(<span class="string">"http.method_post_not_supported"</span>);</span><br><span class="line">    <span class="keyword">if</span> (protocol.endsWith(<span class="string">"1.1"</span>)) &#123;</span><br><span class="line">        resp.sendError(<span class="number">405</span>, msg);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        resp.sendError(<span class="number">400</span>, msg);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>（4）<strong>销毁——destroy</strong>：在服务器关闭或重启时，Servlet会调用destroy方法来销毁，将Servlet容器标记为垃圾文件，让GC做回收处理。我们编写的Servlet是调用了GenericServlet抽象类的destroy方法：</p>
+<h4 id="8-2-2-Servlet的工作原理"><a href="#8-2-2-Servlet的工作原理" class="headerlink" title="8.2.2 Servlet的工作原理"></a>8.2.2 Servlet的工作原理</h4><p>1、首先简单解释一下Servlet接收和响应客户请求的过程：</p>
+<p>客户发送一个请求，Servlet是调用service()方法对请求进行响应的，通过源代码可见，service()方法中对请求的方式进行了匹配。选择调用doGet,doPost等这些方法，然后再进入对应的方法中调用逻辑层的方法，实现对客户的响应。在Servlet接口和GenericServlet中是没有doGet（）、doPost（）等等这些方法的，HttpServlet中定义了这些方法，但是都是返回error信息，所以，我们每次定义一个Servlet的时候，都必须实现doGet或doPost等这些方法。</p>
+<p>2、每一个自定义的Servlet都必须实现Servlet的接口，Servlet接口中定义了五个方法，其中比较重要的三个方法涉及到Servlet的生命周期，分别是上文提到的init(),service(),destroy()方法。GenericServlet是一个通用的，不特定于任何协议的Servlet,它实现了Servlet接口。而HttpServlet继承于GenericServlet，因此HttpServlet也实现了Servlet接口。所以我们定义Servlet的时候只需要继承HttpServlet即可。</p>
+<p>3、Servlet是单例模式，线程是不安全的，因此在service()方法中尽量不要操作全局变量。但实际上，可以通过使用session和application来代替全局变量，只是会加大服务器负载。</p>
+<h4 id="8-2-3-如何判断是get请求还是post请求？"><a href="#8-2-3-如何判断是get请求还是post请求？" class="headerlink" title="8.2.3 如何判断是get请求还是post请求？"></a>8.2.3 如何判断是get请求还是post请求？</h4><p><img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1gewwm4qqn4j31300k0nby.jpg" alt></p>
+<h4 id="8-2-4-过滤器Filter原理"><a href="#8-2-4-过滤器Filter原理" class="headerlink" title="8.2.4 过滤器Filter原理"></a>8.2.4 过滤器Filter原理</h4><p><strong>生命周期</strong>：程序启动调用Filter的init()方法(<strong>永远只调用一次</strong>)，程序停止调用Filter的destroy()方法(<strong>永远只调用一次</strong>)，doFilter()方法每次的访问请求如果符合拦截条件都会调用(程序第一次运行，会在servlet调用init()方法以后调用，不管第几次，都在调用doGet(),doPost()方法之前)。</p>
+<p><strong>工作原理</strong>：在Servlet作为过滤器使用时，它可以对客户的请求进行处理。处理完成后，它会交给下一个过滤器处理，这样，客户的请求在过滤链里逐个处理，直到请求发送到目标为止。</p>
+<p>例如，某网站里有提交“修改的注册信息”的网页，当用户填写完修改信息并提交后，服务器在进行处理时需要做两项工作：判断客户端的会话是否有效；对提交的数据进行统一编码。这两项工作可以在由两个过滤器组成的过滤链里进行处理。当过滤器处理成功后，把提交的数据发送到最终目标；如果过滤器处理不成功，将把视图派发到指定的错误页面。</p>
+<p><strong>过滤器与拦截器的不同之处：</strong></p>
+<p><img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1gewwp1eiufj31i40bamzv.jpg" alt></p>
+<blockquote>
+<p>总结: 两者的本质区别：拦截器是基于java的反射机制的，而过滤器是基于函数回调。从灵活性上说拦截器功能更强大些，Filter能做的事情，他都能做，而且可以在请求前，请求后执行，比较灵活。Filter主要是针对URL地址做一个编码的事情、过滤掉没用的参数、安全校验（比较泛的，比如登录不登录之类），太细的话，还是建议用interceptor。不过还是根据不同情况选择合适的。</p>
+</blockquote>
+<h3 id="8-3-手写Spring-MVC"><a href="#8-3-手写Spring-MVC" class="headerlink" title="8.3 手写Spring MVC"></a>8.3 手写Spring MVC</h3><p>这部分将基于HttpServlet实现Spring MVC的整个流程，</p>
+<ol>
+<li>首先是在XML中定义整个程序的入口，</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE web-app PUBLIC</span><br><span class="line"> <span class="string">"-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"</span></span><br><span class="line"> <span class="string">"http://java.sun.com/dtd/web-app_2_3.dtd"</span> &gt;</span><br><span class="line"></span><br><span class="line">&lt;web-app&gt;</span><br><span class="line">  &lt;display-name&gt;Archetype Created Web Application&lt;/display-name&gt;</span><br><span class="line">  &lt;servlet&gt;</span><br><span class="line">  	&lt;servlet-name&gt;DispatcherServlet&lt;/servlet-name&gt;</span><br><span class="line">  	&lt;display-name&gt;DispatcherServlet&lt;/display-name&gt;</span><br><span class="line">  	&lt;description&gt;&lt;/description&gt;</span><br><span class="line">  	&lt;servlet-<span class="class"><span class="keyword">class</span>&gt;<span class="title">com</span>.<span class="title">enjoy</span>.<span class="title">james</span>.<span class="title">servlet</span>.<span class="title">DispatcherServlet</span>&lt;/<span class="title">servlet</span>-<span class="title">class</span>&gt;</span></span><br><span class="line"><span class="class">  	&lt;<span class="title">load</span>-<span class="title">on</span>-<span class="title">startup</span>&gt;0&lt;/<span class="title">load</span>-<span class="title">on</span>-<span class="title">startup</span>&gt;</span></span><br><span class="line"><span class="class">  &lt;/<span class="title">servlet</span>&gt;</span></span><br><span class="line"><span class="class">  &lt;<span class="title">servlet</span>-<span class="title">mapping</span>&gt;</span></span><br><span class="line"><span class="class">  	&lt;<span class="title">servlet</span>-<span class="title">name</span>&gt;<span class="title">DispatcherServlet</span>&lt;/<span class="title">servlet</span>-<span class="title">name</span>&gt;</span></span><br><span class="line"><span class="class">  	&lt;<span class="title">url</span>-<span class="title">pattern</span>&gt;/&lt;/<span class="title">url</span>-<span class="title">pattern</span>&gt;</span></span><br><span class="line"><span class="class">  &lt;/<span class="title">servlet</span>-<span class="title">mapping</span>&gt;</span></span><br><span class="line"><span class="class">&lt;/<span class="title">web</span>-<span class="title">app</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li>接着实现核心流程类<code>DispatcherServlet</code>，用于初始化IOC容器，同时来处理request请求。</li>
+</ol>
+<p>主要的流程分为如下：</p>
+<ul>
+<li><code>scanPackage</code>函数，扫描类路径下的所有类，得到所有的类名。</li>
+<li><code>instance</code>函数，将上一步得到的所有类进行实例化，然后将bean实例的名称和实例化的对象保存。</li>
+<li><code>ioc</code>函数主要完成依赖注入，需要把service实例注入到controller类中。</li>
+<li><code>HandlerMapping</code>函数把controller类中的URI和对应的method保存起来，后续进行request处理时，需要找到对应method。</li>
+</ul>
+<p>下面是各个函数的实现：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Servlet implementation class DispatcherServlet</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DispatcherServlet</span> <span class="keyword">extends</span> <span class="title">HttpServlet</span> </span>&#123;</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">long</span> serialVersionUID = <span class="number">1L</span>;</span><br><span class="line"></span><br><span class="line">	List&lt;String&gt; classNames = <span class="keyword">new</span> ArrayList&lt;String&gt;();</span><br><span class="line"></span><br><span class="line">	Map&lt;String, Object&gt; beans = <span class="keyword">new</span> HashMap&lt;String, Object&gt;();</span><br><span class="line"></span><br><span class="line">	Map&lt;String, Object&gt; handlerMap = <span class="keyword">new</span> HashMap&lt;String, Object&gt;();</span><br><span class="line"></span><br><span class="line">	Properties prop = <span class="keyword">null</span>;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">static</span> String HANDLERADAPTER = <span class="string">"jamesHandlerAdapter"</span>;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * Default constructor.</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">DispatcherServlet</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="comment">// TODO Auto-generated constructor stub</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@see</span> Servlet#init(ServletConfig)</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">init</span><span class="params">(ServletConfig config)</span> <span class="keyword">throws</span> ServletException </span>&#123;</span><br><span class="line">		<span class="comment">// 1、我们要根据一个基本包进行扫描，扫描里面的子包以及子包下的类</span></span><br><span class="line">		scanPackage(<span class="string">"com.enjoy"</span>);</span><br><span class="line"></span><br><span class="line">		<span class="keyword">for</span> (String classname : classNames) &#123;</span><br><span class="line">			System.out.println(classname);</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="comment">// 2、我们肯定是要把扫描出来的类进行实例化</span></span><br><span class="line">		instance();</span><br><span class="line">		<span class="keyword">for</span> (Map.Entry&lt;String, Object&gt; entry : beans.entrySet()) &#123;</span><br><span class="line">			System.out.println(entry.getKey() + <span class="string">":"</span> + entry.getValue());</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="comment">// 3、依赖注入，把service层的实例注入到controller</span></span><br><span class="line">		ioc();</span><br><span class="line"></span><br><span class="line">		<span class="comment">// 4、建立一个path与method的映射关系</span></span><br><span class="line">		HandlerMapping();</span><br><span class="line">		<span class="keyword">for</span> (Map.Entry&lt;String, Object&gt; entry : handlerMap.entrySet()) &#123;</span><br><span class="line">			System.out.println(entry.getKey() + <span class="string">":"</span> + entry.getValue());</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@see</span> HttpServlet#doGet(HttpServletRequest request, HttpServletResponse</span></span><br><span class="line"><span class="comment">	 *      response)</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">doGet</span><span class="params">(HttpServletRequest request, HttpServletResponse response)</span></span></span><br><span class="line"><span class="function">			<span class="keyword">throws</span> ServletException, IOException </span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.doPost(request, response);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@see</span> HttpServlet#doPost(HttpServletRequest request, HttpServletResponse</span></span><br><span class="line"><span class="comment">	 *      response)</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">doPost</span><span class="params">(HttpServletRequest request, HttpServletResponse response)</span></span></span><br><span class="line"><span class="function">			<span class="keyword">throws</span> ServletException, IOException </span>&#123;</span><br><span class="line">		<span class="comment">//获取到请求路径   /james-springmvc/james/query</span></span><br><span class="line">		String uri = request.getRequestURI();</span><br><span class="line"></span><br><span class="line">		String context = request.getContextPath();</span><br><span class="line">		<span class="comment">//将  "/james-springmvc/james/query"  去掉"/james-springmvc"</span></span><br><span class="line">		String path = uri.replace(context, <span class="string">""</span>);</span><br><span class="line">		<span class="comment">//根据请求路径来获取要执行的方法 </span></span><br><span class="line">		Method method = (Method) handlerMap.get(path);</span><br><span class="line">		<span class="comment">//拿到控制类</span></span><br><span class="line">		JamesController instance = (JamesController) beans.get(<span class="string">"/"</span> + path.split(<span class="string">"/"</span>)[<span class="number">1</span>]);</span><br><span class="line">		<span class="comment">//处理器</span></span><br><span class="line">		HandlerAdapterService ha = (HandlerAdapterService) beans.get(HANDLERADAPTER);</span><br><span class="line"></span><br><span class="line">		</span><br><span class="line">		<span class="comment">/*</span></span><br><span class="line"><span class="comment">		 * @RequestMapping("/order")</span></span><br><span class="line"><span class="comment">		 * order(@RequestBody String params, @RequestHeader @RequestParam String param1)&#123;//参数有多种类型接收方式</span></span><br><span class="line"><span class="comment">		 * &#125;</span></span><br><span class="line"><span class="comment">		 */</span></span><br><span class="line">		</span><br><span class="line">		</span><br><span class="line">		</span><br><span class="line">		</span><br><span class="line">		Object[] args = ha.hand(request, response, method, beans);</span><br><span class="line"></span><br><span class="line">		<span class="keyword">try</span> &#123;</span><br><span class="line">			method.invoke(instance, args);			</span><br><span class="line">		&#125; <span class="keyword">catch</span> (IllegalAccessException e) &#123;</span><br><span class="line">			<span class="comment">// TODO Auto-generated catch block</span></span><br><span class="line">			e.printStackTrace();</span><br><span class="line">		&#125; <span class="keyword">catch</span> (IllegalArgumentException e) &#123;</span><br><span class="line">			<span class="comment">// TODO Auto-generated catch block</span></span><br><span class="line">			e.printStackTrace();</span><br><span class="line">		&#125; <span class="keyword">catch</span> (InvocationTargetException e) &#123;</span><br><span class="line">			<span class="comment">// TODO Auto-generated catch block</span></span><br><span class="line">			e.printStackTrace();</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">HandlerMapping</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">if</span> (beans.entrySet().size() &lt;= <span class="number">0</span>) &#123;</span><br><span class="line">			System.out.println(<span class="string">"没有类的实例化！"</span>);</span><br><span class="line">			<span class="keyword">return</span>;</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">for</span> (Map.Entry&lt;String, Object&gt; entry : beans.entrySet()) &#123;</span><br><span class="line">			Object instance = entry.getValue();</span><br><span class="line"></span><br><span class="line">			Class&lt;?&gt; clazz = instance.getClass();</span><br><span class="line">			<span class="comment">// 拿所有Controller的类</span></span><br><span class="line">			<span class="keyword">if</span> (clazz.isAnnotationPresent(EnjoyController<span class="class">.<span class="keyword">class</span>)) </span>&#123;</span><br><span class="line">				<span class="comment">//@com.enjoy.james.annotation.EnjoyRequestMapping(value=/james)</span></span><br><span class="line">				EnjoyRequestMapping requestMapping = (EnjoyRequestMapping) clazz</span><br><span class="line">						.getAnnotation(EnjoyRequestMapping<span class="class">.<span class="keyword">class</span>)</span>;</span><br><span class="line">				<span class="comment">// 获取Controller类上面的EnjoyRequestMapping注解里的请求路径</span></span><br><span class="line">				String classPath = requestMapping.value();</span><br><span class="line">				<span class="comment">// 获取控制类里的所有方法</span></span><br><span class="line">				Method[] methods = clazz.getMethods();</span><br><span class="line">				<span class="comment">// 获取方法上的EnjoyRequestMapping设置的路径，与方法名建立映射关系</span></span><br><span class="line">				<span class="keyword">for</span> (Method method : methods) &#123;</span><br><span class="line">					<span class="comment">//判断哪些方法上使用EnjoyRequestMapping路径注解</span></span><br><span class="line">					<span class="keyword">if</span> (method.isAnnotationPresent(EnjoyRequestMapping<span class="class">.<span class="keyword">class</span>)) </span>&#123;</span><br><span class="line">						<span class="comment">//@com.enjoy.james.annotation.EnjoyRequestMapping(value=/query)</span></span><br><span class="line">						EnjoyRequestMapping methodrm = (EnjoyRequestMapping) method</span><br><span class="line">								.getAnnotation(EnjoyRequestMapping<span class="class">.<span class="keyword">class</span>)</span>;</span><br><span class="line">						String methodPath = methodrm.value();</span><br><span class="line">						<span class="comment">// 把方法上与路径建立映射关系( /james/query---&gt;public void com.enjoy.james.controller.JamesController.query )</span></span><br><span class="line">						handlerMap.put(classPath + methodPath, method);</span><br><span class="line">					&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">						<span class="keyword">continue</span>;</span><br><span class="line">					&#125;</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 初始化IOC容器</span></span><br><span class="line">	<span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">ioc</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span> (beans.entrySet().size() &lt;= <span class="number">0</span>) &#123;</span><br><span class="line">			System.out.println(<span class="string">"没有类的实例化！"</span>);</span><br><span class="line">			<span class="keyword">return</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">//将实例化好的bean遍历,</span></span><br><span class="line">		<span class="keyword">for</span> (Map.Entry&lt;String, Object&gt; entry : beans.entrySet()) &#123;</span><br><span class="line">			Object instance = entry.getValue();<span class="comment">//获取bean实例</span></span><br><span class="line"></span><br><span class="line">			Class&lt;?&gt; clazz = instance.getClass();<span class="comment">//获取类,用来判断类里声明了哪些注解(主要是针对控制类里的判断,比如使用了@Autowired  @Qualifier,对这些注解进行解析)</span></span><br><span class="line">			<span class="comment">//判断该类是否使用了EnjoyController注解</span></span><br><span class="line">			<span class="keyword">if</span> (clazz.isAnnotationPresent(EnjoyController<span class="class">.<span class="keyword">class</span>)) </span>&#123;</span><br><span class="line">				Field[] fields = clazz.getDeclaredFields();<span class="comment">// 拿到类里面的属性</span></span><br><span class="line">				<span class="comment">// 判断是否声明了自动装配（依赖注入）注解，比如@Autrowired @Qualifier</span></span><br><span class="line">				<span class="keyword">for</span> (Field field : fields) &#123;</span><br><span class="line">					<span class="keyword">if</span> (field.isAnnotationPresent(EnjoyQualifier<span class="class">.<span class="keyword">class</span>)) </span>&#123;</span><br><span class="line">						EnjoyQualifier qualifier = (EnjoyQualifier) field.getAnnotation(EnjoyQualifier<span class="class">.<span class="keyword">class</span>)</span>;</span><br><span class="line">						<span class="comment">//拿到@EnjoyQualifier("JamesServiceImpl")里的指定要注入的bean名字"JamesServiceImpl"</span></span><br><span class="line">						String value = qualifier.value();</span><br><span class="line"></span><br><span class="line">						field.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">						<span class="keyword">try</span> &#123;</span><br><span class="line">							<span class="comment">// 从MAP容器中获取"JamesServiceImpl"对应的bean,并注入实例控制层bean,解决依赖注入</span></span><br><span class="line">							field.set(instance, beans.get(value));</span><br><span class="line">						&#125; <span class="keyword">catch</span> (IllegalArgumentException e) &#123;</span><br><span class="line">							<span class="comment">// TODO Auto-generated catch block</span></span><br><span class="line">							e.printStackTrace();</span><br><span class="line">						&#125; <span class="keyword">catch</span> (IllegalAccessException e) &#123;</span><br><span class="line">							<span class="comment">// TODO Auto-generated catch block</span></span><br><span class="line">							e.printStackTrace();</span><br><span class="line">						&#125;</span><br><span class="line">					&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">						<span class="keyword">continue</span>;</span><br><span class="line">					&#125;</span><br><span class="line">				&#125;</span><br><span class="line">			&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">				<span class="keyword">continue</span>;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">instance</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">if</span> (classNames.size() &lt;= <span class="number">0</span>) &#123;</span><br><span class="line">			System.out.println(<span class="string">"包扫描失败！"</span>);</span><br><span class="line">			<span class="keyword">return</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">//遍历扫描到的class文件,将需要实例化的类(加了注解的类)进行反射创建对象(像注解就不需要实例化)</span></span><br><span class="line">		<span class="keyword">for</span> (String className : classNames) &#123;</span><br><span class="line">			<span class="comment">// com.enjoy.james.service.impl.JamesServiceImpl.class</span></span><br><span class="line">			String cn = className.replace(<span class="string">".class"</span>, <span class="string">""</span>);</span><br><span class="line"></span><br><span class="line">			<span class="keyword">try</span> &#123;</span><br><span class="line">				Class&lt;?&gt; clazz = Class.forName(cn);<span class="comment">//拿到class类,用来实例化</span></span><br><span class="line">				<span class="comment">// 将扫描到的类，获取类名，并判断是否标记了EnjoyController注解</span></span><br><span class="line">				<span class="keyword">if</span> (clazz.isAnnotationPresent(EnjoyController<span class="class">.<span class="keyword">class</span>)) </span>&#123;</span><br><span class="line">					EnjoyController controller = (EnjoyController) clazz.getAnnotation(EnjoyController<span class="class">.<span class="keyword">class</span>)</span>;</span><br><span class="line">					Object instance = clazz.newInstance();</span><br><span class="line">					<span class="comment">//获取对应的请求路径"/james"</span></span><br><span class="line">					EnjoyRequestMapping requestMapping = (EnjoyRequestMapping) clazz</span><br><span class="line">							.getAnnotation(EnjoyRequestMapping<span class="class">.<span class="keyword">class</span>)</span>;</span><br><span class="line">					String rmvalue = requestMapping.value();<span class="comment">//得到"/james"请求路径</span></span><br><span class="line">					<span class="comment">//用路径做为key,对应value为实例化对象</span></span><br><span class="line">					beans.put(rmvalue, instance);</span><br><span class="line">				&#125; <span class="keyword">else</span> <span class="keyword">if</span> (clazz.isAnnotationPresent(EnjoyService<span class="class">.<span class="keyword">class</span>)) </span>&#123;</span><br><span class="line">					<span class="comment">//获取当前clazz类的注解(通过这个注解可得到当前service的id)  @com.enjoy.james.annotation.EnjoyService(value=JamesServiceImpl)</span></span><br><span class="line">					EnjoyService service = (EnjoyService) clazz.getAnnotation(EnjoyService<span class="class">.<span class="keyword">class</span>)</span>;</span><br><span class="line">					Object instance = clazz.newInstance();</span><br><span class="line">					<span class="comment">//put(JamesServiceImpl,instance)</span></span><br><span class="line">					beans.put(service.value(), instance);</span><br><span class="line">				&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">					<span class="keyword">continue</span>;</span><br><span class="line">				&#125;</span><br><span class="line">			&#125; <span class="keyword">catch</span> (ClassNotFoundException e) &#123;</span><br><span class="line">				<span class="comment">// TODO Auto-generated catch block</span></span><br><span class="line">				e.printStackTrace();</span><br><span class="line">			&#125; <span class="keyword">catch</span> (InstantiationException e) &#123;</span><br><span class="line">				<span class="comment">// TODO Auto-generated catch block</span></span><br><span class="line">				e.printStackTrace();</span><br><span class="line">			&#125; <span class="keyword">catch</span> (IllegalAccessException e) &#123;</span><br><span class="line">				<span class="comment">// TODO Auto-generated catch block</span></span><br><span class="line">				e.printStackTrace();</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">scanPackage</span><span class="params">(String basePackage)</span> </span>&#123;</span><br><span class="line">		<span class="comment">//扫描编译好的类路径下所有的类</span></span><br><span class="line">		URL url = <span class="keyword">this</span>.getClass().getClassLoader().getResource(<span class="string">"/"</span> + replaceTo(basePackage));</span><br><span class="line"></span><br><span class="line">		String fileStr = url.getFile();</span><br><span class="line"></span><br><span class="line">		File file = <span class="keyword">new</span> File(fileStr);</span><br><span class="line">		<span class="comment">//拿到所有类com.enjoy下的james文件夹</span></span><br><span class="line">		String[] filesStr = file.list();</span><br><span class="line"></span><br><span class="line">		<span class="keyword">for</span> (String path : filesStr) &#123;</span><br><span class="line">			File filePath = <span class="keyword">new</span> File(fileStr + path);<span class="comment">//扫描com.enjoy.james下的所有class类</span></span><br><span class="line"></span><br><span class="line">			<span class="comment">//递归调用扫描,如果是路径,继续扫描</span></span><br><span class="line">			<span class="keyword">if</span> (filePath.isDirectory()) &#123;</span><br><span class="line">				<span class="comment">// com.enjoy.james</span></span><br><span class="line">				scanPackage(basePackage + <span class="string">"."</span> + path);</span><br><span class="line">			&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">				classNames.add(basePackage + <span class="string">"."</span> + filePath.getName());<span class="comment">//如果是class文件则加入List集合(待生成bean)</span></span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">private</span> String <span class="title">replaceTo</span><span class="params">(String basePackage)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> basePackage.replaceAll(<span class="string">"\\."</span>, <span class="string">"/"</span>);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li>在<code>doPost</code>函数中，完成了对request的主要处理，这里的主要流程首先是拿到处理request的方法，然后从request中将arguments全部取出来，最后利用反射进行调用方法。</li>
+</ol>
+<p>以下是整个项目的结构，</p>
+<p><img src="http://ww1.sinaimg.cn/large/007xAsPigy1gc429qm5t4j30hq0nw42e.jpg" alt="Screen Shot 2020-02-21 at 3.37.13 PM.png"></p>
+<ul>
+<li>annotation部分定义了各种注解，类似的实现如下：</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Target</span>(&#123;java.lang.annotation.ElementType.TYPE&#125;) <span class="comment">//作用范围:用在接口或类上</span></span><br><span class="line"><span class="meta">@Retention</span>(RetentionPolicy.RUNTIME) <span class="comment">// 注解会在class字节码文件中存在，在运行时可以通过反射获取到</span></span><br><span class="line"><span class="meta">@Documented</span><span class="comment">//明该注解将被包含在javadoc中    @Inherited：说明子类可以继承父类中的该注解</span></span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> EnjoyController &#123;</span><br><span class="line">    <span class="function">String <span class="title">value</span><span class="params">()</span> <span class="keyword">default</span> ""</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>ArgumentResolver部分实现了对request参数的解析，这里使用了策略模式。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">ArgumentResolver</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">support</span><span class="params">(Class&lt;?&gt; type, <span class="keyword">int</span> paramIndex, Method method)</span></span>;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//参数解析方法</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">argumentResolver</span><span class="params">(HttpServletRequest request,</span></span></span><br><span class="line"><span class="function"><span class="params">            HttpServletResponse response, Class&lt;?&gt; type, </span></span></span><br><span class="line"><span class="function"><span class="params">            <span class="keyword">int</span> paramIndex,//参数索引下坐标,有很多注解,你得知道是哪个参数的注解,每个参数的索引顺序不一样</span></span></span><br><span class="line"><span class="function"><span class="params">            Method method)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>下面是不同的实现类，</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@EnjoyService</span>(<span class="string">"httpServletRequestArgumentResolver"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HttpServletRequestArgumentResolver</span> <span class="keyword">implements</span> <span class="title">ArgumentResolver</span> </span>&#123;</span><br><span class="line">	<span class="comment">//判断传进来的参数是否为request</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">support</span><span class="params">(Class&lt;?&gt; type, <span class="keyword">int</span> paramIndex, Method method)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> ServletRequest<span class="class">.<span class="keyword">class</span>.<span class="title">isAssignableFrom</span>(<span class="title">type</span>)</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">////如果返回的参数是request,则直接返回</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">argumentResolver</span><span class="params">(HttpServletRequest request,</span></span></span><br><span class="line"><span class="function"><span class="params">            HttpServletResponse response, Class&lt;?&gt; type, <span class="keyword">int</span> paramIndex,</span></span></span><br><span class="line"><span class="function"><span class="params">            Method method)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> request;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@EnjoyService</span>(<span class="string">"httpServletResponseArgumentResolver"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HttpServletResponseArgumentResolver</span> <span class="keyword">implements</span> <span class="title">ArgumentResolver</span> </span>&#123;</span><br><span class="line">    <span class="comment">//判断传进来的参数是否为response</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">support</span><span class="params">(Class&lt;?&gt; type, <span class="keyword">int</span> paramIndex, Method method)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> ServletResponse<span class="class">.<span class="keyword">class</span>.<span class="title">isAssignableFrom</span>(<span class="title">type</span>)</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//如果返回的参数是response,则直接返回</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">argumentResolver</span><span class="params">(HttpServletRequest request,</span></span></span><br><span class="line"><span class="function"><span class="params">            HttpServletResponse response, Class&lt;?&gt; type, <span class="keyword">int</span> paramIndex,</span></span></span><br><span class="line"><span class="function"><span class="params">            Method method)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> response;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>下面这是关键的处理参数的实现类，</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@EnjoyService</span>(<span class="string">"requestParamArgumentResolver"</span>)</span><br><span class="line"><span class="comment">//解析声明注解为RequestParam, 获取注解的值</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RequestParamArgumentResolver</span> <span class="keyword">implements</span> <span class="title">ArgumentResolver</span> </span>&#123;</span><br><span class="line">	<span class="comment">//判断传进来的参数是否为EnjoyRequestParam</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">support</span><span class="params">(Class&lt;?&gt; type, <span class="keyword">int</span> paramIndex, Method method)</span> </span>&#123;</span><br><span class="line">        </span><br><span class="line">        Annotation[][] an = method.getParameterAnnotations();</span><br><span class="line">        </span><br><span class="line">        Annotation[] paramAns = an[paramIndex];</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span> (Annotation paramAn : paramAns) &#123;</span><br><span class="line">        	<span class="comment">//判断传进的paramAn.getClass()是不是 EnjoyRequestParam 类型</span></span><br><span class="line">        	<span class="keyword">if</span> (EnjoyRequestParam<span class="class">.<span class="keyword">class</span>.<span class="title">isAssignableFrom</span>(<span class="title">paramAn</span>.<span class="title">getClass</span>())) </span>&#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//参数解析,并获取注解的值</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">argumentResolver</span><span class="params">(HttpServletRequest request,</span></span></span><br><span class="line"><span class="function"><span class="params">            HttpServletResponse response, Class&lt;?&gt; type, <span class="keyword">int</span> paramIndex,</span></span></span><br><span class="line"><span class="function"><span class="params">            Method method)</span> </span>&#123;</span><br><span class="line">        </span><br><span class="line">        Annotation[][] an = method.getParameterAnnotations();</span><br><span class="line">        </span><br><span class="line">        Annotation[] paramAns = an[paramIndex];</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span> (Annotation paramAn : paramAns) &#123;</span><br><span class="line">            <span class="keyword">if</span> (EnjoyRequestParam<span class="class">.<span class="keyword">class</span>.<span class="title">isAssignableFrom</span>(<span class="title">paramAn</span>.<span class="title">getClass</span>())) </span>&#123;</span><br><span class="line">            	EnjoyRequestParam rp = (EnjoyRequestParam)paramAn;</span><br><span class="line">                </span><br><span class="line">                String value = rp.value();</span><br><span class="line">                <span class="keyword">return</span> request.getParameter(value);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>Controller类是整个request的入口，</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.enjoy.james.controller;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"><span class="keyword">import</span> java.io.PrintWriter;</span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"><span class="keyword">import</span> java.util.Map;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> javax.servlet.http.HttpServletRequest;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.http.HttpServletResponse;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.http.HttpSession;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.enjoy.james.annotation.EnjoyController;</span><br><span class="line"><span class="keyword">import</span> com.enjoy.james.annotation.EnjoyQualifier;</span><br><span class="line"><span class="keyword">import</span> com.enjoy.james.annotation.EnjoyRequestHeader;</span><br><span class="line"><span class="keyword">import</span> com.enjoy.james.annotation.EnjoyRequestMapping;</span><br><span class="line"><span class="keyword">import</span> com.enjoy.james.annotation.EnjoyRequestParam;</span><br><span class="line"><span class="keyword">import</span> com.enjoy.james.service.JamesService;</span><br><span class="line"></span><br><span class="line"><span class="meta">@EnjoyController</span></span><br><span class="line"><span class="meta">@EnjoyRequestMapping</span>(<span class="string">"/james"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">JamesController</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@EnjoyQualifier</span>(<span class="string">"JamesServiceImpl"</span>)</span><br><span class="line">    <span class="keyword">private</span> JamesService jamesService;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@EnjoyRequestMapping</span>(<span class="string">"/query"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">query</span><span class="params">(HttpServletRequest request, HttpServletResponse response,</span></span></span><br><span class="line"><span class="function"><span class="params">            @EnjoyRequestParam(<span class="string">"name"</span>)</span> String name,</span></span><br><span class="line"><span class="function">            @<span class="title">EnjoyRequestParam</span><span class="params">(<span class="string">"age"</span>)</span> String age) </span>&#123;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            PrintWriter pw = response.getWriter();</span><br><span class="line">            String result = jamesService.query(name,age);</span><br><span class="line">            pw.write(result);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">            <span class="comment">// TODO Auto-generated catch block</span></span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@EnjoyRequestMapping</span>(<span class="string">"/insert"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">insert</span><span class="params">(HttpServletRequest request,</span></span></span><br><span class="line"><span class="function"><span class="params">            HttpServletResponse response)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            PrintWriter pw = response.getWriter();</span><br><span class="line">            String result = jamesService.insert(<span class="string">"0000"</span>);</span><br><span class="line">            </span><br><span class="line">            pw.write(result);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">            <span class="comment">// TODO Auto-generated catch block</span></span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@EnjoyRequestMapping</span>(<span class="string">"/update"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">update</span><span class="params">(HttpServletRequest request,</span></span></span><br><span class="line"><span class="function"><span class="params">            HttpServletResponse response, String param)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            PrintWriter pw = response.getWriter();</span><br><span class="line">            String result = jamesService.update(param);</span><br><span class="line">            </span><br><span class="line">            pw.write(result);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">            <span class="comment">// TODO Auto-generated catch block</span></span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>JamesHandlerAdapter完成了从request中提取参数，</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@EnjoyService</span>(<span class="string">"jamesHandlerAdapter"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">JamesHandlerAdapter</span> <span class="keyword">implements</span> <span class="title">HandlerAdapterService</span> </span>&#123;</span><br><span class="line">    <span class="comment">//对method方法里的参数进行处理</span></span><br><span class="line">    <span class="keyword">public</span> Object[] hand(HttpServletRequest request,<span class="comment">//需要传入request,拿请求的参数</span></span><br><span class="line">            HttpServletResponse response, Method method,<span class="comment">//执行的方法,可以拿到当前待执行的方法有哪些参数</span></span><br><span class="line">            Map&lt;String, Object&gt; beans) &#123;</span><br><span class="line">        <span class="comment">//拿到当前待执行的方法有哪些参数</span></span><br><span class="line">        Class&lt;?&gt;[] paramClazzs = method.getParameterTypes();</span><br><span class="line">        <span class="comment">//根据参数的个数,new 一个参数的数组,将方法里的所有参数赋值到args来</span></span><br><span class="line">        Object[] args = <span class="keyword">new</span> Object[paramClazzs.length];</span><br><span class="line">        </span><br><span class="line">        <span class="comment">//1、要拿到所有实现了ArgumentResolver这个接口的实现类</span></span><br><span class="line">        Map&lt;String, Object&gt; argumentResolvers = getBeansOfType(beans,</span><br><span class="line">                ArgumentResolver<span class="class">.<span class="keyword">class</span>)</span>;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">int</span> paramIndex = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> i = <span class="number">0</span>;</span><br><span class="line">        <span class="comment">//对每一个参数进行循环,每个参数都有特殊处理(比如RequestParam的处理类为 RequestParamArgumentResolver )</span></span><br><span class="line">        <span class="keyword">for</span> (Class&lt;?&gt; paramClazz : paramClazzs) &#123;</span><br><span class="line">        	<span class="comment">//哪个参数对应了哪个参数解析类,用策略模式来找</span></span><br><span class="line">            <span class="keyword">for</span> (Map.Entry&lt;String, Object&gt; entry : argumentResolvers.entrySet()) &#123;</span><br><span class="line">                ArgumentResolver ar = (ArgumentResolver)entry.getValue();</span><br><span class="line">                </span><br><span class="line">                <span class="keyword">if</span> (ar.support(paramClazz, paramIndex, method)) &#123;</span><br><span class="line">                    args[i++] = ar.argumentResolver(request,</span><br><span class="line">                            response,</span><br><span class="line">                            paramClazz,</span><br><span class="line">                            paramIndex,</span><br><span class="line">                            method);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            paramIndex++;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> args;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//获取实现了ArgumentResolver接口的所有实例(其实就是每个参数的注解实例)</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> Map&lt;String, Object&gt; <span class="title">getBeansOfType</span><span class="params">(Map&lt;String, Object&gt; beans,//所有bean</span></span></span><br><span class="line"><span class="function"><span class="params">            Class&lt;?&gt; intfType)</span> <span class="comment">//类型的实例</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        </span><br><span class="line">        Map&lt;String, Object&gt; resultBeans = <span class="keyword">new</span> HashMap&lt;String, Object&gt;();</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span> (Map.Entry&lt;String, Object&gt; entry : beans.entrySet()) &#123;</span><br><span class="line">        	<span class="comment">//拿到实例--&gt;反射对象--&gt;它的接口(接口有多实现,所以为数组)</span></span><br><span class="line">            Class&lt;?&gt;[] intfs = entry.getValue().getClass().getInterfaces();</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">if</span> (intfs != <span class="keyword">null</span> &amp;&amp; intfs.length &gt; <span class="number">0</span>) &#123;</span><br><span class="line">                <span class="keyword">for</span> (Class&lt;?&gt; intf : intfs) &#123;</span><br><span class="line">                	<span class="comment">//接口的类型与传入进来的类型一样,把实例加到resultBeans里来</span></span><br><span class="line">                	<span class="keyword">if</span> (intf.isAssignableFrom(intfType)) &#123;</span><br><span class="line">                        resultBeans.put(entry.getKey(), entry.getValue());</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> resultBeans;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>最后的service中定义了基本的操作：</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@EnjoyService</span>(<span class="string">"JamesServiceImpl"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">JamesServiceImpl</span> <span class="keyword">implements</span> <span class="title">JamesService</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">query</span><span class="params">(String name, String age)</span> </span>&#123;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> <span class="string">"&#123;name="</span>+name+<span class="string">",age="</span>+age+<span class="string">"&#125;"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">insert</span><span class="params">(String param)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// TODO Auto-generated method stub</span></span><br><span class="line">        <span class="keyword">return</span>  <span class="string">"insert successful....."</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">update</span><span class="params">(String param)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// TODO Auto-generated method stub</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">"update successful....."</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>关于DispatcherServlet可以参考：</p>
+<ul>
+<li><a href="https://juejin.im/post/5aad0eb1518825555e5d9f94" target="_blank" rel="noopener">https://juejin.im/post/5aad0eb1518825555e5d9f94</a></li>
+</ul>
+</blockquote>
+<p>参考：</p>
+<ul>
+<li><a href="https://juejin.im/post/5d909a98518825092046e83b" target="_blank" rel="noopener">https://juejin.im/post/5d909a98518825092046e83b</a></li>
+</ul>
+<hr>
+<p>本文由『后端精进之路』原创，首发于博客 <a href="http://teckee.github.io/" target="_blank" rel="noopener">http://teckee.github.io/</a> , 转载请注明出处</p>
+<p>搜索『后端精进之路』关注公众号，立刻获取最新文章和<strong>价值2000元的BATJ精品面试课程</strong>。</p>
+<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1g9v9luujswj21n10l9jux.jpg" alt="后端精进之路.png"></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Spring/" rel="tag"># Spring</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/04/10/Spring_7_IOC/" rel="next" title="Spring MVC系列-(7) IOC初始化流程">
+                <i class="fa fa-chevron-left"></i> Spring MVC系列-(7) IOC初始化流程
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/04/20/Distributed_System_1_overview/" rel="prev" title="分布式思维-(1) 集群与分布式">
+                分布式思维-(1) 集群与分布式 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Vincent</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">55</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">categories</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">22</span>
+                  <span class="site-state-item-name">tags</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/teckee" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:h0ck@foxmail.com" target="_blank" title="E-Mail">
+                    
+                      <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#8-Spring-MVC-流程"><span class="nav-number">1.</span> <span class="nav-text">8. Spring MVC 流程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#8-1-Spring-MVC-介绍"><span class="nav-number">1.0.1.</span> <span class="nav-text">8.1 Spring MVC 介绍</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-2-Servlet"><span class="nav-number">1.1.</span> <span class="nav-text">8.2 Servlet</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#8-2-1-Servlet的生命周期"><span class="nav-number">1.1.1.</span> <span class="nav-text">8.2.1 Servlet的生命周期</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#8-2-2-Servlet的工作原理"><span class="nav-number">1.1.2.</span> <span class="nav-text">8.2.2 Servlet的工作原理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#8-2-3-如何判断是get请求还是post请求？"><span class="nav-number">1.1.3.</span> <span class="nav-text">8.2.3 如何判断是get请求还是post请求？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#8-2-4-过滤器Filter原理"><span class="nav-number">1.1.4.</span> <span class="nav-text">8.2.4 过滤器Filter原理</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-3-手写Spring-MVC"><span class="nav-number">1.2.</span> <span class="nav-text">8.3 手写Spring MVC</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Vincent</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://frankier-me.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://yoursite.com/2020/04/15/Spring_8_MVC/';
+          this.page.identifier = '2020/04/15/Spring_8_MVC/';
+          this.page.title = 'Spring MVC系列-(8) Spring MVC 流程';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://frankier-me.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("D1FSFUo2Xco7NLfkEF2KRu4x-gzGzoHsz", "t0gAn7CG0IuQuatwXySKh0Lx");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
