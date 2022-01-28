@@ -21,12 +21,12 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"yoursite.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.9.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
-<meta name="description" content="本文记录了VPS下的基础配置过程，包括科学上网、安全等方面的内容  用户组管理在root用户下，使用如下的指令，创建新用户，并添加用户到sudoers12useradd -m username (-m stand for create home) -s &#x2F;bin&#x2F;bash (指定用户登入后所使用的shell,默认值为&#x2F;bin&#x2F;bash。最好手动指定)adduser &lt;username&amp;gt">
+<meta name="description" content="本文记录了VPS下的基础配置过程，包括科学上网、安全等方面的内容  用户组管理在root用户下，使用如下的指令，创建新用户，并添加用户到sudoers 12useradd -m username (-m stand for create home) -s &#x2F;bin&#x2F;bash (指定用户登入后所使用的shell,默认值为&#x2F;bin&#x2F;bash。最好手动指定)adduser &lt;username&amp;g">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Linux VPS配置">
 <meta property="og:url" content="http://yoursite.com/2019/09/19/Linux-VPS-configure/index.html">
 <meta property="og:site_name" content="Vincent&#39;s Notes">
-<meta property="og:description" content="本文记录了VPS下的基础配置过程，包括科学上网、安全等方面的内容  用户组管理在root用户下，使用如下的指令，创建新用户，并添加用户到sudoers12useradd -m username (-m stand for create home) -s &#x2F;bin&#x2F;bash (指定用户登入后所使用的shell,默认值为&#x2F;bin&#x2F;bash。最好手动指定)adduser &lt;username&amp;gt">
+<meta property="og:description" content="本文记录了VPS下的基础配置过程，包括科学上网、安全等方面的内容  用户组管理在root用户下，使用如下的指令，创建新用户，并添加用户到sudoers 12useradd -m username (-m stand for create home) -s &#x2F;bin&#x2F;bash (指定用户登入后所使用的shell,默认值为&#x2F;bin&#x2F;bash。最好手动指定)adduser &lt;username&amp;g">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://qiniu.lfeng.tech/20220128204522_46d2b.jpg">
 <meta property="og:image" content="http://qiniu.lfeng.tech/20220128204523_30352.jpg">
@@ -238,20 +238,6 @@
       <span class="post-meta-item-text">Views: </span>
       <span class="leancloud-visitors-count"></span>
     </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus: </span>
-    
-    <a title="disqus" href="/2019/09/19/Linux-VPS-configure/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/09/19/Linux-VPS-configure/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
 </div>
 
         </div>
@@ -264,14 +250,20 @@
         <blockquote>
 <p>本文记录了VPS下的基础配置过程，包括科学上网、安全等方面的内容</p>
 </blockquote>
-<h1 id="用户组管理"><a href="#用户组管理" class="headerlink" title="用户组管理"></a>用户组管理</h1><p>在root用户下，使用如下的指令，创建新用户，并添加用户到<code>sudoers</code><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">useradd -m username (-m stand <span class="keyword">for</span> create home) -s /bin/bash (指定用户登入后所使用的shell,默认值为/bin/bash。最好手动指定)</span><br><span class="line">adduser &lt;username&gt; sudo (add user to the sudoers)</span><br></pre></td></tr></table></figure><br>以后使用<code>username</code>(你的用户名)登录就OK了，需要使用<code>root</code>权限时利用<code>sudo</code>就行了</p>
-<p>更改当前用户密码：<br><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ passwd</span><br></pre></td></tr></table></figure></p>
+<h1 id="用户组管理"><a href="#用户组管理" class="headerlink" title="用户组管理"></a>用户组管理</h1><p>在root用户下，使用如下的指令，创建新用户，并添加用户到<code>sudoers</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">useradd -m username (-m stand <span class="keyword">for</span> create home) -s /bin/bash (指定用户登入后所使用的shell,默认值为/bin/bash。最好手动指定)</span><br><span class="line">adduser &lt;username&gt; sudo (add user to the sudoers)</span><br></pre></td></tr></table></figure>
+<p>以后使用<code>username</code>(你的用户名)登录就OK了，需要使用<code>root</code>权限时利用<code>sudo</code>就行了</p>
+<p>更改当前用户密码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ passwd</span><br></pre></td></tr></table></figure>
+
 <p>更改某个用户的密码，此时需要登录到root用户，</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ passwd username</span><br></pre></td></tr></table></figure>
+
 <blockquote>
 <p>关于如何删除用户，可以参考：<a target="_blank" rel="noopener" href="https://www.tecmint.com/delete-remove-a-user-account-with-home-directory-in-linux/">Deleting/Removing a User Account with His/Her Home Directory</a></p>
 </blockquote>
 <span id="more"></span> 
+
 <h1 id="配置公钥和私钥"><a href="#配置公钥和私钥" class="headerlink" title="配置公钥和私钥"></a>配置公钥和私钥</h1><h2 id="Windows"><a href="#Windows" class="headerlink" title="Windows"></a>Windows</h2><ul>
 <li><a target="_blank" rel="noopener" href="http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html">下载</a>并运行<code>PUTTYGEN.EXE</code><br><img src="http://qiniu.lfeng.tech/20220128204522_46d2b.jpg" alt="运行"></li>
 <li>选择默认的 RSA 加密即可,并点击Generate，此时需要鼠标在空白处随机移动<br><img src="http://qiniu.lfeng.tech/20220128204523_30352.jpg" alt="Generate"></li>
@@ -281,22 +273,24 @@
 </ul>
 <p>在mac或者Linux可以直接采用ssh-copy-id将public key传输到远端VPS。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-copy-id username@remote_host (copy the public keys to the remote server)</span><br></pre></td></tr></table></figure>
+
 <ul>
 <li>使用ssh key登录</li>
 </ul>
 <ol>
-<li><code>PUTTY</code>中在<code>Connection-ssh-Auth</code>中设置使用的私钥，如下图：<br><img src="http://qiniu.lfeng.tech/20220128204524_ad46d.jpg" alt="putty设置"><br><strong>winscp</strong>的设置和putty类似，两者可以使用相同的私钥</li>
-<li>Linux, Mac可以直接使用ssh指令登录<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh username@remote_host</span><br></pre></td></tr></table></figure>
-也可以在本机<code>.ssh</code>目录下的config中配置VPS的别名，以后就可以直接使用<code>ssh + 别名</code>进行登录</li>
+<li><code>PUTTY</code>中在<code>Connection-ssh-Auth</code>中设置使用的私钥，如下图：<br><img src="http://qiniu.lfeng.tech/20220128204524_ad46d.jpg" alt="putty设置"></li>
 </ol>
+<p><strong>winscp</strong>的设置和putty类似，两者可以使用相同的私钥<br>2. Linux, Mac可以直接使用ssh指令登录</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh username@remote_host</span><br></pre></td></tr></table></figure>
+<p>也可以在本机<code>.ssh</code>目录下的config中配置VPS的别名，以后就可以直接使用<code>ssh + 别名</code>进行登录</p>
 <ul>
 <li><p><strong>确保能够通过ssh key登录后</strong>，关闭ssh密码登录<br>使用命令<code>vim /etc/ssh/sshd_config</code>,找到如下行进行设置</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">port 12345 <span class="comment">#修改默认端口</span></span><br><span class="line">PermitRootLogin no <span class="comment">#禁止root登录</span></span><br><span class="line">PermitEmptyPasswords no  <span class="comment">#禁止空密码</span></span><br><span class="line">PasswordAuthentication no  <span class="comment">#禁止密码登录</span></span><br><span class="line">AllowUsers username  <span class="comment">##允许你自己的用户登录</span></span><br></pre></td></tr></table></figure>
-</li>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">port 12345 <span class="comment">#修改默认端口</span></span><br><span class="line">PermitRootLogin no <span class="comment">#禁止root登录</span></span><br><span class="line">PermitEmptyPasswords no  <span class="comment">#禁止空密码</span></span><br><span class="line">PasswordAuthentication no  <span class="comment">#禁止密码登录</span></span><br><span class="line">AllowUsers username  <span class="comment">##允许你自己的用户登录</span></span><br></pre></td></tr></table></figure></li>
 <li><p><strong>重启SSH使配置生效</strong></p>
 </li>
 </ul>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">service ssh restart</span><br></pre></td></tr></table></figure>
+
 <blockquote>
 <p>此部分主要介绍了windows下配置ssh key的方法，如果不想配置，可以通过修改端口号到22333等五位数的端口和禁止root用户登录来增加安全性，不过为了最大程度上确保安全，还是使用ssh key的方式登录。<strong>注意保管好自己的ssh私钥</strong></p>
 </blockquote>
@@ -316,7 +310,9 @@
 <li><a target="_blank" rel="noopener" href="https://doub.io/ss-jc36/">Shadowsocks另一种双边加速软件 —— KCPTun（服务端教程）</a></li>
 <li><a target="_blank" rel="noopener" href="https://blog.kuoruan.com/102.html">小内存福音，Kcptun Shadowsocks加速方案）</a></li>
 </ul>
-<h1 id="scp上传下载文件"><a href="#scp上传下载文件" class="headerlink" title="scp上传下载文件"></a>scp上传下载文件</h1><p>如果在Mac/Linux下配置好ssh config之后，可以直接采用如下的指令来下载VPS上的文件到本地。其中<code>vps</code>为你的VPS的<code>Host</code>,这在<code>.ssh</code>目录下的<code>config</code>文件中可以进行配置。<br><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scp vps:/path/foo /home/user/Desktop   # copy to local</span><br></pre></td></tr></table></figure><br>其他的scp操作可以参考manual。</p>
+<h1 id="scp上传下载文件"><a href="#scp上传下载文件" class="headerlink" title="scp上传下载文件"></a>scp上传下载文件</h1><p>如果在Mac/Linux下配置好ssh config之后，可以直接采用如下的指令来下载VPS上的文件到本地。其中<code>vps</code>为你的VPS的<code>Host</code>,这在<code>.ssh</code>目录下的<code>config</code>文件中可以进行配置。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scp vps:/path/foo /home/user/Desktop   # copy to local</span><br></pre></td></tr></table></figure>
+<p>其他的scp操作可以参考manual。</p>
 
     </div>
 
@@ -353,11 +349,6 @@
 
 
 
-    
-  <div class="comments" id="disqus_thread">
-    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
-  </div>
-  
 </div>
   </main>
 
@@ -399,8 +390,6 @@
   <script src="/js/third-party/statistics/lean-analytics.js"></script>
 
 
-<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"frankier-me","count":true,"i18n":{"disqus":"disqus"}}</script>
-<script src="/js/third-party/comments/disqus.js"></script>
 
 </body>
 </html>

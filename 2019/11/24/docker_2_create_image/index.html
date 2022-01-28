@@ -244,20 +244,6 @@
       <span class="post-meta-item-text">Views: </span>
       <span class="leancloud-visitors-count"></span>
     </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus: </span>
-    
-    <a title="disqus" href="/2019/11/24/docker_2_create_image/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/11/24/docker_2_create_image/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
 </div>
 
         </div>
@@ -273,10 +259,11 @@
 <p><img src="http://qiniu.lfeng.tech/20220128204502_ff12a.jpg" alt="Screen Shot 2019-11-24 at 11.42.39 AM.png"></p>
 <p>从底层往上，依次是文件系统层，操作系统层，专有镜像层，读写层。</p>
 <span id="more"></span>
+
 <ul>
 <li><p>启动文件层：Docker启动时的用到的文件系统，启动完成后会自动脱离，用户不会与这一层直接打交道。</p>
 </li>
-<li><p>操作系统层：这一层主要是操作系统相关的一些文件，根据发行版本的不同，可能有CentsOS、Ubuntu等等。文件包含dev，/proc，/bin，/etc 等目录, 是一个最小化的操作系统，很多工具都没有提供，包括vi、wget、curl等。注意这一层不包含linux内核，只是可在任何满足要求的linux内核上运行。</p>
+<li><p>操作系统层：这一层主要是操作系统相关的一些文件，根据发行版本的不同，可能有CentsOS、Ubuntu等等。文件包含dev，/proc，/bin，/etc 等目录, 是一个最小化的操作系统，很多工具都没有提供，包括vi、wget、curl等。注意这一层不包含linux内核，只是可在任何满足要求的linux内核上运行。</p>
 </li>
 <li><p>专有镜像层：一般各大软件都会基于上面两层制作专有的镜像，比如nginx、tomcat等，都有专门的官方镜像，可以直接在docker hub上下载。</p>
 </li>
@@ -292,7 +279,9 @@
 <h3 id="配置Container制作镜像"><a href="#配置Container制作镜像" class="headerlink" title="配置Container制作镜像"></a>配置Container制作镜像</h3><p>这里以制作nginx的镜像为例，介绍整个制作流程。</p>
 <p>1）下载基础镜像，这里以Ubuntu作为基础镜像。由于本地没有镜像可以先利用<code>docker search</code>获取官方镜像的名称，然后<code>docker pull</code>将镜像下载到本地。</p>
 <p><img src="http://qiniu.lfeng.tech/20220128204503_5513e.jpg" alt="Screen Shot 2019-11-24 at 3.18.12 PM.png"></p>
-<p>2）以交互方式启动镜像，方便在容器中安装软件。<code>-it</code>表示交互方式，<code>/bin/bash</code>为指定启动的终端。下图可以看到已经成功进入到容器内部了。<br><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -it ubuntu:latest /bin/bash</span><br></pre></td></tr></table></figure></p>
+<p>2）以交互方式启动镜像，方便在容器中安装软件。<code>-it</code>表示交互方式，<code>/bin/bash</code>为指定启动的终端。下图可以看到已经成功进入到容器内部了。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -it ubuntu:latest /bin/bash</span><br></pre></td></tr></table></figure>
+
 <p><img src="http://qiniu.lfeng.tech/20220128204503_e3fcb.jpg" alt="Screen Shot 2019-11-24 at 3.21.23 PM.png"></p>
 <p>3）现在按照Nginx正常的安装流程安装即可，由于Ubuntu镜像只是一个最小化的系统，可能你需要通过<code>apt-get install</code>来安装一些需要的软件。</p>
 <p>4）退出容器，使用commit指令生成新的镜像。</p>
@@ -301,19 +290,21 @@
 </blockquote>
 <p>直接运行<code>docker commit</code>同时指定容器id或者name，以及镜像名就可以了，新的镜像制作完成了。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker commit e0c618df0979 ubuntu-nginx</span><br></pre></td></tr></table></figure>
+
 <p><img src="http://qiniu.lfeng.tech/20220128204504_4b2c3.jpg" alt="Screen Shot 2019-11-24 at 3.32.46 PM.png"></p>
 <p>接下来可以通过正常的方式启动镜像了。</p>
 <h3 id="使用Dockerfile制作"><a href="#使用Dockerfile制作" class="headerlink" title="使用Dockerfile制作"></a>使用Dockerfile制作</h3><p>上面介绍了手动进入容器内部，制作Docker镜像的方式，一般比较繁琐。通常我们会使用Dockerfile的方式制作镜像，这种方式下我们需要编写Dockerfile文件。</p>
 <h4 id="Dockerfile文件"><a href="#Dockerfile文件" class="headerlink" title="Dockerfile文件"></a>Dockerfile文件</h4><p>Dockerfile是一个文本格式的配置文件，用户可以使用Dockerfile快速创建自定义镜像。</p>
 <p>下面是一个简单的Dockerfile文件，先将编译生成的jar文件复制到容器，然后声明容器暴露的端口，最后指定在启动容器时需要运行的指令。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">FROM openjdk:8</span><br><span class="line">ADD [&quot;target/bazaar-1.0.0.jar&quot;, &quot;bazaar.jar&quot;]</span><br><span class="line">EXPOSE 1234</span><br><span class="line">ENTRYPOINT [&quot;java&quot;, &quot;-jar&quot;, &quot;/bazaar.jar&quot;]</span><br></pre></td></tr></table></figure>
+
 <p>Dockerfile中常用的指令集有：</p>
 <p><img src="http://qiniu.lfeng.tech/20220128204504_af288.jpg" alt="Picture1.png"></p>
 <ul>
 <li>FROM: 第一条指令必须为FROM指令，用于指定基础镜像。</li>
 <li>MAINTAINER: 指定维护者信息。</li>
 <li>RUN: 会在shell终端运行命令。</li>
-<li>EXPOSE: 格式为 EXPOSE [ …],声明容器需要暴露的端口号。镜像启动可以通过 –P 或 -p 进行端口映射的绑定。</li>
+<li>EXPOSE: 格式为 EXPOSE [ …],声明容器需要暴露的端口号。镜像启动可以通过 –P 或 -p 进行端口映射的绑定。</li>
 <li>ENV: 指定一个环境变量，可以被后续的RUN引用，并且在容器中记录该环境变量。</li>
 <li>ADD: 该命令将复制指定的到容器中的。其中可以是Dockerfile所在目录的一个相对路径；也可以是tar文件（自动解压）。</li>
 <li>VOLUME: 格式为 VOLUME [path]。创建一个可以从本地主机或其他容器挂载点，一般用来存放需要保持的数据。</li>
@@ -327,20 +318,33 @@
 </ul>
 <p>(1) CMD单独使用</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">FROM debian:wheezy</span><br><span class="line">CMD [&quot;/bin/ping&quot;, &quot;localhost&quot;]</span><br></pre></td></tr></table></figure>
-<p>启动后不指定任何参数，将会ping localhost，<br><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$ docker run -it test</span><br><span class="line">PING localhost (127.0.0.1): 48 data bytes</span><br><span class="line">56 bytes from 127.0.0.1: icmp_seq=0 ttl=64 time=0.076 ms</span><br><span class="line">56 bytes from 127.0.0.1: icmp_seq=1 ttl=64 time=0.087 ms</span><br><span class="line">56 bytes from 127.0.0.1: icmp_seq=2 ttl=64 time=0.090 ms</span><br><span class="line">^C--- localhost ping statistics ---</span><br><span class="line">3 packets transmitted, 3 packets received, 0% packet loss</span><br><span class="line">round-trip min/avg/max/stddev = 0.076/0.084/0.090/0.000 ms</span><br></pre></td></tr></table></figure><br>但是如果启动容器的同时带有新的指令，则<strong>原有的CMD会被新的指令覆盖</strong>，<br><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker run -it test bash</span><br><span class="line">root@e8bb7249b843:/#</span><br></pre></td></tr></table></figure></p>
+<p>启动后不指定任何参数，将会ping localhost，</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$ docker run -it test</span><br><span class="line">PING localhost (127.0.0.1): 48 data bytes</span><br><span class="line">56 bytes from 127.0.0.1: icmp_seq=0 ttl=64 time=0.076 ms</span><br><span class="line">56 bytes from 127.0.0.1: icmp_seq=1 ttl=64 time=0.087 ms</span><br><span class="line">56 bytes from 127.0.0.1: icmp_seq=2 ttl=64 time=0.090 ms</span><br><span class="line">^C--- localhost ping statistics ---</span><br><span class="line">3 packets transmitted, 3 packets received, 0% packet loss</span><br><span class="line">round-trip min/avg/max/stddev = 0.076/0.084/0.090/0.000 ms</span><br></pre></td></tr></table></figure>
+<p>但是如果启动容器的同时带有新的指令，则<strong>原有的CMD会被新的指令覆盖</strong>，</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker run -it test bash</span><br><span class="line">root@e8bb7249b843:/#</span><br></pre></td></tr></table></figure>
+
 <p>（2）CMD和ENTRYPOINT同时使用</p>
-<p>CMD通常用作传递参数给ENTRYPOINT，如下例子所示：<br><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">FROM debian:wheezy</span><br><span class="line">ENTRYPOINT [&quot;/bin/ping&quot;]</span><br><span class="line">CMD [&quot;localhost&quot;]</span><br></pre></td></tr></table></figure></p>
-<p>直接运行镜像并不指定任何参数，将会一直ping localhost<br><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$ docker run -it test</span><br><span class="line">PING localhost (127.0.0.1): 48 data bytes</span><br><span class="line">56 bytes from 127.0.0.1: icmp_seq=0 ttl=64 time=0.096 ms</span><br><span class="line">56 bytes from 127.0.0.1: icmp_seq=1 ttl=64 time=0.088 ms</span><br><span class="line">56 bytes from 127.0.0.1: icmp_seq=2 ttl=64 time=0.088 ms</span><br><span class="line">^C--- localhost ping statistics ---</span><br><span class="line">3 packets transmitted, 3 packets received, 0% packet loss</span><br><span class="line">round-trip min/avg/max/stddev = 0.088/0.091/0.096/0.000 ms</span><br></pre></td></tr></table></figure></p>
+<p>CMD通常用作传递参数给ENTRYPOINT，如下例子所示：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">FROM debian:wheezy</span><br><span class="line">ENTRYPOINT [&quot;/bin/ping&quot;]</span><br><span class="line">CMD [&quot;localhost&quot;]</span><br></pre></td></tr></table></figure>
+
+<p>直接运行镜像并不指定任何参数，将会一直ping localhost</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$ docker run -it test</span><br><span class="line">PING localhost (127.0.0.1): 48 data bytes</span><br><span class="line">56 bytes from 127.0.0.1: icmp_seq=0 ttl=64 time=0.096 ms</span><br><span class="line">56 bytes from 127.0.0.1: icmp_seq=1 ttl=64 time=0.088 ms</span><br><span class="line">56 bytes from 127.0.0.1: icmp_seq=2 ttl=64 time=0.088 ms</span><br><span class="line">^C--- localhost ping statistics ---</span><br><span class="line">3 packets transmitted, 3 packets received, 0% packet loss</span><br><span class="line">round-trip min/avg/max/stddev = 0.088/0.091/0.096/0.000 ms</span><br></pre></td></tr></table></figure>
+
 <p>如果直接运行的同时，指定一个参数，将会ping对应的参数，此时CMD被覆盖。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$ docker run -it test google.com</span><br><span class="line">PING google.com (173.194.45.70): 48 data bytes</span><br><span class="line">56 bytes from 173.194.45.70: icmp_seq=0 ttl=55 time=32.583 ms</span><br><span class="line">56 bytes from 173.194.45.70: icmp_seq=2 ttl=55 time=30.327 ms</span><br><span class="line">56 bytes from 173.194.45.70: icmp_seq=4 ttl=55 time=46.379 ms</span><br><span class="line">^C--- google.com ping statistics ---</span><br><span class="line">5 packets transmitted, 3 packets received, 40% packet loss</span><br><span class="line">round-trip min/avg/max/stddev = 30.327/36.430/46.379/7.095 ms</span><br></pre></td></tr></table></figure>
+
 <blockquote>
 <p>如果你想要制作的容器更加通用一些，可以在Dockerfile中使用<code>CMD [&quot;/path/dedicated_command&quot;]</code>，这样你可以在运行容器的同时，根据需求来覆盖已有的指令。</p>
 </blockquote>
-<h4 id="利用Dockerfile制作容器"><a href="#利用Dockerfile制作容器" class="headerlink" title="利用Dockerfile制作容器"></a>利用Dockerfile制作容器</h4><p>上面介绍了Dockerfile中常用的指令，一般我们写好Dockerfile之后，直接进入到Dockerfile所在的目录，运行docker build即可，Docker会根据Dockerfile中指定的步骤来生成我们的镜像。<br><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker build -t your_image_name .</span><br></pre></td></tr></table></figure></p>
+<h4 id="利用Dockerfile制作容器"><a href="#利用Dockerfile制作容器" class="headerlink" title="利用Dockerfile制作容器"></a>利用Dockerfile制作容器</h4><p>上面介绍了Dockerfile中常用的指令，一般我们写好Dockerfile之后，直接进入到Dockerfile所在的目录，运行docker build即可，Docker会根据Dockerfile中指定的步骤来生成我们的镜像。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker build -t your_image_name .</span><br></pre></td></tr></table></figure>
+
 <p>以上就是制作镜像的所有流程，接下来介绍镜像的发布。</p>
 <h2 id="镜像发布"><a href="#镜像发布" class="headerlink" title="镜像发布"></a>镜像发布</h2><p>镜像发布有两种选择，可以直接push到官方的docker hub，你只需要注册一个docker账号即可；也可以自己在本地创建私有仓库，将镜像push这里。</p>
 <h3 id="Docker-Hub"><a href="#Docker-Hub" class="headerlink" title="Docker Hub"></a>Docker Hub</h3><p>打开 <a target="_blank" rel="noopener" href="https://hub.docker.com/">https://hub.docker.com/</a> 注册好账户后，记住好自己的账户名，待会需要将本地的镜像打tag带上用户名，然后进行push。</p>
-<p>首先使用如下的指令就给本地镜像打tag，<br><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker tag myImage:v1 your_user_name/myImage:v1</span><br></pre></td></tr></table></figure><br>接下来直接push就行，会自动push到官方仓库，注意可能会需要<code>docker login</code>一下，这里直接输入用户名密码即可。</p>
+<p>首先使用如下的指令就给本地镜像打tag，</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker tag myImage:v1 your_user_name/myImage:v1</span><br></pre></td></tr></table></figure>
+<p>接下来直接push就行，会自动push到官方仓库，注意可能会需要<code>docker login</code>一下，这里直接输入用户名密码即可。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker push your_user_name/myImage:v1</span><br></pre></td></tr></table></figure>
 <p>这样官方仓库就有你的Image了， 以后直接docker pull就行了。</p>
 <h3 id="本地私有仓库"><a href="#本地私有仓库" class="headerlink" title="本地私有仓库"></a>本地私有仓库</h3><p>(1) 首先下载registry镜像：docker pull registry.</p>
@@ -349,11 +353,17 @@
 <p>以centos上的配置为例，</p>
 <p><img src="http://qiniu.lfeng.tech/20220128204504_a14d4.jpg" alt="Picture1.png"></p>
 <p>注意图中的ip根据实际registry的ip来进行设置，可以通过docker inspect reg来找到。</p>
-<p>配置完毕重启下docker服务<br><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">systemctl daemon-reload </span><br><span class="line">systemctl restart docker</span><br></pre></td></tr></table></figure></p>
+<p>配置完毕重启下docker服务</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">systemctl daemon-reload </span><br><span class="line">systemctl restart docker</span><br></pre></td></tr></table></figure>
+
 <p>以上就完成了私有仓库的创建。</p>
 <p>接下来直接push Image到仓库即可，流程和push到官方仓库类似，只是打tag的用户名改成私有仓库的地址。</p>
-<p>（1）打tag<br><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker tag hello-world http://192.168.244.7:5000/hello-world </span><br></pre></td></tr></table></figure></p>
-<p>（2）push镜像<br><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker push 192.168.244.7:5000/hello-world</span><br></pre></td></tr></table></figure></p>
+<p>（1）打tag</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker tag hello-world http://192.168.244.7:5000/hello-world </span><br></pre></td></tr></table></figure>
+
+<p>（2）push镜像</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker push 192.168.244.7:5000/hello-world</span><br></pre></td></tr></table></figure>
+
 <p>（3）查询镜像：</p>
 <p><img src="http://qiniu.lfeng.tech/20220128204505_43c9a.jpg" alt="Picture1.png"></p>
 <p>（4）查询镜像版本：</p>
@@ -401,11 +411,6 @@
 
 
 
-    
-  <div class="comments" id="disqus_thread">
-    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
-  </div>
-  
 </div>
   </main>
 
@@ -447,8 +452,6 @@
   <script src="/js/third-party/statistics/lean-analytics.js"></script>
 
 
-<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"frankier-me","count":true,"i18n":{"disqus":"disqus"}}</script>
-<script src="/js/third-party/comments/disqus.js"></script>
 
 </body>
 </html>

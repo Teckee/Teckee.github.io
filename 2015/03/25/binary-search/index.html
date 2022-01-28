@@ -231,20 +231,6 @@
       <span class="post-meta-item-text">Views: </span>
       <span class="leancloud-visitors-count"></span>
     </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus: </span>
-    
-    <a title="disqus" href="/2015/03/25/binary-search/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/03/25/binary-search/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
 </div>
 
         </div>
@@ -261,6 +247,7 @@
 <li>如此，每次查找可以排除一半元素，范围缩小一半。就这样反复比较，反复缩小范围，最终就会在数组中找到T，或者确定原以为T所在的范围实际为空。</li>
 </ul>
 <span id="more"></span>
+
 <p><strong>具体实现：</strong></p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">BinarySearch</span><span class="params">(<span class="keyword">int</span> array[], <span class="keyword">int</span> n, <span class="keyword">int</span> value)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> left = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> right = n - <span class="number">1</span>;</span><br><span class="line">    <span class="comment">//如果这里是int right = n 的话，那么下面有两处地方需要修改，以保证一一对应：</span></span><br><span class="line">    <span class="comment">//1、下面循环的条件则是while(left &lt; right)</span></span><br><span class="line">    <span class="comment">//2、循环内当 array[middle] &gt; value 的时候，right = mid</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> (left &lt;= right)  <span class="comment">//循环条件，适时而变</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">int</span> middle = left + ((right - left) &gt;&gt; <span class="number">1</span>);  <span class="comment">//防止溢出，移位也更高效。同时，每次循环都需要更新。</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (array[middle] &gt; value)</span><br><span class="line">        &#123;</span><br><span class="line">            right = middle - <span class="number">1</span>;  <span class="comment">//right赋值，适时而变</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span>(array[middle] &lt; value)</span><br><span class="line">        &#123;</span><br><span class="line">            left = middle + <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            <span class="keyword">return</span> middle;</span><br><span class="line">        <span class="comment">//可能会有读者认为刚开始时就要判断相等，但毕竟数组中不相等的情况更多</span></span><br><span class="line">        <span class="comment">//如果每次循环都判断一下是否相等，将耗费时间</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <blockquote>
@@ -306,11 +293,6 @@
 
 
 
-    
-  <div class="comments" id="disqus_thread">
-    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
-  </div>
-  
 </div>
   </main>
 
@@ -352,8 +334,6 @@
   <script src="/js/third-party/statistics/lean-analytics.js"></script>
 
 
-<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"frankier-me","count":true,"i18n":{"disqus":"disqus"}}</script>
-<script src="/js/third-party/comments/disqus.js"></script>
 
 </body>
 </html>

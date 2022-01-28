@@ -237,20 +237,6 @@
       <span class="post-meta-item-text">Views: </span>
       <span class="leancloud-visitors-count"></span>
     </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus: </span>
-    
-    <a title="disqus" href="/2019/11/26/docker_3_docker_compose/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/11/26/docker_3_docker_compose/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
 </div>
 
         </div>
@@ -265,8 +251,10 @@
 <h2 id="Docker-compose介绍"><a href="#Docker-compose介绍" class="headerlink" title="Docker-compose介绍"></a>Docker-compose介绍</h2><p>实际开发过程中，在一个项目中，我们常将不同的模块放在单独的docker中，方便维护和扩展。比如我们一个项目可能有MySQL镜像、Nginx镜像、Spring Boot后端镜像，我们在实际部署中可以采用上篇文章介绍的方法，分别打包，分别启动；但是这样太费精力，而且还容易出错。<br>因此Docker-compose工具应运而生，就是为了解决工程部署中的多个Docker镜像的管理问题。</p>
 <h3 id="docker-compose-yaml-文件"><a href="#docker-compose-yaml-文件" class="headerlink" title="docker-compose.yaml 文件"></a>docker-compose.yaml 文件</h3><p>类似于build镜像需要Dockerfile一样，使用docker-compose时也需要类似的配置文件，叫做docker-compose.yaml。</p>
 <span id="more"></span>
+
 <p>下面是一个Docker-file的例子：</p>
-<p><img src="http://ww1.sinaimg.cn/mw690/a18449c6gy1g9br9bt5dnj20iz0pmwja.jpg" width="400"></p>
+<img src="http://ww1.sinaimg.cn/mw690/a18449c6gy1g9br9bt5dnj20iz0pmwja.jpg" width="400">
+
 <p>一般docker-compose文件中需要注意如下几点：</p>
 <ul>
 <li>version: ‘3’： 表示使用第三代语法，每代的语法稍有不同，我们选择最新的就好。</li>
@@ -276,16 +264,18 @@
 <li>ports: 对外开放的端口</li>
 <li>restart: always表示如果服务启动不成功一直尝试。</li>
 <li>volumes: 加载本地目录到容器目标路径，也就是将本地路径共享给容器，方便进行数据交互，也可以利用这个功能，将docker的log输出到本机指定的位置。</li>
-<li>depends_on：依赖服务，先启动 depends_on 服务。</li>
+<li>depends_on：依赖服务，先启动 depends_on 服务。</li>
 <li>command: mvn clean spring-boot:run : 表示以这个命令来启动项目</li>
 </ul>
 <p>上面提到了depends_on,通常用于需要顺序启动不同镜像，比如后台需要等待数据库初始化完毕以后才启动，但是这个depends_on并不能保证前序容器完全初始化，意思是只要前序容器启动了，就会尝试启动当前容器。这样还是会造成前序容器未初始化完成，后续容器启动后出现连接失败等错误。</p>
-<p>因此最好的方式是官方(<a target="_blank" rel="noopener" href="https://docs.docker.com/compose/startup-order/)比较推荐的wait脚本，脚本的详细使用可以看这里">https://docs.docker.com/compose/startup-order/)比较推荐的wait脚本，脚本的详细使用可以看这里</a> <a target="_blank" rel="noopener" href="https://github.com/vishnubob/wait-for-it">https://github.com/vishnubob/wait-for-it</a>,</p>
+<p>因此最好的方式是官方(<a target="_blank" rel="noopener" href="https://docs.docker.com/compose/startup-order/)%E6%AF%94%E8%BE%83%E6%8E%A8%E8%8D%90%E7%9A%84wait%E8%84%9A%E6%9C%AC%EF%BC%8C%E8%84%9A%E6%9C%AC%E7%9A%84%E8%AF%A6%E7%BB%86%E4%BD%BF%E7%94%A8%E5%8F%AF%E4%BB%A5%E7%9C%8B%E8%BF%99%E9%87%8C">https://docs.docker.com/compose/startup-order/)比较推荐的wait脚本，脚本的详细使用可以看这里</a> <a target="_blank" rel="noopener" href="https://github.com/vishnubob/wait-for-it">https://github.com/vishnubob/wait-for-it</a>,</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">wait-for-it.sh host:port [-s] [-t timeout] [-- command args]</span><br><span class="line">-h HOST | --host=HOST       Host or IP under test</span><br><span class="line">-p PORT | --port=PORT       TCP port under test</span><br><span class="line">                            Alternatively, you specify the host and port as host:port</span><br><span class="line">-s | --strict               Only execute subcommand if the test succeeds</span><br><span class="line">-q | --quiet                Don&#x27;t output any status messages</span><br><span class="line">-t TIMEOUT | --timeout=TIMEOUT</span><br><span class="line">                            Timeout in seconds, zero for no timeout</span><br><span class="line">-- COMMAND ARGS             Execute command with args after the test finishes</span><br></pre></td></tr></table></figure>
+
 <p>一般也可以在制作镜像的时候指定等待一定时间，在下面的例子中，在运行test.jar之前，会一直等到elasticsearch初始化完成。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">FROM openjdk:8</span><br><span class="line">ADD [&quot;target/test-1.0.0.jar&quot;, &quot;test.jar&quot;]</span><br><span class="line">ADD [&quot;wait-for-it.sh&quot;, &quot;wait-for-it.sh&quot;]</span><br><span class="line">RUN [&quot;chmod&quot;, &quot;+x&quot;, &quot;wait-for-it.sh&quot;]</span><br><span class="line">EXPOSE 1234</span><br><span class="line">ENTRYPOINT [&quot;./wait-for-it.sh&quot;, &quot;elastic:9200&quot;, &quot;--&quot;, &quot;java&quot;, &quot;-jar&quot;, &quot;/test.jar&quot;]</span><br></pre></td></tr></table></figure>
+
 <blockquote>
-<p>关于更多docker-compose文件的详细介绍，可以参考官方的文档 <a target="_blank" rel="noopener" href="https://docs.docker.com/compose/gettingstarted/。">https://docs.docker.com/compose/gettingstarted/。</a></p>
+<p>关于更多docker-compose文件的详细介绍，可以参考官方的文档 <a target="_blank" rel="noopener" href="https://docs.docker.com/compose/gettingstarted/%E3%80%82">https://docs.docker.com/compose/gettingstarted/。</a></p>
 </blockquote>
 <h3 id="docker-compose的启动-停止"><a href="#docker-compose的启动-停止" class="headerlink" title="docker-compose的启动/停止"></a>docker-compose的启动/停止</h3><p>docker-compose的启动与停止非常简单，直接使用<code>docker-compose up</code>启动，<code>docker-compose down</code>关闭工程，同时会删除所有容器。</p>
 <h2 id="Docker的网络通信"><a href="#Docker的网络通信" class="headerlink" title="Docker的网络通信"></a>Docker的网络通信</h2><p>docker的网络方面是相对较弱的，新手如果不清楚，经常会出现为什么容器A访问不到容器B的问题。</p>
@@ -293,22 +283,32 @@
 <p>但是如果前端和后端都封装在不同的容器中，这个时候前端直接访问localhost:1234，会报错，无法访问。原因就是两个容器之间是独立的，无法直接localhost访问。</p>
 <p>官方推荐的解决办法就是，先新建一个网络，然后启动前后端容器的时候，分别指定在该网络中运行。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">docker network create mynet</span><br><span class="line">docker run --network mynet --name frontend ...</span><br><span class="line">docker run --network mynet --name backend ...</span><br></pre></td></tr></table></figure>
-<p>现在前端就可以通过 <a target="_blank" rel="noopener" href="http://backend:1234">http://backend:1234</a> 访问后端的接口了。</p>
+<p>现在前端就可以通过 <a target="_blank" rel="noopener" href="http://backend:1234/">http://backend:1234</a> 访问后端的接口了。</p>
 <blockquote>
 <p>注意：有些博客指出，可以通过<code>docker inspect [container_name]</code>来获取后端容器的ip，然后直接访问ip加端口就可以了。这个在Linux上也许可行，但是mac下由于容器的实现原理不同，无法直接通过ip访问。</p>
 </blockquote>
 <h3 id="docker-compose下的网络环境"><a href="#docker-compose下的网络环境" class="headerlink" title="docker-compose下的网络环境"></a>docker-compose下的网络环境</h3><p>默认情况下，当你利用docker-compose启动多个容器时，docker-compose会自动帮你创建一个网络，并将多个service在这个网络中运行。因此不同容器之间，直接利用容器名+端口就可以访问了。</p>
 <h2 id="Docker-compose实现负载均衡"><a href="#Docker-compose实现负载均衡" class="headerlink" title="Docker-compose实现负载均衡"></a>Docker-compose实现负载均衡</h2><p>实际生产环境中，肯定会启动多个后端service，同时进行负载均衡以保证服务质量。利用docker-compose我们可以方便的实现这种功能。</p>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1g9bsyru8emj20rs0dwaaz.jpg" width="700"></p>
+<img src="http://ww1.sinaimg.cn/large/a18449c6gy1g9bsyru8emj20rs0dwaaz.jpg" width="700">
+
 <p>下面是一个很简单的docker-compose文件，启动之后可以在本地打开localhost:5000，来访问后端的service;在front容器内部，我们也可以通过backend:5000来访问backend service。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">version: &quot;3&quot;</span><br><span class="line"></span><br><span class="line">services:</span><br><span class="line">  front:</span><br><span class="line">    image: front:latest</span><br><span class="line">  backend:</span><br><span class="line">    image: &quot;backend:latest&quot;</span><br><span class="line">    ports:</span><br><span class="line">      - &quot;5000:5000&quot;</span><br></pre></td></tr></table></figure>
-<p>为了启动多个后端程序以实现负载均衡，docker-compose已经为我们提供<code>--scale</code>参数，利用这个参数可以轻松实现同时启动多个service。<br>下面是该参数的使用说明。<br><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">--scale SERVICE=NUM        Scale SERVICE to NUM instances. Overrides the</span><br><span class="line">                           `scale` setting in the Compose file if present.</span><br></pre></td></tr></table></figure></p>
-<p>在这里，我们直接在启动的时候，指定生成3个后端的service，<br><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker-compose up --scale backend=3</span><br></pre></td></tr></table></figure></p>
+
+<p>为了启动多个后端程序以实现负载均衡，docker-compose已经为我们提供<code>--scale</code>参数，利用这个参数可以轻松实现同时启动多个service。<br>下面是该参数的使用说明。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">--scale SERVICE=NUM        Scale SERVICE to NUM instances. Overrides the</span><br><span class="line">                           `scale` setting in the Compose file if present.</span><br></pre></td></tr></table></figure>
+
+<p>在这里，我们直接在启动的时候，指定生成3个后端的service，</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker-compose up --scale backend=3</span><br></pre></td></tr></table></figure>
+
 <p>但是这样会报错，因为本机上的5000端口，只能分配给一个service，如果你想同时在本机上调试，可以将上面的ports改为5000，修改后的docker-compose文件如下：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">version: &quot;3&quot;</span><br><span class="line"></span><br><span class="line">services:</span><br><span class="line">  front:</span><br><span class="line">    image: front:latest</span><br><span class="line">  backend:</span><br><span class="line">    image: &quot;backend:latest&quot;</span><br><span class="line">    ports:</span><br><span class="line">      - &quot;5000&quot;</span><br></pre></td></tr></table></figure>
+
 <p>这样按照上面同样的指令启动之后，你你可以看到如下的输出结果，有3个不同的本机端口绑定到容器的5000端口，</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">      Name                      Command                  State                Ports</span><br><span class="line">--------------------------------------------------------------------------------------------</span><br><span class="line">example_backend_1   /usr/bin/dumb-init -- /sbi ...   Up (healthy)   0.0.0.0:32776-&gt;5000/tcp</span><br><span class="line">example_backend_2   /usr/bin/dumb-init -- /sbi ...   Up (healthy)   0.0.0.0:32775-&gt;5000/tcp</span><br><span class="line">example_backend_3   /usr/bin/dumb-init -- /sbi ...   Up (healthy)   0.0.0.0:32777-&gt;5000/tcp</span><br></pre></td></tr></table></figure>
-<p>当然，如果你只想从容器内部访问后端的5000端口，你可以去掉port配置，改成如下的配置：<br><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">version: &quot;3&quot;</span><br><span class="line"></span><br><span class="line">services:</span><br><span class="line">  front:</span><br><span class="line">    image: front:latest</span><br><span class="line">  backend:</span><br><span class="line">    image: &quot;backend:latest&quot;</span><br></pre></td></tr></table></figure><br>这样<code>docker-compose up --scale backend=3</code>启动后，我们就只能在容器内部访问<code>http:\\backend:5000</code>来访问后端service，因为我们启动了三个，前端的请求会随机的分配到后端的三个service上，保证了整体的服务质量。</p>
+
+<p>当然，如果你只想从容器内部访问后端的5000端口，你可以去掉port配置，改成如下的配置：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">version: &quot;3&quot;</span><br><span class="line"></span><br><span class="line">services:</span><br><span class="line">  front:</span><br><span class="line">    image: front:latest</span><br><span class="line">  backend:</span><br><span class="line">    image: &quot;backend:latest&quot;</span><br></pre></td></tr></table></figure>
+<p>这样<code>docker-compose up --scale backend=3</code>启动后，我们就只能在容器内部访问<code>http:\\backend:5000</code>来访问后端service，因为我们启动了三个，前端的请求会随机的分配到后端的三个service上，保证了整体的服务质量。</p>
 <p>参考链接：</p>
 <ul>
 <li><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/48062134/connection-refused-with-two-microservices-in-docker">https://stackoverflow.com/questions/48062134/connection-refused-with-two-microservices-in-docker</a></li>
@@ -352,11 +352,6 @@
 
 
 
-    
-  <div class="comments" id="disqus_thread">
-    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
-  </div>
-  
 </div>
   </main>
 
@@ -398,8 +393,6 @@
   <script src="/js/third-party/statistics/lean-analytics.js"></script>
 
 
-<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"frankier-me","count":true,"i18n":{"disqus":"disqus"}}</script>
-<script src="/js/third-party/comments/disqus.js"></script>
 
 </body>
 </html>

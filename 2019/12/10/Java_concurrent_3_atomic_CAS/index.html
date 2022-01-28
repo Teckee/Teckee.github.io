@@ -235,20 +235,6 @@
       <span class="post-meta-item-text">Views: </span>
       <span class="leancloud-visitors-count"></span>
     </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus: </span>
-    
-    <a title="disqus" href="/2019/12/10/Java_concurrent_3_atomic_CAS/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/12/10/Java_concurrent_3_atomic_CAS/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
 </div>
 
         </div>
@@ -258,10 +244,11 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <p><img src="http://qiniu.lfeng.tech/20220128204508_56f9a.jpg" alt=""></p>
+        <p><img src="http://qiniu.lfeng.tech/20220128204508_56f9a.jpg"></p>
 <h2 id="3-原子操作与CAS"><a href="#3-原子操作与CAS" class="headerlink" title="3. 原子操作与CAS"></a>3. 原子操作与CAS</h2><h3 id="3-1-原子操作"><a href="#3-1-原子操作" class="headerlink" title="3.1 原子操作"></a>3.1 原子操作</h3><p>所谓原子操作是指不会被线程调度机制打断的操作；这种操作一旦开始，就一直运行到结束，中间不会有任何context switch，也就是切换到另一个线程。</p>
 <p>为了实现原子操作，Java中可以通过synchronized关键字将函数或者代码块包围，以实现操作的原子性。但是synchronized关键字有一些很显著的问题：</p>
 <span id="more"></span>
+
 <p>1、synchronized是基于阻塞锁的机制，如果被阻塞的线程优先级很高，可能很长时间其他线程都没有机会运行；<br>2、拿到锁的线程一直不释放锁，可能导致其他线程一直等待；<br>3、线程数量很多时，可能带来大量的竞争，消耗cpu，同时带来死锁或者其他安全。</p>
 <p>像synchronized这种独占锁属于悲观锁，它是在假设一定会发生冲突的，那么加锁恰好有用，除此之外，还有乐观锁，乐观锁的含义就是假设没有发生冲突，那么我正好可以进行某项操作，如果要是发生冲突呢，那我就重试直到成功，乐观锁最常见的就是CAS。</p>
 <p>JAVA内部在实现原子操作的类时都应用到了CAS。</p>
@@ -280,8 +267,10 @@
 </ul>
 <p>下面例子为AtomicInteger的基本用法，</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">public class UseAtomicInt &#123;</span><br><span class="line">	</span><br><span class="line">	static AtomicInteger ai = new AtomicInteger(10);</span><br><span class="line">	</span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">    	System.out.println(ai.getAndIncrement());//10---&gt;11</span><br><span class="line">    	System.out.println(ai.incrementAndGet());//11---&gt;12---&gt;out</span><br><span class="line">    	System.out.println(ai.get());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <p>深入getAndIncrement的实现可以发现，内部调用了CAS进行value的更新，</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line">  * Atomically adds the given value to the current value of a field</span><br><span class="line">  * or array element within the given object &#123;@code o&#125;</span><br><span class="line">  * at the given &#123;@code offset&#125;.</span><br><span class="line">  *</span><br><span class="line">  * @param o object/array to update the field/element in</span><br><span class="line">  * @param offset field/element offset</span><br><span class="line">  * @param delta the value to add</span><br><span class="line">  * @return the previous value</span><br><span class="line">  * @since 1.8</span><br><span class="line">  */</span><br><span class="line"> @HotSpotIntrinsicCandidate</span><br><span class="line"> public final int getAndAddInt(Object o, long offset, int delta) &#123;</span><br><span class="line">     int v;</span><br><span class="line">     do &#123;</span><br><span class="line">         v = getIntVolatile(o, offset);</span><br><span class="line">     &#125; while (!weakCompareAndSetInt(o, offset, v, v + delta));</span><br><span class="line">     return v;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+
 <p>CAS在底层通过JNI调用系统的Atomic::cmpxchg方法，来进行value的比较与更新。</p>
 <p>对于CAS的实现，这依赖于CPU提供的特定指令，具体根据体系结构的不同还存在着明显区别。比如，x86 CPU 提供 cmpxchg 指令；而在精简指令集的体系架构中，则通常是靠一对儿指令（如“load and reserve”和“store conditional”）实现的，在大多数处理器上 CAS 都是个非常轻量级的操作，这也是其优势所在。</p>
 <h3 id="3-3-CAS的问题"><a href="#3-3-CAS的问题" class="headerlink" title="3.3 CAS的问题"></a>3.3 CAS的问题</h3><p>CAS虽然很高效的解决了原子操作问题，但是CAS仍然存在三大问题。</p>
@@ -342,11 +331,6 @@
 
 
 
-    
-  <div class="comments" id="disqus_thread">
-    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
-  </div>
-  
 </div>
   </main>
 
@@ -388,8 +372,6 @@
   <script src="/js/third-party/statistics/lean-analytics.js"></script>
 
 
-<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"frankier-me","count":true,"i18n":{"disqus":"disqus"}}</script>
-<script src="/js/third-party/comments/disqus.js"></script>
 
 </body>
 </html>

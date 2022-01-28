@@ -237,20 +237,6 @@
       <span class="post-meta-item-text">Views: </span>
       <span class="leancloud-visitors-count"></span>
     </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus: </span>
-    
-    <a title="disqus" href="/2020/02/29/JVM_7_deep_into_performance_optimization/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2020/02/29/JVM_7_deep_into_performance_optimization/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
 </div>
 
         </div>
@@ -264,6 +250,7 @@
 <h2 id="7-深入了解性能优化"><a href="#7-深入了解性能优化" class="headerlink" title="7. 深入了解性能优化"></a>7. 深入了解性能优化</h2><h3 id="7-1-影响系统性能的方方面面"><a href="#7-1-影响系统性能的方方面面" class="headerlink" title="7.1 影响系统性能的方方面面"></a>7.1 影响系统性能的方方面面</h3><p>影响系统性能的因素有很多，以下列举了常见的一些系统性能优化的方向：</p>
 <p><img src="http://qiniu.lfeng.tech/20220128204550_8d9d5.jpg" alt="Screen Shot 2019-12-29 at 4.05.53 PM.png"></p>
 <span id="more"></span>
+
 <h3 id="7-2-常用的性能评价和测试指标"><a href="#7-2-常用的性能评价和测试指标" class="headerlink" title="7.2 常用的性能评价和测试指标"></a>7.2 常用的性能评价和测试指标</h3><h4 id="响应时间"><a href="#响应时间" class="headerlink" title="响应时间"></a>响应时间</h4><p>提交请求和返回该请求的响应之间使用的时间，一般比较关注平均响应时间。</p>
 <p>如：数据库查询花费的时间，将字符回显到终端上花费的时间，访问 Web 页面花费的时间；</p>
 <h4 id="并发量"><a href="#并发量" class="headerlink" title="并发量"></a>并发量</h4><p>指同一时刻，对服务器有实际交互的请求数。和网站在线用户数的关联。</p>
@@ -322,10 +309,7 @@
 <p>GC调优的方向：GC的时间够小，GC的次数够少</p>
 <p>大多数的Java应用不需要GC调优，大部分需要GC调优的，不是参数问题，是代码问题<br>GC调优是最后手段。</p>
 <p>GC调优的优先级：<br>第一位：选择合适的GC回收期<br>第二位：选择合适的堆大小<br>第三位：选择年轻代在堆中的比重</p>
-<p>步骤：<br>1.监控GC的状态</p>
-<ol start="2">
-<li>分析结果，判断是否要优化<br>minGC 时间《 50ms，10s一次<br>FullGC执行1s一下，频率10分钟以上</li>
-</ol>
+<p>步骤：<br>1.监控GC的状态<br>2. 分析结果，判断是否要优化<br> minGC 时间《 50ms，10s一次<br> FullGC执行1s一下，频率10分钟以上</p>
 <p>打印GC日志：</p>
 <p>-XX:+PrintGCDetails<br>-XX:+HeapDumpOnOutOfMemoryError<br>-XX:HeapDumpPath<br>-XLogger:logpath<br>-XX:PrintHeapAtGC</p>
 <h4 id="存储性能优化"><a href="#存储性能优化" class="headerlink" title="存储性能优化"></a>存储性能优化</h4><ul>
@@ -372,11 +356,6 @@
 
 
 
-    
-  <div class="comments" id="disqus_thread">
-    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
-  </div>
-  
 </div>
   </main>
 
@@ -418,8 +397,6 @@
   <script src="/js/third-party/statistics/lean-analytics.js"></script>
 
 
-<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"frankier-me","count":true,"i18n":{"disqus":"disqus"}}</script>
-<script src="/js/third-party/comments/disqus.js"></script>
 
 </body>
 </html>

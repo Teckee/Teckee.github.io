@@ -244,20 +244,6 @@
       <span class="post-meta-item-text">Views: </span>
       <span class="leancloud-visitors-count"></span>
     </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus: </span>
-    
-    <a title="disqus" href="/2020/01/02/Java_concurrent_9_jdk_8_9_10_concurrent/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2020/01/02/Java_concurrent_9_jdk_8_9_10_concurrent/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
 </div>
 
         </div>
@@ -267,12 +253,14 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <p><img src="http://qiniu.lfeng.tech/20220128204522_57e55.jpg" alt=""></p>
+        <p><img src="http://qiniu.lfeng.tech/20220128204522_57e55.jpg"></p>
 <h3 id="9-1-CompletableFuture"><a href="#9-1-CompletableFuture" class="headerlink" title="9.1 CompletableFuture"></a>9.1 CompletableFuture</h3><p>CompletableFuture是JDK 8中引入的工具类，实现了Future接口，对以往的FutureTask的功能进行了增强。</p>
 <h4 id="手动设置完成状态"><a href="#手动设置完成状态" class="headerlink" title="手动设置完成状态"></a>手动设置完成状态</h4><p>CompletableFuture和Future一样，可以作为函数调用的契约，当向CompletableFuture请求数据时，如果数据还没有准备好，请求线程就会等待。但是，我们可以手动设置CompletableFuture的完成状态。</p>
 <p>下面的例子中，创建了CompletableFuture对象实例进行计算，同时另外一个线程进行等待，接着，模拟等待一段时间之后，设置完成状态为完成，此时等待线程继续执行。</p>
 <span id="more"></span>
+
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">public class CompletableFutureTest &#123;</span><br><span class="line"></span><br><span class="line">	public static class waitThread implements Runnable &#123;</span><br><span class="line">		CompletableFuture&lt;Integer&gt; resultCompletableFuture = null;</span><br><span class="line"></span><br><span class="line">		public waitThread(CompletableFuture&lt;Integer&gt; resultCompletableFuture) &#123;</span><br><span class="line">			super();</span><br><span class="line">			this.resultCompletableFuture = resultCompletableFuture;</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">		@Override</span><br><span class="line">		public void run() &#123;</span><br><span class="line">			int myResult = 0;</span><br><span class="line">			try &#123;</span><br><span class="line">				System.out.println(&quot;Waiting for the result...&quot;);</span><br><span class="line">				myResult = resultCompletableFuture.get();</span><br><span class="line">				System.out.println(&quot;Result got, it&#x27;s &quot; + myResult);</span><br><span class="line">			&#125; catch (Exception e) &#123;</span><br><span class="line">				e.printStackTrace();</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	public static void main(String[] args) throws InterruptedException &#123;</span><br><span class="line">		final CompletableFuture&lt;Integer&gt; future = new CompletableFuture&lt;Integer&gt;();</span><br><span class="line">		new Thread(new waitThread(future)).start();</span><br><span class="line">		// 模拟等待过程</span><br><span class="line">		Thread.sleep(2000);</span><br><span class="line">		// 设置完成的结果</span><br><span class="line">		future.complete(666);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <h4 id="异步执行任务"><a href="#异步执行任务" class="headerlink" title="异步执行任务"></a>异步执行任务</h4><p>CompletableFuture提供了很方便的异步执行接口，</p>
 <p><img src="http://qiniu.lfeng.tech/20220128204523_fe0d3.jpg" alt="Screen Shot 2019-12-15 at 3.25.31 PM.png"></p>
 <p>其中supplyAsync方法用于需要返回值的场景；runAsync方法用于没有返回值的场景。注意到，这两个方法中都可以接受Executor参数，可以方便的让任务在指定的线程池中运行。</p>
@@ -285,10 +273,12 @@
 <h4 id="组合多个CompletableFuture"><a href="#组合多个CompletableFuture" class="headerlink" title="组合多个CompletableFuture"></a>组合多个CompletableFuture</h4><p>CompletableFuture中可以组合多个CompletableFuture，主要有如下两种方法：</p>
 <p><strong>1. thenCompose方法</strong></p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">public &lt;U&gt; CompletableFuture&lt;U&gt; thenCompose(</span><br><span class="line">    Function&lt;? super T, ? extends CompletionStage&lt;U&gt;&gt; fn) &#123;</span><br><span class="line">    return uniComposeStage(null, fn);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <p>例子如下：</p>
 <p><img src="http://qiniu.lfeng.tech/20220128204525_408db.jpg" alt="Screen Shot 2019-12-15 at 3.51.46 PM.png"></p>
 <p><strong>2. thenCombine方法</strong></p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">public &lt;U,V&gt; CompletableFuture&lt;V&gt; thenCombine(</span><br><span class="line">    CompletionStage&lt;? extends U&gt; other,</span><br><span class="line">    BiFunction&lt;? super T,? super U,? extends V&gt; fn) &#123;</span><br><span class="line">    return biApplyStage(null, other, fn);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <p>例子如下：</p>
 <p><img src="http://qiniu.lfeng.tech/20220128204525_a7d48.jpg" alt="Screen Shot 2019-12-15 at 3.53.40 PM.png"></p>
 <h4 id="支持timeout"><a href="#支持timeout" class="headerlink" title="支持timeout"></a>支持timeout</h4><p>在JDK9之后的CompletableFuture增加了timeout功能，如果任务在指定时间内没有完成，则直接抛出异常。</p>
@@ -350,11 +340,6 @@
 
 
 
-    
-  <div class="comments" id="disqus_thread">
-    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
-  </div>
-  
 </div>
   </main>
 
@@ -396,8 +381,6 @@
   <script src="/js/third-party/statistics/lean-analytics.js"></script>
 
 
-<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"frankier-me","count":true,"i18n":{"disqus":"disqus"}}</script>
-<script src="/js/third-party/comments/disqus.js"></script>
 
 </body>
 </html>

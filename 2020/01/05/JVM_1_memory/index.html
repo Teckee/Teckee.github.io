@@ -245,20 +245,6 @@
       <span class="post-meta-item-text">Views: </span>
       <span class="leancloud-visitors-count"></span>
     </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus: </span>
-    
-    <a title="disqus" href="/2020/01/05/JVM_1_memory/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2020/01/05/JVM_1_memory/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
 </div>
 
         </div>
@@ -274,6 +260,7 @@
 <h4 id="程序计数器"><a href="#程序计数器" class="headerlink" title="程序计数器"></a>程序计数器</h4><p>程序计数器（Program Counter Register）是一块较小的内存空间，可以看作是当前线程所执行的字节码的行号指示器。在虚拟机概念模型中，字节码解释器工作时就是通过改变计数器的值来选取下一条需要执行的字节码指令，分支、循环、跳转、异常处理、线程恢复等基础功能都需要依赖这个计数器来完成。</p>
 <p>程序计数器是一块“线程私有”的内存，各个线程相互独立存储，互不影响。</p>
 <span id="more"></span>
+
 <h4 id="Java虚拟机栈"><a href="#Java虚拟机栈" class="headerlink" title="Java虚拟机栈"></a>Java虚拟机栈</h4><p>Java虚拟机栈（Java Virtual Machine Stacks）描述的是Java方法执行的内存模型：每个方法在执行的同时都会创建一个<strong>栈帧（Stack Frame）</strong>，栈帧中存储着局部变量表、操作数栈、动态链接、方法出口等信息。每一个方法从调用直至执行完成的过程，会对应一个栈帧在虚拟机栈中入栈到出栈的过程。与程序计数器一样，Java虚拟机栈也是线程私有的。</p>
 <h4 id="本地方法栈"><a href="#本地方法栈" class="headerlink" title="本地方法栈"></a>本地方法栈</h4><p>本地方法栈（Native Method Stack）与Java虚拟机栈作用很相似，它们的区别在于虚拟机栈为虚拟机执行Java方法（即字节码）服务，而本地方法栈则为虚拟机使用到的Native方法服务。</p>
 <blockquote>
@@ -328,9 +315,9 @@
 <li>User类型的对象u就没有逃逸出方法test</li>
 </ul>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">public void test(int x,inty )&#123;</span><br><span class="line">String x = “”;</span><br><span class="line">User u = ….</span><br><span class="line">….. </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <ul>
-<li>User类型的对象u就逃逸出方法test<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">public  User test(int x,inty )&#123;</span><br><span class="line">String x = “”;</span><br><span class="line">User u = ….</span><br><span class="line">….. </span><br><span class="line">return u;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
+<li>User类型的对象u就逃逸出方法test<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">public  User test(int x,inty )&#123;</span><br><span class="line">String x = “”;</span><br><span class="line">User u = ….</span><br><span class="line">….. </span><br><span class="line">return u;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
 </ul>
 <p><strong>JVM中如何启用栈上分配：</strong></p>
 <p>对栈上分配发生影响的参数就是三个，-server、-XX:+DoEscapeAnalysis和-XX:+EliminateAllocations，任何一个发生变化都不会发生栈上分配，因为启用逃逸分析和标量替换默认是打开的，所以，一般情况下，JVM的参数只用-server就可以有栈上替换的效果。</p>
@@ -419,6 +406,7 @@
 <h3 id="1-6-堆参数设置和内存溢出实战"><a href="#1-6-堆参数设置和内存溢出实战" class="headerlink" title="1.6 堆参数设置和内存溢出实战"></a>1.6 堆参数设置和内存溢出实战</h3><h4 id="Java堆溢出"><a href="#Java堆溢出" class="headerlink" title="Java堆溢出"></a>Java堆溢出</h4><p>可以使用<code>-Xms（堆的最小值）</code>和<code>-Xmx（堆的最大值）</code>参数进行堆大小的配置：</p>
 <p>下面的例子中，通过参数<code>-Xms5m -Xmx5m -XX:+PrintGC</code>设置堆的大小为5M，程序中不断的往list中添加Object，最后造成堆溢出。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">public class OOM &#123;</span><br><span class="line">	</span><br><span class="line">	public static void main(String[] args) &#123;</span><br><span class="line">		</span><br><span class="line">		List&lt;Object&gt; list = new LinkedList&lt;&gt;();</span><br><span class="line">		int i=0;</span><br><span class="line">		while(true) &#123;</span><br><span class="line">			i++;</span><br><span class="line">			if(i%10000==0) System.out.println(&quot;i=&quot;+i);</span><br><span class="line">			list.add(new Object());</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <p>注意到堆溢出时，可能发生两种error，</p>
 <ol>
 <li>出现java.lang.OutOfMemoryError: GC overhead limit exceeded  一般是（某个循环里可能性最大）在不停的分配对象，但是分配的太多，把堆撑爆了。</li>
@@ -428,11 +416,14 @@
 <p>jdk1.7及以前：<code>-XX:PermSize</code>；<code>-XX:MaxPermSize</code><br>jdk1.8以后：<code>-XX:MetaspaceSize</code>； <code>-XX:MaxMetaspaceSize</code></p>
 <p>此时采用和上述相同的例子，在jdk11中，通过参数<code>-XX:MaxMetaspaceSize=3M</code>设置元数据区的大小最大为3M。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">public class OOM &#123;</span><br><span class="line">	</span><br><span class="line">	public static void main(String[] args) &#123;</span><br><span class="line">		</span><br><span class="line">		List&lt;Object&gt; list = new LinkedList&lt;&gt;();</span><br><span class="line">		int i=0;</span><br><span class="line">		while(true) &#123;</span><br><span class="line">			i++;</span><br><span class="line">			if(i%10000==0) System.out.println(&quot;i=&quot;+i);</span><br><span class="line">			list.add(new Object());</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <p>程序启动后初始化失败，提示元数据区过小。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Error occurred during initialization of VM</span><br><span class="line">MaxMetaspaceSize is too small.</span><br></pre></td></tr></table></figure>
+
 <h4 id="虚拟机栈和本地方法栈溢出"><a href="#虚拟机栈和本地方法栈溢出" class="headerlink" title="虚拟机栈和本地方法栈溢出"></a>虚拟机栈和本地方法栈溢出</h4><p>Java栈的默认大小为1M，可以通过–Xss调整大小。</p>
 <p>下面的例子中，通过<code>-Xss256k</code>设置栈的大小为256k，程序启动后不久发生栈溢出java.lang.StackOverflowError。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">public class StackOOM &#123;</span><br><span class="line">	</span><br><span class="line">	private int stackLength = 1;</span><br><span class="line">	private void diGui(int x,String y) &#123;</span><br><span class="line">		stackLength++;</span><br><span class="line">		diGui(x,y);</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	public static void main(String[] args) &#123;</span><br><span class="line">		StackOOM oom = new StackOOM();</span><br><span class="line">		try &#123;</span><br><span class="line">			oom.diGui(12,&quot;Way2backend.tech&quot;);</span><br><span class="line">		&#125; catch (Throwable e) &#123;</span><br><span class="line">			System.out.println(&quot;stackLength = &quot;+oom.stackLength);</span><br><span class="line">			e.printStackTrace();</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <blockquote>
 <p>java.lang.StackOverflowError 一般的方法调用是很难出现的，如果出现了要考虑是否有无限递归。</p>
 </blockquote>
@@ -443,6 +434,7 @@
 <p>这块内存不受java堆大小限制，但受本机总内存的限制，可以通过<code>-XX:MaxDirectMemorySize</code>来设置（默认与堆内存最大值一样），所以也会出现OOM异常。</p>
 <p>下面的例子中，通过参数<code>-XX:MaxDirectMemorySize=10M</code>设置直接内存的大小为10M，但是程序中却尝试分配14M的直接内存，导致程序启动后抛出直接内存OutOfMemoryError的错误。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">public class DirectMem &#123;</span><br><span class="line">	public static void main(String[] args) &#123;</span><br><span class="line">		ByteBuffer b = ByteBuffer.allocateDirect(1024*1024*14);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <hr>
 <p>参考：</p>
 <ul>
@@ -491,11 +483,6 @@
 
 
 
-    
-  <div class="comments" id="disqus_thread">
-    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
-  </div>
-  
 </div>
   </main>
 
@@ -537,8 +524,6 @@
   <script src="/js/third-party/statistics/lean-analytics.js"></script>
 
 
-<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"frankier-me","count":true,"i18n":{"disqus":"disqus"}}</script>
-<script src="/js/third-party/comments/disqus.js"></script>
 
 </body>
 </html>

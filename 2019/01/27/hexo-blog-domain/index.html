@@ -236,20 +236,6 @@
       <span class="post-meta-item-text">Views: </span>
       <span class="leancloud-visitors-count"></span>
     </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus: </span>
-    
-    <a title="disqus" href="/2019/01/27/hexo-blog-domain/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/01/27/hexo-blog-domain/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
 </div>
 
         </div>
@@ -265,6 +251,7 @@
 <h2 id="1-域名解析"><a href="#1-域名解析" class="headerlink" title="1. 域名解析"></a>1. 域名解析</h2><p>购买域名之后，设置CNAME记录指向github博客。比如在阿里云购买域名之后，直接增加一条CNAME记录指向 teckee.github.io即可</p>
 <p><img src="http://qiniu.lfeng.tech/20220128204507_63ec2.jpg" alt="Screen Shot 2019-12-08 at 11.36.16 AM.png"></p>
 <span id="more"></span>
+
 <h2 id="2-github增加CNAME记录"><a href="#2-github增加CNAME记录" class="headerlink" title="2. github增加CNAME记录"></a>2. github增加CNAME记录</h2><p>在blog下面的source目录增加CNAME文件，里面写上你要绑定的域名，比如way2backend.tech,注意这里的域名不需要加上https/http等前缀。</p>
 <p><img src="http://qiniu.lfeng.tech/20220128204508_b300d.jpg" alt="Screen Shot 2019-12-08 at 11.40.22 AM.png"></p>
 <p>注意这样配置以后，还是可能出现每次<code>hexo g &amp;&amp; hexo d</code>时，在public目录下生成的CNAME文件为空，这个时候需要去主题目录下，删除默认的空CNAME文件.</p>
@@ -307,11 +294,6 @@
 
 
 
-    
-  <div class="comments" id="disqus_thread">
-    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
-  </div>
-  
 </div>
   </main>
 
@@ -353,8 +335,6 @@
   <script src="/js/third-party/statistics/lean-analytics.js"></script>
 
 
-<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"frankier-me","count":true,"i18n":{"disqus":"disqus"}}</script>
-<script src="/js/third-party/comments/disqus.js"></script>
 
 </body>
 </html>

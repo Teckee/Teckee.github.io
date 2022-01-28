@@ -225,20 +225,6 @@
       <span class="post-meta-item-text">Views: </span>
       <span class="leancloud-visitors-count"></span>
     </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus: </span>
-    
-    <a title="disqus" href="/2015/05/02/convert-between-int-and-string/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/05/02/convert-between-int-and-string/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
 </div>
 
         </div>
@@ -328,20 +314,6 @@
       <span class="post-meta-item-text">Views: </span>
       <span class="leancloud-visitors-count"></span>
     </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus: </span>
-    
-    <a title="disqus" href="/2015/03/25/binary-search/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/03/25/binary-search/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
 </div>
 
         </div>
@@ -434,20 +406,6 @@
       <span class="post-meta-item-text">Views: </span>
       <span class="leancloud-visitors-count"></span>
     </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus: </span>
-    
-    <a title="disqus" href="/2015/03/01/algorithm-complexity/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/03/01/algorithm-complexity/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
 </div>
 
         </div>
@@ -546,20 +504,6 @@
       <span class="post-meta-item-text">Views: </span>
       <span class="leancloud-visitors-count"></span>
     </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus: </span>
-    
-    <a title="disqus" href="/2015/01/24/MySQL-for-Python/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/01/24/MySQL-for-Python/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
 </div>
 
         </div>
@@ -570,15 +514,14 @@
     
     <div class="post-body" itemprop="articleBody">
           <h1 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h1><ul>
-<li><p><strong>MySQL</strong>, 到<a target="_blank" rel="noopener" href="http://dev.mysql.com/downloads/">官网</a>根据自己系统下载并安装[这种方式不推荐，安装配置比较麻烦]</p>
-<blockquote>
-<p>这里介绍<code>免安装</code>的方式：<br>1.<a target="_blank" rel="noopener" href="http://dev.mysql.com/downloads/mysql/">官网</a>下载MySQL，根据系统选择64bit或32bit<br>2.设置环境变量：<br>添加<code>MYSQL_HOME=D:\mysql-5.6.22-winx64</code><br><code>path</code>后添加<code>%MYSQL_HOME%\bin</code><br>3.将<code>D:\mysql-5.6.22-winx64\my-default.ini</code> 拷贝一份并修改为<code>my.ini</code><br>设置如下几项：<br><code>basedir = D:/mysql-5.6.22-winx64
-datadir = D:/mysql-5.6.22-winx64/data
-port = 3306</code><br>4.安装MySQL服务：在cmd(管理员权限)下运行<code>mysqld -install</code><br>启动服务：<code>net start mysql</code><br>停止服务：<code>net stop mysql</code><br>5.配置用户密码：默认密码为空<br>设置密码：<code>mysqladmin -uroot -p password &lt;新密码&gt;</code>将新密码替换为你自己的密码，按<code>Enter</code>，提示输入原密码，直接再按下<code>Enter</code>即可<br>6.登陆：运行<code>mysql -u root -p</code>回车输入密码即可，接下你就可以进行数据库的各项操作了</p>
+<li><strong>MySQL</strong>, 到<a target="_blank" rel="noopener" href="http://dev.mysql.com/downloads/">官网</a>根据自己系统下载并安装[这种方式不推荐，安装配置比较麻烦]<blockquote>
+<p>这里介绍<code>免安装</code>的方式：</p>
 </blockquote>
 </li>
-<li><p><strong>MySQLdb</strong>, 提供python连接MySQL的API，对于不同系统：<br> <code>windows</code>:在<a target="_blank" rel="noopener" href="https://pypi.python.org/pypi/MySQL-python/">这里</a>下载exe安装（win8.1下无法安装时选择兼容模式）<br> <code>Linux</code>:利用下面的命令安装：<code>sudo apt-get install python-mysqldb</code><br> <code>Mac</code>:参看 <a target="_blank" rel="noopener" href="http://stackoverflow.com/questions/1448429/how-to-install-mysqldb-python-data-access-library-to-mysql-on-mac-os-x#1448476">install MySQLdb using Macport</a></p>
-</li>
+</ul>
+<p>1.<a target="_blank" rel="noopener" href="http://dev.mysql.com/downloads/mysql/">官网</a>下载MySQL，根据系统选择64bit或32bit<br>2.设置环境变量：<br> 添加<code>MYSQL_HOME=D:\mysql-5.6.22-winx64</code><br> <code>path</code>后添加<code>%MYSQL_HOME%\bin</code><br>3.将<code>D:\mysql-5.6.22-winx64\my-default.ini</code> 拷贝一份并修改为<code>my.ini</code><br>设置如下几项：<br><code>basedir = D:/mysql-5.6.22-winx64  datadir = D:/mysql-5.6.22-winx64/data  port = 3306</code><br>4.安装MySQL服务：在cmd(管理员权限)下运行<code>mysqld -install</code><br>启动服务：<code>net start mysql</code><br>停止服务：<code>net stop mysql</code><br>5.配置用户密码：默认密码为空<br>设置密码：<code>mysqladmin -uroot -p password &lt;新密码&gt; </code>将新密码替换为你自己的密码，按<code>Enter</code>，提示输入原密码，直接再按下<code>Enter</code>即可<br>6.登陆：运行<code>mysql -u root -p</code>回车输入密码即可，接下你就可以进行数据库的各项操作了</p>
+<ul>
+<li><strong>MySQLdb</strong>, 提供python连接MySQL的API，对于不同系统：<br> <code>windows</code>:在<a target="_blank" rel="noopener" href="https://pypi.python.org/pypi/MySQL-python/">这里</a>下载exe安装（win8.1下无法安装时选择兼容模式）<br> <code>Linux</code>:利用下面的命令安装：<code>sudo apt-get install python-mysqldb</code><br> <code>Mac</code>:参看 <a target="_blank" rel="noopener" href="http://stackoverflow.com/questions/1448429/how-to-install-mysqldb-python-data-access-library-to-mysql-on-mac-os-x#1448476">install MySQLdb using Macport</a></li>
 </ul>
           <!--noindex-->
             <div class="post-button">
@@ -657,20 +600,6 @@ port = 3306</code><br>4.安装MySQL服务：在cmd(管理员权限)下运行<cod
       <span class="post-meta-item-text">Views: </span>
       <span class="leancloud-visitors-count"></span>
     </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus: </span>
-    
-    <a title="disqus" href="/2015/01/23/markdown-sytanx/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/01/23/markdown-sytanx/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
 </div>
 
         </div>
@@ -682,7 +611,8 @@ port = 3306</code><br>4.安装MySQL服务：在cmd(管理员权限)下运行<cod
     <div class="post-body" itemprop="articleBody">
           <p>写博客主要用到了Markdown语法，这里总结一些常用的语法</p>
 <h2 id="字体"><a href="#字体" class="headerlink" title="字体"></a>字体</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">**两个星号包围的是粗体**</span><br></pre></td></tr></table></figure>
-<p>效果：<strong>两个星号包围的是粗体</strong><br><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">*一个星号包围的是斜体*</span><br></pre></td></tr></table></figure><br>
+<p>效果：<strong>两个星号包围的是粗体</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">*一个星号包围的是斜体*</span><br></pre></td></tr></table></figure>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2015/01/23/markdown-sytanx/#more" rel="contents">
@@ -760,20 +690,6 @@ port = 3306</code><br>4.安装MySQL服务：在cmd(管理员权限)下运行<cod
       <span class="post-meta-item-text">Views: </span>
       <span class="leancloud-visitors-count"></span>
     </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus: </span>
-    
-    <a title="disqus" href="/2015/01/22/git-hexo-blog/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/01/22/git-hexo-blog/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
 </div>
 
         </div>
@@ -857,8 +773,6 @@ port = 3306</code><br>4.安装MySQL服务：在cmd(管理员权限)下运行<cod
   <script src="/js/third-party/statistics/lean-analytics.js"></script>
 
 
-<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"frankier-me","count":true,"i18n":{"disqus":"disqus"}}</script>
-<script src="/js/third-party/comments/disqus.js"></script>
 
 </body>
 </html>

@@ -239,20 +239,6 @@
       <span class="post-meta-item-text">Views: </span>
       <span class="leancloud-visitors-count"></span>
     </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus: </span>
-    
-    <a title="disqus" href="/2020/04/05/Spring_6_Transaction/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2020/04/05/Spring_6_Transaction/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
 </div>
 
         </div>
@@ -273,19 +259,26 @@
 <li>持久性（durability）。持久性也称永久性（permanence），指一个事务一旦提交，它对数据库中数据的改变就应该是永久性的。接下来的其他操作或故障不应该对其有任何影响。</li>
 </ul>
 <span id="more"></span>
+
 <p>Spring中可以通过<code>@Transactional</code>注解，实现了对事务的支持。</p>
 <p>首先定义配置类，配置类中创建了数据源，封装了jdbcTemplate和事务管理器。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">@Configuration</span><br><span class="line">@ComponentScan(&quot;com.enjoy.cap11&quot;)</span><br><span class="line">@EnableTransactionManagement  //开启事务管理功能，对@Transactional起作用</span><br><span class="line">public class Cap11MainConfig &#123;</span><br><span class="line">	//创建数据源</span><br><span class="line">	@Bean</span><br><span class="line">	public DataSource dataSource() throws PropertyVetoException&#123;</span><br><span class="line">		//这个c3p0封装了JDBC, dataSource接口的实现</span><br><span class="line">		ComboPooledDataSource dataSource = new ComboPooledDataSource();</span><br><span class="line">		dataSource.setUser(&quot;root&quot;);</span><br><span class="line">		dataSource.setPassword(&quot;xxxxx&quot;);</span><br><span class="line">		dataSource.setDriverClass(&quot;com.mysql.jdbc.Driver&quot;);</span><br><span class="line">		dataSource.setJdbcUrl(&quot;jdbc:mysql://localhost:3306/Spring?useSSL=false&quot;);</span><br><span class="line">		return dataSource;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	//jdbcTemplate能简化增删改查的操作</span><br><span class="line">	@Bean</span><br><span class="line">	public JdbcTemplate jdbcTemplate() throws PropertyVetoException&#123;</span><br><span class="line">		return new JdbcTemplate(dataSource());</span><br><span class="line">	&#125;</span><br><span class="line">	//注册事务管理器</span><br><span class="line">	@Bean</span><br><span class="line">	public PlatformTransactionManager platformTransactionManager() throws PropertyVetoException&#123;</span><br><span class="line">		return new DataSourceTransactionManager(dataSource());</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <p>新建Order测试表：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">CREATE TABLE `order` (</span><br><span class="line">  `orderid` int(11) DEFAULT NULL,</span><br><span class="line">  `ordertime` datetime DEFAULT NULL,</span><br><span class="line">  `ordermoney` decimal(20,0) DEFAULT NULL,</span><br><span class="line">  `orderstatus` char(1) DEFAULT NULL</span><br><span class="line">) ENGINE=InnoDB DEFAULT CHARSET=utf8</span><br></pre></td></tr></table></figure>
+
 <p>新建OrderDao操作数据库，</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">@Repository</span><br><span class="line">public class OrderDao &#123;</span><br><span class="line">	@Autowired</span><br><span class="line">	private JdbcTemplate jdbcTemplate;</span><br><span class="line">	//操作数据的方法</span><br><span class="line">	public void insert()&#123;</span><br><span class="line">		String sql = &quot;insert into `order` (ordertime, ordermoney, orderstatus) values(?,?,?)&quot;;</span><br><span class="line">		jdbcTemplate.update(sql,new Date(),20,0);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <p>新建 OrderService类，将orderDao注入进来</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">@Service</span><br><span class="line">public class OrderService &#123;</span><br><span class="line">    @Autowired</span><br><span class="line">	private OrderDao orderDao;</span><br><span class="line">    @Transactional</span><br><span class="line">    public void addOrder()&#123;</span><br><span class="line">    	orderDao.insert();</span><br><span class="line">    	System.out.println(&quot;操作完成.........&quot;);</span><br><span class="line">    	</span><br><span class="line">    	//int a = 1/0;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <p>在下面的测试用例中，正常的向数据库中插入一条数据，查询数据库可以发现插入正常。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">public class Cap11Test &#123;</span><br><span class="line">	@Test</span><br><span class="line">	public void test01()&#123;</span><br><span class="line">		AnnotationConfigApplicationContext app = new AnnotationConfigApplicationContext(Cap11MainConfig.class);</span><br><span class="line">		</span><br><span class="line">		OrderService bean = app.getBean(OrderService.class);</span><br><span class="line">		bean.addOrder();</span><br><span class="line">		</span><br><span class="line">		app.close();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <p>但是接着测试，在addOrder方法中手动设置一个异常，下面的代码中，在运行时会抛出除数为0的异常。从运行结果可以看到，这种情况下数据库的插入操作没有成功，说明Spring对insert操作进行了回滚，保证了事务的一致性。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">@Service</span><br><span class="line">public class OrderService &#123;</span><br><span class="line">    @Autowired</span><br><span class="line">	private OrderDao orderDao;</span><br><span class="line">    @Transactional</span><br><span class="line">    public void addOrder()&#123;</span><br><span class="line">    	orderDao.insert();</span><br><span class="line">    	System.out.println(&quot;操作完成.........&quot;);</span><br><span class="line">    	</span><br><span class="line">    	int a = 1/0;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <h3 id="6-2-Spring事务原理分析"><a href="#6-2-Spring事务原理分析" class="headerlink" title="6.2 Spring事务原理分析"></a>6.2 Spring事务原理分析</h3><p>在上面的例子中，为了使事务能够生效，需要加上<code>@EnableTransactionManagement</code>注解，整个源码实现和AOP原理一致，在注册Bean时对对象进行包装，生成增强的Bean，返回代理对象。在执行阶段，利用事务拦截器来运行有事务注解的代码，当出现异常时进行回滚。</p>
 <p>通过<code>@EnableTransactionManagement</code>引入的class可以看到，默认PROXY模式下，会引入<code>AutoProxyRegistrar.class</code>和<code>ProxyTransactionManagementConfiguration.class</code>，下面分析这两个组件的功能。 </p>
 <p><img src="http://qiniu.lfeng.tech/20220128204509_b803b.jpg" alt="Screen Shot 2020-02-17 at 10.14.19 PM.png"></p>
@@ -331,17 +324,21 @@
 </ul>
 <p>Spring中可以配置5种隔离级别：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">DEFAULT(-1),  ## 数据库默认级别</span><br><span class="line">READ_UNCOMMITTED(1),</span><br><span class="line">READ_COMMITTED(2),</span><br><span class="line">REPEATABLE_READ(4),</span><br><span class="line">SERIALIZABLE(8);</span><br></pre></td></tr></table></figure>
+
 <p>可以使用类似下面的注解，很方便的配置隔离级别：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">@Transactional(isolation = Isolation.SERIALIZABLE)</span><br><span class="line">public int insertUser(User user)&#123;</span><br><span class="line">    return userDao.insertUser(user);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <p>上面的代码中我们使用了串行化的隔离级别来包住数据的一致性，这使它将阻塞其他的事务进行并发，所以它只能运用在那些低并发而又需要保证数据一致性的场景下。</p>
 <h4 id="传播行为"><a href="#传播行为" class="headerlink" title="传播行为"></a>传播行为</h4><p>在Spring中，当一个方法调用另外一个方法时，可以让事务采取不同的策略工作，如新建事务或者挂起当前事务等，这便是事务的传播行为。</p>
 <p>在Spring的事务机制中对数据库存在7种传播行为，通过枚举类<code>Propagation</code>定义。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">public enum Propagation &#123;</span><br><span class="line">    /**</span><br><span class="line">     * 需要事务，默认传播性行为。</span><br><span class="line">     * 如果当前存在事务，就沿用当前事务，否则新建一个事务运行子方法</span><br><span class="line">     */</span><br><span class="line">    REQUIRED(0),</span><br><span class="line">    /**</span><br><span class="line">     * 支持事务，如果当前存在事务，就沿用当前事务，</span><br><span class="line">     * 如果不存在，则继续采用无事务的方式运行子方法</span><br><span class="line">     */</span><br><span class="line">    SUPPORTS(1),</span><br><span class="line">    /**</span><br><span class="line">     * 必须使用事务，如果当前没有事务，抛出异常</span><br><span class="line">     * 如果存在当前事务,就沿用当前事务</span><br><span class="line">     */</span><br><span class="line">    MANDATORY(2),</span><br><span class="line">    /**</span><br><span class="line">     * 无论当前事务是否存在，都会创建新事务允许方法</span><br><span class="line">     * 这样新事务就可以拥有新的锁和隔离级别等特性，与当前事务相互独立</span><br><span class="line">     */</span><br><span class="line">    REQUIRES_NEW(3),</span><br><span class="line">    /**</span><br><span class="line">     * 不支持事务，当前存在事务时，将挂起事务，运行方法</span><br><span class="line">     */</span><br><span class="line">    NOT_SUPPORTED(4),</span><br><span class="line">    /**</span><br><span class="line">     * 不支持事务，如果当前方法存在事务，将抛出异常，否则继续使用无事务机制运行</span><br><span class="line">     */</span><br><span class="line">    NEVER(5),</span><br><span class="line">    /**</span><br><span class="line">     * 在当前方法调用子方法时，如果子方法发生异常</span><br><span class="line">     * 只回滚子方法执行过的SQL，而不回滚当前方法的事务</span><br><span class="line">     */</span><br><span class="line">    NESTED(6);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <p>日常开发中基本只会使用到<code>REQUIRED(0)</code>,<code>REQUIRES_NEW(3)</code>,<code>NESTED(6)</code>三种。</p>
 <p><code>NESTED</code>和<code>REQUIRES_NEW</code>是有区别的。NESTED传播行为会沿用当前事务的隔离级别和锁等特性，而REQUIRES_NEW则可以拥有自己独立的隔离级别和锁等特性。</p>
 <p><code>NESTED</code>的实现主要依赖于数据库的保存点（SAVEPOINT）技术，SAVEPOINT记录了一个保存点，可以通过ROLLBACK TO SAVEPOINT来回滚到某个保存点。如果数据库支持保存点技术时就启用保存点技术；如果不支持就会新建一个事务去执行代码，也就相当于REQUIRES_NEW。</p>
 <h4 id="Transactional自调用失效"><a href="#Transactional自调用失效" class="headerlink" title="Transactional自调用失效"></a>Transactional自调用失效</h4><p>如果一个类中自身方法的调用，我们称之为自调用。如一个订单业务实现类OrderServiceImpl中有methodA方法调用了自身类的methodB方法就是自调用，如：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">@Transactional</span><br><span class="line">public void methodA()&#123;</span><br><span class="line">    for (int i = 0; i &lt; 10; i++) &#123;</span><br><span class="line">        methodB();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">    </span><br><span class="line">@Transactional(isolation = Isolation.READ_COMMITTED,propagation = Propagation.REQUIRES_NEW)</span><br><span class="line">public int methodB()&#123;</span><br><span class="line">    ......</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <p>在上面方法中不管methodB如何设置隔离级别和传播行为都是不生效的。即自调用失效。</p>
 <p>这主要是由于@Transactional的底层实现原理是基于AOP实现，而AOP的原理是动态代理，在自调用的过程中是类自身的调用，而不是代理对象去调用，那么就不会产生AOP，于是就发生了自调用失败的现象。</p>
 <p>要克服这个问题，有2种方法：</p>
@@ -350,6 +347,7 @@
 <li>在同一个Service中，methodA不直接调用methodB，而是先从Spring IOC容器中重新获取代理对象<code>OrderServiceImpl</code>,获取到后再去调用methodB。说起来有点乱，还是show you the code。</li>
 </ul>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">public class OrderServiceImpl implements OrderService,ApplicationContextAware &#123;</span><br><span class="line">    private ApplicationContext applicationContext = null;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void setApplicationContext(ApplicationContext applicationContext) &#123;</span><br><span class="line">        this.applicationContext = applicationContext;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Transactional</span><br><span class="line">    public void methodA()&#123;</span><br><span class="line">        OrderService orderService = applicationContext.getBean(OrderService.class);</span><br><span class="line">        for (int i = 0; i &lt; 10; i++) &#123;</span><br><span class="line">            orderService.methodB();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Transactional(isolation = Isolation.READ_COMMITTED,propagation = Propagation.REQUIRES_NEW)</span><br><span class="line">    public int methodB()&#123;</span><br><span class="line">        ......</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <p>上面代码中我们先实现了<code>ApplicationContextAware</code>接口，然后通过<code>applicationContext.getBean()</code>获取了<code>OrderService</code>的接口对象。这个时候获取到的是一个代理对象，也就能正常使用AOP的动态代理了。</p>
 <hr>
 <p>参考：</p>
@@ -395,11 +393,6 @@
 
 
 
-    
-  <div class="comments" id="disqus_thread">
-    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
-  </div>
-  
 </div>
   </main>
 
@@ -441,8 +434,6 @@
   <script src="/js/third-party/statistics/lean-analytics.js"></script>
 
 
-<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"frankier-me","count":true,"i18n":{"disqus":"disqus"}}</script>
-<script src="/js/third-party/comments/disqus.js"></script>
 
 </body>
 </html>

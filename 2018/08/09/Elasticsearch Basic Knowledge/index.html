@@ -232,20 +232,6 @@
       <span class="post-meta-item-text">Views: </span>
       <span class="leancloud-visitors-count"></span>
     </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus: </span>
-    
-    <a title="disqus" href="/2018/08/09/Elasticsearch%20Basic%20Knowledge/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/08/09/Elasticsearch Basic Knowledge/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
 </div>
 
         </div>
@@ -261,23 +247,28 @@
 <h2 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h2><h3 id="Cluster"><a href="#Cluster" class="headerlink" title="Cluster"></a>Cluster</h3><p>集群通过独一无二的名称来进行区分，每个集群是由一个或者多个Node组成。不能在不同的环境中使用相同的cluster名，否则node可能错误地划分到某个cluster中。</p>
 <h3 id="Node"><a href="#Node" class="headerlink" title="Node"></a>Node</h3><p>作为集群（cluster）的一部分，存储数据。</p>
 <span id="more"></span>
+
 <h3 id="Index"><a href="#Index" class="headerlink" title="Index"></a>Index</h3><p>索引是某些具有相同特征的文档的集合，可以对于不同的数据来建立不同的索引。当进行创建索引、搜索、更新和删除等操作时，需要通过该索引名来访问其对应的文件。</p>
 <h3 id="Document"><a href="#Document" class="headerlink" title="Document"></a>Document</h3><p>一个Document是可以被索引的最小单元，不同的Document可以对应不同的数据，例如客户信息，产品信息等等。</p>
 <h3 id="Shards-amp-Replicas"><a href="#Shards-amp-Replicas" class="headerlink" title="Shards &amp; Replicas"></a>Shards &amp; Replicas</h3><p>考虑到一个index可能存储大量的数据以至于超出硬件的限制，因此Elasticsearch可以将一个index划分为多个块称为shards，每个shards可以看做是一个独立的index。通过Shards的机制，一方面可以用于将数据进行分片；另一方面也可以将数据通过不同的Shards进行分发，进而提升了输入输出的性能。</p>
 <p>另外为了防止网络等原因导致的某个Shards/Node无法正常工作，Elasticsearch中可以通过生成一个或多个Shards的副本，来保证可靠性，这些副本称为replica shards，或者简称replicas。</p>
 <h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">curl -L -O https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-6.3.2.tar.gz</span><br><span class="line">tar -xvf elasticsearch-6.3.2.tar.gz</span><br><span class="line">cd elasticsearch-6.3.2/bin</span><br><span class="line">./elasticsearch</span><br></pre></td></tr></table></figure>
+
 <h2 id="基本操作"><a href="#基本操作" class="headerlink" title="基本操作"></a>基本操作</h2><ul>
 <li>集群健康状况</li>
 </ul>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">GET /_cat/health?v</span><br></pre></td></tr></table></figure>
+
 <ul>
 <li>获取集群节点</li>
 </ul>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">GET /_cat/nodes?v</span><br></pre></td></tr></table></figure>
+
 <ul>
 <li>获取索引信息</li>
 </ul>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">GET /_cat/indices?v</span><br></pre></td></tr></table></figure>
+
 <ul>
 <li>创建索引</li>
 </ul>
@@ -287,11 +278,13 @@
 <li>索引和查找数据</li>
 </ul>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">PUT /customer/_doc/1?pretty</span><br><span class="line">&#123;</span><br><span class="line">  &quot;name&quot;: &quot;John Doe&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>上面这条指令将一个简单的文档加入到customer索引中，并且id为1。可以通过id来查找刚索引好的数据，具体指令如下：<br><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;_index&quot; : &quot;customer&quot;,</span><br><span class="line">  &quot;_type&quot; : &quot;_doc&quot;,</span><br><span class="line">  &quot;_id&quot; : &quot;1&quot;,</span><br><span class="line">  &quot;_version&quot; : 1,</span><br><span class="line">  &quot;found&quot; : true,</span><br><span class="line">  &quot;_source&quot; : &#123; &quot;name&quot;: &quot;John Doe&quot; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>上面这条指令将一个简单的文档加入到customer索引中，并且id为1。可以通过id来查找刚索引好的数据，具体指令如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;_index&quot; : &quot;customer&quot;,</span><br><span class="line">  &quot;_type&quot; : &quot;_doc&quot;,</span><br><span class="line">  &quot;_id&quot; : &quot;1&quot;,</span><br><span class="line">  &quot;_version&quot; : 1,</span><br><span class="line">  &quot;found&quot; : true,</span><br><span class="line">  &quot;_source&quot; : &#123; &quot;name&quot;: &quot;John Doe&quot; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <ul>
 <li>删除索引</li>
 </ul>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DELETE /customer?pretty</span><br></pre></td></tr></table></figure>
+
 <blockquote>
 <p>通过上述简单的指令可以看到，我们可以使用比较固定的模式<code>&lt;REST Verb&gt; /&lt;Index&gt;/&lt;Type&gt;/&lt;ID&gt;</code>从Elasticsearch获取数据。</p>
 </blockquote>
@@ -299,14 +292,20 @@
 <blockquote>
 <p>在索引数据时，ID这一项是可选的。如果不指定ID，Elasticsearch会生成一个随机的ID来索引数据，这个ID也会在索引完成后返回在结果中。</p>
 </blockquote>
-<h4 id="替换数据"><a href="#替换数据" class="headerlink" title="替换数据"></a>替换数据</h4><p>在索引了一条数据之后，再使用相同的ID来索引一条数据，新的数据将会替换掉之前索引的数据。<br><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">PUT /customer/_doc/1?pretty</span><br><span class="line">&#123;</span><br><span class="line">  &quot;name&quot;: &quot;Jane Doe&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h4 id="替换数据"><a href="#替换数据" class="headerlink" title="替换数据"></a>替换数据</h4><p>在索引了一条数据之后，再使用相同的ID来索引一条数据，新的数据将会替换掉之前索引的数据。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">PUT /customer/_doc/1?pretty</span><br><span class="line">&#123;</span><br><span class="line">  &quot;name&quot;: &quot;Jane Doe&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <h3 id="更新数据"><a href="#更新数据" class="headerlink" title="更新数据"></a>更新数据</h3><p>我们可以使用下面的指令来更新之前例子中插入的数据。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">POST /customer/_doc/1/_update?pretty</span><br><span class="line">&#123;</span><br><span class="line">  &quot;doc&quot;: &#123; &quot;name&quot;: &quot;Jane Doe&quot;, &quot;age&quot;: 20 &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>除此之外，也可以通过简单的script来更新数据，</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">POST /customer/_doc/1/_update?pretty</span><br><span class="line">&#123;</span><br><span class="line">  &quot;script&quot; : &quot;ctx._source.age += 5&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p><code>ctx._source</code>表示将被更新的文档。</p>
-<h3 id="删除数据"><a href="#删除数据" class="headerlink" title="删除数据"></a>删除数据</h3><p>下面的语句将会删除ID为2的数据<br><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DELETE /customer/_doc/2?pretty</span><br></pre></td></tr></table></figure></p>
-<h3 id="批量操作"><a href="#批量操作" class="headerlink" title="批量操作"></a>批量操作</h3><p>除了上述对数据进行分开操作以外，Elasticsearch也提供了<code>_bulk</code>API来进行批量操作，如下的例子中将会首先更新ID为1对应的文档，另外删除ID为2对应的文档。<br><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">POST /customer/_doc/_bulk?pretty</span><br><span class="line">&#123;&quot;update&quot;:&#123;&quot;_id&quot;:&quot;1&quot;&#125;&#125;</span><br><span class="line">&#123;&quot;doc&quot;: &#123; &quot;name&quot;: &quot;John Doe becomes Jane Doe&quot; &#125; &#125;</span><br><span class="line">&#123;&quot;delete&quot;:&#123;&quot;_id&quot;:&quot;2&quot;&#125;&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="删除数据"><a href="#删除数据" class="headerlink" title="删除数据"></a>删除数据</h3><p>下面的语句将会删除ID为2的数据</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DELETE /customer/_doc/2?pretty</span><br></pre></td></tr></table></figure>
+
+<h3 id="批量操作"><a href="#批量操作" class="headerlink" title="批量操作"></a>批量操作</h3><p>除了上述对数据进行分开操作以外，Elasticsearch也提供了<code>_bulk</code>API来进行批量操作，如下的例子中将会首先更新ID为1对应的文档，另外删除ID为2对应的文档。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">POST /customer/_doc/_bulk?pretty</span><br><span class="line">&#123;&quot;update&quot;:&#123;&quot;_id&quot;:&quot;1&quot;&#125;&#125;</span><br><span class="line">&#123;&quot;doc&quot;: &#123; &quot;name&quot;: &quot;John Doe becomes Jane Doe&quot; &#125; &#125;</span><br><span class="line">&#123;&quot;delete&quot;:&#123;&quot;_id&quot;:&quot;2&quot;&#125;&#125;</span><br></pre></td></tr></table></figure>
+
 <h2 id="搜索数据"><a href="#搜索数据" class="headerlink" title="搜索数据"></a>搜索数据</h2><p>在介绍搜索数据的API之前，你可以参考<a target="_blank" rel="noopener" href="https://www.elastic.co/guide/en/elasticsearch/reference/current/_exploring_your_data.html">官方教程</a>来索引部分数据。</p>
 <h3 id="搜索API"><a href="#搜索API" class="headerlink" title="搜索API"></a>搜索API</h3><ul>
 <li>使用类似于如下例子的REST request URI来进行搜索。</li>
@@ -317,6 +316,7 @@
 <li>使用request body如下，可以达到同样的效果</li>
 </ul>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">GET /bank/_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123; &quot;match_all&quot;: &#123;&#125; &#125;,</span><br><span class="line">  &quot;sort&quot;: [</span><br><span class="line">    &#123; &quot;account_number&quot;: &quot;asc&quot; &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <h3 id="Request-Body语法"><a href="#Request-Body语法" class="headerlink" title="Request Body语法"></a>Request Body语法</h3><ul>
 <li>限制返回结果数目</li>
 </ul>
@@ -353,6 +353,7 @@
 <li>聚合数据，类似于sql语句中的group by等语句</li>
 </ul>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">GET /bank/_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;size&quot;: 0,</span><br><span class="line">  &quot;aggs&quot;: &#123;</span><br><span class="line">    &quot;group_by_state&quot;: &#123;</span><br><span class="line">      &quot;terms&quot;: &#123;</span><br><span class="line">        &quot;field&quot;: &quot;state.keyword&quot;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <blockquote>
 <p>本文只是对Elasticsearch的基础知识进行了介绍，更多的API接口可以参考官方的<a target="_blank" rel="noopener" href="https://www.elastic.co/guide/en/elasticsearch/reference/current/index.html">reference</a>。</p>
 </blockquote>
@@ -395,11 +396,6 @@
 
 
 
-    
-  <div class="comments" id="disqus_thread">
-    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
-  </div>
-  
 </div>
   </main>
 
@@ -441,8 +437,6 @@
   <script src="/js/third-party/statistics/lean-analytics.js"></script>
 
 
-<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"frankier-me","count":true,"i18n":{"disqus":"disqus"}}</script>
-<script src="/js/third-party/comments/disqus.js"></script>
 
 </body>
 </html>

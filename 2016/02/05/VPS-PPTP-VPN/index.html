@@ -235,20 +235,6 @@
       <span class="post-meta-item-text">Views: </span>
       <span class="leancloud-visitors-count"></span>
     </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus: </span>
-    
-    <a title="disqus" href="/2016/02/05/VPS-PPTP-VPN/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2016/02/05/VPS-PPTP-VPN/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
 </div>
 
         </div>
@@ -261,12 +247,20 @@
         <h2 id="安装PPTP"><a href="#安装PPTP" class="headerlink" title="安装PPTP"></a>安装PPTP</h2><p>在Ubuntu 14.04下使用以下指令安装<code>pptp</code></p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install pptpd</span><br></pre></td></tr></table></figure>
 <p>接着编辑<code>/etc/pptpd.conf</code>并取消以下两行的注释即可</p>
-<p><img src="http://qiniu.lfeng.tech/20220128204524_3a2da.jpg" alt=""><br><span id="more"></span></p>
+<p><img src="http://qiniu.lfeng.tech/20220128204524_3a2da.jpg"></p>
+<span id="more"></span>
 <h2 id="添加用户名和密码"><a href="#添加用户名和密码" class="headerlink" title="添加用户名和密码"></a>添加用户名和密码</h2><p>编辑<code>/etc/ppp/chap-secrets</code>添加用户名和密码，</p>
-<p><img src="http://qiniu.lfeng.tech/20220128204524_a67fa.jpg" alt=""></p>
+<p><img src="http://qiniu.lfeng.tech/20220128204524_a67fa.jpg"></p>
 <p>第一项是用户名，第二项是vpn类型，第三项是用户密码，第四项可以限制连接IP，设为<code>*</code>表示接受任何IP连接；主要需要设置的是第一项和第三项。</p>
-<h2 id="设置DNS"><a href="#设置DNS" class="headerlink" title="设置DNS"></a>设置DNS</h2><p>编辑<code>/etc/ppp/pptpd-options</code>，取消以下两行的注释<br><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ms-dns 8.8.8.8</span><br><span class="line">ms-dns 8.8.4.4</span><br></pre></td></tr></table></figure><br>接着就可以启动pptpd服务了<br><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">service pptpd restart</span><br></pre></td></tr></table></figure></p>
-<h2 id="附加设置"><a href="#附加设置" class="headerlink" title="附加设置"></a>附加设置</h2><p>添加如下行到<code>/etc/sysctl.conf</code>中，使用<code>sysctl -p</code>使设置生效<br><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">net.ipv4.ip_forward = 1</span><br></pre></td></tr></table></figure><br>接着运行如下指令创建<code>iptables NAT</code>规则<br><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE &amp;&amp; iptables-save</span><br><span class="line">iptables --table nat --append POSTROUTING --out-interface ppp0 -j MASQUERADE</span><br><span class="line">iptables -I INPUT -s 10.0.0.0/8 -i ppp0 -j ACCEPT</span><br><span class="line">iptables --append FORWARD --in-interface eth0 -j ACCEPT</span><br></pre></td></tr></table></figure></p>
+<h2 id="设置DNS"><a href="#设置DNS" class="headerlink" title="设置DNS"></a>设置DNS</h2><p>编辑<code>/etc/ppp/pptpd-options</code>，取消以下两行的注释</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ms-dns 8.8.8.8</span><br><span class="line">ms-dns 8.8.4.4</span><br></pre></td></tr></table></figure>
+<p>接着就可以启动pptpd服务了</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">service pptpd restart</span><br></pre></td></tr></table></figure>
+<h2 id="附加设置"><a href="#附加设置" class="headerlink" title="附加设置"></a>附加设置</h2><p>添加如下行到<code>/etc/sysctl.conf</code>中，使用<code>sysctl -p</code>使设置生效</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">net.ipv4.ip_forward = 1</span><br></pre></td></tr></table></figure>
+<p>接着运行如下指令创建<code>iptables NAT</code>规则</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE &amp;&amp; iptables-save</span><br><span class="line">iptables --table nat --append POSTROUTING --out-interface ppp0 -j MASQUERADE</span><br><span class="line">iptables -I INPUT -s 10.0.0.0/8 -i ppp0 -j ACCEPT</span><br><span class="line">iptables --append FORWARD --in-interface eth0 -j ACCEPT</span><br></pre></td></tr></table></figure>
+
 <hr>
 <p>接着就可以在手机或者电脑上利用刚才设置的用户名、密码登录VPN了，enjoy it！</p>
 <hr>
@@ -307,11 +301,6 @@
 
 
 
-    
-  <div class="comments" id="disqus_thread">
-    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
-  </div>
-  
 </div>
   </main>
 
@@ -353,8 +342,6 @@
   <script src="/js/third-party/statistics/lean-analytics.js"></script>
 
 
-<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"frankier-me","count":true,"i18n":{"disqus":"disqus"}}</script>
-<script src="/js/third-party/comments/disqus.js"></script>
 
 </body>
 </html>

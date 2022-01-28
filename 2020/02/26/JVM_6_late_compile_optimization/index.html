@@ -237,20 +237,6 @@
       <span class="post-meta-item-text">Views: </span>
       <span class="leancloud-visitors-count"></span>
     </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus: </span>
-    
-    <a title="disqus" href="/2020/02/26/JVM_6_late_compile_optimization/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2020/02/26/JVM_6_late_compile_optimization/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
 </div>
 
         </div>
@@ -265,6 +251,7 @@
 <h3 id="6-1-JIT编译器"><a href="#6-1-JIT编译器" class="headerlink" title="6.1 JIT编译器"></a>6.1 JIT编译器</h3><p>在部分的商用虚拟机中，java程序最初是通过<strong>解释器(Interpreter)</strong> 进行解释执行的，当虚拟机发现某个方法或代码块的运行特别频繁时，就会把这些代码认定为“<strong>热点代码</strong>”（Hot Spot Code）。为了提高热点代码的执行效率，在运行时，虚拟机将会把这些代码编译成与本地平台相关的机器码，并进行各种层次的优化，完成这个过程的编译器称为<strong>即时编译器</strong>（Just In Time Compiler）</p>
 <p>java虚拟机规范中没有规定即时编译器应该如何实现，也没有规定虚拟机必需拥有即时编译器，这部分功能完全是虚拟机具体实现相关的内容。本文中提及的编译器、即时编译器都是指HotSpot虚拟机内的即时编译器。</p>
 <span id="more"></span>
+
 <h3 id="6-2-HotSpot虚拟机内的即时编译器"><a href="#6-2-HotSpot虚拟机内的即时编译器" class="headerlink" title="6.2 HotSpot虚拟机内的即时编译器"></a>6.2 HotSpot虚拟机内的即时编译器</h3><h4 id="解释器和编译器"><a href="#解释器和编译器" class="headerlink" title="解释器和编译器"></a>解释器和编译器</h4><p>HotSpot虚拟机采用<strong>解释器与编译器并存</strong>的架构，解释器与编译器两者各有优势：</p>
 <ol>
 <li>当程序需要迅速启动和执行的时候，解释器可以首先发挥作用，省去编译的时间，立即执行</li>
@@ -327,6 +314,7 @@
 <h4 id="数组边界检查消除"><a href="#数组边界检查消除" class="headerlink" title="数组边界检查消除"></a>数组边界检查消除</h4><p><strong>组边界检查消除</strong>（Array Bounds Checking Elimination）是即时编译器中的一项语言相关的经典优化技术。由于java语言中访问数组元素时，系统将会自动进行上下界的范围检查，这必定会造成性能负担。为了安全，数组边界检查是必须做的，但数组边界检查是否必须一次不漏的执行则是可以“商量”的事情。例如编译器通过数据流分析判定数组下标的取值永远在[0,数组.length)之内，就可以把数组的上下界检查消除</p>
 <p>从更高的角度看，大量安全检查使编写java程序更简单，但也造成了更多的隐式开销，对于这些隐式开销，除了尽可能把运行期检查提到编译期完成的思路之外，还可以使用隐式异常处理：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">if(x != null)&#123;</span><br><span class="line">  return x.value;</span><br><span class="line">&#125;else&#123;</span><br><span class="line">  throw new NullPointException();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">隐式异常优化后：</span><br><span class="line"></span><br><span class="line">try&#123;</span><br><span class="line">  return x.value;</span><br><span class="line">&#125;catch(segment_fault)&#123;</span><br><span class="line">  uncommon_trap();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <p>虚拟机会注册一个Segment Fault信号的异常处理器（uncommon_trap()），这样x不为空时，不会额外消耗一次对foo判空的开销。代价是当x为空时，必须转入异常处理器中恢复并抛出NullPointException，速度远比一次判空检查慢。</p>
 <h4 id="方法内联"><a href="#方法内联" class="headerlink" title="方法内联"></a>方法内联</h4><p>方法内联是编译器最重要的优化手段之一，除了消除方法调用成本之外，更重要的意义是为其他优化手段建立良好的基础。<strong>方法内联的优化行为只不过是把目标方法的代码“复制”到发起调用的方法之中，避免发生真实的方法调用而已</strong>。但实际上java虚拟机中的内联过程远远没有那么简单，因为java中的方法大多数是虚方法，虚方法在编译期做内联的时候根本无法确定应该使用哪个方法版本</p>
 <p>对此java虚拟机设计团队想了很多办法，首先是引入了一种名为“类型继承关系分析”（Class Hierarchy Analysis, CHA）的技术，这是一种基于整个应用程序的类型分析技术，它用于确定在目前已加载的类中，某个接口是否有多余一种的实现，某个类是否存在子类、子类是否为抽象类等信息。</p>
@@ -396,11 +384,6 @@
 
 
 
-    
-  <div class="comments" id="disqus_thread">
-    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
-  </div>
-  
 </div>
   </main>
 
@@ -442,8 +425,6 @@
   <script src="/js/third-party/statistics/lean-analytics.js"></script>
 
 
-<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"frankier-me","count":true,"i18n":{"disqus":"disqus"}}</script>
-<script src="/js/third-party/comments/disqus.js"></script>
 
 </body>
 </html>

@@ -254,20 +254,6 @@
       <span class="post-meta-item-text">Views: </span>
       <span class="leancloud-visitors-count"></span>
     </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus: </span>
-    
-    <a title="disqus" href="/2020/01/17/JVM_2_GC/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2020/01/17/JVM_2_GC/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
 </div>
 
         </div>
@@ -288,6 +274,7 @@
 <li>如何回收？</li>
 </ul>
 <span id="more"></span>
+
 <p>下面将对这些问题进行一一介绍。</p>
 <h3 id="2-1-如何判断对象存活"><a href="#2-1-如何判断对象存活" class="headerlink" title="2.1 如何判断对象存活"></a>2.1 如何判断对象存活</h3><p>在堆里存放着Java世界中几乎所有的对象实例，垃圾收集器在对堆进行回收前，首要的就是确定这些对象中哪些还“存活”着，哪些已经“死去”（即不可能再被任何途径使用的对象）。</p>
 <h4 id="引用计数算法"><a href="#引用计数算法" class="headerlink" title="引用计数算法"></a>引用计数算法</h4><p>引用计数器判断对象是否存活的过程是这样的：<strong>给对象中添加一个引用计数器，每当有一个地方引用它时，计数器加1；当引用失效时，计数器减1；任何时刻计数器为0的对象就是不可能再被使用的。</strong></p>
@@ -306,16 +293,19 @@
 <h4 id="软引用"><a href="#软引用" class="headerlink" title="软引用"></a>软引用</h4><p>一些有用但是并非必需，用软引用关联的对象，系统将要发生OOM之前，这些对象就会被回收。</p>
 <p>下面的例子中，当程序发生OOM之前，尝试去回收软引用所关联的对象，导致后面获取到的值为null。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">public class TestSoftRef &#123;</span><br><span class="line">	</span><br><span class="line">	public static class User&#123;</span><br><span class="line">		public int id = 0;</span><br><span class="line">		public String name = &quot;&quot;;</span><br><span class="line">		public User(int id, String name) &#123;</span><br><span class="line">			super();</span><br><span class="line">			this.id = id;</span><br><span class="line">			this.name = name;</span><br><span class="line">		&#125;</span><br><span class="line">		@Override</span><br><span class="line">		public String toString() &#123;</span><br><span class="line">			return &quot;User [id=&quot; + id + &quot;, name=&quot; + name + &quot;]&quot;;</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	public static void main(String[] args) &#123;</span><br><span class="line"></span><br><span class="line">		User u = new User(1,&quot;Vincent&quot;);</span><br><span class="line">		SoftReference&lt;User&gt; userSoft = new SoftReference&lt;&gt;(u);</span><br><span class="line">		u = null;//保证new User(1,&quot;Vincent&quot;)这个实例只有userSoft在软引用</span><br><span class="line">		</span><br><span class="line">		System.out.println(userSoft.get());</span><br><span class="line">		System.gc();//展示gc的时候，SoftReference不一定会被回收</span><br><span class="line">		System.out.println(&quot;AfterGc&quot;);</span><br><span class="line">		System.out.println(userSoft.get());//new User(1,&quot;Vincent&quot;)没有被回收</span><br><span class="line">		List&lt;byte[]&gt; list = new LinkedList&lt;&gt;();</span><br><span class="line">		</span><br><span class="line">		try &#123;</span><br><span class="line">			for(int i=0;i&lt;100;i++) &#123;</span><br><span class="line">				//User(1,&quot;Vincent&quot;)实例一直存在</span><br><span class="line">				System.out.println(&quot;********************&quot;+userSoft.get());</span><br><span class="line">				list.add(new byte[1024*1024*1]);</span><br><span class="line">			&#125;</span><br><span class="line">		&#125; catch (Throwable e) &#123;</span><br><span class="line">			//抛出了OOM异常后打印的，User(1,&quot;Vincent&quot;)这个实例被回收了</span><br><span class="line">			System.out.println(&quot;Throwable********************&quot;+userSoft.get());</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <p>程序输出结果：</p>
 <p><img src="http://qiniu.lfeng.tech/20220128204526_6eb2d.jpg" alt="Screen Shot 2019-12-19 at 8.52.43 PM.png"></p>
 <h4 id="弱引用-WeakReference"><a href="#弱引用-WeakReference" class="headerlink" title="弱引用 WeakReference"></a>弱引用 WeakReference</h4><p>一些有用（程度比软引用更低）但是并非必需，用弱引用关联的对象，<strong>只能生存到下一次垃圾回收之前</strong>，GC发生时，不管内存够不够，都会被回收。</p>
 <p>下面的例子中，发生gc后，弱引用所关联的对象被回收。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">public class TestWeakRef &#123;</span><br><span class="line">	public static class User&#123;</span><br><span class="line">		public int id = 0;</span><br><span class="line">		public String name = &quot;&quot;;</span><br><span class="line">		public User(int id, String name) &#123;</span><br><span class="line">			super();</span><br><span class="line">			this.id = id;</span><br><span class="line">			this.name = name;</span><br><span class="line">		&#125;</span><br><span class="line">		@Override</span><br><span class="line">		public String toString() &#123;</span><br><span class="line">			return &quot;User [id=&quot; + id + &quot;, name=&quot; + name + &quot;]&quot;;</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	public static void main(String[] args) &#123;</span><br><span class="line">		User u = new User(1,&quot;Vincent&quot;);</span><br><span class="line">		WeakReference&lt;User&gt; userWeak = new WeakReference&lt;&gt;(u);</span><br><span class="line">		u = null;</span><br><span class="line">		System.out.println(userWeak.get());</span><br><span class="line">		System.gc();</span><br><span class="line">		System.out.println(&quot;AfterGc&quot;);</span><br><span class="line">		System.out.println(userWeak.get());</span><br><span class="line">		</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <p>输出结果如下：</p>
 <p><img src="http://qiniu.lfeng.tech/20220128204526_74d38.jpg" alt="Screen Shot 2019-12-19 at 8.56.46 PM.png"></p>
 <h4 id="虚引用"><a href="#虚引用" class="headerlink" title="虚引用"></a>虚引用</h4><p>又称为幽灵引用或者幻影引用。一个对象是否有虚引用的存在，完全不会对其生存时间构成影响，也无法通过虚引用取得一个对象。</p>
 <p>为一个对象设置虚引用关联的唯一目的，就是能在<strong>这个对象被回收时收到一个系统通知</strong>。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Object obj = new Object();</span><br><span class="line">PhantomReference&lt;Object&gt; pf = new PhantomReference&lt;Object&gt;(obj);</span><br><span class="line">obj = null;</span><br></pre></td></tr></table></figure>
+
 <blockquote>
 <p>注意：软引用 SoftReference和弱引用 WeakReference，可以用在内存资源紧张的情况下以及创建不是很重要的数据缓存。当系统内存不足的时候，缓存中的内容是可以被释放的。<br>例如，一个程序用来处理用户提供的图片。如果将所有图片读入内存，这样虽然可以很快的打开图片，但内存空间使用巨大，一些使用较少的图片浪费内存空间，需要手动从内存中移除。如果每次打开图片都从磁盘文件中读取到内存再显示出来，虽然内存占用较少，但一些经常使用的图片每次打开都要访问磁盘，代价巨大。这个时候就可以用软引用构建缓存。</p>
 </blockquote>
@@ -459,8 +449,7 @@
 <th>描述</th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td>-XX:+UseSerialGC</td>
 <td>指定Serial收集器+Serial Old收集器组合执行内存回收</td>
 </tr>
@@ -592,8 +581,7 @@
 <td>-XX:G1HeapRegionSize</td>
 <td>使用G1时Java堆会被分为大小统一的的区(region)。此参数可以指定每个heap区的大小. 默认值将根据 heap size 算出最优解. 最小值为 1Mb, 最大值为 32Mb</td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 <h3 id="2-7-内存分配策略"><a href="#2-7-内存分配策略" class="headerlink" title="2.7 内存分配策略"></a>2.7 内存分配策略</h3><h4 id="对象优先在Eden区分配"><a href="#对象优先在Eden区分配" class="headerlink" title="对象优先在Eden区分配"></a>对象优先在Eden区分配</h4><p>大多数情况下，对象在新生代的Eden区中分配。当Eden区没有足够空间进行分配时，虚拟机将发起一次Minor GC。</p>
 <h4 id="大对象直接进入老年代"><a href="#大对象直接进入老年代" class="headerlink" title="大对象直接进入老年代"></a>大对象直接进入老年代</h4><p>所谓的大对象是指，需要大量连续内存空间的Java对象，最典型的大对象就是很长的字符串以及数组。大对象对虚拟机的内存分配来说是一个坏消息，经常出现大对象容易导致内存还有不少空间时，就提前触发GC以获取足够的连续空间来安置它们。</p>
 <p>虚拟机提供了一个-XX:PretenureSizeThreshold参数，令大于这个设置值的对象直接在老年代分配。这样做的目的是避免在Eden区及两个Survivor区之间发生大量的内存复制。缺省为0，表示绝不会直接分配在老年代。</p>
@@ -624,9 +612,10 @@
 <p>执行CMS GC的过程中同时有对象要放入老年代，而此时老年代空间不足（有时候“空间不足”是CMS GC时当前的浮动垃圾过多导致暂时性的空间不足触发Full GC），便会报Concurrent Mode Failure错误，并触发Full GC。</p>
 <h3 id="2-9-新生代配置实战"><a href="#2-9-新生代配置实战" class="headerlink" title="2.9 新生代配置实战"></a>2.9 新生代配置实战</h3><p>关于新生代的配置，主要有下面三种参数：</p>
 <p><strong>-XX:NewSize/MaxNewSize</strong> ： 新生代的size和最大size，该参数优先级最高。<br><strong>-Xmn（可以看成NewSize= MaxNewSize）</strong>：新生代的大小，该参数优先级次高。<br><strong>-XX:NewRatio</strong>： 表示比例，例如=2，表示 新生代：老年代 = 1:2，该参数优先级最低。</p>
-<p>还有参数：<strong>-XX:SurvivorRatio</strong> 表示Eden和Survivor的比值，缺省为8，表示 Eden:FromSurvivor:ToSurvivor= 8:1:1</p>
+<p>还有参数：**-XX:SurvivorRatio** 表示Eden和Survivor的比值，缺省为8，表示 Eden:FromSurvivor:ToSurvivor= 8:1:1</p>
 <p>下面举例参数配置进行实战,程序中生成了10个大小为1M的数组，</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">public class NewSize &#123;</span><br><span class="line"></span><br><span class="line">	public static void main(String[] args) &#123;</span><br><span class="line">		int cap = 1*1024*1024;//1M</span><br><span class="line">		byte[] b1 = new byte[cap];</span><br><span class="line">		byte[] b2 = new byte[cap];</span><br><span class="line">		byte[] b3 = new byte[cap];</span><br><span class="line">		byte[] b4 = new byte[cap];</span><br><span class="line">		byte[] b5 = new byte[cap];</span><br><span class="line">		byte[] b6 = new byte[cap];</span><br><span class="line">		byte[] b7 = new byte[cap];</span><br><span class="line">		byte[] b8 = new byte[cap];</span><br><span class="line">		byte[] b9 = new byte[cap];</span><br><span class="line">		byte[] b0 = new byte[cap];</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <ol>
 <li>-Xms20M -Xmx20M -XX:+PrintGCDetails –Xmn2m -XX:SurvivorRatio=2</li>
 </ol>
@@ -655,6 +644,7 @@
 </ul>
 <p>下面举例说明，例子中实现了一个基本的栈，注意看出栈的部分，为了帮助GC，当出栈完成后，手动将栈顶的引用清空，有助于后续元素的gc。这里如果不清空，当元素出栈后，栈顶原来的位置还有该元素的引用，所以可能造成无法对已经出栈的元素进行回收，造成内存泄露。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">public class Stack &#123;</span><br><span class="line">	</span><br><span class="line">	public  Object[] elements;</span><br><span class="line">	private int size = 0;//指示器，指示当前栈顶的位置</span><br><span class="line"></span><br><span class="line">    private static final int Cap = 16;</span><br><span class="line"></span><br><span class="line">    public Stack() &#123;</span><br><span class="line">    	elements = new Object[Cap];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    //入栈</span><br><span class="line">    public void push(Object e)&#123;</span><br><span class="line">    	elements[size] = e;</span><br><span class="line">    	size++;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    //出栈</span><br><span class="line">    public Object pop()&#123;</span><br><span class="line">    	size = size-1;</span><br><span class="line">    	Object o = elements[size];</span><br><span class="line">    	elements[size] = null;//help gc</span><br><span class="line">        return o;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        Stack stack = new Stack();</span><br><span class="line">        Object o = new Object();</span><br><span class="line">        System.out.println(&quot;o=&quot;+o);</span><br><span class="line">        stack.push(o);</span><br><span class="line">        Object o1 =  stack.pop();</span><br><span class="line">        System.out.println(&quot;o1=&quot;+o1);</span><br><span class="line">        </span><br><span class="line">        System.out.println(stack.elements[0]);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <h3 id="2-11-浅堆和深堆"><a href="#2-11-浅堆和深堆" class="headerlink" title="2.11 浅堆和深堆"></a>2.11 浅堆和深堆</h3><p><strong>浅堆</strong> :（Shallow Heap）是指一个对象所消耗的内存。例如，在32位系统中，一个对象引用会占据4个字节，一个int类型会占据4个字节，long型变量会占据8个字节，每个对象头需要占用8个字节。</p>
 <p><strong>深堆</strong> ：这个对象被GC回收后，可以真实释放的内存大小，也就是只能通过对象被直接或间接访问到的所有对象的集合。通俗地说，就是指仅被对象所持有的对象的集合。</p>
 <p>举例：对象A引用了C和D，对象B引用了C和E。那么对象A的浅堆大小只是A本身，不含C和D，而A的实际大小为A、C、D三者之和。而A的深堆大小为A与D之和，由于对象C还可以通过对象B访问到，因此不在对象A的深堆范围内。</p>
@@ -715,11 +705,6 @@
 
 
 
-    
-  <div class="comments" id="disqus_thread">
-    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
-  </div>
-  
 </div>
   </main>
 
@@ -761,8 +746,6 @@
   <script src="/js/third-party/statistics/lean-analytics.js"></script>
 
 
-<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"frankier-me","count":true,"i18n":{"disqus":"disqus"}}</script>
-<script src="/js/third-party/comments/disqus.js"></script>
 
 </body>
 </html>

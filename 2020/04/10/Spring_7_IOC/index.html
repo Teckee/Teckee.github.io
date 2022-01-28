@@ -254,20 +254,6 @@
       <span class="post-meta-item-text">Views: </span>
       <span class="leancloud-visitors-count"></span>
     </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus: </span>
-    
-    <a title="disqus" href="/2020/04/10/Spring_7_IOC/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2020/04/10/Spring_7_IOC/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
 </div>
 
         </div>
@@ -279,8 +265,9 @@
     <div class="post-body" itemprop="articleBody">
         <p><img src="http://qiniu.lfeng.tech/20220128204529_7696e.jpg" alt="Spring.png"></p>
 <h2 id="7-IOC初始化流程"><a href="#7-IOC初始化流程" class="headerlink" title="7. IOC初始化流程"></a>7. IOC初始化流程</h2><p>IoC容器的初始化就是含有BeanDefinition信息的Resource的定位、载入、解析、注册四个过程，最终我们配置的bean，以beanDefinition的数据结构存在于IoC容器即内存中。这里并不涉及bean的依赖注入，只是bean定义的载入。但有例外，在使用Ioc容器时有一个预实例化的配置，即bean定义中的设置了lazyinit属性，那么这个bean在Ioc容器初始化时就预先加载，不需要等到Ioc整个初始化后，第一次getBean时才会触发。其中refresh()启动对Ioc容器的初始化。</p>
-<p><img src="http://qiniu.lfeng.tech/20220128204529_599e1.jpg" alt=""></p>
+<p><img src="http://qiniu.lfeng.tech/20220128204529_599e1.jpg"></p>
 <span id="more"></span>
+
 <p>主要分为如下三个步骤：</p>
 <ol>
 <li>Resource定位过程。</li>
@@ -300,11 +287,19 @@
 <p><img src="http://qiniu.lfeng.tech/20220128204530_14958.jpg" alt="11111111.png"></p>
 <p>下面对每个函数仔细分析。</p>
 <h4 id="1-prepareRefresh-预处理"><a href="#1-prepareRefresh-预处理" class="headerlink" title="1. prepareRefresh() 预处理"></a>1. prepareRefresh() 预处理</h4><p><img src="http://qiniu.lfeng.tech/20220128204531_2f818.jpg" alt="Screen Shot 2020-02-18 at 5.10.12 PM.png"></p>
-<p>1) initPropertySources()初始化一些属性设置；子类自定义个性化的属性设置方法<br>2) getEnvironment().validateRequiredProperties()；校验属性的合法等<br>3) earlyApplicationEvents = new LinkedHashSet<ApplicationEvent>() 保存容器中一些早期的事件</p>
+<ol>
+<li>initPropertySources()初始化一些属性设置；子类自定义个性化的属性设置方法</li>
+<li>getEnvironment().validateRequiredProperties()；校验属性的合法等</li>
+<li>earlyApplicationEvents = new LinkedHashSet<ApplicationEvent>() 保存容器中一些早期的事件</li>
+</ol>
 <h4 id="2-obtainFreshBeanFactory-获取BeanFactory"><a href="#2-obtainFreshBeanFactory-获取BeanFactory" class="headerlink" title="2. obtainFreshBeanFactory() 获取BeanFactory"></a>2. obtainFreshBeanFactory() 获取BeanFactory</h4><p>这一步重点是refreshBeanFactory(),</p>
 <p><img src="http://qiniu.lfeng.tech/20220128204532_38323.jpg" alt="Screen Shot 2020-02-18 at 5.15.34 PM.png"></p>
 <p><img src="http://qiniu.lfeng.tech/20220128204532_0616e.jpg" alt="Screen Shot 2020-02-18 at 5.16.50 PM.png"></p>
-<p>1) refreshBeanFactory()<br>刷新【创建】容器,创建了一个this.beanFactory = new DefaultListableBeanFactory();并设置序列化id。<br>2) getBeanFactory()；<br>返回上一步创建的beanFactory对象<br>3) 将创建BeanFactory【DefaultListableBeanFactory】返回</p>
+<ol>
+<li>refreshBeanFactory()<br>刷新【创建】容器,创建了一个this.beanFactory = new DefaultListableBeanFactory();并设置序列化id。</li>
+<li>getBeanFactory()；<br>返回上一步创建的beanFactory对象</li>
+<li>将创建BeanFactory【DefaultListableBeanFactory】返回</li>
+</ol>
 <h4 id="3-prepareBeanFactory-beanFactory-BeanFactory的预准备工作"><a href="#3-prepareBeanFactory-beanFactory-BeanFactory的预准备工作" class="headerlink" title="3. prepareBeanFactory(beanFactory) BeanFactory的预准备工作"></a>3. prepareBeanFactory(beanFactory) BeanFactory的预准备工作</h4><p><img src="http://qiniu.lfeng.tech/20220128204533_028c4.jpg" alt="Screen Shot 2020-02-18 at 5.20.33 PM.png"></p>
 <ol>
 <li>设置beanFactory的类加载器、支持表达式解析器</li>
@@ -314,13 +309,15 @@
 <li>BeanFactory、ResourceLoader、ApplicationEventPublisher、ApplicationContext</li>
 <li>添加BeanPostProcessor【ApplicationListenerDetector】</li>
 <li>添加编译时的AspectJ</li>
-<li>给BeanFactory中注册一些能用的组件 environment【ConfigurableEnvironment】、systemProperties【Map&lt;String, Object&gt;】、systemEnvironment【Map&lt;String, Object&gt;】</li>
+<li>给BeanFactory中注册一些能用的组件 environment【ConfigurableEnvironment】、systemProperties【Map&lt;String, Object&gt;】、systemEnvironment【Map&lt;String, Object&gt;】</li>
 </ol>
 <h4 id="4-postProcessBeanFactory-beanFactory-beanFactory准备工作完成后进行的后置处理"><a href="#4-postProcessBeanFactory-beanFactory-beanFactory准备工作完成后进行的后置处理" class="headerlink" title="4. postProcessBeanFactory(beanFactory) beanFactory准备工作完成后进行的后置处理"></a>4. postProcessBeanFactory(beanFactory) beanFactory准备工作完成后进行的后置处理</h4><p>子类通过重写这个方法来在beanFactory创建并预准备完成以后做进一步的设置，以上4步是beanFactory的创建以及预准备工作。</p>
 <h4 id="5-invokeBeanFactoryPostProcessors-beanFactory-调用beanFactory后置处理器"><a href="#5-invokeBeanFactoryPostProcessors-beanFactory-调用beanFactory后置处理器" class="headerlink" title="5. invokeBeanFactoryPostProcessors(beanFactory) 调用beanFactory后置处理器"></a>5. invokeBeanFactoryPostProcessors(beanFactory) 调用beanFactory后置处理器</h4><p>这部分主要执行实现了如下两个接口的类方法：<strong>BeanDefinitionRegistryPostProcessor</strong>、<strong>BeanFactoryPostProcessor</strong>。</p>
 <p><strong>1. 先执行BeanDefinitionRegistryPostProcessor的方法</strong></p>
 <p>1)获取所有的BeanDefinitionRegistryPostProcessor</p>
-<p>2)先执行实现了PriorityOrdered接口的获取所有的BeanDefinitionRegistryPostProcessor<br><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">postProcessor.postProcessBeanDefinitionRegistry(registry)</span><br></pre></td></tr></table></figure></p>
+<p>2)先执行实现了PriorityOrdered接口的获取所有的BeanDefinitionRegistryPostProcessor</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">postProcessor.postProcessBeanDefinitionRegistry(registry)</span><br></pre></td></tr></table></figure>
+
 <p>3)在执行实现了Ordered顺序接口的BeanDefinitionRegistryPostProcessor</p>
 <p>4)最后执行没有任何优先级或者是顺序接口的BeanDefinitionRegistryPostProcessor</p>
 <p><img src="http://qiniu.lfeng.tech/20220128204535_d8121.jpg" alt="Screen Shot 2020-02-18 at 6.57.34 PM.png"></p>
@@ -342,22 +339,22 @@
 <p><img src="http://qiniu.lfeng.tech/20220128204536_921b7.jpg" alt="Screen Shot 2020-02-18 at 9.43.12 PM.png"></p>
 <h4 id="7-initMessageSource-初始化messageSource组件"><a href="#7-initMessageSource-初始化messageSource组件" class="headerlink" title="7. initMessageSource() 初始化messageSource组件"></a>7. initMessageSource() 初始化messageSource组件</h4><p>1)获取BeanFactory</p>
 <p>2)看容器中是否有id为messageSource的，类型是MessageSource的组件<br>如果有复制给messageSource，如果没有创建一个DelegatingMessageSource</p>
-<p>3)把创建好的MessageSource注册到容器中，以后获取国际化配置文件的值的时候可以自动注入MessageSource<br>beanFactory.registerSingleton(MESSAGE_SOURCE_BEAN_NAME, this.messageSource);</p>
+<p>3)把创建好的MessageSource注册到容器中，以后获取国际化配置文件的值的时候可以自动注入MessageSource<br>beanFactory.registerSingleton(MESSAGE_SOURCE_BEAN_NAME, this.messageSource);</p>
 <h4 id="8-initApplicationEventMulticaster"><a href="#8-initApplicationEventMulticaster" class="headerlink" title="8. initApplicationEventMulticaster()"></a>8. initApplicationEventMulticaster()</h4><p>1)获取BeanFactory</p>
 <p>2)从BeanFactory中获取ApplicationEventMulticaster</p>
 <p>3)如果没有上一步配置，那就创建一个SimpleApplicationEventMulticaster</p>
-<p>4)将创建的ApplicationEventMulticaster添加到BeanFactory中，以后其他组件直接自动注入<br>beanFactory.registerSingleton(APPLICATION_EVENT_MULTICASTER_BEAN_NAME, this.applicationEventMulticaster);</p>
+<p>4)将创建的ApplicationEventMulticaster添加到BeanFactory中，以后其他组件直接自动注入<br>beanFactory.registerSingleton(APPLICATION_EVENT_MULTICASTER_BEAN_NAME, this.applicationEventMulticaster);</p>
 <h4 id="9-onRefresh"><a href="#9-onRefresh" class="headerlink" title="9. onRefresh()"></a>9. onRefresh()</h4><p>空函数，子类可以重写这个方法，在容器刷新的时候可以自定义逻辑(比如增加组件)</p>
 <h4 id="10-registerListeners"><a href="#10-registerListeners" class="headerlink" title="10. registerListeners()"></a>10. registerListeners()</h4><p>1)从容器中拿到所有的ApplicationListener。</p>
-<p>2)将每个监听器添加到时间派发器中<br> getApplicationEventMulticaster().addApplicationListenerBean(listenerBeanName);</p>
+<p>2)将每个监听器添加到时间派发器中<br> getApplicationEventMulticaster().addApplicationListenerBean(listenerBeanName);</p>
 <p>3)派发之前步骤产生的事件</p>
 <h4 id="11-finishBeanFactoryInitialization-beanFactory-初始化所有剩下的单实例bean"><a href="#11-finishBeanFactoryInitialization-beanFactory-初始化所有剩下的单实例bean" class="headerlink" title="11. finishBeanFactoryInitialization(beanFactory);初始化所有剩下的单实例bean"></a>11. finishBeanFactoryInitialization(beanFactory);初始化所有剩下的单实例bean</h4><p>这是所有步骤中，最重要，最复杂的一步，之前AOP中对这部分有过仔细介绍，这里重点梳理正常Bean的初始化流程。</p>
 <p><img src="http://qiniu.lfeng.tech/20220128204538_057bb.jpg" alt="未命名文件 (1).png"></p>
 <h4 id="12-finishRefresh-完成BeanFactory的初始化创建工作，IOC容器就创建完成"><a href="#12-finishRefresh-完成BeanFactory的初始化创建工作，IOC容器就创建完成" class="headerlink" title="12. finishRefresh() 完成BeanFactory的初始化创建工作，IOC容器就创建完成"></a>12. finishRefresh() 完成BeanFactory的初始化创建工作，IOC容器就创建完成</h4><p>1.initLifecycleProcessor()初始化和生命周期有关的后置处理器；</p>
 <p>LifecycleProcessor默认从容器中找是否有LifecycleProcessor的组件</p>
 <p>2.getLifecycleProcessor().onRefresh();</p>
-<p>拿到前面定义的生命周期处理器(BeanFactory) 回调onRefresh</p>
-<p>3.publishEvent(new ContextRefreshedEvent(this));发布容器刷新完成事件</p>
+<p>拿到前面定义的生命周期处理器(BeanFactory) 回调onRefresh</p>
+<p>3.publishEvent(new ContextRefreshedEvent(this));发布容器刷新完成事件</p>
 <p>4.LiveBeansView.registerApplicationContext(this);</p>
 <h3 id="7-2-Spring-bean的循环依赖以及解决方式"><a href="#7-2-Spring-bean的循环依赖以及解决方式" class="headerlink" title="7.2 Spring-bean的循环依赖以及解决方式"></a>7.2 Spring-bean的循环依赖以及解决方式</h3><h4 id="什么是循环依赖？"><a href="#什么是循环依赖？" class="headerlink" title="什么是循环依赖？"></a>什么是循环依赖？</h4><p>循环依赖其实就是循环引用，也就是两个或则两个以上的bean互相持有对方，最终形成闭环。比如A依赖于B，B依赖于C，C又依赖于A。如下图：</p>
 <p><img src="http://qiniu.lfeng.tech/20220128204539_e8df5.jpg" alt="Screen Shot 2020-02-19 at 3.43.36 PM.png">@w=250</p>
@@ -366,6 +363,7 @@
 <p>（1）构造器的循环依赖<br>（2）field属性或者setter的循环依赖。</p>
 <p>下面的例子中， 会发生这种循环依赖的情况：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">@Component</span><br><span class="line">public class CircularDependencyA &#123;</span><br><span class="line"> </span><br><span class="line">    private CircularDependencyB circB;</span><br><span class="line"> </span><br><span class="line">    @Autowired</span><br><span class="line">    public CircularDependencyA(CircularDependencyB circB) &#123;</span><br><span class="line">        this.circB = circB;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@Component</span><br><span class="line">public class CircularDependencyB &#123;</span><br><span class="line"> </span><br><span class="line">    private CircularDependencyA circA;</span><br><span class="line"> </span><br><span class="line">    @Autowired</span><br><span class="line">    public CircularDependencyB(CircularDependencyA circA) &#123;</span><br><span class="line">        this.circA = circA;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <h4 id="怎么检测是否存在循环依赖？"><a href="#怎么检测是否存在循环依赖？" class="headerlink" title="怎么检测是否存在循环依赖？"></a>怎么检测是否存在循环依赖？</h4><p>检测循环依赖相对比较容易，Bean在创建的时候可以给该Bean加标记，如果递归调用回来发现正在创建中的话，即说明了循环依赖了。</p>
 <h4 id="Spring怎么解决field属性和setter的循环依赖？"><a href="#Spring怎么解决field属性和setter的循环依赖？" class="headerlink" title="Spring怎么解决field属性和setter的循环依赖？"></a>Spring怎么解决field属性和setter的循环依赖？</h4><p>Spring的循环依赖的理论依据其实是基于Java的引用传递，当我们获取到对象的引用时，对象的field或则属性是可以延后设置的(但是构造器必须是在获取引用之前)。</p>
 <p>Spring的单例对象的初始化主要分为三步：</p>
@@ -376,9 +374,11 @@
 <p>那么我们要解决循环引用也应该从初始化过程着手，对于单例来说，在Spring容器整个生命周期内，有且只有一个对象，所以很容易想到这个对象应该存在Cache中，Spring为了解决单例的循环依赖问题，使用了三级缓存。</p>
 <p>三级缓存主要指：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/** Cache of singleton objects: bean name --&gt; bean instance */</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> Map&lt;String, Object&gt; singletonObjects = <span class="keyword">new</span> ConcurrentHashMap&lt;String, Object&gt;(<span class="number">256</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">/** Cache of singleton factories: bean name --&gt; ObjectFactory */</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> Map&lt;String, ObjectFactory&lt;?&gt;&gt; singletonFactories = <span class="keyword">new</span> HashMap&lt;String, ObjectFactory&lt;?&gt;&gt;(<span class="number">16</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">/** Cache of early singleton objects: bean name --&gt; bean instance */</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> Map&lt;String, Object&gt; earlySingletonObjects = <span class="keyword">new</span> HashMap&lt;String, Object&gt;(<span class="number">16</span>);</span><br></pre></td></tr></table></figure>
+
 <p>这三级缓存分别指：<br>singletonFactories ： 单例对象工厂的cache<br>earlySingletonObjects ：提前曝光的单例对象的Cache<br>singletonObjects：单例对象的cache</p>
 <p>我们在创建bean的时候，首先想到的是从cache中获取这个单例的bean，这个缓存就是singletonObjects。主要调用方法就就是：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">protected</span> Object <span class="title">getSingleton</span><span class="params">(String beanName, <span class="keyword">boolean</span> allowEarlyReference)</span> </span>&#123;</span><br><span class="line">    Object singletonObject = <span class="keyword">this</span>.singletonObjects.get(beanName);</span><br><span class="line">    <span class="keyword">if</span> (singletonObject == <span class="keyword">null</span> &amp;&amp; isSingletonCurrentlyInCreation(beanName)) &#123;</span><br><span class="line">        <span class="keyword">synchronized</span> (<span class="keyword">this</span>.singletonObjects) &#123;</span><br><span class="line">            singletonObject = <span class="keyword">this</span>.earlySingletonObjects.get(beanName);</span><br><span class="line">            <span class="keyword">if</span> (singletonObject == <span class="keyword">null</span> &amp;&amp; allowEarlyReference) &#123;</span><br><span class="line">                ObjectFactory&lt;?&gt; singletonFactory = <span class="keyword">this</span>.singletonFactories.get(beanName);</span><br><span class="line">                <span class="keyword">if</span> (singletonFactory != <span class="keyword">null</span>) &#123;</span><br><span class="line">                    singletonObject = singletonFactory.getObject();</span><br><span class="line">                    <span class="keyword">this</span>.earlySingletonObjects.put(beanName, singletonObject);</span><br><span class="line">                    <span class="keyword">this</span>.singletonFactories.remove(beanName);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> (singletonObject != NULL_OBJECT ? singletonObject : <span class="keyword">null</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <p>上面的代码需要解释两个参数：</p>
 <ul>
 <li>isSingletonCurrentlyInCreation()判断当前单例bean是否正在创建中，也就是没有初始化完成(比如A的构造器依赖了B对象所以得先去创建B对象， 或则在A的populateBean过程中依赖了B对象，得先去创建B对象，这时的A就是处于创建中的状态。)</li>
@@ -386,11 +386,14 @@
 </ul>
 <p>分析getSingleton()的整个过程，Spring首先从一级缓存singletonObjects中获取。如果获取不到，并且对象正在创建中，就再从二级缓存earlySingletonObjects中获取。如果还是获取不到且允许singletonFactories通过getObject()获取，就从三级缓存singletonFactory.getObject()(三级缓存)获取，如果获取到了则：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">this</span>.earlySingletonObjects.put(beanName, singletonObject);</span><br><span class="line">                        <span class="keyword">this</span>.singletonFactories.remove(beanName);</span><br></pre></td></tr></table></figure>
+
 <p>从singletonFactories中移除，并放入earlySingletonObjects中。其实也就是从三级缓存移动到了二级缓存。</p>
 <p>从上面三级缓存的分析，我们可以知道，Spring解决循环依赖的诀窍就在于singletonFactories这个三级cache。这个cache的类型是ObjectFactory，定义如下：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">ObjectFactory</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line">    <span class="function">T <span class="title">getObject</span><span class="params">()</span> <span class="keyword">throws</span> BeansException</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <p>这个接口在下面被引用</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">addSingletonFactory</span><span class="params">(String beanName, ObjectFactory&lt;?&gt; singletonFactory)</span> </span>&#123;</span><br><span class="line">    Assert.notNull(singletonFactory, <span class="string">&quot;Singleton factory must not be null&quot;</span>);</span><br><span class="line">    <span class="keyword">synchronized</span> (<span class="keyword">this</span>.singletonObjects) &#123;</span><br><span class="line">        <span class="keyword">if</span> (!<span class="keyword">this</span>.singletonObjects.containsKey(beanName)) &#123;</span><br><span class="line">            <span class="keyword">this</span>.singletonFactories.put(beanName, singletonFactory);</span><br><span class="line">            <span class="keyword">this</span>.earlySingletonObjects.remove(beanName);</span><br><span class="line">            <span class="keyword">this</span>.registeredSingletons.add(beanName);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <p>这里就是解决循环依赖的关键，这段代码发生在createBeanInstance之后，也就是说单例对象此时已经被创建出来(调用了构造器)。这个对象已经被生产出来了，虽然还不完美（还没有进行初始化的第二步和第三步），但是已经能被人认出来了（根据对象引用能定位到堆中的对象），所以Spring此时将这个对象提前曝光出来让大家认识，让大家使用。</p>
 <p>下面是整段代码：</p>
 <p><img src="http://qiniu.lfeng.tech/20220128204542_31996.jpg" alt="Screen Shot 2020-02-19 at 5.23.30 PM.png"></p>
@@ -399,9 +402,11 @@
 <h4 id="如何解决构造器中的循环依赖？"><a href="#如何解决构造器中的循环依赖？" class="headerlink" title="如何解决构造器中的循环依赖？"></a>如何解决构造器中的循环依赖？</h4><p><strong>1. 使用@Lazy注解</strong></p>
 <p>最简单的方法是使用@Lazy声明其中的一个Bean，这样的话Spring将会创建代理对象，并注入到其他依赖于它的Bean中，这个注入的Bean将会在第一次被使用的时候初始化。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">@Component</span><br><span class="line">public class CircularDependencyA &#123;</span><br><span class="line"> </span><br><span class="line">    private CircularDependencyB circB;</span><br><span class="line"> </span><br><span class="line">    @Autowired</span><br><span class="line">    public CircularDependencyA(@Lazy CircularDependencyB circB) &#123;</span><br><span class="line">        this.circB = circB;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <p><strong>2. 替换构造器依赖，改为setter/Field注入</strong></p>
 <p>上面提到了Spring可以解决setter/Field中的循环依赖，因此可以将构造器中的依赖Bean，改为在setter/Field中进行注入，例子如下：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">@Component</span><br><span class="line">public class CircularDependencyA &#123;</span><br><span class="line"> </span><br><span class="line">    private CircularDependencyB circB;</span><br><span class="line"> </span><br><span class="line">    @Autowired</span><br><span class="line">    public void setCircB(CircularDependencyB circB) &#123;</span><br><span class="line">        this.circB = circB;</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    public CircularDependencyB getCircB() &#123;</span><br><span class="line">        return circB;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@Component</span><br><span class="line">public class CircularDependencyB &#123;</span><br><span class="line"> </span><br><span class="line">    private CircularDependencyA circA;</span><br><span class="line"> </span><br><span class="line">    private String message = &quot;Hi!&quot;;</span><br><span class="line"> </span><br><span class="line">    @Autowired</span><br><span class="line">    public void setCircA(CircularDependencyA circA) &#123;</span><br><span class="line">        this.circA = circA;</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    public String getMessage() &#123;</span><br><span class="line">        return message;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <p><strong>3. 实现ApplicationContextAware和InitializingBean</strong></p>
 <p>让其中的一个类实现ApplicationContextAware和InitializingBean，来手动设置依赖的Bean。</p>
 <p><code>ApplicationContextAware</code>发生在调用初始化方法之前，也就是下面的第二步，因此可以获取到ApplicationContext。</p>
@@ -410,6 +415,7 @@
 <p>因为这两个方法都发生在createBeanInstance之后，所以在缓存singletonFactories中拿到对应的Bean。</p>
 <p>具体例子如下：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">@Component</span><br><span class="line">public class CircularDependencyA implements ApplicationContextAware, InitializingBean &#123;</span><br><span class="line"> </span><br><span class="line">    private CircularDependencyB circB;</span><br><span class="line"> </span><br><span class="line">    private ApplicationContext context;</span><br><span class="line"> </span><br><span class="line">    public CircularDependencyB getCircB() &#123;</span><br><span class="line">        return circB;</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    @Override</span><br><span class="line">    public void afterPropertiesSet() throws Exception &#123;</span><br><span class="line">        circB = context.getBean(CircularDependencyB.class);</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    @Override</span><br><span class="line">    public void setApplicationContext(final ApplicationContext ctx) throws BeansException &#123;</span><br><span class="line">        context = ctx;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@Component</span><br><span class="line">public class CircularDependencyB &#123;</span><br><span class="line"> </span><br><span class="line">    private CircularDependencyA circA;</span><br><span class="line"> </span><br><span class="line">    private String message = &quot;Hi!&quot;;</span><br><span class="line"> </span><br><span class="line">    @Autowired</span><br><span class="line">    public void setCircA(CircularDependencyA circA) &#123;</span><br><span class="line">        this.circA = circA;</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    public String getMessage() &#123;</span><br><span class="line">        return message;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <hr>
 <p>参考：</p>
 <ul>
@@ -418,8 +424,10 @@
 </ul>
 <h3 id="7-3-spring依赖注入注解的实现原理"><a href="#7-3-spring依赖注入注解的实现原理" class="headerlink" title="7.3 spring依赖注入注解的实现原理"></a>7.3 spring依赖注入注解的实现原理</h3><h4 id="7-3-1-Autowired的工作原理"><a href="#7-3-1-Autowired的工作原理" class="headerlink" title="7.3.1 @Autowired的工作原理"></a>7.3.1 @Autowired的工作原理</h4><p>以下是@Autowired注解的源码，从源码中看到它可以被标注在构造函数、属性、setter方法或配置方法上，用于实现依赖自动注入。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Target(&#123;ElementType.CONSTRUCTOR, ElementType.METHOD, ElementType.PARAMETER, ElementType.FIELD, ElementType.ANNOTATION_TYPE&#125;)</span></span><br><span class="line"><span class="meta">@Retention(RetentionPolicy.RUNTIME)</span></span><br><span class="line"><span class="meta">@Documented</span></span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> Autowired &#123;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * Declares whether the annotated dependency is required.</span></span><br><span class="line"><span class="comment">	 * &lt;p&gt;Defaults to &#123;<span class="doctag">@code</span> true&#125;.</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="function"><span class="keyword">boolean</span> <span class="title">required</span><span class="params">()</span> <span class="keyword">default</span> <span class="keyword">true</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <p>@Autowired注解的作用是由<code>AutowiredAnnotationBeanPostProcessor</code>实现的，查看该类的源码会发现它实现了MergedBeanDefinitionPostProcessor接口，进而实现了接口中的postProcessMergedBeanDefinition方法，@Autowired注解正是通过这个方法实现注入类型的预解析，将需要依赖注入的属性信息封装到InjectionMetadata类中，InjectionMetadata类中包含了哪些需要注入的元素及元素要注入到哪个目标类中。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">public class AutowiredAnnotationBeanPostProcessor extends InstantiationAwareBeanPostProcessorAdapter</span><br><span class="line">		implements MergedBeanDefinitionPostProcessor, PriorityOrdered, BeanFactoryAware</span><br></pre></td></tr></table></figure>
+
 <p><code>@Autowired</code>发生在refresh方法的<code>finishBeanFactoryInitialization</code>(beanFactory)阶段，在此之前，在registerBeanPostProcessors(beanFactory)已经完成了对AutowiredAnnotationBeanPostProcessor的注册。</p>
 <p>在doCreateBean方法，首先会调用applyMergedBeanDefinitionPostProcessors(mbd, beanType, beanName)，实质上就是调用AutowiredAnnotationBeanPostProcessor类的postProcessMergedBeanDefinition方法，也就是开头介绍的在这个方法中完成了对注入元素注解的预解析。接着，在doCreateBean方法中执行populateBean方法实现对属性的注入。</p>
 <p><img src="http://qiniu.lfeng.tech/20220128204544_1204d.jpg" alt="Screen Shot 2020-02-19 at 9.49.12 PM.png"></p>
@@ -503,11 +511,6 @@
 
 
 
-    
-  <div class="comments" id="disqus_thread">
-    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
-  </div>
-  
 </div>
   </main>
 
@@ -549,8 +552,6 @@
   <script src="/js/third-party/statistics/lean-analytics.js"></script>
 
 
-<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"frankier-me","count":true,"i18n":{"disqus":"disqus"}}</script>
-<script src="/js/third-party/comments/disqus.js"></script>
 
 </body>
 </html>

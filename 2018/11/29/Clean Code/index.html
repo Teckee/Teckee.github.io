@@ -232,20 +232,6 @@
       <span class="post-meta-item-text">Views: </span>
       <span class="leancloud-visitors-count"></span>
     </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus: </span>
-    
-    <a title="disqus" href="/2018/11/29/Clean%20Code/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/11/29/Clean Code/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
 </div>
 
         </div>
@@ -259,21 +245,29 @@
 <p>代码整洁是我们一直追求的目标，不仅仅是为了成为更好的程序员，而且也为了节省他人时间，减少阅读、维护代码的时间成本，提高工作效率。本文将从命名、函数风格、注释等不同方面对《Clean Code》中的内容进行总结。</p>
 </blockquote>
 <span id="more"></span>
+
 <h2 id="命名"><a href="#命名" class="headerlink" title="命名"></a>命名</h2><h3 id="使用有意义的变量名"><a href="#使用有意义的变量名" class="headerlink" title="使用有意义的变量名"></a>使用有意义的变量名</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">// Bad</span><br><span class="line">int d;</span><br><span class="line">int ds;</span><br><span class="line">int dsm;</span><br><span class="line">int faid;</span><br></pre></td></tr></table></figure>
+
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">// Good</span><br><span class="line">int elapsedTimeInDays;</span><br><span class="line">int daysSinceCreation;</span><br><span class="line">int daysSinceModification;</span><br><span class="line">int fileAgeInDays;</span><br></pre></td></tr></table></figure>
+
 <h3 id="使用可读的变量名"><a href="#使用可读的变量名" class="headerlink" title="使用可读的变量名"></a>使用可读的变量名</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">// Bad</span><br><span class="line">class prsRecr &#123;</span><br><span class="line">	private Date genymdhms;</span><br><span class="line">	private Date modymdhms;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// Good</span><br><span class="line">class PersonRecord &#123;</span><br><span class="line">	private Date generationTimestamp;</span><br><span class="line">	private Date modificationTimestamp;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <h3 id="使用可搜索的变量名"><a href="#使用可搜索的变量名" class="headerlink" title="使用可搜索的变量名"></a>使用可搜索的变量名</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">// Bad</span><br><span class="line">int s = 0;</span><br><span class="line">for (int j = 0; j &lt; 10; j++) &#123;</span><br><span class="line">	s += l[j];</span><br><span class="line">&#125;</span><br><span class="line">return s;</span><br><span class="line"></span><br><span class="line">// Good</span><br><span class="line">int sum = 0;</span><br><span class="line">for (int j = 0; j &lt; NUMBER_OF_ADDITIONS; j++) &#123;</span><br><span class="line">	sum += results[j];</span><br><span class="line">&#125;</span><br><span class="line">return sum;</span><br></pre></td></tr></table></figure>
+
 <h3 id="不要使用匈牙利表示法"><a href="#不要使用匈牙利表示法" class="headerlink" title="不要使用匈牙利表示法"></a>不要使用匈牙利表示法</h3><p>在匈牙利表示法中，变量名以一个或多个小写字母开始，代表变量的类型，如下面的例子所示：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">lAccountNum - variable is long</span><br><span class="line">szName - zero terminated String</span><br><span class="line">mFriend - private Friend</span><br><span class="line">sFriend - package Friend</span><br><span class="line">m_friend - member variable</span><br></pre></td></tr></table></figure>
+
 <h3 id="类名和方法名"><a href="#类名和方法名" class="headerlink" title="类名和方法名"></a>类名和方法名</h3><h4 id="类名"><a href="#类名" class="headerlink" title="类名"></a>类名</h4><ul>
 <li>名词或者名词短语</li>
 <li>不使用抽象的词汇</li>
 </ul>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">// Good</span><br><span class="line">Customer</span><br><span class="line">Account</span><br><span class="line">Address</span><br><span class="line">AddressPrinter</span><br><span class="line"></span><br><span class="line">// Bad</span><br><span class="line">AccountHandler</span><br><span class="line">Data</span><br><span class="line">DataManager</span><br></pre></td></tr></table></figure>
+
 <h4 id="方法名"><a href="#方法名" class="headerlink" title="方法名"></a>方法名</h4><ul>
 <li>动词或者动词短语</li>
 </ul>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">// Good</span><br><span class="line">postPayment</span><br><span class="line">savePage</span><br><span class="line">setName</span><br><span class="line"></span><br><span class="line">// Bad</span><br><span class="line">get</span><br><span class="line">readResolve</span><br></pre></td></tr></table></figure>
+
 <ul>
 <li>使用静态工厂方法代替重载构造函数</li>
 </ul>
@@ -287,22 +281,30 @@
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Date date0 = new Date();</span><br><span class="line">Date date1 = new Date(0L);</span><br><span class="line">Date date2 = new Date(&quot;0&quot;);</span><br><span class="line">Date date3 = new Date(1,2,1);</span><br><span class="line">Date date4 = new Date(1,2,1,1,1);</span><br><span class="line">Date date5 = new Date(1,2,1,1,1,1);</span><br></pre></td></tr></table></figure>
 <p>如下的例子中，可以返回不同的子类，</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Class Person &#123;</span><br><span class="line">    public static Person getInstance()&#123;</span><br><span class="line">        return new Person();</span><br><span class="line">        // 这里可以改为 return new Player() / Cooker()</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">Class Player extends Person&#123;</span><br><span class="line">&#125;</span><br><span class="line">Class Cooker extends Person&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <h3 id="使用解决域（Solution-Domain）中的命名"><a href="#使用解决域（Solution-Domain）中的命名" class="headerlink" title="使用解决域（Solution Domain）中的命名"></a>使用解决域（Solution Domain）中的命名</h3><p>阅读你代码的也是程序员，所以尽量使用算法名、模式名、数据结构名来提高可读性，类似如下的例子：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">AccountBuilder</span><br><span class="line">JobQueue</span><br><span class="line">mergeSort</span><br></pre></td></tr></table></figure>
+
 <h2 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h2><h3 id="尽可能的小"><a href="#尽可能的小" class="headerlink" title="尽可能的小"></a>尽可能的小</h3><h3 id="做一件事，并且做好"><a href="#做一件事，并且做好" class="headerlink" title="做一件事，并且做好"></a>做一件事，并且做好</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">// Bad</span><br><span class="line">function emailClients(clients) &#123;</span><br><span class="line">  clients.forEach(client =&gt; &#123;</span><br><span class="line">    let clientRecord = database.lookup(client);</span><br><span class="line">    if (clientRecord.isActive()) &#123;</span><br><span class="line">      email(client);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// Good</span><br><span class="line">function emailClients(clients) &#123;</span><br><span class="line">  clients.forEach(client =&gt; &#123;</span><br><span class="line">    emailClientIfNeeded(client);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">function emailClientIfNeeded(client) &#123;</span><br><span class="line">  if (isClientActive(client)) &#123;</span><br><span class="line">    email(client);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">function isClientActive(client) &#123;</span><br><span class="line">  let clientRecord = database.lookup(client);</span><br><span class="line">  return clientRecord.isActive();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <h3 id="代码块和缩进风格一致"><a href="#代码块和缩进风格一致" class="headerlink" title="代码块和缩进风格一致"></a>代码块和缩进风格一致</h3><h3 id="尽量控制参数在3个及以内"><a href="#尽量控制参数在3个及以内" class="headerlink" title="尽量控制参数在3个及以内"></a>尽量控制参数在3个及以内</h3><h4 id="单个参数"><a href="#单个参数" class="headerlink" title="单个参数"></a>单个参数</h4><ul>
 <li>判断语句<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">boolean fileExists(&quot;myFile&quot;);</span><br></pre></td></tr></table></figure></li>
 <li>对变量进行操作，转换并返回<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">InputStream openFile(&quot;myFile&quot;);</span><br></pre></td></tr></table></figure></li>
-<li>事件响应<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">void passwordAttemptFailedNtimes(int attempts);</span><br></pre></td></tr></table></figure>
-</li>
+<li>事件响应<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">void passwordAttemptFailedNtimes(int attempts);</span><br></pre></td></tr></table></figure></li>
 </ul>
 <h4 id="参数类"><a href="#参数类" class="headerlink" title="参数类"></a>参数类</h4><p>如果一个函数需要多于2-3的变量，可以考虑将他们放在一个类中。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Circle makeCircle(double x, double y, double radius);</span><br><span class="line">Circle makeCircle(Point center, double radius);</span><br></pre></td></tr></table></figure>
+
 <h4 id="参数列表"><a href="#参数列表" class="headerlink" title="参数列表"></a>参数列表</h4><p>如果多个参数具有平等的关系，可以考虑将这些参数放在一个List中。</p>
-<h3 id="使用异常替代返回错误码"><a href="#使用异常替代返回错误码" class="headerlink" title="使用异常替代返回错误码"></a>使用异常替代返回错误码</h3><p>从指令式函数返回错误码轻微违反了指令与询问分隔的规则。它鼓励了在if语句判断中把指令当作表达式使用。<br><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">if (deletePage(page) == E_OK) </span><br></pre></td></tr></table></figure><br>这不会引起动词/形容词混淆，但却导致更深层次的嵌套结构。当返回错误码时，就是在要求调用者立刻处理错误。</p>
-<p>但如果使用异常替代返回错误码，错误处理代码就能从主路径代码中分离出来，得到简化：<br><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">try &#123;  </span><br><span class="line">  deletePage(page);  </span><br><span class="line">  registry.deleteReference(page.name);  </span><br><span class="line">  configKeys.deleteKey(page.name.makeKey());  </span><br><span class="line">&#125;  </span><br><span class="line">catch (Exception e) &#123;  </span><br><span class="line">  logger.log(e.getMessage());  </span><br><span class="line">&#125; </span><br></pre></td></tr></table></figure></p>
+<h3 id="使用异常替代返回错误码"><a href="#使用异常替代返回错误码" class="headerlink" title="使用异常替代返回错误码"></a>使用异常替代返回错误码</h3><p>从指令式函数返回错误码轻微违反了指令与询问分隔的规则。它鼓励了在if语句判断中把指令当作表达式使用。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">if (deletePage(page) == E_OK) </span><br></pre></td></tr></table></figure>
+<p>这不会引起动词/形容词混淆，但却导致更深层次的嵌套结构。当返回错误码时，就是在要求调用者立刻处理错误。</p>
+<p>但如果使用异常替代返回错误码，错误处理代码就能从主路径代码中分离出来，得到简化：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">try &#123;  </span><br><span class="line">  deletePage(page);  </span><br><span class="line">  registry.deleteReference(page.name);  </span><br><span class="line">  configKeys.deleteKey(page.name.makeKey());  </span><br><span class="line">&#125;  </span><br><span class="line">catch (Exception e) &#123;  </span><br><span class="line">  logger.log(e.getMessage());  </span><br><span class="line">&#125; </span><br></pre></td></tr></table></figure>
+
 <h3 id="抽离Try-Catch代码块"><a href="#抽离Try-Catch代码块" class="headerlink" title="抽离Try/Catch代码块"></a>抽离Try/Catch代码块</h3><p>Try/catch代码块丑陋不堪。它们搞乱了代码结构，把错误处理与正常流程混为一谈。最好把try和catch代码块的主体部分抽离出来，另外形成函数。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">public void delete(Page page) &#123;  </span><br><span class="line">  try &#123;  </span><br><span class="line">    deletePageAndAllReferences(page);  </span><br><span class="line">  &#125;  </span><br><span class="line">  catch (Exception e) &#123;  </span><br><span class="line">    logError(e);  </span><br><span class="line">  &#125;  </span><br><span class="line">&#125;  </span><br><span class="line"> </span><br><span class="line">private void deletePageAndAllReferences(Page page) throws Exception &#123;  </span><br><span class="line">  deletePage(page);  </span><br><span class="line">  registry.deleteReference(page.name);  </span><br><span class="line">  configKeys.deleteKey(page.name.makeKey());  </span><br><span class="line">&#125;  </span><br><span class="line"> </span><br><span class="line">private void logError(Exception e) &#123;  </span><br><span class="line">  logger.log(e.getMessage());  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <h3 id="别重复自己（Don’t-Repeat-Yourself-DRY）"><a href="#别重复自己（Don’t-Repeat-Yourself-DRY）" class="headerlink" title="别重复自己（Don’t Repeat Yourself - DRY）"></a>别重复自己（Don’t Repeat Yourself - DRY）</h3><p>不要书写重复代码，因为代码会因此而臃肿，且当算法改变时需要修改多处地方。而且也会增加犯错的可能性。</p>
 <h2 id="注释"><a href="#注释" class="headerlink" title="注释"></a>注释</h2><h3 id="注释原则"><a href="#注释原则" class="headerlink" title="注释原则"></a>注释原则</h3><ul>
 <li>不要给不好的名字加注释，一个好的名字比好的注释更重要</li>
@@ -369,11 +371,6 @@
 
 
 
-    
-  <div class="comments" id="disqus_thread">
-    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
-  </div>
-  
 </div>
   </main>
 
@@ -415,8 +412,6 @@
   <script src="/js/third-party/statistics/lean-analytics.js"></script>
 
 
-<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"frankier-me","count":true,"i18n":{"disqus":"disqus"}}</script>
-<script src="/js/third-party/comments/disqus.js"></script>
 
 </body>
 </html>

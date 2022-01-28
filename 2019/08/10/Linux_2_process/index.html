@@ -239,20 +239,6 @@
       <span class="post-meta-item-text">Views: </span>
       <span class="leancloud-visitors-count"></span>
     </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus: </span>
-    
-    <a title="disqus" href="/2019/08/10/Linux_2_process/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/08/10/Linux_2_process/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
 </div>
 
         </div>
@@ -265,6 +251,7 @@
         <p><img src="http://qiniu.lfeng.tech/20220128204508_0e060.jpg" alt="Linux"></p>
 <h2 id="2-进程"><a href="#2-进程" class="headerlink" title="2. 进程"></a>2. 进程</h2><h3 id="2-1-进程概念"><a href="#2-1-进程概念" class="headerlink" title="2.1 进程概念"></a>2.1 进程概念</h3><p><strong>进程是具有一定独立功能的程序关于某个数据集合上的一次运行活动，它是系统进行资源分配的一个独立单位。</strong>例如，用户运行自己的程序，系统就创建一个进程，并为它分配资源，包括各种表格、内存空间、磁盘空间、I/O设备等，然后该进程被放入到进程的就绪队列，进程调度程序选中它，为它分配CPU及其他相关资源，该进程就被运行起来。</p>
 <span id="more"></span>
+
 <h3 id="2-2-进程特征与基本状态"><a href="#2-2-进程特征与基本状态" class="headerlink" title="2.2 进程特征与基本状态"></a>2.2 进程特征与基本状态</h3><h4 id="2-2-1-特征"><a href="#2-2-1-特征" class="headerlink" title="2.2.1 特征"></a>2.2.1 特征</h4><p>1：动态性，2：并发性，3：独立性，4：异步性。</p>
 <h4 id="2-2-2-状态以及切换"><a href="#2-2-2-状态以及切换" class="headerlink" title="2.2.2. 状态以及切换"></a>2.2.2. 状态以及切换</h4><p>1、就绪状态；<br>2、执行状态；<br>3、阻塞状态</p>
 <p><strong>基本状态的切换：</strong></p>
@@ -274,9 +261,9 @@
 <li>运行进程因某事件致使当前的进程执行受阻，使之不能执行，如资源被占用、I/O未完成。 执行 -&gt; 阻塞</li>
 <li>当所等待的事件发生时，如得到申请资源、I/O传输完成 ，阻塞 -&gt; 就绪</li>
 </ul>
-<p><img src="http://qiniu.lfeng.tech/20220128204509_dfe48.jpg" alt=""></p>
+<p><img src="http://qiniu.lfeng.tech/20220128204509_dfe48.jpg"></p>
 <p><strong>创建状态和终止状态图：</strong></p>
-<p><img src="http://qiniu.lfeng.tech/20220128204509_1cb53.jpg" alt=""></p>
+<p><img src="http://qiniu.lfeng.tech/20220128204509_1cb53.jpg"></p>
 <h3 id="2-3-进程的组成"><a href="#2-3-进程的组成" class="headerlink" title="2.3 进程的组成"></a>2.3 进程的组成</h3><p>进程是操作系统的资源分配和独立运行的基本单位。它一般由以下三个部分组成。</p>
 <h4 id="2-3-1-进程控制块"><a href="#2-3-1-进程控制块" class="headerlink" title="2.3.1 进程控制块"></a>2.3.1 进程控制块</h4><p>进程控制块（Processing Control Block），是操作系统核心中一种数据结构，主要表示进程状态。其作用是使一个在多道程序环境下不能独立运行的程序（含数据），成为一个能独立运行的基本单位或与其它进程并发执行的进程。</p>
 <p><strong>PCB的作用</strong></p>
@@ -300,10 +287,10 @@
 </ul>
 <h3 id="2-5-进程同步与互斥"><a href="#2-5-进程同步与互斥" class="headerlink" title="2.5 进程同步与互斥"></a>2.5 进程同步与互斥</h3><h4 id="2-5-1-进程同步"><a href="#2-5-1-进程同步" class="headerlink" title="2.5.1 进程同步"></a>2.5.1 进程同步</h4><p> 进程同步也是进程之间直接的制约关系，是为完成某种任务而建立的两个或多个进程，这个进程需要在某些位置上协调他们的工作次序而等待、传递信息所产生的制约关系。进程间的直接制约关系来源于他们之间的合作。</p>
 <p>比如说进程A需要从缓冲区读取进程B产生的信息，当缓冲区为空时，进程B因为读取不到信息而被阻塞。而当进程A产生信息放入缓冲区时，进程B才会被唤醒。概念如图1所示。</p>
-<p><img src="http://qiniu.lfeng.tech/20220128204509_2e5fb.jpg" alt=""></p>
+<p><img src="http://qiniu.lfeng.tech/20220128204509_2e5fb.jpg"></p>
 <p>上面这个模型也就是<strong>生产者消费者</strong>模型：</p>
 <p>在实际的软件开发过程中，经常会碰到如下场景：<strong>某个模块负责产生数据，这些数据由另一个模块来负责处理</strong>（此处的模块是广义的，可以是类、函数、线程、进程等）。<strong>产生数据的模块，就形象地称为生产者；而处理数据的模块，就称为消费者。</strong><br>　　单单抽象出生产者和消费者，还够不上是生产者／消费者模式。该模式还需要有一个缓冲区处于生产者和消费者之间，作为一个中介。生产者把数据放入缓冲区，而消费者从缓冲区取出数据。大概的结构如下图。</p>
-<p><img src="http://qiniu.lfeng.tech/20220128204510_e99fa.jpg" alt=""></p>
+<p><img src="http://qiniu.lfeng.tech/20220128204510_e99fa.jpg"></p>
 <p><strong>优点：</strong></p>
 <ul>
 <li>解耦：假设生产者和消费者分别是两个类。如果让生产者直接调用消费者的某个方法，那么生产者对于消费者就会产生依赖（也就是耦合）。将来如果消费者的代码发生变化，可能会影响到生产者。而如果两者都依赖于某个缓冲区，两者之间不直接依赖，耦合也就相应降低了。</li>
@@ -395,13 +382,13 @@
 <li>时间片在 kernel 中记录在进程描述符的<strong>counter</strong>中(Linux2.4默认为5, 换算成时间为50ms)</li>
 </ul>
 <p><strong>nice 值:</strong> 系统中运行的每个进程都有一个优先级, 其范围从 -20 (最高优先级)到 19 (最低优先级), 这个值就是进程优先级. ( top 命令中的 NI 列就是这个值 )</p>
+</blockquote>
 <ul>
 <li>默认情况下, 进程的优先级是 0 ( “基本”调度优先级 )</li>
 <li>优先级比较大的进程相对优先级比较小的进程将比较频繁地被调度运行, 因此就拥有更多的进程周期</li>
 <li>优先级比较大的进程有更长的时间片初值</li>
 <li>一般用户只能降低它们自己进程的优先级别, 并限于 0 到 19 之间, 超级用户(root)可以将任何进程的优先级设定为任何值</li>
 </ul>
-</blockquote>
 <h3 id="2-8-进程关系"><a href="#2-8-进程关系" class="headerlink" title="2.8 进程关系"></a>2.8 进程关系</h3><h4 id="2-8-1-进程组-process-group"><a href="#2-8-1-进程组-process-group" class="headerlink" title="2.8.1 进程组 (process group)"></a>2.8.1 进程组 (process group)</h4><p>个进程都会属于一个进程组(process group)，每个进程组中可以包含多个进程。进程组会有一个进程组领导进程 (process group leader)，领导进程的PID (PID见Linux进程基础)成为进程组的ID (process group ID, PGID)，以识别进程组。</p>
 <h4 id="2-8-2-会话-session"><a href="#2-8-2-会话-session" class="headerlink" title="2.8.2 会话 (session)"></a>2.8.2 会话 (session)</h4><p>在shell支持工作控制(job control)的前提下，多个进程组还可以构成一个会话 (session)。bash(Bourne-Again shell)支持工作控制，而sh(Bourne shell)并不支持。</p>
 <p>会话是由其中的进程建立的，该进程叫做会话的领导进程(session leader)。会话领导进程的PID成为识别会话的SID(session ID)。<strong>会话中的每个进程组称为一个工作(job)。会话可以有一个进程组成为会话的前台工作(foreground)，而其他的进程组是后台工作(background)。</strong>每个会话可以连接一个控制终端(control terminal)。当控制终端有输入输出时，都传递给该会话的前台进程组。由终端产生的信号，比如CTRL+Z， CTRL+\，会传递到前台进程组。会话的意义在于将多个工作囊括在一个终端，并取其中的一个工作作为前台，来直接接收该终端的输入输出以及终端信号。 其他工作在后台运行。</p>
@@ -463,11 +450,11 @@
 <p><strong>孤儿进程</strong>则是指父进程结束后仍在运行的子进程。在类UNIX系统中，孤儿进程一般会被init进程所“收养”，成为init的子进程。</p>
 <blockquote>
 <p>为避免产生僵尸进程，实际应用中一般采取的方式是：</p>
+</blockquote>
 <ol>
 <li>将父进程中对SIGCHLD信号的处理函数设为SIG_IGN（忽略信号）；</li>
 <li>fork两次并杀死一级子进程，令二级子进程成为孤儿进程而被init所“收养”、清理。</li>
 </ol>
-</blockquote>
 <hr>
 <p>本文由『后端精进之路』原创，首发于博客 <a target="_blank" rel="noopener" href="http://teckee.github.io/">http://teckee.github.io/</a> , 转载请注明出处</p>
 <p>搜索『后端精进之路』关注公众号，立刻获取最新文章和<strong>价值2000元的BATJ精品面试课程</strong>。</p>
@@ -507,11 +494,6 @@
 
 
 
-    
-  <div class="comments" id="disqus_thread">
-    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
-  </div>
-  
 </div>
   </main>
 
@@ -553,8 +535,6 @@
   <script src="/js/third-party/statistics/lean-analytics.js"></script>
 
 
-<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"frankier-me","count":true,"i18n":{"disqus":"disqus"}}</script>
-<script src="/js/third-party/comments/disqus.js"></script>
 
 </body>
 </html>

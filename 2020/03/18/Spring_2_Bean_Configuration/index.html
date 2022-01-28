@@ -235,20 +235,6 @@
       <span class="post-meta-item-text">Views: </span>
       <span class="leancloud-visitors-count"></span>
     </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus: </span>
-    
-    <a title="disqus" href="/2020/03/18/Spring_2_Bean_Configuration/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2020/03/18/Spring_2_Bean_Configuration/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
 </div>
 
         </div>
@@ -267,17 +253,22 @@
 </ul>
 <p>推荐使用Java配置类结合隐式的自动bean扫描机制。</p>
 <span id="more"></span>
+
 <h3 id="2-1-通过XML装配Bean"><a href="#2-1-通过XML装配Bean" class="headerlink" title="2.1 通过XML装配Bean"></a>2.1 通过XML装配Bean</h3><p>XML配置是Spring刚出现时的主要配置方式。这种方式需要手动编写XML，并在其中配置好Bean的定义。</p>
 <h4 id="创建XML并定义Bean"><a href="#创建XML并定义Bean" class="headerlink" title="创建XML并定义Bean"></a>创建XML并定义Bean</h4><p>下面是Person类的定义，</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">public class Person &#123;</span><br><span class="line">	private String name;</span><br><span class="line">	private Integer age;</span><br><span class="line">	</span><br><span class="line">	public Person()&#123;</span><br><span class="line">		super();</span><br><span class="line">	&#125;</span><br><span class="line">	public String getName() &#123;</span><br><span class="line">		return name;</span><br><span class="line">	&#125;</span><br><span class="line">	public void setName(String name) &#123;</span><br><span class="line">		this.name = name;</span><br><span class="line">	&#125;</span><br><span class="line">	public Person(String name, Integer age) &#123;</span><br><span class="line">		super();</span><br><span class="line">		this.name = name;</span><br><span class="line">		this.age = age;</span><br><span class="line">	&#125;</span><br><span class="line">	public Integer getAge() &#123;</span><br><span class="line">		return age;</span><br><span class="line">	&#125;</span><br><span class="line">	@Override</span><br><span class="line">	public String toString() &#123;</span><br><span class="line">		return &quot;Person [name=&quot; + name + &quot;, age=&quot; + age + &quot;]&quot;;</span><br><span class="line">	&#125;</span><br><span class="line">	public void setAge(Integer age) &#123;</span><br><span class="line">		this.age = age;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <p>可以在XML进行如下的配置，设置了bean id以及相应的属性值。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span><br><span class="line">&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;</span><br><span class="line">	xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span><br><span class="line">	xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd&quot;&gt;</span><br><span class="line"></span><br><span class="line">	&lt;bean id=&quot;person&quot; class=&quot;com.enjoy.cap1.Person&quot;&gt;</span><br><span class="line">		&lt;property name=&quot;name&quot; value=&quot;vincent&quot;&gt;&lt;/property&gt;</span><br><span class="line">		&lt;property name=&quot;age&quot; value=&quot;19&quot;&gt;&lt;/property&gt;</span><br><span class="line">	&lt;/bean&gt;</span><br><span class="line">&lt;/beans&gt;</span><br></pre></td></tr></table></figure>
+
 <h4 id="获取Bean"><a href="#获取Bean" class="headerlink" title="获取Bean"></a>获取Bean</h4><p>在使用Bean时，可以直接利用应用上下文进行加载XML，</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">//把beans.xml的类加载到容器</span><br><span class="line">ApplicationContext app = new ClassPathXmlApplicationContext(&quot;beans.xml&quot;);</span><br><span class="line"></span><br><span class="line">//从容器中获取bean</span><br><span class="line">Person person = (Person) app.getBean(&quot;person&quot;);</span><br><span class="line">		</span><br><span class="line">System.out.println(person);</span><br></pre></td></tr></table></figure>
+
 <h3 id="2-2-通过Java配置类装配Bean"><a href="#2-2-通过Java配置类装配Bean" class="headerlink" title="2.2 通过Java配置类装配Bean"></a>2.2 通过Java配置类装配Bean</h3><p>在进行显式配置时，Java配置类是更好的方案，因为它更为强大，类型安全并且对重构友好。</p>
 <h4 id="创建Java配置类"><a href="#创建Java配置类" class="headerlink" title="创建Java配置类"></a>创建Java配置类</h4><p>创建Java配置类的关键在于为其添加<code>@Configuration</code>注解，表明这个类是一个配置类。在这种方式下，不需要XML配置文件。</p>
 <p>下面的例子中，往容器中注册了一个Person的Bean实例。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">//配置类====配置文件</span><br><span class="line">@Configuration</span><br><span class="line">public class MainConfig &#123;</span><br><span class="line">	//给容器中注册一个bean, 类型为返回值的类型, </span><br><span class="line">	@Bean(&quot;myPerson&quot;)</span><br><span class="line">	public Person person()&#123;</span><br><span class="line">		return new Person(&quot;vincent&quot;,20);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <blockquote>
 <p><strong>修改bean id有两种方法：</strong></p>
 <ol>
@@ -287,9 +278,11 @@
 </blockquote>
 <h4 id="获取Bean-1"><a href="#获取Bean-1" class="headerlink" title="获取Bean"></a>获取Bean</h4><p>可以直接使用<code>AnnotationConfigApplicationContext</code>加载配置类，并获取Bean。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">public class MainTest2 &#123; </span><br><span class="line">	public static void main(String args[])&#123;</span><br><span class="line">		</span><br><span class="line">		// 利用configure类配置bean实例</span><br><span class="line">		ApplicationContext app = new AnnotationConfigApplicationContext(MainConfig.class);</span><br><span class="line">		</span><br><span class="line">		//从容器中获取bean</span><br><span class="line">		Person person = (Person) app.getBean(&quot;myPerson&quot;);</span><br><span class="line">		System.out.println(person);</span><br><span class="line">		</span><br><span class="line">		// 获取所有的bean name</span><br><span class="line">		String [] beanNameList = app.getBeanDefinitionNames();</span><br><span class="line">		for (String name : beanNameList) &#123;</span><br><span class="line">			System.out.println(name);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
 <h3 id="2-3-自动化装配Bean"><a href="#2-3-自动化装配Bean" class="headerlink" title="2.3 自动化装配Bean"></a>2.3 自动化装配Bean</h3><p>除了上面介绍的XML和Java配置类来进行Bean的装配，Spring还支持自动化装配。</p>
 <h4 id="声明配置类"><a href="#声明配置类" class="headerlink" title="声明配置类"></a>声明配置类</h4><p>同样的，在自动化装配Bean时，也需要声明Java配置类，</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">@Configuration</span><br><span class="line">@ComponentScan(value = &quot;com.enjoy.cap2&quot;, includeFilters = &#123;</span><br><span class="line">		@Filter(type=FilterType.CUSTOM, classes = &#123;JamesTypeFilter.class&#125;)</span><br><span class="line">&#125;, useDefaultFilters = false)</span><br><span class="line"></span><br><span class="line">public class Cap2MainConfig &#123;</span><br><span class="line">	//给容器中注册一个bean, 类型为返回值的类型, </span><br><span class="line">	@Bean</span><br><span class="line">	public Person person01()&#123;</span><br><span class="line">		return new Person(&quot;james&quot;,20);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <p>所不同的是，加入了<code>ComponentScan</code>注解，该注解会启动组件扫描，默认情况下会扫描与配置类相同的包，如果查找到了带有Component注解的类，会自动创建对应的bean并放置到容器中。</p>
 <h4 id="定义被扫描的组件"><a href="#定义被扫描的组件" class="headerlink" title="定义被扫描的组件"></a>定义被扫描的组件</h4><p>在Spring 2.5之后，引入了3个注解<code>@Repository</code>，<code>@Service</code>，<code>@Controller</code>。这些组件都可以被自动扫描并且加载到容器中。</p>
 <p>相比较而言，<code>@Component</code>是一个通用的Spring容器管理的单例bean组件。而@Repository, @Service, @Controller就是针对不同的使用场景所采取的特定功能化的注解组件。因此，当你的一个类被@Component所注解，那么就意味着同样可以用@Repository, @Service, @Controller来替代它，同时这些注解会具备有更多的功能，而且功能各异。</p>
@@ -302,8 +295,10 @@
 </ul>
 <p>定义组件的方式很简单，直接在定义好的类上面使用注解即可。此外，可以在定义组件的同时，指定组件的名称，</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">@Controller(&quot;testController&quot;)</span><br><span class="line">public class OrderController &#123;&#125;</span><br></pre></td></tr></table></figure>
+
 <h4 id="定制包扫描的过滤规则"><a href="#定制包扫描的过滤规则" class="headerlink" title="定制包扫描的过滤规则"></a>定制包扫描的过滤规则</h4><p>在下面的例子中，加入<code>@Filter</code>来定制扫描规则。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">@ComponentScan(value=&quot;com.enjoy.cap2&quot;,</span><br><span class="line">includeFilters=&#123;		            @Filter(type=FilterType.ANNOTATION,classes=&#123;Controller.class&#125;),	@Filter(type=FilterType.ASSIGNABLE_TYPE,classes=&#123;BookService.class&#125;)</span><br><span class="line">&#125;,</span><br><span class="line">useDefaultFilters=false) </span><br></pre></td></tr></table></figure>
+
 <p>其中需要设置如下的参数：</p>
 <ul>
 <li>value:指定要扫描的包</li>
@@ -321,8 +316,11 @@
 </ul>
 <p>注意到可以使用自定义规则，这个情况下需要自己编写FilterType类，并且重写match函数，在这个函数中定义匹配规则。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">public class JamesTypeFilter implements TypeFilter&#123;</span><br><span class="line"></span><br><span class="line">	/*</span><br><span class="line">	 * MetadataReader:读取到当前正在扫描类的信息</span><br><span class="line">	 * MetadataReaderFactory:可以获取到其他任何类信息</span><br><span class="line">	 */</span><br><span class="line">	@Override</span><br><span class="line">	public boolean match(MetadataReader metadataReader, MetadataReaderFactory metadataReaderFactory)</span><br><span class="line">			throws IOException &#123;</span><br><span class="line">		//获取当前类注解的信息</span><br><span class="line">		AnnotationMetadata annotationMetadata = metadataReader.getAnnotationMetadata();</span><br><span class="line">		//获取当前正在扫描的类信息</span><br><span class="line">		ClassMetadata classMetadata = metadataReader.getClassMetadata();</span><br><span class="line">		//获取当前类资源(类的路径)</span><br><span class="line">		Resource resource = metadataReader.getResource();</span><br><span class="line">		</span><br><span class="line">		String className = classMetadata.getClassName();</span><br><span class="line">		System.out.println(&quot;-----&gt;&quot;+className);</span><br><span class="line">		if(className.contains(&quot;Service&quot;))&#123;//当类包含er字符, 则匹配成功,返回true</span><br><span class="line">			return true;</span><br><span class="line">		&#125;</span><br><span class="line">		return false;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <p>使用时，指定type为CUSTOM，并且设置class类型为自定义的Filter类。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">@ComponentScan(value=&quot;com.enjoy.cap2&quot;,includeFilters=&#123;</span><br><span class="line">		@Filter(type=FilterType.CUSTOM,classes=         &#123;JamesTypeFilters.class&#125;</span><br><span class="line">)&#125;,</span><br><span class="line">useDefaultFilters=false) </span><br><span class="line">public class Cap2MainConfig2 &#123;&#125;</span><br></pre></td></tr></table></figure>
+
+
 <hr>
 <p>本文由『后端精进之路』原创，首发于博客 <a target="_blank" rel="noopener" href="http://teckee.github.io/">http://teckee.github.io/</a> , 转载请注明出处</p>
 <p>搜索『后端精进之路』关注公众号，立刻获取最新文章和<strong>价值2000元的BATJ精品面试课程</strong>。</p>
@@ -362,11 +360,6 @@
 
 
 
-    
-  <div class="comments" id="disqus_thread">
-    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
-  </div>
-  
 </div>
   </main>
 
@@ -408,8 +401,6 @@
   <script src="/js/third-party/statistics/lean-analytics.js"></script>
 
 
-<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"frankier-me","count":true,"i18n":{"disqus":"disqus"}}</script>
-<script src="/js/third-party/comments/disqus.js"></script>
 
 </body>
 </html>

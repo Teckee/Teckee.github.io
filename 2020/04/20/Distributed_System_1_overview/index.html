@@ -236,20 +236,6 @@
       <span class="post-meta-item-text">Views: </span>
       <span class="leancloud-visitors-count"></span>
     </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus: </span>
-    
-    <a title="disqus" href="/2020/04/20/Distributed_System_1_overview/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2020/04/20/Distributed_System_1_overview/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
 </div>
 
         </div>
@@ -261,9 +247,10 @@
     <div class="post-body" itemprop="articleBody">
         <p><img src="http://qiniu.lfeng.tech/20220128204500_17eea.jpg" alt="distributed_system"></p>
 <h2 id="1-集群与分布式"><a href="#1-集群与分布式" class="headerlink" title="1. 集群与分布式"></a>1. 集群与分布式</h2><p>根据业务划分的情况，主要有三种模式，分别是单机结构、集群结构、分布式结构，下面这张图给出了集群和分布式的区别。</p>
-<p><img src="http://qiniu.lfeng.tech/20220128204500_9996f.jpg" alt=""></p>
+<p><img src="http://qiniu.lfeng.tech/20220128204500_9996f.jpg"></p>
 <p>最普通的就是单机结构，一个系统业务量很小的时候所有的代码都放在一个项目中就好了，然后这个项目部署在一台服务器上就好了。整个项目所有的服务都由这台服务器提供。这就是单机结构。 </p>
 <span id="more"></span>
+
 <p>那么，单机结构有啥缺点呢？我想缺点是显而易见的，单机的处理能力毕竟是有限的，当你的业务增长到一定程度的时候，单机的硬件资源将无法满足你的业务需求。此时便出现了集群模式。</p>
 <h3 id="1-1-集群结构"><a href="#1-1-集群结构" class="headerlink" title="1.1 集群结构"></a>1.1 集群结构</h3><p>单机处理到达瓶颈的时候，你就把单机复制几份，这样就构成了一个“集群”。集群中每台服务器就叫做这个集群的一个“节点”，所有节点构成了一个集群。每个节点都提供相同的服务，那么这样系统的处理能力就相当于提升了好几倍（有几个节点就相当于提升了这么多倍）。</p>
 <p>但问题是用户的请求究竟由哪个节点来处理呢？最好能够让此时此刻负载较小的节点来处理，这样使得每个节点的压力都比较平均。要实现这个功能，就需要在所有节点之前增加一个“调度者”的角色，用户的所有请求都先交给它，然后它根据当前所有节点的负载情况，决定将这个请求交给哪个节点处理。这个“调度者”有个牛逼了名字——负载均衡服务器。 </p>
@@ -316,11 +303,6 @@
 
 
 
-    
-  <div class="comments" id="disqus_thread">
-    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
-  </div>
-  
 </div>
   </main>
 
@@ -362,8 +344,6 @@
   <script src="/js/third-party/statistics/lean-analytics.js"></script>
 
 
-<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"frankier-me","count":true,"i18n":{"disqus":"disqus"}}</script>
-<script src="/js/third-party/comments/disqus.js"></script>
 
 </body>
 </html>

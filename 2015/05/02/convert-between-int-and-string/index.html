@@ -233,20 +233,6 @@
       <span class="post-meta-item-text">Views: </span>
       <span class="leancloud-visitors-count"></span>
     </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus: </span>
-    
-    <a title="disqus" href="/2015/05/02/convert-between-int-and-string/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/05/02/convert-between-int-and-string/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
 </div>
 
         </div>
@@ -260,7 +246,10 @@
 <p>C++标准库中的<code>&lt;sstream&gt;</code>提供了比ANSI C的&lt;stdio.h&gt;更高级的一些功能，即单纯性、类型安全和可扩展性</p>
 </blockquote>
 <span id="more"></span>
-<h1 id="int转为string"><a href="#int转为string" class="headerlink" title="int转为string"></a>int转为string</h1><p>利用<code>stringstream</code>类进行转换<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stringstream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> n = <span class="number">65535</span>;</span><br><span class="line">    stringstream ss;</span><br><span class="line">    string s;</span><br><span class="line">    ss &lt;&lt; n;</span><br><span class="line">    ss &gt;&gt; s;</span><br><span class="line">    cout &lt;&lt; s &lt;&lt; endl;</span><br><span class="line"> </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+
+<h1 id="int转为string"><a href="#int转为string" class="headerlink" title="int转为string"></a>int转为string</h1><p>利用<code>stringstream</code>类进行转换</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stringstream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> n = <span class="number">65535</span>;</span><br><span class="line">    stringstream ss;</span><br><span class="line">    string s;</span><br><span class="line">    ss &lt;&lt; n;</span><br><span class="line">    ss &gt;&gt; s;</span><br><span class="line">    cout &lt;&lt; s &lt;&lt; endl;</span><br><span class="line"> </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <h1 id="string到int的转换"><a href="#string到int的转换" class="headerlink" title="string到int的转换"></a>string到int的转换</h1><ul>
 <li>方法一：使用stringstream<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">string result=”<span class="number">10000</span>”;</span><br><span class="line"><span class="keyword">int</span> n=<span class="number">0</span>;</span><br><span class="line">stream&lt;&lt;result;</span><br><span class="line">stream&gt;&gt;n;<span class="comment">//n等于10000</span></span><br></pre></td></tr></table></figure></li>
 <li>方法二：使用string库函数<code>stoi</code><blockquote>
@@ -269,8 +258,9 @@
 </li>
 </ul>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// stoi example</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span>   <span class="comment">// std::cout</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span>     <span class="comment">// std::string, std::stoi</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span> <span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  std::string str_dec = <span class="string">&quot;2001, A Space Odyssey&quot;</span>;</span><br><span class="line">  std::string str_hex = <span class="string">&quot;40c3&quot;</span>;</span><br><span class="line">  std::string str_bin = <span class="string">&quot;-10010110001&quot;</span>;</span><br><span class="line">  std::string str_auto = <span class="string">&quot;0x7f&quot;</span>;</span><br><span class="line"></span><br><span class="line">  std::string::size_type sz;   <span class="comment">// alias of size_t</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">int</span> i_dec = std::<span class="built_in">stoi</span> (str_dec,&amp;sz);</span><br><span class="line">  <span class="keyword">int</span> i_hex = std::<span class="built_in">stoi</span> (str_hex,<span class="literal">nullptr</span>,<span class="number">16</span>);</span><br><span class="line">  <span class="keyword">int</span> i_bin = std::<span class="built_in">stoi</span> (str_bin,<span class="literal">nullptr</span>,<span class="number">2</span>);</span><br><span class="line">  <span class="keyword">int</span> i_auto = std::<span class="built_in">stoi</span> (str_auto,<span class="literal">nullptr</span>,<span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">  std::cout &lt;&lt; str_dec &lt;&lt; <span class="string">&quot;: &quot;</span> &lt;&lt; i_dec &lt;&lt; <span class="string">&quot; and [&quot;</span> &lt;&lt; str_dec.<span class="built_in">substr</span>(sz) &lt;&lt; <span class="string">&quot;]\n&quot;</span>;</span><br><span class="line">  std::cout &lt;&lt; str_hex &lt;&lt; <span class="string">&quot;: &quot;</span> &lt;&lt; i_hex &lt;&lt; <span class="string">&#x27;\n&#x27;</span>;</span><br><span class="line">  std::cout &lt;&lt; str_bin &lt;&lt; <span class="string">&quot;: &quot;</span> &lt;&lt; i_bin &lt;&lt; <span class="string">&#x27;\n&#x27;</span>;</span><br><span class="line">  std::cout &lt;&lt; str_auto &lt;&lt; <span class="string">&quot;: &quot;</span> &lt;&lt; i_auto &lt;&lt; <span class="string">&#x27;\n&#x27;</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <h1 id="重复利用stringstream对象"><a href="#重复利用stringstream对象" class="headerlink" title="重复利用stringstream对象"></a>重复利用stringstream对象</h1><blockquote>
-<p>如果在多次转换中使用同一个<strong>stringstream</strong>对象，记住再每次转换前要使用<strong>clear()</strong>方法</p>
+<p>如果在多次转换中使用同一个<strong>stringstream</strong>对象，记住再每次转换前要使用**clear()**方法</p>
 </blockquote>
 <hr>
 <p><strong>相关链接</strong></p>
@@ -313,11 +303,6 @@
 
 
 
-    
-  <div class="comments" id="disqus_thread">
-    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
-  </div>
-  
 </div>
   </main>
 
@@ -359,8 +344,6 @@
   <script src="/js/third-party/statistics/lean-analytics.js"></script>
 
 
-<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"frankier-me","count":true,"i18n":{"disqus":"disqus"}}</script>
-<script src="/js/third-party/comments/disqus.js"></script>
 
 </body>
 </html>

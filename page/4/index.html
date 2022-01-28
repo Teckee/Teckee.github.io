@@ -225,20 +225,6 @@
       <span class="post-meta-item-text">Views: </span>
       <span class="leancloud-visitors-count"></span>
     </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus: </span>
-    
-    <a title="disqus" href="/2019/09/19/Linux-VPS-configure/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/09/19/Linux-VPS-configure/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
 </div>
 
         </div>
@@ -251,10 +237,15 @@
           <blockquote>
 <p>本文记录了VPS下的基础配置过程，包括科学上网、安全等方面的内容</p>
 </blockquote>
-<h1 id="用户组管理"><a href="#用户组管理" class="headerlink" title="用户组管理"></a>用户组管理</h1><p>在root用户下，使用如下的指令，创建新用户，并添加用户到<code>sudoers</code><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">useradd -m username (-m stand <span class="keyword">for</span> create home) -s /bin/bash (指定用户登入后所使用的shell,默认值为/bin/bash。最好手动指定)</span><br><span class="line">adduser &lt;username&gt; sudo (add user to the sudoers)</span><br></pre></td></tr></table></figure><br>以后使用<code>username</code>(你的用户名)登录就OK了，需要使用<code>root</code>权限时利用<code>sudo</code>就行了</p>
-<p>更改当前用户密码：<br><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ passwd</span><br></pre></td></tr></table></figure></p>
+<h1 id="用户组管理"><a href="#用户组管理" class="headerlink" title="用户组管理"></a>用户组管理</h1><p>在root用户下，使用如下的指令，创建新用户，并添加用户到<code>sudoers</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">useradd -m username (-m stand <span class="keyword">for</span> create home) -s /bin/bash (指定用户登入后所使用的shell,默认值为/bin/bash。最好手动指定)</span><br><span class="line">adduser &lt;username&gt; sudo (add user to the sudoers)</span><br></pre></td></tr></table></figure>
+<p>以后使用<code>username</code>(你的用户名)登录就OK了，需要使用<code>root</code>权限时利用<code>sudo</code>就行了</p>
+<p>更改当前用户密码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ passwd</span><br></pre></td></tr></table></figure>
+
 <p>更改某个用户的密码，此时需要登录到root用户，</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ passwd username</span><br></pre></td></tr></table></figure>
+
 <blockquote>
 <p>关于如何删除用户，可以参考：<a target="_blank" rel="noopener" href="https://www.tecmint.com/delete-remove-a-user-account-with-home-directory-in-linux/">Deleting/Removing a User Account with His/Her Home Directory</a></p>
 </blockquote>
@@ -335,20 +326,6 @@
       <span class="post-meta-item-text">Views: </span>
       <span class="leancloud-visitors-count"></span>
     </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus: </span>
-    
-    <a title="disqus" href="/2019/08/28/Linux_5_boot_process/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/08/28/Linux_5_boot_process/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
 </div>
 
         </div>
@@ -444,20 +421,6 @@
       <span class="post-meta-item-text">Views: </span>
       <span class="leancloud-visitors-count"></span>
     </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus: </span>
-    
-    <a title="disqus" href="/2019/08/20/Linux_4_IO/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/08/20/Linux_4_IO/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
 </div>
 
         </div>
@@ -546,20 +509,6 @@
       <span class="post-meta-item-text">Views: </span>
       <span class="leancloud-visitors-count"></span>
     </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus: </span>
-    
-    <a title="disqus" href="/2019/08/15/Linux_3_Thread/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/08/15/Linux_3_Thread/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
 </div>
 
         </div>
@@ -652,20 +601,6 @@
       <span class="post-meta-item-text">Views: </span>
       <span class="leancloud-visitors-count"></span>
     </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus: </span>
-    
-    <a title="disqus" href="/2019/08/10/Linux_2_process/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/08/10/Linux_2_process/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
 </div>
 
         </div>
@@ -754,20 +689,6 @@
       <span class="post-meta-item-text">Views: </span>
       <span class="leancloud-visitors-count"></span>
     </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus: </span>
-    
-    <a title="disqus" href="/2019/08/01/Linux_1_memory_management/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/08/01/Linux_1_memory_management/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
 </div>
 
         </div>
@@ -860,20 +781,6 @@
       <span class="post-meta-item-text">Views: </span>
       <span class="leancloud-visitors-count"></span>
     </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus: </span>
-    
-    <a title="disqus" href="/2019/07/22/Crontab-usage/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/07/22/Crontab-usage/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
 </div>
 
         </div>
@@ -888,6 +795,7 @@
 </blockquote>
 <h2 id="设置Cron任务"><a href="#设置Cron任务" class="headerlink" title="设置Cron任务"></a>设置Cron任务</h2><h3 id="创建任务"><a href="#创建任务" class="headerlink" title="创建任务"></a>创建任务</h3><p>可以通过如下指令来创建或者修改你自己的crontab文件，</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">crontab -e</span><br></pre></td></tr></table></figure>
+
 <h3 id="设置运行周期"><a href="#设置运行周期" class="headerlink" title="设置运行周期"></a>设置运行周期</h3><p>cron job是周期性运行的，我们按如下格式来进行设置，</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">* * * * * command to be executed</span><br><span class="line">- - - - -</span><br><span class="line">| | | | |</span><br><span class="line">| | | | ----- Day of week (0 - 7) (Sunday=0 or 7)</span><br><span class="line">| | | ------- Month (1 - 12)</span><br><span class="line">| | --------- Day of month (1 - 31)</span><br><span class="line">| ----------- Hour (0 - 23)</span><br><span class="line">------------- Minute (0 - 59)</span><br></pre></td></tr></table></figure>
 <p>当然有更简单的方法，你可以在 <a target="_blank" rel="noopener" href="https://crontab.guru/">https://crontab.guru/</a> 网站进行在线设置，设置好了直接拷贝过来。网页提供了图形化的操作界面，对新手特别友好。</p>
@@ -969,20 +877,6 @@
       <span class="post-meta-item-text">Views: </span>
       <span class="leancloud-visitors-count"></span>
     </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus: </span>
-    
-    <a title="disqus" href="/2019/01/27/hexo-blog-domain/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/01/27/hexo-blog-domain/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
 </div>
 
         </div>
@@ -1074,20 +968,6 @@
       <span class="post-meta-item-text">Views: </span>
       <span class="leancloud-visitors-count"></span>
     </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus: </span>
-    
-    <a title="disqus" href="/2018/12/02/Zookeeper%20Introduction/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/12/02/Zookeeper Introduction/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
 </div>
 
         </div>
@@ -1178,20 +1058,6 @@
       <span class="post-meta-item-text">Views: </span>
       <span class="leancloud-visitors-count"></span>
     </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus: </span>
-    
-    <a title="disqus" href="/2018/11/29/Clean%20Code/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/11/29/Clean Code/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
 </div>
 
         </div>
@@ -1274,8 +1140,6 @@
   <script src="/js/third-party/statistics/lean-analytics.js"></script>
 
 
-<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"frankier-me","count":true,"i18n":{"disqus":"disqus"}}</script>
-<script src="/js/third-party/comments/disqus.js"></script>
 
 </body>
 </html>

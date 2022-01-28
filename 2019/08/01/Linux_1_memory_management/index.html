@@ -245,20 +245,6 @@
       <span class="post-meta-item-text">Views: </span>
       <span class="leancloud-visitors-count"></span>
     </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus: </span>
-    
-    <a title="disqus" href="/2019/08/01/Linux_1_memory_management/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/08/01/Linux_1_memory_management/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
 </div>
 
         </div>
@@ -275,13 +261,14 @@
 <p><strong>异步</strong>：在多道程序环境下，允许多个程序并发执行，但由于资源有限，进程的执行不是一管到底，而是走走停停，以不可预知的速度向前推进，这就是进程的异步性。异步性使得操作系统运行在一种随机的环境下，可能导致进程产生与时间有关的错误。但只要运行环境相同，操作系统必须保证多次运行程序，都获得相同的结果。</p>
 <p><strong>虚拟</strong>：虚拟性是一种管理技术，把物理上的一个实体变成逻辑上的一个或多个对应物。采用虚拟技术的目的是为用户提供易于使用、方便高效的操作环境。</p>
 <span id="more"></span>
-<h2 id="1-内存管理"><a href="#1-内存管理" class="headerlink" title="1. 内存管理"></a>1. 内存管理</h2><h3 id="1-1-虚拟地址、逻辑地址、线性地址、物理地址"><a href="#1-1-虚拟地址、逻辑地址、线性地址、物理地址" class="headerlink" title="1.1 虚拟地址、逻辑地址、线性地址、物理地址"></a>1.1 虚拟地址、逻辑地址、线性地址、物理地址</h3><p><img src="http://qiniu.lfeng.tech/20220128204555_460c4.jpg" alt=""><br><img src="http://qiniu.lfeng.tech/20220128204555_a9dc8.jpg" alt=""></p>
+
+<h2 id="1-内存管理"><a href="#1-内存管理" class="headerlink" title="1. 内存管理"></a>1. 内存管理</h2><h3 id="1-1-虚拟地址、逻辑地址、线性地址、物理地址"><a href="#1-1-虚拟地址、逻辑地址、线性地址、物理地址" class="headerlink" title="1.1 虚拟地址、逻辑地址、线性地址、物理地址"></a>1.1 虚拟地址、逻辑地址、线性地址、物理地址</h3><p><img src="http://qiniu.lfeng.tech/20220128204555_460c4.jpg"><br><img src="http://qiniu.lfeng.tech/20220128204555_a9dc8.jpg"></p>
 <h3 id="1-2-内存分配管理方式"><a href="#1-2-内存分配管理方式" class="headerlink" title="1.2 内存分配管理方式"></a>1.2 内存分配管理方式</h3><p>内存分配管理包括<strong>连续分配管理方式</strong>和<strong>非连续分配管理方式</strong>。</p>
 <p>连续分配方式，是指为一个用户分配一个连续的内存空间。主要包括单一连续分配、固定分区分配和动态分区分配。<br>非连续分配管理方式允许一个程序分散地装入到不相邻的内存分区中，根据分区的大小是否固定分为分页存储管理方式和分段存储管理方式。分页存储管理方式中，又根据运行作业时是否需要把所有页面都装入内存才能运行分为基本分页储存管理方式和请求分页储存管理方式。</p>
 <h4 id="1-2-1-基本分页储存管理方式"><a href="#1-2-1-基本分页储存管理方式" class="headerlink" title="1.2.1 基本分页储存管理方式"></a>1.2.1 基本分页储存管理方式</h4><p><img src="http://qiniu.lfeng.tech/20220128204556_d4727.jpg" alt="|center|"></p>
 <ul>
 <li><strong>页面和页面大小</strong>。进程中的块称为页(Page)，内存中的块称为页框（Page Frame，或页帧）。外存也以同样的单位进行划分，直接称为块(Block)。进程在执行时需要申请主存空间，就是要为每个页面分配主存中的可用页框，这就产生了页和页框的一一对应。</li>
-<li><strong>地址结构包含两部分：前一部分为页号P，后一部分为页内偏移量W。</strong>地址长度为32 位，其中0~11位为页内地址，即每页大小为4KB；12~31位为页号，地址空间最多允许有220页。</li>
+<li><strong>地址结构包含两部分：前一部分为页号P，后一部分为页内偏移量W。</strong>地址长度为32 位，其中0<del>11位为页内地址，即每页大小为4KB；12</del>31位为页号，地址空间最多允许有220页。</li>
 <li><strong>页表。</strong>为了便于在内存中找到进程的每个页面所对应的物理块，系统为每个进程建立一张页表，记录页面在内存中对应的物理块号，页表一般存放在内存中。</li>
 </ul>
 <h4 id="1-2-2-基本分段储存管理方式"><a href="#1-2-2-基本分段储存管理方式" class="headerlink" title="1.2.2 基本分段储存管理方式"></a>1.2.2 基本分段储存管理方式</h4><p><img src="http://qiniu.lfeng.tech/20220128204556_bf6f3.jpg" alt="|center|"></p>
@@ -315,13 +302,13 @@
 <p><strong>虚存的优缺点：</strong></p>
 <blockquote>
 <p>虚存比实存有以下好处：</p>
+</blockquote>
 <ul>
 <li>扩大地址空间。</li>
 <li>内存保护。每个进程运行在各自的虚拟内存空间，互相不能干扰对方。</li>
 <li>公平分配内存。采用了虚存之后，每个进程都相当于有通用大小的虚存空间。</li>
 <li>当进程需要通信时，可采用虚存共享的方式实现。</li>
 </ul>
-</blockquote>
 <p>使用虚存也是有代价的，主要表现在以下几个方面：</p>
 <ul>
 <li>虚存的管理需要建立很多数据结构，这些数据结构也占用额外的内存</li>
@@ -368,7 +355,9 @@
 <p>分配器将堆视为一组不同大小的块，每个块为虚拟存储器的一个连续组块，是已分配的或空闲的。</p>
 <p>有两种分配器。显式分配器要求应用显式地释放任何已分配的块，如C的 malloc/free 和C++的 new/delete 。隐式分配器则由分配器检测不再被使用的已分配块，并释放块，也称为垃圾收集器，Lisp、ML和Java等高级语言使用垃圾收集。</p>
 <h4 id="1-4-1-显式分配器"><a href="#1-4-1-显式分配器" class="headerlink" title="1.4.1 显式分配器"></a>1.4.1 显式分配器</h4><p>C标准库提供了 malloc 程序包作为显式分配器，包括 malloc 、 calloc 、 realloc 、 free 函数。</p>
-<p><strong>动态存储分配器</strong>可以使用 mmap 和 munmap 函数显式地分配和释放堆，还有 sbrk、brk 函数：<br><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;unistd.h&gt;</span><br><span class="line"></span><br><span class="line">/** 将内核的brk指针增加increment来扩展和收缩堆，increment为0时返回brk当前值</span><br><span class="line"> * @return      返回brk的旧值，出错返回-1，并设errno为ENOMEM */</span><br><span class="line">void *sbrk(intptr_t increment);</span><br><span class="line"></span><br><span class="line">int brk(void *end_data_segment);  // 参数为分配或者释放后的堆的绝对地址</span><br></pre></td></tr></table></figure><br>显式分配器的要求和目标：</p>
+<p><strong>动态存储分配器</strong>可以使用 mmap 和 munmap 函数显式地分配和释放堆，还有 sbrk、brk 函数：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;unistd.h&gt;</span><br><span class="line"></span><br><span class="line">/** 将内核的brk指针增加increment来扩展和收缩堆，increment为0时返回brk当前值</span><br><span class="line"> * @return      返回brk的旧值，出错返回-1，并设errno为ENOMEM */</span><br><span class="line">void *sbrk(intptr_t increment);</span><br><span class="line"></span><br><span class="line">int brk(void *end_data_segment);  // 参数为分配或者释放后的堆的绝对地址</span><br></pre></td></tr></table></figure>
+<p>显式分配器的要求和目标：</p>
 <ul>
 <li>能够处理任意（分配和释放）请求的序列，释放请求必须对应以前分配请求分配的块。</li>
 <li>立即响应分配请求，不允许分配器为了提高性能重新排列或者缓冲请求</li>
@@ -377,10 +366,10 @@
 <li>不修改已分配的块。</li>
 </ul>
 <h4 id="1-4-2-隐式空闲链表和显式空闲链表"><a href="#1-4-2-隐式空闲链表和显式空闲链表" class="headerlink" title="1.4.2 隐式空闲链表和显式空闲链表"></a>1.4.2 隐式空闲链表和显式空闲链表</h4><p><strong>1. 隐式空闲链表</strong></p>
-<p>空闲块是通过头部中的大小字段隐含地连接着的，分配器可以通过遍历堆中的所有块，从而间接地遍历整个空闲块的集合。但是需要某种特殊标记的结束块，在下图的示例中，就是一个设置了已分配位而大小为0的终止头部。<br><img src="http://qiniu.lfeng.tech/20220128204556_f9035.jpg" alt=""><br>隐式空闲链表由N个块组成，一个块由头部、有效载荷（只包括已分配的块），以及可能的一些额外的填充（为了保证内存字节对齐而需要的填充）和尾部组成。头部大小为4个字节，在强加双字对齐的约束之后，块大小总是8的倍数，所以用高29位来表示存储块大小，剩余3位中利用最低位来表示块是否已分配(1表示已分配，0表示空闲)；尾部和头部的内容一样，加入尾部是为了分配器可以判断出一个块的起始位置和状态。整个堆空间就是一个隐式空闲链表，从低地址向高地址生长，第一个和最后一个8字节标记为已分配，以确定堆的大小。</p>
+<p>空闲块是通过头部中的大小字段隐含地连接着的，分配器可以通过遍历堆中的所有块，从而间接地遍历整个空闲块的集合。但是需要某种特殊标记的结束块，在下图的示例中，就是一个设置了已分配位而大小为0的终止头部。<br><img src="http://qiniu.lfeng.tech/20220128204556_f9035.jpg"><br>隐式空闲链表由N个块组成，一个块由头部、有效载荷（只包括已分配的块），以及可能的一些额外的填充（为了保证内存字节对齐而需要的填充）和尾部组成。头部大小为4个字节，在强加双字对齐的约束之后，块大小总是8的倍数，所以用高29位来表示存储块大小，剩余3位中利用最低位来表示块是否已分配(1表示已分配，0表示空闲)；尾部和头部的内容一样，加入尾部是为了分配器可以判断出一个块的起始位置和状态。整个堆空间就是一个隐式空闲链表，从低地址向高地址生长，第一个和最后一个8字节标记为已分配，以确定堆的大小。</p>
 <p>优点：简单，缺点：任何操作的开销，对链表的搜索与堆中已分配块和空闲块的总数呈线性关系。</p>
 <p><strong>2. 显式空闲链表</strong></p>
-<p>对于通用的分配器，隐式空闲链表并不适合，因为它的块分配和堆块的总数呈线性关系。可以在空闲块中增加一种显式的数据结构。下面是双向空闲链表的堆块的格式。双向链表使首次适配时间从块总数的线性时间减少到了空闲块数的线性时间。<br><img src="http://qiniu.lfeng.tech/20220128204558_f68ce.jpg" alt=""></p>
+<p>对于通用的分配器，隐式空闲链表并不适合，因为它的块分配和堆块的总数呈线性关系。可以在空闲块中增加一种显式的数据结构。下面是双向空闲链表的堆块的格式。双向链表使首次适配时间从块总数的线性时间减少到了空闲块数的线性时间。<br><img src="http://qiniu.lfeng.tech/20220128204558_f68ce.jpg"></p>
 <p>用一个链表将可用的内存块连接为一个长长的列表，称为空闲链表。将堆组织成双向空闲链表，每一个空闲块结点都包含一个祖先指针和一个后继指针。链表中的每个结点记录一个连续的、未分配的内存小块。结点的结构很简单，只需要记录可用内存小块的首地址和大小即可。</p>
 <p>显式链表的缺点是空闲块必须足够大来包含结构，这增大了最小块的大小，也潜在提高了内部碎片的程度。</p>
 <h4 id="1-4-3-内存块的选择算法"><a href="#1-4-3-内存块的选择算法" class="headerlink" title="1.4.3 内存块的选择算法"></a>1.4.3 内存块的选择算法</h4><ul>
@@ -405,16 +394,16 @@
 <p><strong>相关知识：</strong></p>
 <p><strong>1. Linux进程的虚拟空间及其划分</strong></p>
 <p>在32位硬件平台上，Linux的逻辑地址为32位，因此，每个进程的虚拟地址空间为4GB，在4GB的空间中，操作系统占用了高端的1GB，而低端的3GB则留给用户程序使用。如下图所示：</p>
-<p><img src="http://qiniu.lfeng.tech/20220128204558_4232f.jpg" alt=""><br><img src="http://qiniu.lfeng.tech/20220128204559_0165d.jpg" alt=""></p>
+<p><img src="http://qiniu.lfeng.tech/20220128204558_4232f.jpg"><br><img src="http://qiniu.lfeng.tech/20220128204559_0165d.jpg"></p>
 <p><strong>2. Linux内核虚拟存储器</strong></p>
 <p>Linux中1GB的内核虚拟存储器空间又被划分为物理内存映射区、虚拟内存分配区、高端页面映射区、专用页面映射区和系统保留映射区这几个区域。<br>一般情况下，物理内存映射区最大长度为896MB，系统的物理内存被顺序映射到物理内存映射区中。当系统物理内存大于896MB时，超过系统物理内存的那部分内存称为<strong>高端内存</strong>（小于896MB的系统物理内存称为<strong>常规内存</strong>），内核在存取高端内存时必须将它们映射到高端内存映射区中。下图可以反映出Linux内核虚拟存储器与物理内存之间的映射关系。</p>
-<p><img src="http://qiniu.lfeng.tech/20220128204559_18e90.jpg" alt=""></p>
+<p><img src="http://qiniu.lfeng.tech/20220128204559_18e90.jpg"></p>
 <blockquote>
 <p>注意：物理内存中0~896MB区域通常由内核使用，当然内核不用时用户程序可以使用；896MB以上的区域通常由用户程序来使用。</p>
 </blockquote>
 <p><strong>3. Linux用户虚拟存储器</strong></p>
 <p>Linux用户虚拟存储器总是通过页表访问内存，决不会直接访问。如下图所示：</p>
-<p><img src="http://qiniu.lfeng.tech/20220128204600_34308.jpg" alt=""></p>
+<p><img src="http://qiniu.lfeng.tech/20220128204600_34308.jpg"></p>
 <p><strong>参考：</strong><br><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/20220583">1. 知乎-malloc 的实现涉及物理内存，虚拟内存</a><br><a target="_blank" rel="noopener" href="http://blog.sina.com.cn/s/blog_8d13a22b0100vb1b.html">2. 嵌入式动态内存分配过程</a><br><a target="_blank" rel="noopener" href="http://blog.chinaunix.net/uid-28263175-id-3541869.html">3. Linux的内存映射 </a><br><a target="_blank" rel="noopener" href="http://wushank.blog.51cto.com/3489095/1406480">4. linux内核内存管理</a></p>
 <h3 id="1-5-Linux共享内存实现"><a href="#1-5-Linux共享内存实现" class="headerlink" title="1.5 Linux共享内存实现"></a>1.5 Linux共享内存实现</h3><p>共享内存允许两个或多个进程共享一个给定的存储区，因为数据不需要来回复制，所以是最快的一种进程间通信机制。共享内存可以通过mmap()映射普通文件（特殊情况下还可以采用匿名映射）机制实现，也可以通过系统V共享内存机制实现。应用接口和原理很简单，内部机制复杂。为了实现更安全通信，往往还与信号灯等同步机制共同使用。</p>
 <p>实现共享内存主要有如下两种机制：</p>
@@ -466,11 +455,6 @@
 
 
 
-    
-  <div class="comments" id="disqus_thread">
-    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
-  </div>
-  
 </div>
   </main>
 
@@ -512,8 +496,6 @@
   <script src="/js/third-party/statistics/lean-analytics.js"></script>
 
 
-<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"frankier-me","count":true,"i18n":{"disqus":"disqus"}}</script>
-<script src="/js/third-party/comments/disqus.js"></script>
 
 </body>
 </html>

@@ -255,20 +255,6 @@
       <span class="post-meta-item-text">Views: </span>
       <span class="leancloud-visitors-count"></span>
     </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus: </span>
-    
-    <a title="disqus" href="/2019/12/29/Java_concurrent_8_JMM/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/12/29/Java_concurrent_8_JMM/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
 </div>
 
         </div>
@@ -278,10 +264,11 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <p><img src="http://qiniu.lfeng.tech/20220128204511_93a34.jpg" alt=""></p>
+        <p><img src="http://qiniu.lfeng.tech/20220128204511_93a34.jpg"></p>
 <h2 id="8-JMM和底层实现原理"><a href="#8-JMM和底层实现原理" class="headerlink" title="8. JMM和底层实现原理"></a>8. JMM和底层实现原理</h2><h3 id="8-1-线程间的通信与同步"><a href="#8-1-线程间的通信与同步" class="headerlink" title="8.1 线程间的通信与同步"></a>8.1 线程间的通信与同步</h3><h4 id="线程之间的通信"><a href="#线程之间的通信" class="headerlink" title="线程之间的通信"></a>线程之间的通信</h4><p>线程的通信是指线程之间以何种机制来交换信息。在编程中，线程之间的通信机制有两种，<strong>共享内存和消息传递。</strong></p>
 <p>在<strong>共享内存</strong>的并发模型里，线程之间共享程序的公共状态，线程之间通过写-读内存中的公共状态来隐式进行通信，典型的共享内存通信方式就是通过共享对象进行通信。</p>
 <span id="more"></span>
+
 <p>在<strong>消息传递</strong>的并发模型里，线程之间没有公共状态，线程之间必须通过明确的发送消息来显式进行通信，在java中典型的消息传递方式就是wait()和notify()。</p>
 <h4 id="线程之间的同步"><a href="#线程之间的同步" class="headerlink" title="线程之间的同步"></a>线程之间的同步</h4><p>同步是指程序用于控制不同线程之间操作发生相对顺序的机制。</p>
 <p><strong>在共享内存并发模型里，同步是显式进行的。</strong>程序员必须显式指定某个方法或某段代码需要在线程之间互斥执行。<br>在<strong>消息传递</strong>的并发模型里，由于消息的发送必须在消息的接收之前，因此同步是<strong>隐式进行</strong>的。</p>
@@ -311,6 +298,7 @@
 <p><strong>2. 控制依赖性</strong></p>
 <p>对于控制依赖性，比如下面的例子，b的值依赖于a的状态，这种情况下，指令重排也会保证这种关系的正确性。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">if （a == 1）&#123;</span><br><span class="line">    b = 2;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <blockquote>
 <p>as-if-serial语义:不管怎么重排序（编译器和处理器为了提高并行度），<strong>（单线程）程序</strong>的执行结果不会改变。在as-if-serial语义下，编译器和处理器不会对存在数据依赖关系的操作做重排序，因为这种重排序会改变执行结果。</p>
 </blockquote>
@@ -456,7 +444,8 @@
 </li>
 <li><p>拷贝对象头中的Mark Word复制到锁记录中。</p>
 </li>
-<li>拷贝成功后，虚拟机将使用CAS操作尝试将对象的Mark Word更新为指向Lock Record的指针，并将Lock record里的owner指针指向object mark word。如果更新成功，则执行步骤（4），否则执行步骤（5）。</li>
+<li><p>拷贝成功后，虚拟机将使用CAS操作尝试将对象的Mark Word更新为指向Lock Record的指针，并将Lock record里的owner指针指向object mark word。如果更新成功，则执行步骤（4），否则执行步骤（5）。</p>
+</li>
 <li><p>如果这个更新动作成功了，那么这个线程就拥有了该对象的锁，并且对象Mark Word的锁标志位设置为“00”，即表示此对象处于轻量级锁定状态，这时候线程堆栈与对象头的状态如下图所示。</p>
 </li>
 <li><p>如果这个更新操作失败了，虚拟机首先会检查对象的Mark Word是否指向当前线程的栈帧，如果是就说明当前线程已经拥有了这个对象的锁，那就可以直接进入同步块继续执行。否则说明多个线程竞争锁，若当前只有一个等待线程，则可通过自旋稍微等待一下，可能另一个线程很快就会释放锁。 但是当自旋超过一定的次数，或者一个线程在持有锁，一个在自旋，又有第三个来访时，轻量级锁膨胀为重量级锁，重量级锁使除了拥有锁的线程以外的线程都阻塞，防止CPU空转，锁标志的状态值变为“10”，Mark Word中存储的就是指向重量级锁（互斥量）的指针，后面等待锁的线程也要进入阻塞状态。</p>
@@ -529,11 +518,6 @@
 
 
 
-    
-  <div class="comments" id="disqus_thread">
-    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
-  </div>
-  
 </div>
   </main>
 
@@ -575,8 +559,6 @@
   <script src="/js/third-party/statistics/lean-analytics.js"></script>
 
 
-<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"frankier-me","count":true,"i18n":{"disqus":"disqus"}}</script>
-<script src="/js/third-party/comments/disqus.js"></script>
 
 </body>
 </html>

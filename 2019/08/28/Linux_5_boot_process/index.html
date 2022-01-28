@@ -236,20 +236,6 @@
       <span class="post-meta-item-text">Views: </span>
       <span class="leancloud-visitors-count"></span>
     </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus: </span>
-    
-    <a title="disqus" href="/2019/08/28/Linux_5_boot_process/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/08/28/Linux_5_boot_process/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
 </div>
 
         </div>
@@ -269,6 +255,7 @@
 <p>6.读取inittab文件执行rc.sysinit、rc等脚本</p>
 <p>7.启动mingetty进入系统登录界面</p>
 <span id="more"></span>
+
 <p>下面将对这些内容详细介绍。</p>
 <h3 id="5-1-POST开机自检"><a href="#5-1-POST开机自检" class="headerlink" title="5.1 POST开机自检"></a>5.1 POST开机自检</h3><p>电脑主机打开电源的时候，随后会听到滴的一声响，系统启动，开始了开机自检POST-power on self。</p>
 <p>Test自检开始这个过程中，主要是检测计算机硬件设备，比如CPU内存、主板、显卡等设备是否有故障存在。如果有硬件故障的话，对于严重故障(致命性故障)则停机。</p>
@@ -287,7 +274,7 @@
 <h3 id="5-9-执行不同运行级别的脚本程序"><a href="#5-9-执行不同运行级别的脚本程序" class="headerlink" title="5.9 执行不同运行级别的脚本程序"></a>5.9 执行不同运行级别的脚本程序</h3><p>根据运行级别的不同系统会运行rc0.d到rc6.d中的相应的脚本程序，来完成相应的初始化工作和启动相应的服务。</p>
 <h3 id="5-10-执行-bin-login程序启动mingetty-进入登录状态"><a href="#5-10-执行-bin-login程序启动mingetty-进入登录状态" class="headerlink" title="5.10 执行/bin/login程序启动mingetty,进入登录状态"></a>5.10 执行/bin/login程序启动mingetty,进入登录状态</h3><p>系统已经进入到了等待用户输入username和password的时候了，可以用自己的账号登入系统了。到此为止linux系统启动全部完成。</p>
 <p>下图是对上面所有步骤的总结：</p>
-<p><img src="http://qiniu.lfeng.tech/20220128204508_d2c4b.jpg" alt=""></p>
+<p><img src="http://qiniu.lfeng.tech/20220128204508_d2c4b.jpg"></p>
 <hr>
 <p>本文由『后端精进之路』原创，首发于博客 <a target="_blank" rel="noopener" href="http://teckee.github.io/">http://teckee.github.io/</a> , 转载请注明出处</p>
 <p>搜索『后端精进之路』关注公众号，立刻获取最新文章和<strong>价值2000元的BATJ精品面试课程</strong>。</p>
@@ -327,11 +314,6 @@
 
 
 
-    
-  <div class="comments" id="disqus_thread">
-    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
-  </div>
-  
 </div>
   </main>
 
@@ -373,8 +355,6 @@
   <script src="/js/third-party/statistics/lean-analytics.js"></script>
 
 
-<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"frankier-me","count":true,"i18n":{"disqus":"disqus"}}</script>
-<script src="/js/third-party/comments/disqus.js"></script>
 
 </body>
 </html>

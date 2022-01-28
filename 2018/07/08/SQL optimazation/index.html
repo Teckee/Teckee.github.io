@@ -232,20 +232,6 @@
       <span class="post-meta-item-text">Views: </span>
       <span class="leancloud-visitors-count"></span>
     </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus: </span>
-    
-    <a title="disqus" href="/2018/07/08/SQL%20optimazation/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/07/08/SQL optimazation/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
 </div>
 
         </div>
@@ -259,7 +245,10 @@
 <p>在程序中经常会写SQL从数据库中获取数据，但是如何才能提高SQL的性能，是一个值得探讨的问题，本文中将介绍常见的几种SQL调优的手段。</p>
 </blockquote>
 <h2 id="用一条语句来替换多条语句"><a href="#用一条语句来替换多条语句" class="headerlink" title="用一条语句来替换多条语句"></a>用一条语句来替换多条语句</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> tab_comp <span class="keyword">VALUES</span> (item1, price1, qty1);</span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> tab_comp <span class="keyword">VALUES</span> (item2, price2, qty2);</span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> tab_comp <span class="keyword">VALUES</span> (item3, price3, qty3);</span><br></pre></td></tr></table></figure>
-<p>可以改写成<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> tab_comp <span class="keyword">VALUES</span> (item1, price1, qty1)，(item2, price2, qty2)，(item3, price3, qty3);</span><br></pre></td></tr></table></figure><br><span id="more"></span></p>
+<p>可以改写成</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> tab_comp <span class="keyword">VALUES</span> (item1, price1, qty1)，(item2, price2, qty2)，(item3, price3, qty3);</span><br></pre></td></tr></table></figure>
+<span id="more"></span>
+
 <h2 id="合理使用NOT-IN-和-NOT-EXISTS"><a href="#合理使用NOT-IN-和-NOT-EXISTS" class="headerlink" title="合理使用NOT IN 和 NOT EXISTS"></a>合理使用NOT IN 和 NOT EXISTS</h2><p><code>NOT IN</code> 是自内向外的操作，即先得到子查询的结果，然后执行外层的循环。而<code>NOT EXISTS</code>恰好相反，是自外向内的操作。通常情况下<code>NOT EXISTS</code>的性能要高于<code>NOT IN</code> 。</p>
 <h2 id="调整表的连接顺序，减少中间结果集的数据量"><a href="#调整表的连接顺序，减少中间结果集的数据量" class="headerlink" title="调整表的连接顺序，减少中间结果集的数据量"></a>调整表的连接顺序，减少中间结果集的数据量</h2><p>一般情况下，DB2会根据各表的JOIN顺序自顶向下顺序处理，因此合理排列各表的连接顺序会提高查询性能。</p>
 <h2 id="良好的SQL编码规范"><a href="#良好的SQL编码规范" class="headerlink" title="良好的SQL编码规范"></a>良好的SQL编码规范</h2><ul>
@@ -304,11 +293,6 @@
 
 
 
-    
-  <div class="comments" id="disqus_thread">
-    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
-  </div>
-  
 </div>
   </main>
 
@@ -350,8 +334,6 @@
   <script src="/js/third-party/statistics/lean-analytics.js"></script>
 
 
-<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"frankier-me","count":true,"i18n":{"disqus":"disqus"}}</script>
-<script src="/js/third-party/comments/disqus.js"></script>
 
 </body>
 </html>

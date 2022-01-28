@@ -244,20 +244,6 @@
       <span class="post-meta-item-text">Views: </span>
       <span class="leancloud-visitors-count"></span>
     </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus: </span>
-    
-    <a title="disqus" href="/2020/02/08/JVM_3_execute_system/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2020/02/08/JVM_3_execute_system/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
 </div>
 
         </div>
@@ -272,6 +258,7 @@
 <p>Java虚拟机不和包括Java在内的任何语言绑定，它只与Class文件这种特定的二进制文件格式所关联，这使得任何语言的都可以使用特定的编译器将其源码编译成Class文件，从而在虚拟机上运行。</p>
 <p><img src="http://qiniu.lfeng.tech/20220128204511_1db9d.jpg" alt="Screen Shot 2019-12-22 at 4.41.27 PM.png"></p>
 <span id="more"></span>
+
 <h3 id="3-2-Class类的文件结构"><a href="#3-2-Class类的文件结构" class="headerlink" title="3.2 Class类的文件结构"></a>3.2 Class类的文件结构</h3><p>任何一个Class文件都对应着唯一一个类或接口的定义信息，但反过来说，Class文件实际上它并不一定以磁盘文件的形式存在。</p>
 <p><strong>Class文件是一组以8位字节为基础单位的二进制流。</strong></p>
 <p>各个数据项目严格按照顺序紧凑地排列在Class文件之中，中间没有添加任何分隔符，这使得整个Class文件中存储的内容几乎全部是程序运行的必要数据，没有空隙存在。<br>Class文件格式采用一种类似于C语言结构体的伪结构来存储数据，这种伪结构中只有两种数据类型：<strong>无符号数和表</strong>。</p>
@@ -286,8 +273,7 @@
 <th>数量</th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td>占用大小</td>
 <td>字段描述</td>
 <td>数量</td>
@@ -372,8 +358,7 @@
 <td>attrbutes：#属性表</td>
 <td>attributes_count</td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 <blockquote>
 <p>可以使用javap -verbose输出class文件的字节码内容。</p>
 </blockquote>
@@ -522,6 +507,7 @@
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">public class SuperClass &#123;</span><br><span class="line">	static &#123;</span><br><span class="line">		System.out.println(&quot;SuperClass init!&quot;);</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	public static int value = 123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public class SubClass extends SuperClass &#123;</span><br><span class="line">	static &#123;</span><br><span class="line">		System.out.println(&quot;Subclass init!&quot;);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public class ConstClass &#123;</span><br><span class="line">	static &#123;</span><br><span class="line">		System.out.println(&quot;ConstClass init!&quot;);</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	public static final String HELLOWORLD_STRING = &quot;hello world&quot;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>以下是对三种情况的测试程序：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">public class NotInitialization &#123;</span><br><span class="line">	public static void main(String[] args) &#123;</span><br><span class="line">		// 1. 只有直接定义这个字段的类才会被初始化，因此通过其子类来引用父类中定义的静态字段，只会触发父类的初始化而不会触发子类的初始化。</span><br><span class="line">		// Result: SuperClass init! 123</span><br><span class="line">		System.out.println(SubClass.value);</span><br><span class="line">		</span><br><span class="line">		// 2. 通过数组定义来引用类，不会触发此类的初始化</span><br><span class="line">		SuperClass[] superClasses = new SubClass[10];</span><br><span class="line">		</span><br><span class="line">		// 3. 常量在编译阶段会存入调用类的常量池中，本质上并没有直接引用到定义常量的类，因此不会触发定义常量的类的初始化</span><br><span class="line">		// Result: hello world</span><br><span class="line">		System.out.println(ConstClass.HELLOWORLD_STRING);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <h4 id="加载"><a href="#加载" class="headerlink" title="加载"></a>加载</h4><p>在加载阶段，虚拟机需要完成下列3件事：</p>
 <ol>
 <li>通过一个类的全限定名来获取定义此类的二进制字节流</li>
@@ -562,8 +548,8 @@
 <p>对于任意一个类，都需要由加载它的<strong>类加载器和这个类本身一同确立其在java虚拟机中的唯一性</strong>，每个类加载器，都拥有一个独立的类命名空间。当一个Class文件被不同的类加载器加载时，加载生成的两个类必定不相等（equals()、isAssignableFrom()、isInstance()、instanceof关键字的结果为false）。</p>
 <h4 id="双亲委派机制"><a href="#双亲委派机制" class="headerlink" title="双亲委派机制"></a>双亲委派机制</h4><p>从java虚拟机的角度来看，只存在两种不同的类加载器：一种是启动类加载器（Bootstrap ClassLoader），这个类加载器使用c++实现，是虚拟机的一部分；另一种是所有其他的类加载器，这些类加载器都由java实现，独立于虚拟机外部，并且全部继承自抽象类java.lang.ClassLoader。java提供的类加载器主要分以下三种：</p>
 <ul>
-<li><strong>启动类加载器</strong>（Bootstrap ClassLoader）：这个类负责将存放在&lt;JAVA_HOME&gt;\lib目录中，或者被-Xbootclasspath参数所指定的路径中的类库加载到虚拟机内存中。</li>
-<li><strong>扩展类加载器</strong>（Extension ClassLoader）：这个加载器由sun.misc.Launcher$ExtClassLoader实现，它负责加载&lt;JAVA_HOME&gt;\lib\ext目录中或者被java.ext.dirs系统变量所指定的路径中的所有类库，开发者可以直接使用扩展类加载器。</li>
+<li><strong>启动类加载器</strong>（Bootstrap ClassLoader）：这个类负责将存放在<JAVA_HOME>\lib目录中，或者被-Xbootclasspath参数所指定的路径中的类库加载到虚拟机内存中。</li>
+<li><strong>扩展类加载器</strong>（Extension ClassLoader）：这个加载器由sun.misc.Launcher$ExtClassLoader实现，它负责加载<JAVA_HOME>\lib\ext目录中或者被java.ext.dirs系统变量所指定的路径中的所有类库，开发者可以直接使用扩展类加载器。</li>
 <li><strong>应用程序类加载器</strong>（Application ClassLoader）：这个类加载器由sun.misc.Launcher$AppClassLoader实现。由于这个类加载器是ClassLoader中的getSystemClassLoader()方法的返回值，所以一般也称为系统类加载器，负责加载用户类路径（ClassPath）上所指定的类库，开发者可以直接使用这个类加载器。</li>
 </ul>
 <p><img src="http://qiniu.lfeng.tech/20220128204513_67d59.jpg" alt="Screen Shot 2019-12-23 at 9.18.17 AM.png"></p>
@@ -573,15 +559,18 @@
 </blockquote>
 <h4 id="自定义类加载器"><a href="#自定义类加载器" class="headerlink" title="自定义类加载器"></a>自定义类加载器</h4><p>首先看一下实现双亲委派模型的代码，逻辑就是先检查类是否已经被加载，如果没有则调用父加载器的loadClass（）方法，如果父加载器为空则默认使用启动类加载器作为父加载器。如果父类加载失败，抛出ClassNotFoundException异常后，再调用自己的findClass（）方法进行加载。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">protected Class&lt;?&gt; loadClass(String name, boolean resolve)</span><br><span class="line">      throws ClassNotFoundException</span><br><span class="line">  &#123;</span><br><span class="line">      synchronized (getClassLoadingLock(name)) &#123;</span><br><span class="line">          // 先从缓存查找该class对象，找到就不用重新加载</span><br><span class="line">          Class&lt;?&gt; c = findLoadedClass(name);</span><br><span class="line">          if (c == null) &#123;</span><br><span class="line">              try &#123;</span><br><span class="line">                  if (parent != null) &#123;</span><br><span class="line">                      //如果找不到，则委托给父类加载器去加载</span><br><span class="line">                      c = parent.loadClass(name, false);</span><br><span class="line">                  &#125; else &#123;</span><br><span class="line">                  //如果没有父类，则委托给启动加载器去加载</span><br><span class="line">                      c = findBootstrapClassOrNull(name);</span><br><span class="line">                  &#125;</span><br><span class="line">              &#125; catch (ClassNotFoundException e) &#123;</span><br><span class="line">                  // ClassNotFoundException thrown if class not found</span><br><span class="line">                  // from the non-null parent class loader</span><br><span class="line">              &#125;</span><br><span class="line"></span><br><span class="line">              if (c == null) &#123;</span><br><span class="line">                  // If still not found, then invoke findClass in order</span><br><span class="line">                  // 如果都没有找到，则通过自定义实现的findClass去查找并加载</span><br><span class="line">                  c = findClass(name);</span><br><span class="line">              &#125;</span><br><span class="line">          &#125;</span><br><span class="line">          if (resolve) &#123;//是否需要在加载时进行解析</span><br><span class="line">              resolveClass(c);</span><br><span class="line">          &#125;</span><br><span class="line">          return c;</span><br><span class="line">      &#125;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+
 <p>在实现自己的类加载器时，通常有两种做法，一种是重写loadClass方法，另一种是重写findClass方法。其实这两种方法本质上差不多，毕竟loadClass也会调用findClass，但是最好不要直接修改loadClass的内部逻辑，以免破坏双亲委派的逻辑。推荐的做法是只在findClass里重写自定义类的加载方法。</p>
 <p>下面例子实现了文件系统类加载器，</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">public class FileSystemClassLoader extends ClassLoader &#123; </span><br><span class="line"> </span><br><span class="line">   private String rootDir; </span><br><span class="line"> </span><br><span class="line">   public FileSystemClassLoader(String rootDir) &#123; </span><br><span class="line">       this.rootDir = rootDir; </span><br><span class="line">   &#125; </span><br><span class="line"> </span><br><span class="line">   protected Class&lt;?&gt; findClass(String name) throws ClassNotFoundException &#123; </span><br><span class="line">       byte[] classData = getClassData(name); </span><br><span class="line">       if (classData == null) &#123; </span><br><span class="line">           throw new ClassNotFoundException(); </span><br><span class="line">       &#125; </span><br><span class="line">       else &#123; </span><br><span class="line">           return defineClass(name, classData, 0, classData.length); </span><br><span class="line">       &#125; </span><br><span class="line">   &#125; </span><br><span class="line"> </span><br><span class="line">   private byte[] getClassData(String className) &#123; </span><br><span class="line">       String path = classNameToPath(className); </span><br><span class="line">       try &#123; </span><br><span class="line">           InputStream ins = new FileInputStream(path); </span><br><span class="line">           ByteArrayOutputStream baos = new ByteArrayOutputStream(); </span><br><span class="line">           int bufferSize = 4096; </span><br><span class="line">           byte[] buffer = new byte[bufferSize]; </span><br><span class="line">           int bytesNumRead = 0; </span><br><span class="line">           while ((bytesNumRead = ins.read(buffer)) != -1) &#123; </span><br><span class="line">               baos.write(buffer, 0, bytesNumRead); </span><br><span class="line">           &#125; </span><br><span class="line">           return baos.toByteArray(); </span><br><span class="line">       &#125; catch (IOException e) &#123; </span><br><span class="line">           e.printStackTrace(); </span><br><span class="line">       &#125; </span><br><span class="line">       return null; </span><br><span class="line">   &#125; </span><br><span class="line"> </span><br><span class="line">   private String classNameToPath(String className) &#123; </span><br><span class="line">       return rootDir + File.separatorChar </span><br><span class="line">               + className.replace(&#x27;.&#x27;, File.separatorChar) + &quot;.class&quot;; </span><br><span class="line">   &#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <h4 id="Class-forName和ClassLoader-loadClass"><a href="#Class-forName和ClassLoader-loadClass" class="headerlink" title="Class.forName和ClassLoader.loadClass"></a>Class.forName和ClassLoader.loadClass</h4><blockquote>
 <p>Class.forName是Class类的方法public static Class&lt;?&gt; forName(String className) throws ClassNotFoundException</p>
 <p>ClassLoader.loadClass是ClassLoader类的方法public Class&lt;?&gt; loadClass(String name) throws ClassNotFoundException</p>
 </blockquote>
 <p>Class.forName和ClassLoader.loadClass都可以用来进行类型加载，而在Java进行类型加载的时刻，一般会有多个ClassLoader可以使用，并可以使用多种方式进行类型加载。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">class A &#123;</span><br><span class="line">    public void m() &#123;</span><br><span class="line">        A.class.getClassLoader().loadClass(“B”);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <p>在<code>A.class.getClassLoader().loadClass(“B”)</code>;代码执行B的加载过程时，一般会有三个概念上的ClassLoader提供使用。</p>
 <ul>
 <li><strong>CurrentClassLoader</strong>，称之为当前类加载器，简称CCL，在代码中对应的就是类型A的类加载器。</li>
@@ -683,22 +672,26 @@
 <li><strong>invokestatic</strong>：调用静态方法</li>
 </ul>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">System.exit(1);</span><br><span class="line">==&gt;编译</span><br><span class="line">iconst_1    ;将1放入栈内</span><br><span class="line">            ;执行System.exit()</span><br><span class="line">invokestatic java/lang/System/exit(I)V</span><br></pre></td></tr></table></figure>
+
 <ul>
 <li><strong>invokespecial</strong>：调用实例构造器<init>方法、私有方法和父类方法。</li>
 </ul>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">//&lt;init&gt;方法</span><br><span class="line">new StringBuffer()</span><br><span class="line">==&gt;编译</span><br><span class="line">new java/lang/StringBuffer    ;创建一个StringBuffer对象</span><br><span class="line">dup                           ;将对象弹出栈顶</span><br><span class="line">                              ;执行&lt;init&gt;()来初始化对象</span><br><span class="line">invokespecial java/lang/StringBuffer/&lt;init&gt;()V</span><br><span class="line"></span><br><span class="line">//父类方法</span><br><span class="line">super.equals(x);</span><br><span class="line">==&gt;编译</span><br><span class="line">aload_0   ;将this入栈</span><br><span class="line">aload_1   ;将第一个参数入栈</span><br><span class="line">          ;执行Object的equals()方法</span><br><span class="line">invokespecial java/lang/Object/equals(Ljava/lang/Object;)Z</span><br><span class="line"></span><br><span class="line">//私有方法</span><br><span class="line">与父类方法类似</span><br></pre></td></tr></table></figure>
+
 <ul>
 <li><strong>invokevirtual</strong>：调用所有的虚方法。</li>
 </ul>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">X x;</span><br><span class="line">...</span><br><span class="line">x.equals(&quot;abc&quot;);</span><br><span class="line">==&gt;编译</span><br><span class="line">aload_1   ;将x入栈</span><br><span class="line">ldc &quot;abc&quot;   ;将“abc”入栈</span><br><span class="line">          ;执行equals()方法</span><br><span class="line">invokevirtual X/equals(Ljava/lang/Object;)Z</span><br></pre></td></tr></table></figure>
+
 <ul>
 <li><strong>invokeinterface</strong>：调用接口方法，会在运行时再确定一个实现此接口的对象。</li>
 </ul>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">List x;</span><br><span class="line">...</span><br><span class="line">x.toString();</span><br><span class="line">==&gt;编译</span><br><span class="line">aload_1   ;将x入栈</span><br><span class="line">          ;执行toString()方法</span><br><span class="line">invokeinterface java/util/List/toString()Z</span><br></pre></td></tr></table></figure>
+
 <ul>
 <li><strong>invokedynamic</strong>：先在运行时动态解析出调用点限定符所引用的方法，然后再执行该方法。</li>
 </ul>
-<p>在编译阶段就可以确定唯一调用版本的方法有：<strong>静态方法（类名）</strong>、<strong>私有方法</strong>、<strong>实例构造器（<init>）</strong>、<strong>父类方法(super)</strong>、<strong>final方法</strong>。其它统称为虚方法，在编译阶段无法确定调用版本，需要在运行期通过分派将符号引用转变为直接引用。</p>
+<p>在编译阶段就可以确定唯一调用版本的方法有：<strong>静态方法（类名）</strong>、<strong>私有方法</strong>、<strong>实例构造器（<init>）</strong>、<strong>父类方法(super)<strong>、</strong>final方法</strong>。其它统称为虚方法，在编译阶段无法确定调用版本，需要在运行期通过分派将符号引用转变为直接引用。</p>
 <h3 id="3-8-分派"><a href="#3-8-分派" class="headerlink" title="3.8 分派"></a>3.8 分派</h3><h4 id="静态分派"><a href="#静态分派" class="headerlink" title="静态分派"></a>静态分派</h4><p>指在运行时对类内相同名称的方法根据描述符来确定执行版本的分派，<strong>多见于方法的重载。</strong></p>
 <p>下面的例子中，输出结果均为<code>hello guy</code>。</p>
 <p>“Human”称为变量的静态类型（Static Type），或者叫做的外观类型（Apparent Type），后面的“Man”则称为变量的实际类型（Actual Type），静态类型和实际类型在程序中都可以发生一些变化，区别是静态类型的变化仅仅在使用时发生，变量本身的静态类型不会被改变，并且最终的静态类型是在编译期可知的；而实际类型变化的结果在运行期才可确定，编译器在编译程序的时候并不知道一个对象的实际类型是什么。</p>
@@ -712,9 +705,11 @@
 <p><strong>基于寄存器的指令集</strong>：最典型的就是X86的地址指令集，通俗一点，就是现在我们主流的PC机中直接支持的指令集架构，这些指令集依赖寄存器工作。</p>
 <p>举个简单例子，分别使用这两种指令计算1+1的结果，基于栈的指令集会是这个样子：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">iconst_1</span><br><span class="line">iconst_1</span><br><span class="line">iadd</span><br><span class="line">istore_0</span><br></pre></td></tr></table></figure>
+
 <p>两条iconst_1指令连续把两个常量1压入栈后，iadd指令把栈顶的两个值出栈、相加，然后将结果放回栈顶，最后istore_0把栈顶的值放到局部变量表中的第0个Slot中。</p>
 <p>如果基于寄存器的指令集，那程序可能会是这个样子：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mov eax, 1</span><br><span class="line">add eax, 1</span><br></pre></td></tr></table></figure>
+
 <p>mov指令把EAX寄存器的值设置为1，然后add指令再把这个值加1，将结果就保存在EAX寄存器里面。</p>
 <blockquote>
 <p><strong>基于栈的指令集：</strong></p>
@@ -766,11 +761,6 @@
 
 
 
-    
-  <div class="comments" id="disqus_thread">
-    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
-  </div>
-  
 </div>
   </main>
 
@@ -812,8 +802,6 @@
   <script src="/js/third-party/statistics/lean-analytics.js"></script>
 
 
-<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"frankier-me","count":true,"i18n":{"disqus":"disqus"}}</script>
-<script src="/js/third-party/comments/disqus.js"></script>
 
 </body>
 </html>
