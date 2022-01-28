@@ -1,359 +1,271 @@
 <!DOCTYPE html>
-
-
-
-  
-
-
-<html class="theme-next pisces use-motion" lang="en">
-<head><meta name="generator" content="Hexo 3.9.0">
+<html lang="en">
+<head>
   <meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="viewport" content="width=device-width">
 <meta name="theme-color" content="#222">
-<meta name="referrer" content="no-referrer">
+<meta name="generator" content="Hexo 6.0.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
 
 
 
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
 
-
-
-
-
-<meta http-equiv="Cache-Control" content="no-transform">
-<meta http-equiv="Cache-Control" content="no-siteapp">
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-  
-  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
-
-
-
-
-
-
-
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
-
-<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css">
-
-
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
-
-
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
-
-
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
-
-
-  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
-
-
-
-
-
-  <meta name="keywords" content="Linux,">
-
-
-
-
-
-
-
-
-
-
-<meta name="description" content="4. I/O4.1 相关概念说明4.1.1 用户空间与内核空间现在操作系统都是采用虚拟存储器，那么对32位操作系统而言，它的寻址空间（虚拟存储空间）为4G（2的32次方）。操作系统的核心是内核，独立于普通的应用程序，可以访问受保护的内存空间，也有访问底层硬件设备的所有权限。为了保证用户进程不能直接操作内核（kernel），保证内核的安全，操心系统将虚拟空间划分为两部分，一部分为内核空间，一部分为">
-<meta name="keywords" content="Linux">
+<script class="next-config" data-name="main" type="application/json">{"hostname":"yoursite.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.9.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="4. I&#x2F;O4.1 相关概念说明4.1.1 用户空间与内核空间现在操作系统都是采用虚拟存储器，那么对32位操作系统而言，它的寻址空间（虚拟存储空间）为4G（2的32次方）。操作系统的核心是内核，独立于普通的应用程序，可以访问受保护的内存空间，也有访问底层硬件设备的所有权限。为了保证用户进程不能直接操作内核（kernel），保证内核的安全，操心系统将虚拟空间划分为两部分，一部分为内核空间，一部分为">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Linux操作系统-(4) IO">
 <meta property="og:url" content="http://yoursite.com/2019/08/20/Linux_4_IO/index.html">
 <meta property="og:site_name" content="Vincent&#39;s Notes">
-<meta property="og:description" content="4. I/O4.1 相关概念说明4.1.1 用户空间与内核空间现在操作系统都是采用虚拟存储器，那么对32位操作系统而言，它的寻址空间（虚拟存储空间）为4G（2的32次方）。操作系统的核心是内核，独立于普通的应用程序，可以访问受保护的内存空间，也有访问底层硬件设备的所有权限。为了保证用户进程不能直接操作内核（kernel），保证内核的安全，操心系统将虚拟空间划分为两部分，一部分为内核空间，一部分为">
-<meta property="og:locale" content="en">
-<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlgy1gf83kk26p8j30dw074glm.jpg">
-<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlgy1gezxib07z0j30fc097wfq.jpg">
-<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlgy1gezximd1h9j30go097abw.jpg">
-<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlgy1gezxizh51dj30go08x406.jpg">
-<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlgy1gezxjiiwysj30fw090q4a.jpg">
-<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlgy1gezxk1ck9xj30h2093wgj.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g9v9luujswj21n10l9jux.jpg">
-<meta property="og:updated_time" content="2020-05-28T05:42:41.027Z">
+<meta property="og:description" content="4. I&#x2F;O4.1 相关概念说明4.1.1 用户空间与内核空间现在操作系统都是采用虚拟存储器，那么对32位操作系统而言，它的寻址空间（虚拟存储空间）为4G（2的32次方）。操作系统的核心是内核，独立于普通的应用程序，可以访问受保护的内存空间，也有访问底层硬件设备的所有权限。为了保证用户进程不能直接操作内核（kernel），保证内核的安全，操心系统将虚拟空间划分为两部分，一部分为内核空间，一部分为">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204513_e2751.jpg">
+<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204514_375e5.jpg">
+<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204514_8785b.jpg">
+<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204514_61281.jpg">
+<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204515_88f51.jpg">
+<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204515_301c3.jpg">
+<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204515_87538.jpg">
+<meta property="article:published_time" content="2019-08-20T13:43:49.000Z">
+<meta property="article:modified_time" content="2022-01-28T12:45:15.828Z">
+<meta property="article:author" content="Vincent">
+<meta property="article:tag" content="Linux">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Linux操作系统-(4) IO">
-<meta name="twitter:description" content="4. I/O4.1 相关概念说明4.1.1 用户空间与内核空间现在操作系统都是采用虚拟存储器，那么对32位操作系统而言，它的寻址空间（虚拟存储空间）为4G（2的32次方）。操作系统的核心是内核，独立于普通的应用程序，可以访问受保护的内存空间，也有访问底层硬件设备的所有权限。为了保证用户进程不能直接操作内核（kernel），保证内核的安全，操心系统将虚拟空间划分为两部分，一部分为内核空间，一部分为">
-<meta name="twitter:image" content="https://tva1.sinaimg.cn/large/007S8ZIlgy1gf83kk26p8j30dw074glm.jpg">
+<meta name="twitter:image" content="http://qiniu.lfeng.tech/20220128204513_e2751.jpg">
+
+
+<link rel="canonical" href="http://yoursite.com/2019/08/20/Linux_4_IO/">
 
 
 
-<script type="text/javascript" id="hexo.configurations">
-  var NexT = window.NexT || {};
-  var CONFIG = {
-    root: '/',
-    scheme: 'Pisces',
-    version: '5.1.3',
-    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
-    fancybox: true,
-    tabs: true,
-    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
-    duoshuo: {
-      userId: '0',
-      author: 'Author'
-    },
-    algolia: {
-      applicationID: '',
-      apiKey: '',
-      indexName: '',
-      hits: {"per_page":10},
-      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
-    }
-  };
-</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://yoursite.com/2019/08/20/Linux_4_IO/","path":"2019/08/20/Linux_4_IO/","title":"Linux操作系统-(4) IO"}</script>
 
-
-
-  <link rel="canonical" href="http://yoursite.com/2019/08/20/Linux_4_IO/">
-
-
-
-
-
-  <title>Linux操作系统-(4) IO | Vincent's Notes</title>
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Linux操作系统-(4) IO | Vincent's Notes</title>
   
 
 
 
 
-
-
-
-
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
 
-  
-  
-    
-  
-
-  <div class="container sidebar-position-left page-post-detail">
-    <div class="headband"></div>
-
-    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-brand-wrapper">
-  <div class="site-meta ">
-    
-
-    <div class="custom-logo-site-title">
-      <a href="/" class="brand" rel="start">
-        <span class="logo-line-before"><i></i></span>
-        <span class="site-title">Vincent's Notes</span>
-        <span class="logo-line-after"><i></i></span>
-      </a>
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
     </div>
-      
-        <p class="site-subtitle"></p>
-      
   </div>
 
-  <div class="site-nav-toggle">
-    <button>
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-    </button>
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Vincent's Notes</p>
+      <i class="logo-line"></i>
+    </a>
+      <img class="custom-logo-image" src="/%5Bobject%20Object%5D" alt="Vincent's Notes">
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
   </div>
 </div>
 
+
+
 <nav class="site-nav">
-  
-
-  
-    <ul id="menu" class="menu">
-      
-        
-        <li class="menu-item menu-item-home">
-          <a href="/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
-            
-            Home
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-archives">
-          <a href="/archives/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
-            
-            Archives
-          </a>
-        </li>
-      
-
-      
-    </ul>
-  
-
-  
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="home fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="archive fa-fw"></i>Archives</a></li>
+  </ul>
 </nav>
 
 
 
- </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#4-I-O"><span class="nav-number">1.</span> <span class="nav-text">4. I&#x2F;O</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-%E7%9B%B8%E5%85%B3%E6%A6%82%E5%BF%B5%E8%AF%B4%E6%98%8E"><span class="nav-number">1.1.</span> <span class="nav-text">4.1 相关概念说明</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#4-1-1-%E7%94%A8%E6%88%B7%E7%A9%BA%E9%97%B4%E4%B8%8E%E5%86%85%E6%A0%B8%E7%A9%BA%E9%97%B4"><span class="nav-number">1.1.1.</span> <span class="nav-text">4.1.1 用户空间与内核空间</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-1-2-%E8%BF%9B%E7%A8%8B%E5%88%87%E6%8D%A2"><span class="nav-number">1.1.2.</span> <span class="nav-text">4.1.2 进程切换</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-1-3-%E8%BF%9B%E7%A8%8B%E7%9A%84%E9%98%BB%E5%A1%9E"><span class="nav-number">1.1.3.</span> <span class="nav-text">4.1.3 进程的阻塞</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-1-4-%E6%96%87%E4%BB%B6%E6%8F%8F%E8%BF%B0%E7%AC%A6fd"><span class="nav-number">1.1.4.</span> <span class="nav-text">4.1.4 文件描述符fd</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-1-5-%E7%BC%93%E5%AD%98-I-O"><span class="nav-number">1.1.5.</span> <span class="nav-text">4.1.5 缓存 I&#x2F;O</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-1-6-socket"><span class="nav-number">1.1.6.</span> <span class="nav-text">4.1.6 socket</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-IO%E6%A8%A1%E5%BC%8F"><span class="nav-number">1.2.</span> <span class="nav-text">4.2 IO模式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#4-2-1-%E9%98%BB%E5%A1%9EI-O%EF%BC%88blocking-IO%EF%BC%89"><span class="nav-number">1.2.1.</span> <span class="nav-text">4.2.1 阻塞I&#x2F;O（blocking IO）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-2-2-%E9%9D%9E%E9%98%BB%E5%A1%9EI-O%EF%BC%88nonblocking-IO%EF%BC%89"><span class="nav-number">1.2.2.</span> <span class="nav-text">4.2.2 非阻塞I&#x2F;O（nonblocking IO）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-2-3-I-O-%E5%A4%9A%E8%B7%AF%E5%A4%8D%E7%94%A8%EF%BC%88-IO-multiplexing%EF%BC%89"><span class="nav-number">1.2.3.</span> <span class="nav-text">4.2.3 I&#x2F;O 多路复用（ IO multiplexing）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-2-4-%E4%BF%A1%E5%8F%B7%E9%A9%B1%E5%8A%A8IO-%EF%BC%88signal-driven-IO-SIGIO-%EF%BC%89"><span class="nav-number">1.2.4.</span> <span class="nav-text">4.2.4 信号驱动IO （signal driven IO (SIGIO)）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-2-5-%E5%BC%82%E6%AD%A5-I-O%EF%BC%88asynchronous-IO%EF%BC%89"><span class="nav-number">1.2.5.</span> <span class="nav-text">4.2.5 异步 I&#x2F;O（asynchronous IO）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-2-6-%E6%80%BB%E7%BB%93"><span class="nav-number">1.2.6.</span> <span class="nav-text">4.2.6 总结</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-3-I-O-%E5%A4%9A%E8%B7%AF%E5%A4%8D%E7%94%A8%E4%B9%8Bselect%E3%80%81poll%E3%80%81epoll%E8%AF%A6%E8%A7%A3"><span class="nav-number">1.3.</span> <span class="nav-text">4.3 I&#x2F;O 多路复用之select、poll、epoll详解</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#4-3-1-select"><span class="nav-number">1.3.1.</span> <span class="nav-text">4.3.1 select</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-3-2-poll"><span class="nav-number">1.3.2.</span> <span class="nav-text">4.3.2 poll</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-3-4-epoll"><span class="nav-number">1.3.3.</span> <span class="nav-text">4.3.4 epoll</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Vincent</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">56</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/teckee" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;teckee" rel="noopener" target="_blank"><i class="github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:h0ck@foxmail.com" title="E-Mail → mailto:h0ck@foxmail.com" rel="noopener" target="_blank"><i class="envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
     </header>
 
-    <main id="main" class="main">
-      <div class="main-inner">
-        <div class="content-wrap">
-          <div id="content" class="content">
-            
-
-  <div id="posts" class="posts-expand">
     
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
 
   
 
-  
+
+<div class="post-block">
   
   
 
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/08/20/Linux_4_IO/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Vincent">
-      <meta itemprop="description" content>
       <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Vincent">
+      <meta itemprop="description" content="">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="Vincent's Notes">
     </span>
-
-    
       <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Linux操作系统-(4) IO
+        </h1>
 
-        
-        
-          <h1 class="post-title" itemprop="name headline">Linux操作系统-(4) IO</h1>
-        
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
 
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-08-20T21:43:49+08:00">
-                2019-08-20
-              </time>
-            
+      <time title="Created: 2019-08-20 21:43:49" itemprop="dateCreated datePublished" datetime="2019-08-20T21:43:49+08:00">2019-08-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
+        </span>
+    </span>
 
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Linux/" itemprop="url" rel="index">
-                    <span itemprop="name">Linux</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2019/08/20/Linux_4_IO/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/08/20/Linux_4_IO/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-             <span id="/2019/08/20/Linux_4_IO/" class="leancloud_visitors" data-flag-title="Linux操作系统-(4) IO">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">Visitors&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
+  
+    <span id="/2019/08/20/Linux_4_IO/" class="post-meta-item leancloud_visitors" data-flag-title="Linux操作系统-(4) IO" title="Views">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2019/08/20/Linux_4_IO/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/08/20/Linux_4_IO/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
 
         </div>
       </header>
-    
 
     
     
     
     <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        <p><img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1gf83kk26p8j30dw074glm.jpg" alt="Linux"></p>
+        <p><img src="http://qiniu.lfeng.tech/20220128204513_e2751.jpg" alt="Linux"></p>
 <h2 id="4-I-O"><a href="#4-I-O" class="headerlink" title="4. I/O"></a>4. I/O</h2><h3 id="4-1-相关概念说明"><a href="#4-1-相关概念说明" class="headerlink" title="4.1 相关概念说明"></a>4.1 相关概念说明</h3><h4 id="4-1-1-用户空间与内核空间"><a href="#4-1-1-用户空间与内核空间" class="headerlink" title="4.1.1 用户空间与内核空间"></a>4.1.1 用户空间与内核空间</h4><p>现在操作系统都是采用虚拟存储器，那么对32位操作系统而言，它的寻址空间（虚拟存储空间）为4G（2的32次方）。<strong>操作系统的核心是内核，独立于普通的应用程序，可以访问受保护的内存空间，也有访问底层硬件设备的所有权限。</strong>为了保证用户进程不能直接操作内核（kernel），保证内核的安全，操心系统将虚拟空间划分为两部分，一部分为内核空间，一部分为用户空间。针对linux操作系统而言，将最高的1G字节（从虚拟地址0xC0000000到0xFFFFFFFF），供内核使用，称为内核空间，而将较低的3G字节（从虚拟地址0x00000000到0xBFFFFFFF），供各个进程使用，称为用户空间。</p>
-<a id="more"></a>
+<span id="more"></span>
 <h4 id="4-1-2-进程切换"><a href="#4-1-2-进程切换" class="headerlink" title="4.1.2 进程切换"></a>4.1.2 进程切换</h4><p>为了控制进程的执行，内核必须有能力挂起正在CPU上运行的进程，并恢复以前挂起的某个进程的执行。这种行为被称为进程切换。因此可以说，任何进程都是在操作系统内核的支持下运行的，是与内核紧密相关的。</p>
 <p>从一个进程的运行转到另一个进程上运行，这个过程中经过下面这些变化：</p>
 <ol>
@@ -385,19 +297,19 @@
 <li>异步 I/O（asynchronous IO）</li>
 </ul>
 <h4 id="4-2-1-阻塞I-O（blocking-IO）"><a href="#4-2-1-阻塞I-O（blocking-IO）" class="headerlink" title="4.2.1 阻塞I/O（blocking IO）"></a>4.2.1 阻塞I/O（blocking IO）</h4><p>在linux中，默认情况下所有的socket都是blocking，一个典型的读操作流程大概是这样：</p>
-<p><img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1gezxib07z0j30fc097wfq.jpg" alt></p>
+<p><img src="http://qiniu.lfeng.tech/20220128204514_375e5.jpg" alt=""></p>
 <p>当用户进程调用了recvfrom这个系统调用，kernel就开始了IO的第一个阶段：<strong>准备数据</strong>（对于网络IO来说，很多时候数据在一开始还没有到达。比如，还没有收到一个完整的UDP包。这个时候kernel就要等待足够的数据到来）。<strong>这个过程需要等待，也就是说数据被拷贝到操作系统内核的缓冲区中是需要一个过程的。</strong>而在用户进程这边，整个进程会被阻塞（当然，是进程自己选择的阻塞）。<strong>当kernel一直等到数据准备好了，它就会将数据从kernel中拷贝到用户内存，然后kernel返回结果，用户进程才解除block的状态，重新运行起来。</strong></p>
 <blockquote>
 <p>所以，blocking IO的特点就是在IO执行的两个阶段都被block了。</p>
 </blockquote>
 <h4 id="4-2-2-非阻塞I-O（nonblocking-IO）"><a href="#4-2-2-非阻塞I-O（nonblocking-IO）" class="headerlink" title="4.2.2 非阻塞I/O（nonblocking IO）"></a>4.2.2 非阻塞I/O（nonblocking IO）</h4><p>linux下，可以通过设置socket使其变为non-blocking。当对一个non-blocking socket执行读操作时，流程是这个样子：</p>
-<p><img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1gezximd1h9j30go097abw.jpg" alt></p>
+<p><img src="http://qiniu.lfeng.tech/20220128204514_8785b.jpg" alt=""></p>
 <p>当用户进程发出read操作时，如果kernel中的数据还没有准备好，那么它并不会block用户进程，而是立刻返回一个error。从用户进程角度讲 ，它发起一个read操作后，并不需要等待，而是马上就得到了一个结果。用户进程判断结果是一个error时，它就知道数据还没有准备好，于是它可以再次发送read操作。一旦kernel中的数据准备好了，并且又再次收到了用户进程的system call，那么它马上就将数据拷贝到了用户内存，然后返回。</p>
 <blockquote>
 <p>所以，nonblocking IO的特点是用户进程需要不断的主动询问kernel数据好了没有。</p>
 </blockquote>
 <h4 id="4-2-3-I-O-多路复用（-IO-multiplexing）"><a href="#4-2-3-I-O-多路复用（-IO-multiplexing）" class="headerlink" title="4.2.3 I/O 多路复用（ IO multiplexing）"></a>4.2.3 I/O 多路复用（ IO multiplexing）</h4><p>IO multiplexing就是我们说的select，poll，epoll，有些地方也称这种IO方式为event driven IO。select/epoll的好处就在于单个process就可以同时处理多个网络连接的IO。它的基本原理就是select，poll，epoll这个function会不断的轮询所负责的所有socket，当某个socket有数据到达了，就通知用户进程。</p>
-<p><img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1gezxizh51dj30go08x406.jpg" alt></p>
+<p><img src="http://qiniu.lfeng.tech/20220128204514_61281.jpg" alt=""></p>
 <p><code>当用户进程调用了select，那么整个进程会被block</code>，而同时，kernel会“监视”所有select负责的socket，当任何一个socket中的数据准备好了，select就会返回。这个时候用户进程再调用read操作，将数据从kernel拷贝到用户进程。</p>
 <blockquote>
 <p>所以，I/O 多路复用的特点是通过一种机制一个进程能同时等待多个文件描述符，而这些文件描述符（套接字描述符）其中的任意一个进入读就绪状态，select()函数就可以返回。</p>
@@ -407,7 +319,7 @@
 <p>在IO multiplexing Model中，实际中，对于每一个socket，一般都设置成为non-blocking，但是，如上图所示，整个用户的process其实是一直被block的。只不过process是被select这个函数block，而不是被socket IO给block。</p>
 <h4 id="4-2-4-信号驱动IO-（signal-driven-IO-SIGIO-）"><a href="#4-2-4-信号驱动IO-（signal-driven-IO-SIGIO-）" class="headerlink" title="4.2.4 信号驱动IO （signal driven IO (SIGIO)）"></a>4.2.4 信号驱动IO （signal driven IO (SIGIO)）</h4><p>应用程序提交read请求的system call，然后，kernel开始处理相应的IO操作，而同时，应用程序并不等kernel返回响应，就会开始执行其他的处理操作（应用程序没有被IO操作所阻塞）。当kernel执行完毕，返回read的响应，就会产生一个信号或执行一个基于线程的回调函数来完成这次 IO 处理过程。</p>
 <h4 id="4-2-5-异步-I-O（asynchronous-IO）"><a href="#4-2-5-异步-I-O（asynchronous-IO）" class="headerlink" title="4.2.5 异步 I/O（asynchronous IO）"></a>4.2.5 异步 I/O（asynchronous IO）</h4><p>Linux下的asynchronous IO其实用得很少。先看一下它的流程：</p>
-<p><img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1gezxjiiwysj30fw090q4a.jpg" alt></p>
+<p><img src="http://qiniu.lfeng.tech/20220128204515_88f51.jpg" alt=""></p>
 <p>用户进程发起read操作之后，立刻就可以开始去做其它的事。而另一方面，从kernel的角度，当它受到一个asynchronous read之后，首先它会立刻返回，所以不会对用户进程产生任何block。然后，kernel会等待数据准备完成，然后将数据拷贝到用户内存，当这一切都完成之后，kernel会给用户进程发送一个signal，告诉它read操作完成了。</p>
 <h4 id="4-2-6-总结"><a href="#4-2-6-总结" class="headerlink" title="4.2.6 总结"></a>4.2.6 总结</h4><p>从理论上说，<strong>阻塞IO、IO复用和信号驱动的IO都是同步IO模型</strong>。因为在这三种模型中，IO的读写操作都是在IO事件发生之后由<strong>应用程序</strong>来完成。而POSIX规范所定义的异步IO模型则不同。<code>对异步IO而言，用户可以直接对IO执行读写操作，这些操作告诉内核用户读写缓冲区的位置，以及IO操作完成后内核通知应用程序的方式</code>。异步IO读写操作总是立即返回，而不论IO是否阻塞的，因为真正的读写操作已经由内核接管。也就是说，同步IO模型要求用户代码自行执行IO操作(将数据从内核缓冲区读入用户缓冲区，或将数据从用户缓冲区写入内核缓冲区)，而异步IO机制则是由内核来执行IO操作(数据在内核缓冲区和用户缓冲区之间的移动是由内核在后台完成的)。<strong>可以这样认为，同步IO向应用程序通知的是IO就绪事件，而异步IO向应用程序通知的是IO完成事件。</strong> linux环境下，aio.h头文件中定义的函数提供了对异步IO的支持。</p>
 <p><strong>blocking和non-blocking的区别</strong></p>
@@ -419,14 +331,13 @@
 </blockquote>
 <p>两者的区别就在于synchronous IO做”IO operation”的时候会将process阻塞。按照这个定义，之前所述的blocking IO，non-blocking IO，IO multiplexing都属于synchronous IO。<br>有人会说，non-blocking IO并没有被block啊。这里有个非常“狡猾”的地方，定义中所指的”IO operation”是指真实的IO操作，就是例子中的recvfrom这个system call。non-blocking IO在执行recvfrom这个system call的时候，如果kernel的数据没有准备好，这时候不会block进程。但是，当kernel中数据准备好的时候，recvfrom会将数据从kernel拷贝到用户内存中，这个时候进程是被block了，在这段时间内，进程是被block的。<br>而asynchronous IO则不一样，当进程发起IO 操作之后，就直接返回再也不理睬了，直到kernel发送一个信号，告诉进程说IO完成。在这整个过程中，进程完全没有被block。</p>
 <p>各个IO Model的比较如图所示：</p>
-<p><img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1gezxk1ck9xj30h2093wgj.jpg" alt></p>
+<p><img src="http://qiniu.lfeng.tech/20220128204515_301c3.jpg" alt=""></p>
 <p>通过上面的图片，可以发现non-blocking IO和asynchronous IO的区别还是很明显的。在non-blocking IO中，虽然进程大部分时间都不会被block，但是它仍然要求进程去主动的check，并且<code>当数据准备完成以后，也需要进程主动的再次调用recvfrom来将数据拷贝到用户内存</code>。<code>而asynchronous IO则完全不同。它就像是用户进程将整个IO操作交给了他人（kernel）完成，然后他人做完后发信号通知</code>。在此期间，用户进程不需要去检查IO操作的状态，也不需要主动的去拷贝数据。</p>
 <h3 id="4-3-I-O-多路复用之select、poll、epoll详解"><a href="#4-3-I-O-多路复用之select、poll、epoll详解" class="headerlink" title="4.3 I/O 多路复用之select、poll、epoll详解"></a>4.3 I/O 多路复用之select、poll、epoll详解</h3><p>select，poll，epoll都是IO多路复用的机制。I/O多路复用就是通过一种机制，一个进程可以监视多个描述符，一旦某个描述符就绪（一般是读就绪或者写就绪），能够通知程序进行相应的读写操作。但<code>select，poll，epoll本质上都是同步I/O</code>，因为他们都需要在读写事件就绪后自己负责进行读写，也就是说这个读写过程是阻塞的，而<code>异步I/O则无需自己负责进行读写，异步I/O的实现会负责把数据从内核拷贝到用户空间</code>。</p>
 <h4 id="4-3-1-select"><a href="#4-3-1-select" class="headerlink" title="4.3.1 select"></a>4.3.1 select</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">select</span> <span class="params">(<span class="keyword">int</span> n, fd_set *readfds, fd_set *writefds, fd_set *exceptfds, struct timeval *timeout)</span></span>;</span><br></pre></td></tr></table></figure>
 <p>select 函数监视的文件描述符分3类，分别是<code>writefds</code>、<code>readfds</code>、和<code>exceptfds</code>。调用后select函数会阻塞，直到有描述符就绪（有数据可读、可写、或者有except），或者超时（timeout指定等待时间，如果立即返回设为null即可），函数返回。当select函数返回后，可以 通过遍历fdset，来找到就绪的描述符。<br>select目前几乎在所有的平台上支持，其良好跨平台支持也是它的一个优点。select的一个缺点在于单个进程能够监视的文件描述符的数量存在最大限制，在Linux上一般为1024，可以通过修改宏定义甚至重新编译内核的方式提升这一限制，但是这样也会造成效率的降低。</p>
 <h4 id="4-3-2-poll"><a href="#4-3-2-poll" class="headerlink" title="4.3.2 poll"></a>4.3.2 poll</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">poll</span> <span class="params">(struct pollfd *fds, <span class="keyword">unsigned</span> <span class="keyword">int</span> nfds, <span class="keyword">int</span> timeout)</span></span>;</span><br></pre></td></tr></table></figure>
-<p>不同与select使用三个位图来表示三个fdset的方式，poll使用一个 pollfd的指针实现。<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">pollfd</span> &#123;</span> </span><br><span class="line">	<span class="keyword">int</span> fd; <span class="comment">/* file descriptor */</span> </span><br><span class="line">	short events; <span class="comment">/* requested events to watch */</span> </span><br><span class="line">	short revents; <span class="comment">/* returned events witnessed */</span> </span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
-<p>pollfd结构包含了要监视的event和发生的event，不再使用select“参数-值”传递的方式。同时，<code>pollfd并没有最大数量限制（但是数量过大后性能也是会下降）,和select函数一样，poll返回后，需要轮询pollfd来获取就绪的描述符</code>。</p>
+<p>不同与select使用三个位图来表示三个fdset的方式，poll使用一个 pollfd的指针实现。<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">pollfd</span> &#123;</span> </span><br><span class="line">	<span class="keyword">int</span> fd; <span class="comment">/* file descriptor */</span> </span><br><span class="line">	<span class="keyword">short</span> events; <span class="comment">/* requested events to watch */</span> </span><br><span class="line">	<span class="keyword">short</span> revents; <span class="comment">/* returned events witnessed */</span> </span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure><br>pollfd结构包含了要监视的event和发生的event，不再使用select“参数-值”传递的方式。同时，<code>pollfd并没有最大数量限制（但是数量过大后性能也是会下降）,和select函数一样，poll返回后，需要轮询pollfd来获取就绪的描述符</code>。</p>
 <blockquote>
 <p>从上面看，select和poll都需要在返回后，通过遍历文件描述符来获取已经就绪的socket。事实上，同时连接的大量客户端在一时刻可能只有很少的处于就绪状态，因此随着监视的描述符数量的增长，其效率也会线性下降。</p>
 </blockquote>
@@ -443,7 +354,7 @@
 <li>fd：是需要监听的fd（文件描述符）</li>
 <li>epoll_event：是告诉内核需要监听什么事，struct epoll_event结构如下：</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">struct epoll_event &#123; </span><br><span class="line">__uint32_t events; /* Epoll events */ </span><br><span class="line">epoll_data_t data; /* User data variable */ &#125;; </span><br><span class="line"></span><br><span class="line">//events可以是以下几个宏的集合： </span><br><span class="line">EPOLLIN ：表示对应的文件描述符可以读（包括对端SOCKET正常关闭）； </span><br><span class="line">EPOLLOUT：表示对应的文件描述符可以写； </span><br><span class="line">EPOLLPRI：表示对应的文件描述符有紧急的数据可读（这里应该表示有带外数据到来）； </span><br><span class="line">EPOLLERR：表示对应的文件描述符发生错误； </span><br><span class="line">EPOLLHUP：表示对应的文件描述符被挂断； </span><br><span class="line">EPOLLET： 将EPOLL设为边缘触发(Edge Triggered)模式，这是相对于水平触发(Level Triggered)来说的。 EPOLLONESHOT：只监听一次事件，当监听完这次事件之后，如果还需要继续监听这个socket的话，需要再次把这个socket加入到EPOLL队列里</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">struct epoll_event &#123; </span><br><span class="line">__uint32_t events; /* Epoll events */ </span><br><span class="line">epoll_data_t data; /* User data variable */ &#125;; </span><br><span class="line"></span><br><span class="line">//events可以是以下几个宏的集合： </span><br><span class="line">EPOLLIN ：表示对应的文件描述符可以读（包括对端SOCKET正常关闭）； </span><br><span class="line">EPOLLOUT：表示对应的文件描述符可以写； </span><br><span class="line">EPOLLPRI：表示对应的文件描述符有紧急的数据可读（这里应该表示有带外数据到来）； </span><br><span class="line">EPOLLERR：表示对应的文件描述符发生错误； </span><br><span class="line">EPOLLHUP：表示对应的文件描述符被挂断； </span><br><span class="line">EPOLLET： 将EPOLL设为边缘触发(Edge Triggered)模式，这是相对于水平触发(Level Triggered)来说的。 EPOLLONESHOT：只监听一次事件，当监听完这次事件之后，如果还需要继续监听这个socket的话，需要再次把这个socket加入到EPOLL队列里</span><br></pre></td></tr></table></figure>
 <p><strong>3. int epoll_wait(int epfd, struct epoll_event * events, int maxevents, int timeout);</strong><br>等待epfd上的IO事件，最多返回maxevents个事件。<br>参数events用来从内核得到事件的集合，maxevents告之内核这个events有多大，这个maxevents的值不能大于创建epoll_create()时的size，参数timeout是超时时间（毫秒，0会立即返回，-1将不确定，也有说法说是永久阻塞）。该函数返回需要处理的事件数目，如返回0表示已超时。</p>
 <p><strong>工作模式：</strong></p>
 <p>epoll对文件描述符的操作有两种模式：<strong>LT（level trigger）</strong>和<strong>ET（edge trigger）</strong>。LT模式是默认模式，LT模式与ET模式的区别如下：<br>LT模式：当epoll_wait检测到描述符事件发生并将此事件通知应用程序，<code>应用程序可以不立即处理该事件</code>。下次调用epoll_wait时，会再次响应应用程序并通知此事件。<br>ET模式：当epoll_wait检测到描述符事件发生并将此事件通知应用程序，<code>应用程序必须立即处理该事件</code>。如果不处理，下次调用epoll_wait时，不会再次响应应用程序并通知此事件。</p>
@@ -465,522 +376,95 @@
 <blockquote>
 <p>如果没有大量的idle -connection或者dead-connection，epoll的效率并不会比select/poll高很多，但是当遇到大量的idle- connection，就会发现epoll的效率大大高于select/poll。</p>
 </blockquote>
-<p>参考：<a href="https://segmentfault.com/a/1190000003063859" target="_blank" rel="noopener">Linux IO模式及 select、poll、epoll详解</a></p>
-<p>待整理：<a href="http://www.cnblogs.com/apprentice89/p/3234677.html" target="_blank" rel="noopener">http://www.cnblogs.com/apprentice89/p/3234677.html</a><br><a href="http://blog.chinaunix.net/uid-28541347-id-4236779.html" target="_blank" rel="noopener">http://blog.chinaunix.net/uid-28541347-id-4236779.html</a><br><a href="http://janfan.github.io/chinese/2015/01/05/select-poll-impl-inside-the-kernel.html" target="_blank" rel="noopener">http://janfan.github.io/chinese/2015/01/05/select-poll-impl-inside-the-kernel.html</a><br><a href="http://www.linuxidc.com/Linux/2012-05/59873p3.htm" target="_blank" rel="noopener">http://www.linuxidc.com/Linux/2012-05/59873p3.htm</a></p>
+<p>参考：<a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000003063859">Linux IO模式及 select、poll、epoll详解</a></p>
+<p>待整理：<a target="_blank" rel="noopener" href="http://www.cnblogs.com/apprentice89/p/3234677.html">http://www.cnblogs.com/apprentice89/p/3234677.html</a><br><a target="_blank" rel="noopener" href="http://blog.chinaunix.net/uid-28541347-id-4236779.html">http://blog.chinaunix.net/uid-28541347-id-4236779.html</a><br><a target="_blank" rel="noopener" href="http://janfan.github.io/chinese/2015/01/05/select-poll-impl-inside-the-kernel.html">http://janfan.github.io/chinese/2015/01/05/select-poll-impl-inside-the-kernel.html</a><br><a target="_blank" rel="noopener" href="http://www.linuxidc.com/Linux/2012-05/59873p3.htm">http://www.linuxidc.com/Linux/2012-05/59873p3.htm</a></p>
 <hr>
-<p>本文由『后端精进之路』原创，首发于博客 <a href="http://teckee.github.io/" target="_blank" rel="noopener">http://teckee.github.io/</a> , 转载请注明出处</p>
+<p>本文由『后端精进之路』原创，首发于博客 <a target="_blank" rel="noopener" href="http://teckee.github.io/">http://teckee.github.io/</a> , 转载请注明出处</p>
 <p>搜索『后端精进之路』关注公众号，立刻获取最新文章和<strong>价值2000元的BATJ精品面试课程</strong>。</p>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1g9v9luujswj21n10l9jux.jpg" alt="后端精进之路.png"></p>
+<p><img src="http://qiniu.lfeng.tech/20220128204515_87538.jpg" alt="后端精进之路.png"></p>
 
-      
     </div>
-    
-    
-    
 
     
-
     
-
     
 
     <footer class="post-footer">
-      
-        <div class="post-tags">
-          
-            <a href="/tags/Linux/" rel="tag"># Linux</a>
-          
-        </div>
-      
-
-      
-      
-      
-
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-              <a href="/2019/08/15/Linux_3_Thread/" rel="next" title="Linux操作系统-(3) 线程">
-                <i class="fa fa-chevron-left"></i> Linux操作系统-(3) 线程
-              </a>
-            
+          <div class="post-tags">
+              <a href="/tags/Linux/" rel="tag"># Linux</a>
           </div>
 
-          <span class="post-nav-divider"></span>
-
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/08/28/Linux_5_boot_process/" rel="prev" title="Linux操作系统-(5) Linux启动流程">
-                Linux操作系统-(5) Linux启动流程 <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
-      
-
-      
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-
-    <div class="post-spread">
-      
-    </div>
-  </div>
-
-
-          </div>
-          
-
-
-          
-  
-    <div class="comments" id="comments">
-      <div id="disqus_thread">
-        <noscript>
-          Please enable JavaScript to view the
-          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
-        </noscript>
-      </div>
-    </div>
-  
-
-
-        </div>
         
-          
-  
-  <div class="sidebar-toggle">
-    <div class="sidebar-toggle-line-wrap">
-      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
-    </div>
-  </div>
 
-  <aside id="sidebar" class="sidebar">
-    
-    <div class="sidebar-inner">
-
-      
-
-      
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            Table of Contents
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            Overview
-          </li>
-        </ul>
-      
-
-      <section class="site-overview-wrap sidebar-panel">
-        <div class="site-overview">
-          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-            
-              <p class="site-author-name" itemprop="name">Vincent</p>
-              <p class="site-description motion-element" itemprop="description"></p>
-          </div>
-
-          <nav class="site-state motion-element">
-
-            
-              <div class="site-state-item site-state-posts">
-              
-                <a href="/archives/">
-              
-                  <span class="site-state-item-count">56</span>
-                  <span class="site-state-item-name">posts</span>
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/08/15/Linux_3_Thread/" rel="prev" title="Linux操作系统-(3) 线程">
+                  <i class="fa fa-chevron-left"></i> Linux操作系统-(3) 线程
                 </a>
-              </div>
-            
-
-            
-              
-              
-              <div class="site-state-item site-state-categories">
-                
-                  <span class="site-state-item-count">12</span>
-                  <span class="site-state-item-name">categories</span>
-                
-              </div>
-            
-
-            
-              
-              
-              <div class="site-state-item site-state-tags">
-                
-                  <span class="site-state-item-count">22</span>
-                  <span class="site-state-item-name">tags</span>
-                
-              </div>
-            
-
-          </nav>
-
-          
-
-          <div class="links-of-author motion-element">
-            
-              
-                <span class="links-of-author-item">
-                  <a href="https://github.com/teckee" target="_blank" title="GitHub">
-                    
-                      <i class="fa fa-fw fa-github"></i>GitHub</a>
-                </span>
-              
-                <span class="links-of-author-item">
-                  <a href="mailto:h0ck@foxmail.com" target="_blank" title="E-Mail">
-                    
-                      <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
-                </span>
-              
-            
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/08/28/Linux_5_boot_process/" rel="next" title="Linux操作系统-(5) Linux启动流程">
+                  Linux操作系统-(5) Linux启动流程 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
           </div>
-
-          
-          
-
-          
-          
-
-          
-
-        </div>
-      </section>
-
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#4-I-O"><span class="nav-number">1.</span> <span class="nav-text">4. I/O</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-相关概念说明"><span class="nav-number">1.1.</span> <span class="nav-text">4.1 相关概念说明</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#4-1-1-用户空间与内核空间"><span class="nav-number">1.1.1.</span> <span class="nav-text">4.1.1 用户空间与内核空间</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-1-2-进程切换"><span class="nav-number">1.1.2.</span> <span class="nav-text">4.1.2 进程切换</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-1-3-进程的阻塞"><span class="nav-number">1.1.3.</span> <span class="nav-text">4.1.3 进程的阻塞</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-1-4-文件描述符fd"><span class="nav-number">1.1.4.</span> <span class="nav-text">4.1.4 文件描述符fd</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-1-5-缓存-I-O"><span class="nav-number">1.1.5.</span> <span class="nav-text">4.1.5 缓存 I/O</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-1-6-socket"><span class="nav-number">1.1.6.</span> <span class="nav-text">4.1.6 socket</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-IO模式"><span class="nav-number">1.2.</span> <span class="nav-text">4.2 IO模式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#4-2-1-阻塞I-O（blocking-IO）"><span class="nav-number">1.2.1.</span> <span class="nav-text">4.2.1 阻塞I/O（blocking IO）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-2-2-非阻塞I-O（nonblocking-IO）"><span class="nav-number">1.2.2.</span> <span class="nav-text">4.2.2 非阻塞I/O（nonblocking IO）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-2-3-I-O-多路复用（-IO-multiplexing）"><span class="nav-number">1.2.3.</span> <span class="nav-text">4.2.3 I/O 多路复用（ IO multiplexing）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-2-4-信号驱动IO-（signal-driven-IO-SIGIO-）"><span class="nav-number">1.2.4.</span> <span class="nav-text">4.2.4 信号驱动IO （signal driven IO (SIGIO)）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-2-5-异步-I-O（asynchronous-IO）"><span class="nav-number">1.2.5.</span> <span class="nav-text">4.2.5 异步 I/O（asynchronous IO）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-2-6-总结"><span class="nav-number">1.2.6.</span> <span class="nav-text">4.2.6 总结</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-3-I-O-多路复用之select、poll、epoll详解"><span class="nav-number">1.3.</span> <span class="nav-text">4.3 I/O 多路复用之select、poll、epoll详解</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#4-3-1-select"><span class="nav-number">1.3.1.</span> <span class="nav-text">4.3.1 select</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-3-2-poll"><span class="nav-number">1.3.2.</span> <span class="nav-text">4.3.2 poll</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-3-4-epoll"><span class="nav-number">1.3.3.</span> <span class="nav-text">4.3.4 epoll</span></a></li></ol></li></ol></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
-      
-
-      
-
-    </div>
-  </aside>
-
-
-        
-      </div>
-    </main>
-
-    <footer id="footer" class="footer">
-      <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
-  <span class="with-love">
-    <i class="fa fa-user"></i>
-  </span>
-  <span class="author" itemprop="copyrightHolder">Vincent</span>
-
-  
+    </footer>
+  </article>
 </div>
 
 
-  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
 
 
 
-  <span class="post-meta-divider">|</span>
-
-
-
-  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.3</div>
-
-
-
-
-        
-
-
-
-
-
-
-
-        
-      </div>
-    </footer>
 
     
-      <div class="back-to-top">
-        <i class="fa fa-arrow-up"></i>
-        
-      </div>
-    
+  <div class="comments" id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
 
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class=""></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Vincent</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a>
   </div>
 
+    </div>
+  </footer>
+
   
-
-<script type="text/javascript">
-  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
-    window.Promise = null;
-  }
-</script>
-
-
-
-
-
-
-
-
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
 
   
 
 
 
-
-
-
-
-
-
-
-
-
-  
-  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
-
-  
-  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
-
-  
-  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
-
-  
-  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
-
-  
-  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
-
-  
-  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  <script src="/js/third-party/fancybox.js"></script>
 
 
   
 
 
-  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
-
-  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
-
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"D1FSFUo2Xco7NLfkEF2KRu4x-gzGzoHsz","app_key":"t0gAn7CG0IuQuatwXySKh0Lx","server_url":null,"security":true}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
 
 
-  
-  
-
-
-  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
-
-  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
-
-
-
-  
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
-<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
-
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
-
-
-
-  
-
-
-  
-
-    
-      <script id="dsq-count-scr" src="https://frankier-me.disqus.com/count.js" async></script>
-    
-
-    
-      <script type="text/javascript">
-        var disqus_config = function () {
-          this.page.url = 'http://yoursite.com/2019/08/20/Linux_4_IO/';
-          this.page.identifier = '2019/08/20/Linux_4_IO/';
-          this.page.title = 'Linux操作系统-(4) IO';
-        };
-        var d = document, s = d.createElement('script');
-        s.src = 'https://frankier-me.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', '' + +new Date());
-        (d.head || d.body).appendChild(s);
-      </script>
-    
-
-  
-
-
-
-
-	
-
-
-
-
-
-  
-
-
-
-
-
-
-
-
-
-
-  
-
-
-
-
-
-  
-
-  
-  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
-  <script>AV.initialize("D1FSFUo2Xco7NLfkEF2KRu4x-gzGzoHsz", "t0gAn7CG0IuQuatwXySKh0Lx");</script>
-  <script>
-    function showTime(Counter) {
-      var query = new AV.Query(Counter);
-      var entries = [];
-      var $visitors = $(".leancloud_visitors");
-
-      $visitors.each(function () {
-        entries.push( $(this).attr("id").trim() );
-      });
-
-      query.containedIn('url', entries);
-      query.find()
-        .done(function (results) {
-          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
-
-          if (results.length === 0) {
-            $visitors.find(COUNT_CONTAINER_REF).text(0);
-            return;
-          }
-
-          for (var i = 0; i < results.length; i++) {
-            var item = results[i];
-            var url = item.get('url');
-            var time = item.get('time');
-            var element = document.getElementById(url);
-
-            $(element).find(COUNT_CONTAINER_REF).text(time);
-          }
-          for(var i = 0; i < entries.length; i++) {
-            var url = entries[i];
-            var element = document.getElementById(url);
-            var countSpan = $(element).find(COUNT_CONTAINER_REF);
-            if( countSpan.text() == '') {
-              countSpan.text(0);
-            }
-          }
-        })
-        .fail(function (object, error) {
-          console.log("Error: " + error.code + " " + error.message);
-        });
-    }
-
-    function addCount(Counter) {
-      var $visitors = $(".leancloud_visitors");
-      var url = $visitors.attr('id').trim();
-      var title = $visitors.attr('data-flag-title').trim();
-      var query = new AV.Query(Counter);
-
-      query.equalTo("url", url);
-      query.find({
-        success: function(results) {
-          if (results.length > 0) {
-            var counter = results[0];
-            counter.fetchWhenSave(true);
-            counter.increment("time");
-            counter.save(null, {
-              success: function(counter) {
-                var $element = $(document.getElementById(url));
-                $element.find('.leancloud-visitors-count').text(counter.get('time'));
-              },
-              error: function(counter, error) {
-                console.log('Failed to save Visitor num, with error message: ' + error.message);
-              }
-            });
-          } else {
-            var newcounter = new Counter();
-            /* Set ACL */
-            var acl = new AV.ACL();
-            acl.setPublicReadAccess(true);
-            acl.setPublicWriteAccess(true);
-            newcounter.setACL(acl);
-            /* End Set ACL */
-            newcounter.set("title", title);
-            newcounter.set("url", url);
-            newcounter.set("time", 1);
-            newcounter.save(null, {
-              success: function(newcounter) {
-                var $element = $(document.getElementById(url));
-                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
-              },
-              error: function(newcounter, error) {
-                console.log('Failed to create');
-              }
-            });
-          }
-        },
-        error: function(error) {
-          console.log('Error:' + error.code + " " + error.message);
-        }
-      });
-    }
-
-    $(function() {
-      var Counter = AV.Object.extend("Counter");
-      if ($('.leancloud_visitors').length == 1) {
-        addCount(Counter);
-      } else if ($('.post-title-link').length > 1) {
-        showTime(Counter);
-      }
-    });
-  </script>
-
-
-
-  
-
-  
-
-  
-
-  
-
-  
+<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"frankier-me","count":true,"i18n":{"disqus":"disqus"}}</script>
+<script src="/js/third-party/comments/disqus.js"></script>
 
 </body>
 </html>

@@ -1,894 +1,379 @@
 <!DOCTYPE html>
-
-
-
-  
-
-
-<html class="theme-next pisces use-motion" lang="en">
-<head><meta name="generator" content="Hexo 3.9.0">
+<html lang="en">
+<head>
   <meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="viewport" content="width=device-width">
 <meta name="theme-color" content="#222">
-<meta name="referrer" content="no-referrer">
+<meta name="generator" content="Hexo 6.0.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
 
 
 
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
 
-
-
-
-
-<meta http-equiv="Cache-Control" content="no-transform">
-<meta http-equiv="Cache-Control" content="no-siteapp">
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-  
-  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
-
-
-
-
-
-
-
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
-
-<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css">
-
-
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
-
-
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
-
-
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
-
-
-  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
-
-
-
-
-
-  <meta name="keywords" content="Crontab,">
-
-
-
-
-
-
-
-
-
-
+<script class="next-config" data-name="main" type="application/json">{"hostname":"yoursite.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.9.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
 <meta name="description" content="在Linux上，通过crontab 命令，我们可以在固定的间隔时间执行指定的系统指令或 shell script脚本。时间间隔的单位可以是分钟、小时、日、月、周及以上的任意组合。这个命令非常适合周期性的日志分析或数据备份等工作。  设置Cron任务创建任务可以通过如下指令来创建或者修改你自己的crontab文件， 1crontab -e 设置运行周期cron job是周期性运行的，我们按如下格式">
-<meta name="keywords" content="Crontab">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Linux基础 - Crontab定时任务">
 <meta property="og:url" content="http://yoursite.com/2019/07/22/Crontab-usage/index.html">
 <meta property="og:site_name" content="Vincent&#39;s Notes">
 <meta property="og:description" content="在Linux上，通过crontab 命令，我们可以在固定的间隔时间执行指定的系统指令或 shell script脚本。时间间隔的单位可以是分钟、小时、日、月、周及以上的任意组合。这个命令非常适合周期性的日志分析或数据备份等工作。  设置Cron任务创建任务可以通过如下指令来创建或者修改你自己的crontab文件， 1crontab -e 设置运行周期cron job是周期性运行的，我们按如下格式">
-<meta property="og:locale" content="en">
-<meta property="og:image" content="http://ww1.sinaimg.cn/mw690/a18449c6gy1g976jrfi0rj21fw10k0x2.jpg">
-<meta property="og:updated_time" content="2020-05-28T05:34:47.607Z">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204510_19be0.jpg">
+<meta property="article:published_time" content="2019-07-22T13:34:49.000Z">
+<meta property="article:modified_time" content="2022-01-28T12:45:10.102Z">
+<meta property="article:author" content="Vincent">
+<meta property="article:tag" content="Crontab">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Linux基础 - Crontab定时任务">
-<meta name="twitter:description" content="在Linux上，通过crontab 命令，我们可以在固定的间隔时间执行指定的系统指令或 shell script脚本。时间间隔的单位可以是分钟、小时、日、月、周及以上的任意组合。这个命令非常适合周期性的日志分析或数据备份等工作。  设置Cron任务创建任务可以通过如下指令来创建或者修改你自己的crontab文件， 1crontab -e 设置运行周期cron job是周期性运行的，我们按如下格式">
-<meta name="twitter:image" content="http://ww1.sinaimg.cn/mw690/a18449c6gy1g976jrfi0rj21fw10k0x2.jpg">
+<meta name="twitter:image" content="http://qiniu.lfeng.tech/20220128204510_19be0.jpg">
+
+
+<link rel="canonical" href="http://yoursite.com/2019/07/22/Crontab-usage/">
 
 
 
-<script type="text/javascript" id="hexo.configurations">
-  var NexT = window.NexT || {};
-  var CONFIG = {
-    root: '/',
-    scheme: 'Pisces',
-    version: '5.1.3',
-    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
-    fancybox: true,
-    tabs: true,
-    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
-    duoshuo: {
-      userId: '0',
-      author: 'Author'
-    },
-    algolia: {
-      applicationID: '',
-      apiKey: '',
-      indexName: '',
-      hits: {"per_page":10},
-      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
-    }
-  };
-</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://yoursite.com/2019/07/22/Crontab-usage/","path":"2019/07/22/Crontab-usage/","title":"Linux基础 - Crontab定时任务"}</script>
 
-
-
-  <link rel="canonical" href="http://yoursite.com/2019/07/22/Crontab-usage/">
-
-
-
-
-
-  <title>Linux基础 - Crontab定时任务 | Vincent's Notes</title>
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Linux基础 - Crontab定时任务 | Vincent's Notes</title>
   
 
 
 
 
-
-
-
-
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
 
-  
-  
-    
-  
-
-  <div class="container sidebar-position-left page-post-detail">
-    <div class="headband"></div>
-
-    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-brand-wrapper">
-  <div class="site-meta ">
-    
-
-    <div class="custom-logo-site-title">
-      <a href="/" class="brand" rel="start">
-        <span class="logo-line-before"><i></i></span>
-        <span class="site-title">Vincent's Notes</span>
-        <span class="logo-line-after"><i></i></span>
-      </a>
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
     </div>
-      
-        <p class="site-subtitle"></p>
-      
   </div>
 
-  <div class="site-nav-toggle">
-    <button>
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-    </button>
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Vincent's Notes</p>
+      <i class="logo-line"></i>
+    </a>
+      <img class="custom-logo-image" src="/%5Bobject%20Object%5D" alt="Vincent's Notes">
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
   </div>
 </div>
 
+
+
 <nav class="site-nav">
-  
-
-  
-    <ul id="menu" class="menu">
-      
-        
-        <li class="menu-item menu-item-home">
-          <a href="/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
-            
-            Home
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-archives">
-          <a href="/archives/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
-            
-            Archives
-          </a>
-        </li>
-      
-
-      
-    </ul>
-  
-
-  
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="home fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="archive fa-fw"></i>Archives</a></li>
+  </ul>
 </nav>
 
 
 
- </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%BE%E7%BD%AECron%E4%BB%BB%E5%8A%A1"><span class="nav-number">1.</span> <span class="nav-text">设置Cron任务</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E4%BB%BB%E5%8A%A1"><span class="nav-number">1.1.</span> <span class="nav-text">创建任务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%BE%E7%BD%AE%E8%BF%90%E8%A1%8C%E5%91%A8%E6%9C%9F"><span class="nav-number">1.2.</span> <span class="nav-text">设置运行周期</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E5%91%BD%E4%BB%A4"><span class="nav-number">1.3.</span> <span class="nav-text">配置命令</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98"><span class="nav-number">2.</span> <span class="nav-text">常见问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E5%88%97%E5%87%BA%E6%89%80%E6%9C%89%E7%9A%84Cron%E4%BB%BB%E5%8A%A1"><span class="nav-number">2.1.</span> <span class="nav-text">如何列出所有的Cron任务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E6%9F%A5%E7%9C%8BCron%E4%BB%BB%E5%8A%A1%E8%BF%90%E8%A1%8Clog"><span class="nav-number">2.2.</span> <span class="nav-text">如何查看Cron任务运行log</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E9%85%8D%E7%BD%AE%E5%B8%A6%E6%9C%89%E8%99%9A%E6%8B%9Fvenv%E7%9A%84Python%E8%84%9A%E6%9C%AC"><span class="nav-number">2.3.</span> <span class="nav-text">如何配置带有虚拟venv的Python脚本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E5%9C%A8Cron-%E4%BB%BB%E5%8A%A1%E4%B8%AD%E5%8F%91%E9%80%81%E9%82%AE%E4%BB%B6%E9%80%9A%E7%9F%A5"><span class="nav-number">2.4.</span> <span class="nav-text">如何在Cron 任务中发送邮件通知</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Vincent</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">56</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/teckee" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;teckee" rel="noopener" target="_blank"><i class="github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:h0ck@foxmail.com" title="E-Mail → mailto:h0ck@foxmail.com" rel="noopener" target="_blank"><i class="envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
     </header>
 
-    <main id="main" class="main">
-      <div class="main-inner">
-        <div class="content-wrap">
-          <div id="content" class="content">
-            
-
-  <div id="posts" class="posts-expand">
     
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
 
   
 
-  
+
+<div class="post-block">
   
   
 
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/22/Crontab-usage/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Vincent">
-      <meta itemprop="description" content>
       <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Vincent">
+      <meta itemprop="description" content="">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="Vincent's Notes">
     </span>
-
-    
       <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Linux基础 - Crontab定时任务
+        </h1>
 
-        
-        
-          <h1 class="post-title" itemprop="name headline">Linux基础 - Crontab定时任务</h1>
-        
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
 
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-07-22T21:34:49+08:00">
-                2019-07-22
-              </time>
-            
+      <time title="Created: 2019-07-22 21:34:49" itemprop="dateCreated datePublished" datetime="2019-07-22T21:34:49+08:00">2019-07-22</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
+        </span>
+    </span>
 
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Linux/" itemprop="url" rel="index">
-                    <span itemprop="name">Linux</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2019/07/22/Crontab-usage/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/07/22/Crontab-usage/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-             <span id="/2019/07/22/Crontab-usage/" class="leancloud_visitors" data-flag-title="Linux基础 - Crontab定时任务">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">Visitors&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
+  
+    <span id="/2019/07/22/Crontab-usage/" class="post-meta-item leancloud_visitors" data-flag-title="Linux基础 - Crontab定时任务" title="Views">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2019/07/22/Crontab-usage/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/07/22/Crontab-usage/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
 
         </div>
       </header>
-    
 
     
     
     
     <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
         <blockquote>
 <p>在Linux上，通过crontab 命令，我们可以在固定的间隔时间执行指定的系统指令或 shell script脚本。时间间隔的单位可以是分钟、小时、日、月、周及以上的任意组合。这个命令非常适合周期性的日志分析或数据备份等工作。</p>
 </blockquote>
 <h2 id="设置Cron任务"><a href="#设置Cron任务" class="headerlink" title="设置Cron任务"></a>设置Cron任务</h2><h3 id="创建任务"><a href="#创建任务" class="headerlink" title="创建任务"></a>创建任务</h3><p>可以通过如下指令来创建或者修改你自己的crontab文件，</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">crontab -e</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">crontab -e</span><br></pre></td></tr></table></figure>
 <h3 id="设置运行周期"><a href="#设置运行周期" class="headerlink" title="设置运行周期"></a>设置运行周期</h3><p>cron job是周期性运行的，我们按如下格式来进行设置，</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">* * * * * command to be executed</span><br><span class="line">- - - - -</span><br><span class="line">| | | | |</span><br><span class="line">| | | | ----- Day of week (0 - 7) (Sunday=0 or 7)</span><br><span class="line">| | | ------- Month (1 - 12)</span><br><span class="line">| | --------- Day of month (1 - 31)</span><br><span class="line">| ----------- Hour (0 - 23)</span><br><span class="line">------------- Minute (0 - 59)</span><br></pre></td></tr></table></figure>
-<p>当然有更简单的方法，你可以在 <a href="https://crontab.guru/" target="_blank" rel="noopener">https://crontab.guru/</a> 网站进行在线设置，设置好了直接拷贝过来。网页提供了图形化的操作界面，对新手特别友好。</p>
-<p><img src="http://ww1.sinaimg.cn/mw690/a18449c6gy1g976jrfi0rj21fw10k0x2.jpg" alt="Screen Shot 2019-11-22 at 10.20.04 PM.png"></p>
-<a id="more"></a>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">* * * * * command to be executed</span><br><span class="line">- - - - -</span><br><span class="line">| | | | |</span><br><span class="line">| | | | ----- Day of week (0 - 7) (Sunday=0 or 7)</span><br><span class="line">| | | ------- Month (1 - 12)</span><br><span class="line">| | --------- Day of month (1 - 31)</span><br><span class="line">| ----------- Hour (0 - 23)</span><br><span class="line">------------- Minute (0 - 59)</span><br></pre></td></tr></table></figure>
+<p>当然有更简单的方法，你可以在 <a target="_blank" rel="noopener" href="https://crontab.guru/">https://crontab.guru/</a> 网站进行在线设置，设置好了直接拷贝过来。网页提供了图形化的操作界面，对新手特别友好。</p>
+<p><img src="http://qiniu.lfeng.tech/20220128204510_19be0.jpg" alt="Screen Shot 2019-11-22 at 10.20.04 PM.png"></p>
+<span id="more"></span>
 <h3 id="配置命令"><a href="#配置命令" class="headerlink" title="配置命令"></a>配置命令</h3><p>直接在运行周期后面输入想要运行的任务即可。</p>
 <p>这样就配置好了，最好是设置一个最近的时间进行测试，测试正常后就可以换到真实的周期了。</p>
 <blockquote>
 <p>注意到编辑命令的时候，可能使用到nano编辑器，记住保存的快捷键是Ctrl+X，保存好了直接退出，cron任务会自动安装好，不需要额外的重启操作。</p>
 </blockquote>
 <h2 id="常见问题"><a href="#常见问题" class="headerlink" title="常见问题"></a>常见问题</h2><h3 id="如何列出所有的Cron任务"><a href="#如何列出所有的Cron任务" class="headerlink" title="如何列出所有的Cron任务"></a>如何列出所有的Cron任务</h3><p>可以使用-l参数列出crontab文件:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ crontab -l</span><br><span class="line">0 15 30 45 18-06 * * * /bin/echo `date` &gt; dev/tty1</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ crontab -l</span><br><span class="line">0 15 30 45 18-06 * * * /bin/echo `date` &gt; dev/tty1</span><br></pre></td></tr></table></figure>
 <h3 id="如何查看Cron任务运行log"><a href="#如何查看Cron任务运行log" class="headerlink" title="如何查看Cron任务运行log"></a>如何查看Cron任务运行log</h3><p>可以在系统log中进行查找，</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tail -f /var/log/syslog | grep CRON</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tail -f /var/log/syslog | grep CRON</span><br></pre></td></tr></table></figure>
 <h3 id="如何配置带有虚拟venv的Python脚本"><a href="#如何配置带有虚拟venv的Python脚本" class="headerlink" title="如何配置带有虚拟venv的Python脚本"></a>如何配置带有虚拟venv的Python脚本</h3><p>在Python开发过程中，可能使用virtualenv进行环境的配置，来隔离真实环境，防止污染。在这种情况下，如果想成功在Cron Job中运行开发好的Python脚本，推荐使用shell脚本的方式，将运行的脚本进行封装，如下例子所示：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">#! /bin/bash    </span><br><span class="line">cd my/virtual/env/root/dir</span><br><span class="line">source bin/activate</span><br><span class="line"></span><br><span class="line"># virtualenv is now active, which means your PATH has been modified.</span><br><span class="line"># Don&apos;t try to run python from /usr/bin/python, just run &quot;python&quot; and</span><br><span class="line"># let the PATH figure out which version to run (based on what your</span><br><span class="line"># virtualenv has configured).</span><br><span class="line"></span><br><span class="line">python myScript.py</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">#! /bin/bash    </span><br><span class="line">cd my/virtual/env/root/dir</span><br><span class="line">source bin/activate</span><br><span class="line"></span><br><span class="line"># virtualenv is now active, which means your PATH has been modified.</span><br><span class="line"># Don&#x27;t try to run python from /usr/bin/python, just run &quot;python&quot; and</span><br><span class="line"># let the PATH figure out which version to run (based on what your</span><br><span class="line"># virtualenv has configured).</span><br><span class="line"></span><br><span class="line">python myScript.py</span><br></pre></td></tr></table></figure>
 <p>保存好以后，比如为myShell.sh, 使用chmod指令赋予可执行权限即可,</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chmod a+x myShell.sh</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chmod a+x myShell.sh</span><br></pre></td></tr></table></figure>
 <p>最后将shell脚本放在cron配置中即可，</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1 * * * * /path/to/your/shell/script/myShell.sh</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1 * * * * /path/to/your/shell/script/myShell.sh</span><br></pre></td></tr></table></figure>
 <h3 id="如何在Cron-任务中发送邮件通知"><a href="#如何在Cron-任务中发送邮件通知" class="headerlink" title="如何在Cron 任务中发送邮件通知"></a>如何在Cron 任务中发送邮件通知</h3><p>第一步，设置邮件地址、端口等信息：</p>
-<p><a href="https://www.nixtutor.com/linux/send-mail-with-gmail-and-ssmtp/" target="_blank" rel="noopener">https://www.nixtutor.com/linux/send-mail-with-gmail-and-ssmtp/</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.nixtutor.com/linux/send-mail-with-gmail-and-ssmtp/">https://www.nixtutor.com/linux/send-mail-with-gmail-and-ssmtp/</a></p>
 <p>第二步，在Cron任务中加上发送邮件的指令，</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1 * * * * script.sh | mail -s &quot;Subject of Mail&quot; someother@address.com</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1 * * * * script.sh | mail -s &quot;Subject of Mail&quot; someother@address.com</span><br></pre></td></tr></table></figure>
 <p>参考链接：</p>
 <ul>
-<li><a href="https://stackoverflow.com/questions/4150671/how-to-set-virtualenv-for-a-crontab/12848443" target="_blank" rel="noopener">https://stackoverflow.com/questions/4150671/how-to-set-virtualenv-for-a-crontab/12848443</a></li>
-<li><a href="https://www.nixtutor.com/linux/sending-email-alerts-through-cron/" target="_blank" rel="noopener">https://www.nixtutor.com/linux/sending-email-alerts-through-cron/</a></li>
+<li><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/4150671/how-to-set-virtualenv-for-a-crontab/12848443">https://stackoverflow.com/questions/4150671/how-to-set-virtualenv-for-a-crontab/12848443</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.nixtutor.com/linux/sending-email-alerts-through-cron/">https://www.nixtutor.com/linux/sending-email-alerts-through-cron/</a></li>
 </ul>
 
-      
     </div>
-    
-    
-    
 
     
-
     
-
     
 
     <footer class="post-footer">
-      
-        <div class="post-tags">
-          
-            <a href="/tags/Crontab/" rel="tag"># Crontab</a>
-          
-        </div>
-      
-
-      
-      
-      
-
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-              <a href="/2019/01/27/hexo-blog-domain/" rel="next" title="域名购买与配置">
-                <i class="fa fa-chevron-left"></i> 域名购买与配置
-              </a>
-            
+          <div class="post-tags">
+              <a href="/tags/Crontab/" rel="tag"># Crontab</a>
           </div>
 
-          <span class="post-nav-divider"></span>
-
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/08/01/Linux_1_memory_management/" rel="prev" title="Linux操作系统-(1) 内存管理">
-                Linux操作系统-(1) 内存管理 <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
-      
-
-      
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-
-    <div class="post-spread">
-      
-    </div>
-  </div>
-
-
-          </div>
-          
-
-
-          
-  
-    <div class="comments" id="comments">
-      <div id="disqus_thread">
-        <noscript>
-          Please enable JavaScript to view the
-          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
-        </noscript>
-      </div>
-    </div>
-  
-
-
-        </div>
         
-          
-  
-  <div class="sidebar-toggle">
-    <div class="sidebar-toggle-line-wrap">
-      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
-    </div>
-  </div>
 
-  <aside id="sidebar" class="sidebar">
-    
-    <div class="sidebar-inner">
-
-      
-
-      
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            Table of Contents
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            Overview
-          </li>
-        </ul>
-      
-
-      <section class="site-overview-wrap sidebar-panel">
-        <div class="site-overview">
-          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-            
-              <p class="site-author-name" itemprop="name">Vincent</p>
-              <p class="site-description motion-element" itemprop="description"></p>
-          </div>
-
-          <nav class="site-state motion-element">
-
-            
-              <div class="site-state-item site-state-posts">
-              
-                <a href="/archives/">
-              
-                  <span class="site-state-item-count">56</span>
-                  <span class="site-state-item-name">posts</span>
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/01/27/hexo-blog-domain/" rel="prev" title="域名购买与配置">
+                  <i class="fa fa-chevron-left"></i> 域名购买与配置
                 </a>
-              </div>
-            
-
-            
-              
-              
-              <div class="site-state-item site-state-categories">
-                
-                  <span class="site-state-item-count">12</span>
-                  <span class="site-state-item-name">categories</span>
-                
-              </div>
-            
-
-            
-              
-              
-              <div class="site-state-item site-state-tags">
-                
-                  <span class="site-state-item-count">22</span>
-                  <span class="site-state-item-name">tags</span>
-                
-              </div>
-            
-
-          </nav>
-
-          
-
-          <div class="links-of-author motion-element">
-            
-              
-                <span class="links-of-author-item">
-                  <a href="https://github.com/teckee" target="_blank" title="GitHub">
-                    
-                      <i class="fa fa-fw fa-github"></i>GitHub</a>
-                </span>
-              
-                <span class="links-of-author-item">
-                  <a href="mailto:h0ck@foxmail.com" target="_blank" title="E-Mail">
-                    
-                      <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
-                </span>
-              
-            
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/08/01/Linux_1_memory_management/" rel="next" title="Linux操作系统-(1) 内存管理">
+                  Linux操作系统-(1) 内存管理 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
           </div>
-
-          
-          
-
-          
-          
-
-          
-
-        </div>
-      </section>
-
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#设置Cron任务"><span class="nav-number">1.</span> <span class="nav-text">设置Cron任务</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#创建任务"><span class="nav-number">1.1.</span> <span class="nav-text">创建任务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#设置运行周期"><span class="nav-number">1.2.</span> <span class="nav-text">设置运行周期</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置命令"><span class="nav-number">1.3.</span> <span class="nav-text">配置命令</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#常见问题"><span class="nav-number">2.</span> <span class="nav-text">常见问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#如何列出所有的Cron任务"><span class="nav-number">2.1.</span> <span class="nav-text">如何列出所有的Cron任务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#如何查看Cron任务运行log"><span class="nav-number">2.2.</span> <span class="nav-text">如何查看Cron任务运行log</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#如何配置带有虚拟venv的Python脚本"><span class="nav-number">2.3.</span> <span class="nav-text">如何配置带有虚拟venv的Python脚本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#如何在Cron-任务中发送邮件通知"><span class="nav-number">2.4.</span> <span class="nav-text">如何在Cron 任务中发送邮件通知</span></a></li></ol></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
-      
-
-      
-
-    </div>
-  </aside>
-
-
-        
-      </div>
-    </main>
-
-    <footer id="footer" class="footer">
-      <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
-  <span class="with-love">
-    <i class="fa fa-user"></i>
-  </span>
-  <span class="author" itemprop="copyrightHolder">Vincent</span>
-
-  
+    </footer>
+  </article>
 </div>
 
 
-  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
 
 
 
-  <span class="post-meta-divider">|</span>
-
-
-
-  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.3</div>
-
-
-
-
-        
-
-
-
-
-
-
-
-        
-      </div>
-    </footer>
 
     
-      <div class="back-to-top">
-        <i class="fa fa-arrow-up"></i>
-        
-      </div>
-    
+  <div class="comments" id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
 
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class=""></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Vincent</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a>
   </div>
 
+    </div>
+  </footer>
+
   
-
-<script type="text/javascript">
-  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
-    window.Promise = null;
-  }
-</script>
-
-
-
-
-
-
-
-
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
 
   
 
 
 
-
-
-
-
-
-
-
-
-
-  
-  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
-
-  
-  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
-
-  
-  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
-
-  
-  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
-
-  
-  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
-
-  
-  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  <script src="/js/third-party/fancybox.js"></script>
 
 
   
 
 
-  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
-
-  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
-
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"D1FSFUo2Xco7NLfkEF2KRu4x-gzGzoHsz","app_key":"t0gAn7CG0IuQuatwXySKh0Lx","server_url":null,"security":true}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
 
 
-  
-  
-
-
-  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
-
-  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
-
-
-
-  
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
-<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
-
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
-
-
-
-  
-
-
-  
-
-    
-      <script id="dsq-count-scr" src="https://frankier-me.disqus.com/count.js" async></script>
-    
-
-    
-      <script type="text/javascript">
-        var disqus_config = function () {
-          this.page.url = 'http://yoursite.com/2019/07/22/Crontab-usage/';
-          this.page.identifier = '2019/07/22/Crontab-usage/';
-          this.page.title = 'Linux基础 - Crontab定时任务';
-        };
-        var d = document, s = d.createElement('script');
-        s.src = 'https://frankier-me.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', '' + +new Date());
-        (d.head || d.body).appendChild(s);
-      </script>
-    
-
-  
-
-
-
-
-	
-
-
-
-
-
-  
-
-
-
-
-
-
-
-
-
-
-  
-
-
-
-
-
-  
-
-  
-  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
-  <script>AV.initialize("D1FSFUo2Xco7NLfkEF2KRu4x-gzGzoHsz", "t0gAn7CG0IuQuatwXySKh0Lx");</script>
-  <script>
-    function showTime(Counter) {
-      var query = new AV.Query(Counter);
-      var entries = [];
-      var $visitors = $(".leancloud_visitors");
-
-      $visitors.each(function () {
-        entries.push( $(this).attr("id").trim() );
-      });
-
-      query.containedIn('url', entries);
-      query.find()
-        .done(function (results) {
-          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
-
-          if (results.length === 0) {
-            $visitors.find(COUNT_CONTAINER_REF).text(0);
-            return;
-          }
-
-          for (var i = 0; i < results.length; i++) {
-            var item = results[i];
-            var url = item.get('url');
-            var time = item.get('time');
-            var element = document.getElementById(url);
-
-            $(element).find(COUNT_CONTAINER_REF).text(time);
-          }
-          for(var i = 0; i < entries.length; i++) {
-            var url = entries[i];
-            var element = document.getElementById(url);
-            var countSpan = $(element).find(COUNT_CONTAINER_REF);
-            if( countSpan.text() == '') {
-              countSpan.text(0);
-            }
-          }
-        })
-        .fail(function (object, error) {
-          console.log("Error: " + error.code + " " + error.message);
-        });
-    }
-
-    function addCount(Counter) {
-      var $visitors = $(".leancloud_visitors");
-      var url = $visitors.attr('id').trim();
-      var title = $visitors.attr('data-flag-title').trim();
-      var query = new AV.Query(Counter);
-
-      query.equalTo("url", url);
-      query.find({
-        success: function(results) {
-          if (results.length > 0) {
-            var counter = results[0];
-            counter.fetchWhenSave(true);
-            counter.increment("time");
-            counter.save(null, {
-              success: function(counter) {
-                var $element = $(document.getElementById(url));
-                $element.find('.leancloud-visitors-count').text(counter.get('time'));
-              },
-              error: function(counter, error) {
-                console.log('Failed to save Visitor num, with error message: ' + error.message);
-              }
-            });
-          } else {
-            var newcounter = new Counter();
-            /* Set ACL */
-            var acl = new AV.ACL();
-            acl.setPublicReadAccess(true);
-            acl.setPublicWriteAccess(true);
-            newcounter.setACL(acl);
-            /* End Set ACL */
-            newcounter.set("title", title);
-            newcounter.set("url", url);
-            newcounter.set("time", 1);
-            newcounter.save(null, {
-              success: function(newcounter) {
-                var $element = $(document.getElementById(url));
-                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
-              },
-              error: function(newcounter, error) {
-                console.log('Failed to create');
-              }
-            });
-          }
-        },
-        error: function(error) {
-          console.log('Error:' + error.code + " " + error.message);
-        }
-      });
-    }
-
-    $(function() {
-      var Counter = AV.Object.extend("Counter");
-      if ($('.leancloud_visitors').length == 1) {
-        addCount(Counter);
-      } else if ($('.post-title-link').length > 1) {
-        showTime(Counter);
-      }
-    });
-  </script>
-
-
-
-  
-
-  
-
-  
-
-  
-
-  
+<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"frankier-me","count":true,"i18n":{"disqus":"disqus"}}</script>
+<script src="/js/third-party/comments/disqus.js"></script>
 
 </body>
 </html>

@@ -1,374 +1,286 @@
 <!DOCTYPE html>
-
-
-
-  
-
-
-<html class="theme-next pisces use-motion" lang="en">
-<head><meta name="generator" content="Hexo 3.9.0">
+<html lang="en">
+<head>
   <meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="viewport" content="width=device-width">
 <meta name="theme-color" content="#222">
-<meta name="referrer" content="no-referrer">
+<meta name="generator" content="Hexo 6.0.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
 
 
 
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
 
-
-
-
-
-<meta http-equiv="Cache-Control" content="no-transform">
-<meta http-equiv="Cache-Control" content="no-siteapp">
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-  
-  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
-
-
-
-
-
-
-
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
-
-<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css">
-
-
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
-
-
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
-
-
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
-
-
-  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
-
-
-
-
-
-  <meta name="keywords" content="Spring,">
-
-
-
-
-
-
-
-
-
-
+<script class="next-config" data-name="main" type="application/json">{"hostname":"yoursite.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.9.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
 <meta name="description" content="7. IOC初始化流程IoC容器的初始化就是含有BeanDefinition信息的Resource的定位、载入、解析、注册四个过程，最终我们配置的bean，以beanDefinition的数据结构存在于IoC容器即内存中。这里并不涉及bean的依赖注入，只是bean定义的载入。但有例外，在使用Ioc容器时有一个预实例化的配置，即bean定义中的设置了lazyinit属性，那么这个bean在Ioc">
-<meta name="keywords" content="Spring">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Spring MVC系列-(7) IOC初始化流程">
 <meta property="og:url" content="http://yoursite.com/2020/04/10/Spring_7_IOC/index.html">
 <meta property="og:site_name" content="Vincent&#39;s Notes">
 <meta property="og:description" content="7. IOC初始化流程IoC容器的初始化就是含有BeanDefinition信息的Resource的定位、载入、解析、注册四个过程，最终我们配置的bean，以beanDefinition的数据结构存在于IoC容器即内存中。这里并不涉及bean的依赖注入，只是bean定义的载入。但有例外，在使用Ioc容器时有一个预实例化的配置，即bean定义中的设置了lazyinit属性，那么这个bean在Ioc">
-<meta property="og:locale" content="en">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1gco2xb0bj9j20nn0cet8m.jpg">
-<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlgy1getgegks97j30s209y0y6.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1gc0mvmz6w1j20v404w3zh.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1gc0nnoqvh8j20it0j9q8d.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1gc0o3mjvr0j20zg0iwn3i.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1gc0o9bbr0qj210m07mmzg.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1gc0oae9odmj21f40h6wk3.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1gc0oeduyexj21cs0z0ww0.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1gc0r7dq9q8j213m0f643y.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1gc0syqjc6aj21bi0h8thn.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1gc0w0uts1dj21300i87b1.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1gc1ukpz9xoj20lr17xn1w.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1gc1rh053uvj20e80c6jti.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1gc1u49qgquj21bk0u6e3u.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1gc1u8d8vr3j20jy0du7be.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1gc21seb6tgj21bq0jyncg.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1gc21vmmbioj21ca0j27ab.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1gc220rpw4bj20ib087aan.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1gc21xlw0nzj21dq0dwaef.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1gc21yks34ij21b00den2j.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g9v9luujswj21n10l9jux.jpg">
-<meta property="og:updated_time" content="2020-05-28T04:10:31.771Z">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204529_7696e.jpg">
+<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204529_599e1.jpg">
+<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204529_286e7.jpg">
+<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204530_14958.jpg">
+<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204531_2f818.jpg">
+<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204532_38323.jpg">
+<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204532_0616e.jpg">
+<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204533_028c4.jpg">
+<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204535_d8121.jpg">
+<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204535_69491.jpg">
+<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204536_921b7.jpg">
+<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204538_057bb.jpg">
+<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204539_e8df5.jpg">
+<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204542_31996.jpg">
+<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204543_27531.jpg">
+<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204544_1204d.jpg">
+<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204545_ea746.jpg">
+<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204547_0a267.jpg">
+<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204548_ccba2.jpg">
+<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204550_10ebe.jpg">
+<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204551_4c493.jpg">
+<meta property="article:published_time" content="2020-04-10T13:43:49.000Z">
+<meta property="article:modified_time" content="2022-01-28T12:45:51.920Z">
+<meta property="article:author" content="Vincent">
+<meta property="article:tag" content="Spring">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Spring MVC系列-(7) IOC初始化流程">
-<meta name="twitter:description" content="7. IOC初始化流程IoC容器的初始化就是含有BeanDefinition信息的Resource的定位、载入、解析、注册四个过程，最终我们配置的bean，以beanDefinition的数据结构存在于IoC容器即内存中。这里并不涉及bean的依赖注入，只是bean定义的载入。但有例外，在使用Ioc容器时有一个预实例化的配置，即bean定义中的设置了lazyinit属性，那么这个bean在Ioc">
-<meta name="twitter:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1gco2xb0bj9j20nn0cet8m.jpg">
+<meta name="twitter:image" content="http://qiniu.lfeng.tech/20220128204529_7696e.jpg">
+
+
+<link rel="canonical" href="http://yoursite.com/2020/04/10/Spring_7_IOC/">
 
 
 
-<script type="text/javascript" id="hexo.configurations">
-  var NexT = window.NexT || {};
-  var CONFIG = {
-    root: '/',
-    scheme: 'Pisces',
-    version: '5.1.3',
-    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
-    fancybox: true,
-    tabs: true,
-    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
-    duoshuo: {
-      userId: '0',
-      author: 'Author'
-    },
-    algolia: {
-      applicationID: '',
-      apiKey: '',
-      indexName: '',
-      hits: {"per_page":10},
-      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
-    }
-  };
-</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://yoursite.com/2020/04/10/Spring_7_IOC/","path":"2020/04/10/Spring_7_IOC/","title":"Spring MVC系列-(7) IOC初始化流程"}</script>
 
-
-
-  <link rel="canonical" href="http://yoursite.com/2020/04/10/Spring_7_IOC/">
-
-
-
-
-
-  <title>Spring MVC系列-(7) IOC初始化流程 | Vincent's Notes</title>
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Spring MVC系列-(7) IOC初始化流程 | Vincent's Notes</title>
   
 
 
 
 
-
-
-
-
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
 
-  
-  
-    
-  
-
-  <div class="container sidebar-position-left page-post-detail">
-    <div class="headband"></div>
-
-    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-brand-wrapper">
-  <div class="site-meta ">
-    
-
-    <div class="custom-logo-site-title">
-      <a href="/" class="brand" rel="start">
-        <span class="logo-line-before"><i></i></span>
-        <span class="site-title">Vincent's Notes</span>
-        <span class="logo-line-after"><i></i></span>
-      </a>
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
     </div>
-      
-        <p class="site-subtitle"></p>
-      
   </div>
 
-  <div class="site-nav-toggle">
-    <button>
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-    </button>
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Vincent's Notes</p>
+      <i class="logo-line"></i>
+    </a>
+      <img class="custom-logo-image" src="/%5Bobject%20Object%5D" alt="Vincent's Notes">
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
   </div>
 </div>
 
+
+
 <nav class="site-nav">
-  
-
-  
-    <ul id="menu" class="menu">
-      
-        
-        <li class="menu-item menu-item-home">
-          <a href="/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
-            
-            Home
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-archives">
-          <a href="/archives/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
-            
-            Archives
-          </a>
-        </li>
-      
-
-      
-    </ul>
-  
-
-  
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="home fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="archive fa-fw"></i>Archives</a></li>
+  </ul>
 </nav>
 
 
 
- </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#7-IOC%E5%88%9D%E5%A7%8B%E5%8C%96%E6%B5%81%E7%A8%8B"><span class="nav-number">1.</span> <span class="nav-text">7. IOC初始化流程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#7-1-refresh%E5%87%BD%E6%95%B0"><span class="nav-number">1.1.</span> <span class="nav-text">7.1 refresh函数</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-prepareRefresh-%E9%A2%84%E5%A4%84%E7%90%86"><span class="nav-number">1.1.1.</span> <span class="nav-text">1. prepareRefresh() 预处理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-obtainFreshBeanFactory-%E8%8E%B7%E5%8F%96BeanFactory"><span class="nav-number">1.1.2.</span> <span class="nav-text">2. obtainFreshBeanFactory() 获取BeanFactory</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-prepareBeanFactory-beanFactory-BeanFactory%E7%9A%84%E9%A2%84%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C"><span class="nav-number">1.1.3.</span> <span class="nav-text">3. prepareBeanFactory(beanFactory) BeanFactory的预准备工作</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-postProcessBeanFactory-beanFactory-beanFactory%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C%E5%AE%8C%E6%88%90%E5%90%8E%E8%BF%9B%E8%A1%8C%E7%9A%84%E5%90%8E%E7%BD%AE%E5%A4%84%E7%90%86"><span class="nav-number">1.1.4.</span> <span class="nav-text">4. postProcessBeanFactory(beanFactory) beanFactory准备工作完成后进行的后置处理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-invokeBeanFactoryPostProcessors-beanFactory-%E8%B0%83%E7%94%A8beanFactory%E5%90%8E%E7%BD%AE%E5%A4%84%E7%90%86%E5%99%A8"><span class="nav-number">1.1.5.</span> <span class="nav-text">5. invokeBeanFactoryPostProcessors(beanFactory) 调用beanFactory后置处理器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-registerBeanPostProcessors-beanFactory-%E6%B3%A8%E5%86%8CBeanPostProcessor-bean%E7%9A%84%E5%90%8E%E7%BD%AE%E5%A4%84%E7%90%86%E5%99%A8"><span class="nav-number">1.1.6.</span> <span class="nav-text">6. registerBeanPostProcessors(beanFactory);注册BeanPostProcessor(bean的后置处理器)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-initMessageSource-%E5%88%9D%E5%A7%8B%E5%8C%96messageSource%E7%BB%84%E4%BB%B6"><span class="nav-number">1.1.7.</span> <span class="nav-text">7. initMessageSource() 初始化messageSource组件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#8-initApplicationEventMulticaster"><span class="nav-number">1.1.8.</span> <span class="nav-text">8. initApplicationEventMulticaster()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#9-onRefresh"><span class="nav-number">1.1.9.</span> <span class="nav-text">9. onRefresh()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#10-registerListeners"><span class="nav-number">1.1.10.</span> <span class="nav-text">10. registerListeners()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#11-finishBeanFactoryInitialization-beanFactory-%E5%88%9D%E5%A7%8B%E5%8C%96%E6%89%80%E6%9C%89%E5%89%A9%E4%B8%8B%E7%9A%84%E5%8D%95%E5%AE%9E%E4%BE%8Bbean"><span class="nav-number">1.1.11.</span> <span class="nav-text">11. finishBeanFactoryInitialization(beanFactory);初始化所有剩下的单实例bean</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#12-finishRefresh-%E5%AE%8C%E6%88%90BeanFactory%E7%9A%84%E5%88%9D%E5%A7%8B%E5%8C%96%E5%88%9B%E5%BB%BA%E5%B7%A5%E4%BD%9C%EF%BC%8CIOC%E5%AE%B9%E5%99%A8%E5%B0%B1%E5%88%9B%E5%BB%BA%E5%AE%8C%E6%88%90"><span class="nav-number">1.1.12.</span> <span class="nav-text">12. finishRefresh() 完成BeanFactory的初始化创建工作，IOC容器就创建完成</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-2-Spring-bean%E7%9A%84%E5%BE%AA%E7%8E%AF%E4%BE%9D%E8%B5%96%E4%BB%A5%E5%8F%8A%E8%A7%A3%E5%86%B3%E6%96%B9%E5%BC%8F"><span class="nav-number">1.2.</span> <span class="nav-text">7.2 Spring-bean的循环依赖以及解决方式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E5%BE%AA%E7%8E%AF%E4%BE%9D%E8%B5%96%EF%BC%9F"><span class="nav-number">1.2.1.</span> <span class="nav-text">什么是循环依赖？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%80%8E%E4%B9%88%E6%A3%80%E6%B5%8B%E6%98%AF%E5%90%A6%E5%AD%98%E5%9C%A8%E5%BE%AA%E7%8E%AF%E4%BE%9D%E8%B5%96%EF%BC%9F"><span class="nav-number">1.2.2.</span> <span class="nav-text">怎么检测是否存在循环依赖？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Spring%E6%80%8E%E4%B9%88%E8%A7%A3%E5%86%B3field%E5%B1%9E%E6%80%A7%E5%92%8Csetter%E7%9A%84%E5%BE%AA%E7%8E%AF%E4%BE%9D%E8%B5%96%EF%BC%9F"><span class="nav-number">1.2.3.</span> <span class="nav-text">Spring怎么解决field属性和setter的循环依赖？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E8%A7%A3%E5%86%B3%E6%9E%84%E9%80%A0%E5%99%A8%E4%B8%AD%E7%9A%84%E5%BE%AA%E7%8E%AF%E4%BE%9D%E8%B5%96%EF%BC%9F"><span class="nav-number">1.2.4.</span> <span class="nav-text">如何解决构造器中的循环依赖？</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-3-spring%E4%BE%9D%E8%B5%96%E6%B3%A8%E5%85%A5%E6%B3%A8%E8%A7%A3%E7%9A%84%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86"><span class="nav-number">1.3.</span> <span class="nav-text">7.3 spring依赖注入注解的实现原理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#7-3-1-Autowired%E7%9A%84%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86"><span class="nav-number">1.3.1.</span> <span class="nav-text">7.3.1 @Autowired的工作原理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-3-2-Resource%E5%92%8C-Inject%E7%9A%84%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86"><span class="nav-number">1.3.2.</span> <span class="nav-text">7.3.2 @Resource和@Inject的工作原理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-3-3-%E6%B3%A8%E8%A7%A3%E5%A4%84%E7%90%86%E5%99%A8%E7%9A%84%E6%BF%80%E6%B4%BB%E6%9D%A1%E4%BB%B6"><span class="nav-number">1.3.3.</span> <span class="nav-text">7.3.3 注解处理器的激活条件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-3-4-%E6%80%BB%E7%BB%93"><span class="nav-number">1.3.4.</span> <span class="nav-text">7.3.4 总结</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Vincent</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">56</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/teckee" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;teckee" rel="noopener" target="_blank"><i class="github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:h0ck@foxmail.com" title="E-Mail → mailto:h0ck@foxmail.com" rel="noopener" target="_blank"><i class="envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
     </header>
 
-    <main id="main" class="main">
-      <div class="main-inner">
-        <div class="content-wrap">
-          <div id="content" class="content">
-            
-
-  <div id="posts" class="posts-expand">
     
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
 
   
 
-  
+
+<div class="post-block">
   
   
 
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/04/10/Spring_7_IOC/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Vincent">
-      <meta itemprop="description" content>
       <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Vincent">
+      <meta itemprop="description" content="">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="Vincent's Notes">
     </span>
-
-    
       <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Spring MVC系列-(7) IOC初始化流程
+        </h1>
 
-        
-        
-          <h1 class="post-title" itemprop="name headline">Spring MVC系列-(7) IOC初始化流程</h1>
-        
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
 
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-04-10T21:43:49+08:00">
-                2020-04-10
-              </time>
-            
+      <time title="Created: 2020-04-10 21:43:49" itemprop="dateCreated datePublished" datetime="2020-04-10T21:43:49+08:00">2020-04-10</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Spring/" itemprop="url" rel="index"><span itemprop="name">Spring</span></a>
+        </span>
+    </span>
 
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Spring/" itemprop="url" rel="index">
-                    <span itemprop="name">Spring</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2020/04/10/Spring_7_IOC/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2020/04/10/Spring_7_IOC/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-             <span id="/2020/04/10/Spring_7_IOC/" class="leancloud_visitors" data-flag-title="Spring MVC系列-(7) IOC初始化流程">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">Visitors&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
+  
+    <span id="/2020/04/10/Spring_7_IOC/" class="post-meta-item leancloud_visitors" data-flag-title="Spring MVC系列-(7) IOC初始化流程" title="Views">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2020/04/10/Spring_7_IOC/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2020/04/10/Spring_7_IOC/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
 
         </div>
       </header>
-    
 
     
     
     
     <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        <p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1gco2xb0bj9j20nn0cet8m.jpg" alt="Spring.png"></p>
+        <p><img src="http://qiniu.lfeng.tech/20220128204529_7696e.jpg" alt="Spring.png"></p>
 <h2 id="7-IOC初始化流程"><a href="#7-IOC初始化流程" class="headerlink" title="7. IOC初始化流程"></a>7. IOC初始化流程</h2><p>IoC容器的初始化就是含有BeanDefinition信息的Resource的定位、载入、解析、注册四个过程，最终我们配置的bean，以beanDefinition的数据结构存在于IoC容器即内存中。这里并不涉及bean的依赖注入，只是bean定义的载入。但有例外，在使用Ioc容器时有一个预实例化的配置，即bean定义中的设置了lazyinit属性，那么这个bean在Ioc容器初始化时就预先加载，不需要等到Ioc整个初始化后，第一次getBean时才会触发。其中refresh()启动对Ioc容器的初始化。</p>
-<p><img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1getgegks97j30s209y0y6.jpg" alt></p>
-<a id="more"></a>
+<p><img src="http://qiniu.lfeng.tech/20220128204529_599e1.jpg" alt=""></p>
+<span id="more"></span>
 <p>主要分为如下三个步骤：</p>
 <ol>
 <li>Resource定位过程。</li>
@@ -384,16 +296,16 @@
 <p>这个过程是通过调用BeanDefinitionRegistry接口的实现来完成的，这个注册过程把载入过程中解析得到的BeanDefinition向IoC容器进行注册。可以看到，在IoC容器内部将BeanDefinition注入到一个HashMap中去，Ioc容器是通过这个HashMap来持有这些BeanDefinition数据的。整个过程可以理解为容器的初始化过程。</p>
 <p>容器的初始化是通过AbstractApplicationContext的refresh()实现的，下面将会对这个函数进行详细介绍。</p>
 <h3 id="7-1-refresh函数"><a href="#7-1-refresh函数" class="headerlink" title="7.1 refresh函数"></a>7.1 refresh函数</h3><p>Spring中会经常使用到<code>AnnotationConfigApplicationContext</code>作为IOC容器的操作入口，可以利用该context进行Bean的管理，从下面的构造函数可以看到，refresh函数中完成了IOC容器的初始化，因此弄清楚refresh函数就理解了IOC的初始化流程。</p>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1gc0mvmz6w1j20v404w3zh.jpg" alt="Screen Shot 2020-02-18 at 4.27.54 PM.png"></p>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1gc0nnoqvh8j20it0j9q8d.jpg" alt="11111111.png"></p>
+<p><img src="http://qiniu.lfeng.tech/20220128204529_286e7.jpg" alt="Screen Shot 2020-02-18 at 4.27.54 PM.png"></p>
+<p><img src="http://qiniu.lfeng.tech/20220128204530_14958.jpg" alt="11111111.png"></p>
 <p>下面对每个函数仔细分析。</p>
-<h4 id="1-prepareRefresh-预处理"><a href="#1-prepareRefresh-预处理" class="headerlink" title="1. prepareRefresh() 预处理"></a>1. prepareRefresh() 预处理</h4><p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1gc0o3mjvr0j20zg0iwn3i.jpg" alt="Screen Shot 2020-02-18 at 5.10.12 PM.png"></p>
-<p>1) initPropertySources()初始化一些属性设置；子类自定义个性化的属性设置方法<br>2) getEnvironment().validateRequiredProperties()；校验属性的合法等<br>3) earlyApplicationEvents = new LinkedHashSet<applicationevent>() 保存容器中一些早期的事件</applicationevent></p>
+<h4 id="1-prepareRefresh-预处理"><a href="#1-prepareRefresh-预处理" class="headerlink" title="1. prepareRefresh() 预处理"></a>1. prepareRefresh() 预处理</h4><p><img src="http://qiniu.lfeng.tech/20220128204531_2f818.jpg" alt="Screen Shot 2020-02-18 at 5.10.12 PM.png"></p>
+<p>1) initPropertySources()初始化一些属性设置；子类自定义个性化的属性设置方法<br>2) getEnvironment().validateRequiredProperties()；校验属性的合法等<br>3) earlyApplicationEvents = new LinkedHashSet<ApplicationEvent>() 保存容器中一些早期的事件</p>
 <h4 id="2-obtainFreshBeanFactory-获取BeanFactory"><a href="#2-obtainFreshBeanFactory-获取BeanFactory" class="headerlink" title="2. obtainFreshBeanFactory() 获取BeanFactory"></a>2. obtainFreshBeanFactory() 获取BeanFactory</h4><p>这一步重点是refreshBeanFactory(),</p>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1gc0o9bbr0qj210m07mmzg.jpg" alt="Screen Shot 2020-02-18 at 5.15.34 PM.png"></p>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1gc0oae9odmj21f40h6wk3.jpg" alt="Screen Shot 2020-02-18 at 5.16.50 PM.png"></p>
+<p><img src="http://qiniu.lfeng.tech/20220128204532_38323.jpg" alt="Screen Shot 2020-02-18 at 5.15.34 PM.png"></p>
+<p><img src="http://qiniu.lfeng.tech/20220128204532_0616e.jpg" alt="Screen Shot 2020-02-18 at 5.16.50 PM.png"></p>
 <p>1) refreshBeanFactory()<br>刷新【创建】容器,创建了一个this.beanFactory = new DefaultListableBeanFactory();并设置序列化id。<br>2) getBeanFactory()；<br>返回上一步创建的beanFactory对象<br>3) 将创建BeanFactory【DefaultListableBeanFactory】返回</p>
-<h4 id="3-prepareBeanFactory-beanFactory-BeanFactory的预准备工作"><a href="#3-prepareBeanFactory-beanFactory-BeanFactory的预准备工作" class="headerlink" title="3. prepareBeanFactory(beanFactory) BeanFactory的预准备工作"></a>3. prepareBeanFactory(beanFactory) BeanFactory的预准备工作</h4><p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1gc0oeduyexj21cs0z0ww0.jpg" alt="Screen Shot 2020-02-18 at 5.20.33 PM.png"></p>
+<h4 id="3-prepareBeanFactory-beanFactory-BeanFactory的预准备工作"><a href="#3-prepareBeanFactory-beanFactory-BeanFactory的预准备工作" class="headerlink" title="3. prepareBeanFactory(beanFactory) BeanFactory的预准备工作"></a>3. prepareBeanFactory(beanFactory) BeanFactory的预准备工作</h4><p><img src="http://qiniu.lfeng.tech/20220128204533_028c4.jpg" alt="Screen Shot 2020-02-18 at 5.20.33 PM.png"></p>
 <ol>
 <li>设置beanFactory的类加载器、支持表达式解析器</li>
 <li>添加部分ApplicationContextAwareProcessor</li>
@@ -408,16 +320,16 @@
 <h4 id="5-invokeBeanFactoryPostProcessors-beanFactory-调用beanFactory后置处理器"><a href="#5-invokeBeanFactoryPostProcessors-beanFactory-调用beanFactory后置处理器" class="headerlink" title="5. invokeBeanFactoryPostProcessors(beanFactory) 调用beanFactory后置处理器"></a>5. invokeBeanFactoryPostProcessors(beanFactory) 调用beanFactory后置处理器</h4><p>这部分主要执行实现了如下两个接口的类方法：<strong>BeanDefinitionRegistryPostProcessor</strong>、<strong>BeanFactoryPostProcessor</strong>。</p>
 <p><strong>1. 先执行BeanDefinitionRegistryPostProcessor的方法</strong></p>
 <p>1)获取所有的BeanDefinitionRegistryPostProcessor</p>
-<p>2)先执行实现了PriorityOrdered接口的获取所有的BeanDefinitionRegistryPostProcessor<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">postProcessor.postProcessBeanDefinitionRegistry(registry)</span><br></pre></td></tr></table></figure></p>
+<p>2)先执行实现了PriorityOrdered接口的获取所有的BeanDefinitionRegistryPostProcessor<br><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">postProcessor.postProcessBeanDefinitionRegistry(registry)</span><br></pre></td></tr></table></figure></p>
 <p>3)在执行实现了Ordered顺序接口的BeanDefinitionRegistryPostProcessor</p>
 <p>4)最后执行没有任何优先级或者是顺序接口的BeanDefinitionRegistryPostProcessor</p>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1gc0r7dq9q8j213m0f643y.jpg" alt="Screen Shot 2020-02-18 at 6.57.34 PM.png"></p>
+<p><img src="http://qiniu.lfeng.tech/20220128204535_d8121.jpg" alt="Screen Shot 2020-02-18 at 6.57.34 PM.png"></p>
 <p><strong>2. 在执行BeanFactoryPostProcessor的方法</strong></p>
 <p>1)获取所有的BeanFactoryPostProcessor</p>
 <p>2)看先执行实现了PriorityOrdered接口的获取所有的BeanFactoryPostProcessor</p>
 <p>3)在执行实现了Ordered顺序接口的BeanFactoryPostProcessor</p>
 <p>4)最后执行没有任何优先级或者是顺序接口的BeanFactoryPostProcessor</p>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1gc0syqjc6aj21bi0h8thn.jpg" alt="Screen Shot 2020-02-18 at 7.58.17 PM.png"></p>
+<p><img src="http://qiniu.lfeng.tech/20220128204535_69491.jpg" alt="Screen Shot 2020-02-18 at 7.58.17 PM.png"></p>
 <h4 id="6-registerBeanPostProcessors-beanFactory-注册BeanPostProcessor-bean的后置处理器"><a href="#6-registerBeanPostProcessors-beanFactory-注册BeanPostProcessor-bean的后置处理器" class="headerlink" title="6. registerBeanPostProcessors(beanFactory);注册BeanPostProcessor(bean的后置处理器)"></a>6. registerBeanPostProcessors(beanFactory);注册BeanPostProcessor(bean的后置处理器)</h4><p>将不同类型的BeanPostProcessor加入到BeanFactory中，注意到这里是依据优先级依次注册。</p>
 <p>1)获取所有的BeanPostProcessor；后置处理器都默认可以通过PriorityOrdered、Ordered接口执行优先级。</p>
 <p>2)先注册PriorityOrdered优先级的BeanPostProcessor；把每一个BeanPostProcessor添加到BeanFactory中。</p>
@@ -427,7 +339,7 @@
 <blockquote>
 <p>这个步骤中的所有后置处理器，都是通过下面的getBean方法来进行实例化的，具体流程在之前AOP中有介绍。实例化之后，在后续注册Bean的时候，就可以对Bean的生成进行定制化。</p>
 </blockquote>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1gc0w0uts1dj21300i87b1.jpg" alt="Screen Shot 2020-02-18 at 9.43.12 PM.png"></p>
+<p><img src="http://qiniu.lfeng.tech/20220128204536_921b7.jpg" alt="Screen Shot 2020-02-18 at 9.43.12 PM.png"></p>
 <h4 id="7-initMessageSource-初始化messageSource组件"><a href="#7-initMessageSource-初始化messageSource组件" class="headerlink" title="7. initMessageSource() 初始化messageSource组件"></a>7. initMessageSource() 初始化messageSource组件</h4><p>1)获取BeanFactory</p>
 <p>2)看容器中是否有id为messageSource的，类型是MessageSource的组件<br>如果有复制给messageSource，如果没有创建一个DelegatingMessageSource</p>
 <p>3)把创建好的MessageSource注册到容器中，以后获取国际化配置文件的值的时候可以自动注入MessageSource<br>beanFactory.registerSingleton(MESSAGE_SOURCE_BEAN_NAME, this.messageSource);</p>
@@ -440,7 +352,7 @@
 <p>2)将每个监听器添加到时间派发器中<br> getApplicationEventMulticaster().addApplicationListenerBean(listenerBeanName);</p>
 <p>3)派发之前步骤产生的事件</p>
 <h4 id="11-finishBeanFactoryInitialization-beanFactory-初始化所有剩下的单实例bean"><a href="#11-finishBeanFactoryInitialization-beanFactory-初始化所有剩下的单实例bean" class="headerlink" title="11. finishBeanFactoryInitialization(beanFactory);初始化所有剩下的单实例bean"></a>11. finishBeanFactoryInitialization(beanFactory);初始化所有剩下的单实例bean</h4><p>这是所有步骤中，最重要，最复杂的一步，之前AOP中对这部分有过仔细介绍，这里重点梳理正常Bean的初始化流程。</p>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1gc1ukpz9xoj20lr17xn1w.jpg" alt="未命名文件 (1).png"></p>
+<p><img src="http://qiniu.lfeng.tech/20220128204538_057bb.jpg" alt="未命名文件 (1).png"></p>
 <h4 id="12-finishRefresh-完成BeanFactory的初始化创建工作，IOC容器就创建完成"><a href="#12-finishRefresh-完成BeanFactory的初始化创建工作，IOC容器就创建完成" class="headerlink" title="12. finishRefresh() 完成BeanFactory的初始化创建工作，IOC容器就创建完成"></a>12. finishRefresh() 完成BeanFactory的初始化创建工作，IOC容器就创建完成</h4><p>1.initLifecycleProcessor()初始化和生命周期有关的后置处理器；</p>
 <p>LifecycleProcessor默认从容器中找是否有LifecycleProcessor的组件</p>
 <p>2.getLifecycleProcessor().onRefresh();</p>
@@ -448,12 +360,12 @@
 <p>3.publishEvent(new ContextRefreshedEvent(this));发布容器刷新完成事件</p>
 <p>4.LiveBeansView.registerApplicationContext(this);</p>
 <h3 id="7-2-Spring-bean的循环依赖以及解决方式"><a href="#7-2-Spring-bean的循环依赖以及解决方式" class="headerlink" title="7.2 Spring-bean的循环依赖以及解决方式"></a>7.2 Spring-bean的循环依赖以及解决方式</h3><h4 id="什么是循环依赖？"><a href="#什么是循环依赖？" class="headerlink" title="什么是循环依赖？"></a>什么是循环依赖？</h4><p>循环依赖其实就是循环引用，也就是两个或则两个以上的bean互相持有对方，最终形成闭环。比如A依赖于B，B依赖于C，C又依赖于A。如下图：</p>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1gc1rh053uvj20e80c6jti.jpg" alt="Screen Shot 2020-02-19 at 3.43.36 PM.png">@w=250</p>
+<p><img src="http://qiniu.lfeng.tech/20220128204539_e8df5.jpg" alt="Screen Shot 2020-02-19 at 3.43.36 PM.png">@w=250</p>
 <p>注意，这里不是函数的循环调用，是对象的相互依赖关系。循环调用其实就是一个死循环，除非有终结条件。</p>
 <p>Spring中循环依赖场景有：</p>
 <p>（1）构造器的循环依赖<br>（2）field属性或者setter的循环依赖。</p>
 <p>下面的例子中， 会发生这种循环依赖的情况：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">@Component</span><br><span class="line">public class CircularDependencyA &#123;</span><br><span class="line"> </span><br><span class="line">    private CircularDependencyB circB;</span><br><span class="line"> </span><br><span class="line">    @Autowired</span><br><span class="line">    public CircularDependencyA(CircularDependencyB circB) &#123;</span><br><span class="line">        this.circB = circB;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@Component</span><br><span class="line">public class CircularDependencyB &#123;</span><br><span class="line"> </span><br><span class="line">    private CircularDependencyA circA;</span><br><span class="line"> </span><br><span class="line">    @Autowired</span><br><span class="line">    public CircularDependencyB(CircularDependencyA circA) &#123;</span><br><span class="line">        this.circA = circA;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">@Component</span><br><span class="line">public class CircularDependencyA &#123;</span><br><span class="line"> </span><br><span class="line">    private CircularDependencyB circB;</span><br><span class="line"> </span><br><span class="line">    @Autowired</span><br><span class="line">    public CircularDependencyA(CircularDependencyB circB) &#123;</span><br><span class="line">        this.circB = circB;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@Component</span><br><span class="line">public class CircularDependencyB &#123;</span><br><span class="line"> </span><br><span class="line">    private CircularDependencyA circA;</span><br><span class="line"> </span><br><span class="line">    @Autowired</span><br><span class="line">    public CircularDependencyB(CircularDependencyA circA) &#123;</span><br><span class="line">        this.circA = circA;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h4 id="怎么检测是否存在循环依赖？"><a href="#怎么检测是否存在循环依赖？" class="headerlink" title="怎么检测是否存在循环依赖？"></a>怎么检测是否存在循环依赖？</h4><p>检测循环依赖相对比较容易，Bean在创建的时候可以给该Bean加标记，如果递归调用回来发现正在创建中的话，即说明了循环依赖了。</p>
 <h4 id="Spring怎么解决field属性和setter的循环依赖？"><a href="#Spring怎么解决field属性和setter的循环依赖？" class="headerlink" title="Spring怎么解决field属性和setter的循环依赖？"></a>Spring怎么解决field属性和setter的循环依赖？</h4><p>Spring的循环依赖的理论依据其实是基于Java的引用传递，当我们获取到对象的引用时，对象的field或则属性是可以延后设置的(但是构造器必须是在获取引用之前)。</p>
 <p>Spring的单例对象的初始化主要分为三步：</p>
@@ -478,47 +390,47 @@
 <p>从上面三级缓存的分析，我们可以知道，Spring解决循环依赖的诀窍就在于singletonFactories这个三级cache。这个cache的类型是ObjectFactory，定义如下：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">ObjectFactory</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line">    <span class="function">T <span class="title">getObject</span><span class="params">()</span> <span class="keyword">throws</span> BeansException</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>这个接口在下面被引用</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">addSingletonFactory</span><span class="params">(String beanName, ObjectFactory&lt;?&gt; singletonFactory)</span> </span>&#123;</span><br><span class="line">    Assert.notNull(singletonFactory, <span class="string">"Singleton factory must not be null"</span>);</span><br><span class="line">    <span class="keyword">synchronized</span> (<span class="keyword">this</span>.singletonObjects) &#123;</span><br><span class="line">        <span class="keyword">if</span> (!<span class="keyword">this</span>.singletonObjects.containsKey(beanName)) &#123;</span><br><span class="line">            <span class="keyword">this</span>.singletonFactories.put(beanName, singletonFactory);</span><br><span class="line">            <span class="keyword">this</span>.earlySingletonObjects.remove(beanName);</span><br><span class="line">            <span class="keyword">this</span>.registeredSingletons.add(beanName);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">addSingletonFactory</span><span class="params">(String beanName, ObjectFactory&lt;?&gt; singletonFactory)</span> </span>&#123;</span><br><span class="line">    Assert.notNull(singletonFactory, <span class="string">&quot;Singleton factory must not be null&quot;</span>);</span><br><span class="line">    <span class="keyword">synchronized</span> (<span class="keyword">this</span>.singletonObjects) &#123;</span><br><span class="line">        <span class="keyword">if</span> (!<span class="keyword">this</span>.singletonObjects.containsKey(beanName)) &#123;</span><br><span class="line">            <span class="keyword">this</span>.singletonFactories.put(beanName, singletonFactory);</span><br><span class="line">            <span class="keyword">this</span>.earlySingletonObjects.remove(beanName);</span><br><span class="line">            <span class="keyword">this</span>.registeredSingletons.add(beanName);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>这里就是解决循环依赖的关键，这段代码发生在createBeanInstance之后，也就是说单例对象此时已经被创建出来(调用了构造器)。这个对象已经被生产出来了，虽然还不完美（还没有进行初始化的第二步和第三步），但是已经能被人认出来了（根据对象引用能定位到堆中的对象），所以Spring此时将这个对象提前曝光出来让大家认识，让大家使用。</p>
 <p>下面是整段代码：</p>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1gc1u49qgquj21bk0u6e3u.jpg" alt="Screen Shot 2020-02-19 at 5.23.30 PM.png"></p>
+<p><img src="http://qiniu.lfeng.tech/20220128204542_31996.jpg" alt="Screen Shot 2020-02-19 at 5.23.30 PM.png"></p>
 <p>这样做有什么好处呢？让我们来分析一下“A的某个field或者setter依赖了B的实例对象，同时B的某个field或者setter依赖了A的实例对象”这种循环依赖的情况。A首先完成了初始化的第一步，并且将自己提前曝光到singletonFactories中，此时进行初始化的第二步，发现自己依赖对象B，此时就尝试去get(B)，发现B还没有被create，所以走create流程，B在初始化第一步的时候发现自己依赖了对象A，于是尝试get(A)，尝试一级缓存singletonObjects(肯定没有，因为A还没初始化完全)，尝试二级缓存earlySingletonObjects（也没有），尝试三级缓存singletonFactories，由于A通过ObjectFactory将自己提前曝光了，所以B能够通过ObjectFactory.getObject拿到A对象(虽然A还没有初始化完全，但是总比没有好呀)，B拿到A对象后顺利完成了初始化阶段1、2、3，完全初始化之后将自己放入到一级缓存singletonObjects中。此时返回A中，A此时能拿到B的对象顺利完成自己的初始化阶段2、3，最终A也完成了初始化，进去了一级缓存singletonObjects中，而且更加幸运的是，由于B拿到了A的对象引用，所以B现在hold住的A对象完成了初始化。</p>
 <p><strong>总结来讲，Spring不能解决“A的构造方法中依赖了B的实例对象，同时B的构造方法中依赖了A的实例对象”这类问题了！因为加入singletonFactories三级缓存的前提是执行了构造器，所以构造器的循环依赖没法解决。</strong></p>
 <h4 id="如何解决构造器中的循环依赖？"><a href="#如何解决构造器中的循环依赖？" class="headerlink" title="如何解决构造器中的循环依赖？"></a>如何解决构造器中的循环依赖？</h4><p><strong>1. 使用@Lazy注解</strong></p>
 <p>最简单的方法是使用@Lazy声明其中的一个Bean，这样的话Spring将会创建代理对象，并注入到其他依赖于它的Bean中，这个注入的Bean将会在第一次被使用的时候初始化。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">@Component</span><br><span class="line">public class CircularDependencyA &#123;</span><br><span class="line"> </span><br><span class="line">    private CircularDependencyB circB;</span><br><span class="line"> </span><br><span class="line">    @Autowired</span><br><span class="line">    public CircularDependencyA(@Lazy CircularDependencyB circB) &#123;</span><br><span class="line">        this.circB = circB;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">@Component</span><br><span class="line">public class CircularDependencyA &#123;</span><br><span class="line"> </span><br><span class="line">    private CircularDependencyB circB;</span><br><span class="line"> </span><br><span class="line">    @Autowired</span><br><span class="line">    public CircularDependencyA(@Lazy CircularDependencyB circB) &#123;</span><br><span class="line">        this.circB = circB;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p><strong>2. 替换构造器依赖，改为setter/Field注入</strong></p>
 <p>上面提到了Spring可以解决setter/Field中的循环依赖，因此可以将构造器中的依赖Bean，改为在setter/Field中进行注入，例子如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">@Component</span><br><span class="line">public class CircularDependencyA &#123;</span><br><span class="line"> </span><br><span class="line">    private CircularDependencyB circB;</span><br><span class="line"> </span><br><span class="line">    @Autowired</span><br><span class="line">    public void setCircB(CircularDependencyB circB) &#123;</span><br><span class="line">        this.circB = circB;</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    public CircularDependencyB getCircB() &#123;</span><br><span class="line">        return circB;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@Component</span><br><span class="line">public class CircularDependencyB &#123;</span><br><span class="line"> </span><br><span class="line">    private CircularDependencyA circA;</span><br><span class="line"> </span><br><span class="line">    private String message = &quot;Hi!&quot;;</span><br><span class="line"> </span><br><span class="line">    @Autowired</span><br><span class="line">    public void setCircA(CircularDependencyA circA) &#123;</span><br><span class="line">        this.circA = circA;</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    public String getMessage() &#123;</span><br><span class="line">        return message;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">@Component</span><br><span class="line">public class CircularDependencyA &#123;</span><br><span class="line"> </span><br><span class="line">    private CircularDependencyB circB;</span><br><span class="line"> </span><br><span class="line">    @Autowired</span><br><span class="line">    public void setCircB(CircularDependencyB circB) &#123;</span><br><span class="line">        this.circB = circB;</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    public CircularDependencyB getCircB() &#123;</span><br><span class="line">        return circB;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@Component</span><br><span class="line">public class CircularDependencyB &#123;</span><br><span class="line"> </span><br><span class="line">    private CircularDependencyA circA;</span><br><span class="line"> </span><br><span class="line">    private String message = &quot;Hi!&quot;;</span><br><span class="line"> </span><br><span class="line">    @Autowired</span><br><span class="line">    public void setCircA(CircularDependencyA circA) &#123;</span><br><span class="line">        this.circA = circA;</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    public String getMessage() &#123;</span><br><span class="line">        return message;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p><strong>3. 实现ApplicationContextAware和InitializingBean</strong></p>
 <p>让其中的一个类实现ApplicationContextAware和InitializingBean，来手动设置依赖的Bean。</p>
 <p><code>ApplicationContextAware</code>发生在调用初始化方法之前，也就是下面的第二步，因此可以获取到ApplicationContext。</p>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1gc1u8d8vr3j20jy0du7be.jpg" alt="Screen Shot 2020-02-19 at 5.27.51 PM.png"></p>
+<p><img src="http://qiniu.lfeng.tech/20220128204543_27531.jpg" alt="Screen Shot 2020-02-19 at 5.27.51 PM.png"></p>
 <p>实现<code>InitializingBean</code>需要重写其的<code>afterPropertiesSet</code>方法，这发生在第3步，此时类中已经有了ApplicationContext，所以直接拿到对应的Bean实例即可。</p>
 <p>因为这两个方法都发生在createBeanInstance之后，所以在缓存singletonFactories中拿到对应的Bean。</p>
 <p>具体例子如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">@Component</span><br><span class="line">public class CircularDependencyA implements ApplicationContextAware, InitializingBean &#123;</span><br><span class="line"> </span><br><span class="line">    private CircularDependencyB circB;</span><br><span class="line"> </span><br><span class="line">    private ApplicationContext context;</span><br><span class="line"> </span><br><span class="line">    public CircularDependencyB getCircB() &#123;</span><br><span class="line">        return circB;</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    @Override</span><br><span class="line">    public void afterPropertiesSet() throws Exception &#123;</span><br><span class="line">        circB = context.getBean(CircularDependencyB.class);</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    @Override</span><br><span class="line">    public void setApplicationContext(final ApplicationContext ctx) throws BeansException &#123;</span><br><span class="line">        context = ctx;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@Component</span><br><span class="line">public class CircularDependencyB &#123;</span><br><span class="line"> </span><br><span class="line">    private CircularDependencyA circA;</span><br><span class="line"> </span><br><span class="line">    private String message = &quot;Hi!&quot;;</span><br><span class="line"> </span><br><span class="line">    @Autowired</span><br><span class="line">    public void setCircA(CircularDependencyA circA) &#123;</span><br><span class="line">        this.circA = circA;</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    public String getMessage() &#123;</span><br><span class="line">        return message;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">@Component</span><br><span class="line">public class CircularDependencyA implements ApplicationContextAware, InitializingBean &#123;</span><br><span class="line"> </span><br><span class="line">    private CircularDependencyB circB;</span><br><span class="line"> </span><br><span class="line">    private ApplicationContext context;</span><br><span class="line"> </span><br><span class="line">    public CircularDependencyB getCircB() &#123;</span><br><span class="line">        return circB;</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    @Override</span><br><span class="line">    public void afterPropertiesSet() throws Exception &#123;</span><br><span class="line">        circB = context.getBean(CircularDependencyB.class);</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    @Override</span><br><span class="line">    public void setApplicationContext(final ApplicationContext ctx) throws BeansException &#123;</span><br><span class="line">        context = ctx;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@Component</span><br><span class="line">public class CircularDependencyB &#123;</span><br><span class="line"> </span><br><span class="line">    private CircularDependencyA circA;</span><br><span class="line"> </span><br><span class="line">    private String message = &quot;Hi!&quot;;</span><br><span class="line"> </span><br><span class="line">    @Autowired</span><br><span class="line">    public void setCircA(CircularDependencyA circA) &#123;</span><br><span class="line">        this.circA = circA;</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    public String getMessage() &#123;</span><br><span class="line">        return message;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <hr>
 <p>参考：</p>
 <ul>
-<li><a href="https://blog.csdn.net/u010853261/article/details/77940767" target="_blank" rel="noopener">https://blog.csdn.net/u010853261/article/details/77940767</a></li>
-<li><a href="https://www.baeldung.com/circular-dependencies-in-spring" target="_blank" rel="noopener">https://www.baeldung.com/circular-dependencies-in-spring</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/u010853261/article/details/77940767">https://blog.csdn.net/u010853261/article/details/77940767</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.baeldung.com/circular-dependencies-in-spring">https://www.baeldung.com/circular-dependencies-in-spring</a></li>
 </ul>
 <h3 id="7-3-spring依赖注入注解的实现原理"><a href="#7-3-spring依赖注入注解的实现原理" class="headerlink" title="7.3 spring依赖注入注解的实现原理"></a>7.3 spring依赖注入注解的实现原理</h3><h4 id="7-3-1-Autowired的工作原理"><a href="#7-3-1-Autowired的工作原理" class="headerlink" title="7.3.1 @Autowired的工作原理"></a>7.3.1 @Autowired的工作原理</h4><p>以下是@Autowired注解的源码，从源码中看到它可以被标注在构造函数、属性、setter方法或配置方法上，用于实现依赖自动注入。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Target</span>(&#123;ElementType.CONSTRUCTOR, ElementType.METHOD, ElementType.PARAMETER, ElementType.FIELD, ElementType.ANNOTATION_TYPE&#125;)</span><br><span class="line"><span class="meta">@Retention</span>(RetentionPolicy.RUNTIME)</span><br><span class="line"><span class="meta">@Documented</span></span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> Autowired &#123;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * Declares whether the annotated dependency is required.</span></span><br><span class="line"><span class="comment">	 * &lt;p&gt;Defaults to &#123;<span class="doctag">@code</span> true&#125;.</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="function"><span class="keyword">boolean</span> <span class="title">required</span><span class="params">()</span> <span class="keyword">default</span> <span class="keyword">true</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Target(&#123;ElementType.CONSTRUCTOR, ElementType.METHOD, ElementType.PARAMETER, ElementType.FIELD, ElementType.ANNOTATION_TYPE&#125;)</span></span><br><span class="line"><span class="meta">@Retention(RetentionPolicy.RUNTIME)</span></span><br><span class="line"><span class="meta">@Documented</span></span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> Autowired &#123;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * Declares whether the annotated dependency is required.</span></span><br><span class="line"><span class="comment">	 * &lt;p&gt;Defaults to &#123;<span class="doctag">@code</span> true&#125;.</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="function"><span class="keyword">boolean</span> <span class="title">required</span><span class="params">()</span> <span class="keyword">default</span> <span class="keyword">true</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>@Autowired注解的作用是由<code>AutowiredAnnotationBeanPostProcessor</code>实现的，查看该类的源码会发现它实现了MergedBeanDefinitionPostProcessor接口，进而实现了接口中的postProcessMergedBeanDefinition方法，@Autowired注解正是通过这个方法实现注入类型的预解析，将需要依赖注入的属性信息封装到InjectionMetadata类中，InjectionMetadata类中包含了哪些需要注入的元素及元素要注入到哪个目标类中。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">public class AutowiredAnnotationBeanPostProcessor extends InstantiationAwareBeanPostProcessorAdapter</span><br><span class="line">		implements MergedBeanDefinitionPostProcessor, PriorityOrdered, BeanFactoryAware</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">public class AutowiredAnnotationBeanPostProcessor extends InstantiationAwareBeanPostProcessorAdapter</span><br><span class="line">		implements MergedBeanDefinitionPostProcessor, PriorityOrdered, BeanFactoryAware</span><br></pre></td></tr></table></figure>
 <p><code>@Autowired</code>发生在refresh方法的<code>finishBeanFactoryInitialization</code>(beanFactory)阶段，在此之前，在registerBeanPostProcessors(beanFactory)已经完成了对AutowiredAnnotationBeanPostProcessor的注册。</p>
 <p>在doCreateBean方法，首先会调用applyMergedBeanDefinitionPostProcessors(mbd, beanType, beanName)，实质上就是调用AutowiredAnnotationBeanPostProcessor类的postProcessMergedBeanDefinition方法，也就是开头介绍的在这个方法中完成了对注入元素注解的预解析。接着，在doCreateBean方法中执行populateBean方法实现对属性的注入。</p>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1gc21seb6tgj21bq0jyncg.jpg" alt="Screen Shot 2020-02-19 at 9.49.12 PM.png"></p>
+<p><img src="http://qiniu.lfeng.tech/20220128204544_1204d.jpg" alt="Screen Shot 2020-02-19 at 9.49.12 PM.png"></p>
 <p>深入分析populateBean方法，下面是关键部分，这段代码中会遍历所有注册过的BeanPostProcessor接口实现类的实例，如果实例属于InstantiationAwareBeanPostProcessor类型的，则执行实例类的postProcessPropertyValues方法。</p>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1gc21vmmbioj21ca0j27ab.jpg" alt="Screen Shot 2020-02-19 at 9.52.29 PM.png"></p>
+<p><img src="http://qiniu.lfeng.tech/20220128204545_ea746.jpg" alt="Screen Shot 2020-02-19 at 9.52.29 PM.png"></p>
 <p>从下面的类继承关系可以看到，这里会执行AutowiredAnnotationBeanPostProcessor类的postProcessPropertyValues方法，</p>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1gc220rpw4bj20ib087aan.jpg" alt="spring-annotation-value.png"></p>
+<p><img src="http://qiniu.lfeng.tech/20220128204547_0a267.jpg" alt="spring-annotation-value.png"></p>
 <p>具体代码如下：</p>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1gc21xlw0nzj21dq0dwaef.jpg" alt="Screen Shot 2020-02-19 at 9.54.30 PM.png"></p>
+<p><img src="http://qiniu.lfeng.tech/20220128204548_ccba2.jpg" alt="Screen Shot 2020-02-19 at 9.54.30 PM.png"></p>
 <p>metadata.inject(bean, beanName, pvs)代码的执行会进入如下inject方法中，在这里完成依赖的注入。</p>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1gc21yks34ij21b00den2j.jpg" alt="Screen Shot 2020-02-19 at 9.55.23 PM.png"></p>
+<p><img src="http://qiniu.lfeng.tech/20220128204550_10ebe.jpg" alt="Screen Shot 2020-02-19 at 9.55.23 PM.png"></p>
 <p>上面的InjectedElement有两个子类，分别是AutowiredFieldElement和AutowiredMethodElement，AutowiredFieldElement用于对标注在属性上的注入，AutowiredMethodElement用于对标注在方法上的注入。</p>
 <p>两种方式的注入过程都差不多，根据需要注入的元素的描述信息，按类型或名称查找需要的依赖值，如果依赖没有实例化先实例化依赖，然后使用反射进行赋值。</p>
 <h4 id="7-3-2-Resource和-Inject的工作原理"><a href="#7-3-2-Resource和-Inject的工作原理" class="headerlink" title="7.3.2 @Resource和@Inject的工作原理"></a>7.3.2 @Resource和@Inject的工作原理</h4><p>两者的实现原理与@Autowired类似，不过这两者是JDK中提供的annotation，是通过BeanPostProcessor接口的实现类CommonAnnotationBeanPostProcessor来实现的，其中如名字所述，即公共注解CommonAnotation，CommonAnnotationBeanPostProcessor是spring中统一处理JDK中定义的注解的一个BeanPostProcessor。该类会处理的注解还包括@PostConstruct，@PreDestroy等。</p>
@@ -550,522 +462,95 @@
 <hr>
 <p>参考：</p>
 <ul>
-<li><a href="https://juejin.im/post/5d909a98518825092046e83b" target="_blank" rel="noopener">https://juejin.im/post/5d909a98518825092046e83b</a></li>
+<li><a target="_blank" rel="noopener" href="https://juejin.im/post/5d909a98518825092046e83b">https://juejin.im/post/5d909a98518825092046e83b</a></li>
 </ul>
 <hr>
-<p>本文由『后端精进之路』原创，首发于博客 <a href="http://teckee.github.io/" target="_blank" rel="noopener">http://teckee.github.io/</a> , 转载请注明出处</p>
+<p>本文由『后端精进之路』原创，首发于博客 <a target="_blank" rel="noopener" href="http://teckee.github.io/">http://teckee.github.io/</a> , 转载请注明出处</p>
 <p>搜索『后端精进之路』关注公众号，立刻获取最新文章和<strong>价值2000元的BATJ精品面试课程</strong>。</p>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1g9v9luujswj21n10l9jux.jpg" alt="后端精进之路.png"></p>
+<p><img src="http://qiniu.lfeng.tech/20220128204551_4c493.jpg" alt="后端精进之路.png"></p>
 
-      
     </div>
-    
-    
-    
 
     
-
     
-
     
 
     <footer class="post-footer">
-      
-        <div class="post-tags">
-          
-            <a href="/tags/Spring/" rel="tag"># Spring</a>
-          
-        </div>
-      
-
-      
-      
-      
-
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-              <a href="/2020/04/05/Spring_6_Transaction/" rel="next" title="Spring MVC系列-(6) 声明式事务">
-                <i class="fa fa-chevron-left"></i> Spring MVC系列-(6) 声明式事务
-              </a>
-            
+          <div class="post-tags">
+              <a href="/tags/Spring/" rel="tag"># Spring</a>
           </div>
 
-          <span class="post-nav-divider"></span>
-
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2020/04/15/Spring_8_MVC/" rel="prev" title="Spring MVC系列-(8) Spring MVC 流程">
-                Spring MVC系列-(8) Spring MVC 流程 <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
-      
-
-      
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-
-    <div class="post-spread">
-      
-    </div>
-  </div>
-
-
-          </div>
-          
-
-
-          
-  
-    <div class="comments" id="comments">
-      <div id="disqus_thread">
-        <noscript>
-          Please enable JavaScript to view the
-          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
-        </noscript>
-      </div>
-    </div>
-  
-
-
-        </div>
         
-          
-  
-  <div class="sidebar-toggle">
-    <div class="sidebar-toggle-line-wrap">
-      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
-    </div>
-  </div>
 
-  <aside id="sidebar" class="sidebar">
-    
-    <div class="sidebar-inner">
-
-      
-
-      
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            Table of Contents
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            Overview
-          </li>
-        </ul>
-      
-
-      <section class="site-overview-wrap sidebar-panel">
-        <div class="site-overview">
-          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-            
-              <p class="site-author-name" itemprop="name">Vincent</p>
-              <p class="site-description motion-element" itemprop="description"></p>
-          </div>
-
-          <nav class="site-state motion-element">
-
-            
-              <div class="site-state-item site-state-posts">
-              
-                <a href="/archives/">
-              
-                  <span class="site-state-item-count">56</span>
-                  <span class="site-state-item-name">posts</span>
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/04/05/Spring_6_Transaction/" rel="prev" title="Spring MVC系列-(6) 声明式事务">
+                  <i class="fa fa-chevron-left"></i> Spring MVC系列-(6) 声明式事务
                 </a>
-              </div>
-            
-
-            
-              
-              
-              <div class="site-state-item site-state-categories">
-                
-                  <span class="site-state-item-count">12</span>
-                  <span class="site-state-item-name">categories</span>
-                
-              </div>
-            
-
-            
-              
-              
-              <div class="site-state-item site-state-tags">
-                
-                  <span class="site-state-item-count">22</span>
-                  <span class="site-state-item-name">tags</span>
-                
-              </div>
-            
-
-          </nav>
-
-          
-
-          <div class="links-of-author motion-element">
-            
-              
-                <span class="links-of-author-item">
-                  <a href="https://github.com/teckee" target="_blank" title="GitHub">
-                    
-                      <i class="fa fa-fw fa-github"></i>GitHub</a>
-                </span>
-              
-                <span class="links-of-author-item">
-                  <a href="mailto:h0ck@foxmail.com" target="_blank" title="E-Mail">
-                    
-                      <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
-                </span>
-              
-            
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/04/15/Spring_8_MVC/" rel="next" title="Spring MVC系列-(8) Spring MVC 流程">
+                  Spring MVC系列-(8) Spring MVC 流程 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
           </div>
-
-          
-          
-
-          
-          
-
-          
-
-        </div>
-      </section>
-
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#7-IOC初始化流程"><span class="nav-number">1.</span> <span class="nav-text">7. IOC初始化流程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#7-1-refresh函数"><span class="nav-number">1.1.</span> <span class="nav-text">7.1 refresh函数</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-prepareRefresh-预处理"><span class="nav-number">1.1.1.</span> <span class="nav-text">1. prepareRefresh() 预处理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-obtainFreshBeanFactory-获取BeanFactory"><span class="nav-number">1.1.2.</span> <span class="nav-text">2. obtainFreshBeanFactory() 获取BeanFactory</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-prepareBeanFactory-beanFactory-BeanFactory的预准备工作"><span class="nav-number">1.1.3.</span> <span class="nav-text">3. prepareBeanFactory(beanFactory) BeanFactory的预准备工作</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-postProcessBeanFactory-beanFactory-beanFactory准备工作完成后进行的后置处理"><span class="nav-number">1.1.4.</span> <span class="nav-text">4. postProcessBeanFactory(beanFactory) beanFactory准备工作完成后进行的后置处理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-invokeBeanFactoryPostProcessors-beanFactory-调用beanFactory后置处理器"><span class="nav-number">1.1.5.</span> <span class="nav-text">5. invokeBeanFactoryPostProcessors(beanFactory) 调用beanFactory后置处理器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-registerBeanPostProcessors-beanFactory-注册BeanPostProcessor-bean的后置处理器"><span class="nav-number">1.1.6.</span> <span class="nav-text">6. registerBeanPostProcessors(beanFactory);注册BeanPostProcessor(bean的后置处理器)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-initMessageSource-初始化messageSource组件"><span class="nav-number">1.1.7.</span> <span class="nav-text">7. initMessageSource() 初始化messageSource组件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#8-initApplicationEventMulticaster"><span class="nav-number">1.1.8.</span> <span class="nav-text">8. initApplicationEventMulticaster()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#9-onRefresh"><span class="nav-number">1.1.9.</span> <span class="nav-text">9. onRefresh()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#10-registerListeners"><span class="nav-number">1.1.10.</span> <span class="nav-text">10. registerListeners()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#11-finishBeanFactoryInitialization-beanFactory-初始化所有剩下的单实例bean"><span class="nav-number">1.1.11.</span> <span class="nav-text">11. finishBeanFactoryInitialization(beanFactory);初始化所有剩下的单实例bean</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#12-finishRefresh-完成BeanFactory的初始化创建工作，IOC容器就创建完成"><span class="nav-number">1.1.12.</span> <span class="nav-text">12. finishRefresh() 完成BeanFactory的初始化创建工作，IOC容器就创建完成</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-2-Spring-bean的循环依赖以及解决方式"><span class="nav-number">1.2.</span> <span class="nav-text">7.2 Spring-bean的循环依赖以及解决方式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#什么是循环依赖？"><span class="nav-number">1.2.1.</span> <span class="nav-text">什么是循环依赖？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#怎么检测是否存在循环依赖？"><span class="nav-number">1.2.2.</span> <span class="nav-text">怎么检测是否存在循环依赖？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Spring怎么解决field属性和setter的循环依赖？"><span class="nav-number">1.2.3.</span> <span class="nav-text">Spring怎么解决field属性和setter的循环依赖？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#如何解决构造器中的循环依赖？"><span class="nav-number">1.2.4.</span> <span class="nav-text">如何解决构造器中的循环依赖？</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-3-spring依赖注入注解的实现原理"><span class="nav-number">1.3.</span> <span class="nav-text">7.3 spring依赖注入注解的实现原理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#7-3-1-Autowired的工作原理"><span class="nav-number">1.3.1.</span> <span class="nav-text">7.3.1 @Autowired的工作原理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-3-2-Resource和-Inject的工作原理"><span class="nav-number">1.3.2.</span> <span class="nav-text">7.3.2 @Resource和@Inject的工作原理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-3-3-注解处理器的激活条件"><span class="nav-number">1.3.3.</span> <span class="nav-text">7.3.3 注解处理器的激活条件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-3-4-总结"><span class="nav-number">1.3.4.</span> <span class="nav-text">7.3.4 总结</span></a></li></ol></li></ol></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
-      
-
-      
-
-    </div>
-  </aside>
-
-
-        
-      </div>
-    </main>
-
-    <footer id="footer" class="footer">
-      <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
-  <span class="with-love">
-    <i class="fa fa-user"></i>
-  </span>
-  <span class="author" itemprop="copyrightHolder">Vincent</span>
-
-  
+    </footer>
+  </article>
 </div>
 
 
-  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
 
 
 
-  <span class="post-meta-divider">|</span>
-
-
-
-  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.3</div>
-
-
-
-
-        
-
-
-
-
-
-
-
-        
-      </div>
-    </footer>
 
     
-      <div class="back-to-top">
-        <i class="fa fa-arrow-up"></i>
-        
-      </div>
-    
+  <div class="comments" id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
 
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class=""></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Vincent</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a>
   </div>
 
+    </div>
+  </footer>
+
   
-
-<script type="text/javascript">
-  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
-    window.Promise = null;
-  }
-</script>
-
-
-
-
-
-
-
-
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
 
   
 
 
 
-
-
-
-
-
-
-
-
-
-  
-  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
-
-  
-  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
-
-  
-  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
-
-  
-  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
-
-  
-  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
-
-  
-  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  <script src="/js/third-party/fancybox.js"></script>
 
 
   
 
 
-  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
-
-  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
-
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"D1FSFUo2Xco7NLfkEF2KRu4x-gzGzoHsz","app_key":"t0gAn7CG0IuQuatwXySKh0Lx","server_url":null,"security":true}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
 
 
-  
-  
-
-
-  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
-
-  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
-
-
-
-  
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
-<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
-
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
-
-
-
-  
-
-
-  
-
-    
-      <script id="dsq-count-scr" src="https://frankier-me.disqus.com/count.js" async></script>
-    
-
-    
-      <script type="text/javascript">
-        var disqus_config = function () {
-          this.page.url = 'http://yoursite.com/2020/04/10/Spring_7_IOC/';
-          this.page.identifier = '2020/04/10/Spring_7_IOC/';
-          this.page.title = 'Spring MVC系列-(7) IOC初始化流程';
-        };
-        var d = document, s = d.createElement('script');
-        s.src = 'https://frankier-me.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', '' + +new Date());
-        (d.head || d.body).appendChild(s);
-      </script>
-    
-
-  
-
-
-
-
-	
-
-
-
-
-
-  
-
-
-
-
-
-
-
-
-
-
-  
-
-
-
-
-
-  
-
-  
-  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
-  <script>AV.initialize("D1FSFUo2Xco7NLfkEF2KRu4x-gzGzoHsz", "t0gAn7CG0IuQuatwXySKh0Lx");</script>
-  <script>
-    function showTime(Counter) {
-      var query = new AV.Query(Counter);
-      var entries = [];
-      var $visitors = $(".leancloud_visitors");
-
-      $visitors.each(function () {
-        entries.push( $(this).attr("id").trim() );
-      });
-
-      query.containedIn('url', entries);
-      query.find()
-        .done(function (results) {
-          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
-
-          if (results.length === 0) {
-            $visitors.find(COUNT_CONTAINER_REF).text(0);
-            return;
-          }
-
-          for (var i = 0; i < results.length; i++) {
-            var item = results[i];
-            var url = item.get('url');
-            var time = item.get('time');
-            var element = document.getElementById(url);
-
-            $(element).find(COUNT_CONTAINER_REF).text(time);
-          }
-          for(var i = 0; i < entries.length; i++) {
-            var url = entries[i];
-            var element = document.getElementById(url);
-            var countSpan = $(element).find(COUNT_CONTAINER_REF);
-            if( countSpan.text() == '') {
-              countSpan.text(0);
-            }
-          }
-        })
-        .fail(function (object, error) {
-          console.log("Error: " + error.code + " " + error.message);
-        });
-    }
-
-    function addCount(Counter) {
-      var $visitors = $(".leancloud_visitors");
-      var url = $visitors.attr('id').trim();
-      var title = $visitors.attr('data-flag-title').trim();
-      var query = new AV.Query(Counter);
-
-      query.equalTo("url", url);
-      query.find({
-        success: function(results) {
-          if (results.length > 0) {
-            var counter = results[0];
-            counter.fetchWhenSave(true);
-            counter.increment("time");
-            counter.save(null, {
-              success: function(counter) {
-                var $element = $(document.getElementById(url));
-                $element.find('.leancloud-visitors-count').text(counter.get('time'));
-              },
-              error: function(counter, error) {
-                console.log('Failed to save Visitor num, with error message: ' + error.message);
-              }
-            });
-          } else {
-            var newcounter = new Counter();
-            /* Set ACL */
-            var acl = new AV.ACL();
-            acl.setPublicReadAccess(true);
-            acl.setPublicWriteAccess(true);
-            newcounter.setACL(acl);
-            /* End Set ACL */
-            newcounter.set("title", title);
-            newcounter.set("url", url);
-            newcounter.set("time", 1);
-            newcounter.save(null, {
-              success: function(newcounter) {
-                var $element = $(document.getElementById(url));
-                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
-              },
-              error: function(newcounter, error) {
-                console.log('Failed to create');
-              }
-            });
-          }
-        },
-        error: function(error) {
-          console.log('Error:' + error.code + " " + error.message);
-        }
-      });
-    }
-
-    $(function() {
-      var Counter = AV.Object.extend("Counter");
-      if ($('.leancloud_visitors').length == 1) {
-        addCount(Counter);
-      } else if ($('.post-title-link').length > 1) {
-        showTime(Counter);
-      }
-    });
-  </script>
-
-
-
-  
-
-  
-
-  
-
-  
-
-  
+<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"frankier-me","count":true,"i18n":{"disqus":"disqus"}}</script>
+<script src="/js/third-party/comments/disqus.js"></script>
 
 </body>
 </html>

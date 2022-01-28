@@ -1,377 +1,289 @@
 <!DOCTYPE html>
-
-
-
-  
-
-
-<html class="theme-next pisces use-motion" lang="en">
-<head><meta name="generator" content="Hexo 3.9.0">
+<html lang="en">
+<head>
   <meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="viewport" content="width=device-width">
 <meta name="theme-color" content="#222">
-<meta name="referrer" content="no-referrer">
+<meta name="generator" content="Hexo 6.0.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
 
 
 
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
 
-
-
-
-
-<meta http-equiv="Cache-Control" content="no-transform">
-<meta http-equiv="Cache-Control" content="no-siteapp">
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-  
-  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
-
-
-
-
-
-
-
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
-
-<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css">
-
-
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
-
-
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
-
-
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
-
-
-  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
-
-
-
-
-
-  <meta name="keywords" content="Spring,">
-
-
-
-
-
-
-
-
-
-
+<script class="next-config" data-name="main" type="application/json">{"hostname":"yoursite.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.9.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
 <meta name="description" content="3. 高级装配Bean3.1 Bean的作用域默认情况下，Spring中的bean都是以单例的形式存在的，无论注入多少次，每次注入的都是同一个实例。 考虑到某些bean可能是可变的，Spring定义了不同的作用域，可以基于这些作用域创建不同的bean，  单例是默认的作用域，如果选择@Scope注解选择其他作用域，这可以和@Component和@Bean一起使用。">
-<meta name="keywords" content="Spring">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Spring MVC系列-(3) Bean的高级装配">
 <meta property="og:url" content="http://yoursite.com/2020/03/26/Spring_3_Advanced_Bean_Configuration/index.html">
 <meta property="og:site_name" content="Vincent&#39;s Notes">
 <meta property="og:description" content="3. 高级装配Bean3.1 Bean的作用域默认情况下，Spring中的bean都是以单例的形式存在的，无论注入多少次，每次注入的都是同一个实例。 考虑到某些bean可能是可变的，Spring定义了不同的作用域，可以基于这些作用域创建不同的bean，  单例是默认的作用域，如果选择@Scope注解选择其他作用域，这可以和@Component和@Bean一起使用。">
-<meta property="og:locale" content="en">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1gco2xb0bj9j20nn0cet8m.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1gbgroffyd6j212g07y79e.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1gbkqpbvr52j20zs0bg0ws.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1gbkqqvuewlj20k80dgdik.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1gbkr2o7i87j20uu0g4adw.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1gbkr4ahjjmj20kc0g6n0o.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1gblb3p3gkyj219005ydlj.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1gblcz12isqj20w40a80z4.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1gbldib1l5aj20qm07igpb.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1gbldlo4bbuj20jo0ag79t.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g9v9luujswj21n10l9jux.jpg">
-<meta property="og:updated_time" content="2020-05-28T04:16:55.197Z">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204458_c43f0.jpg">
+<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204500_b24d8.jpg">
+<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204501_2e7b6.jpg">
+<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204501_e7542.jpg">
+<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204502_59e95.jpg">
+<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204503_a293b.jpg">
+<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204503_0acc3.jpg">
+<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204504_2b93a.jpg">
+<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204505_ef844.jpg">
+<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204506_1f28c.jpg">
+<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204506_8102e.jpg">
+<meta property="article:published_time" content="2020-03-26T15:43:49.000Z">
+<meta property="article:modified_time" content="2022-01-28T12:45:07.055Z">
+<meta property="article:author" content="Vincent">
+<meta property="article:tag" content="Spring">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Spring MVC系列-(3) Bean的高级装配">
-<meta name="twitter:description" content="3. 高级装配Bean3.1 Bean的作用域默认情况下，Spring中的bean都是以单例的形式存在的，无论注入多少次，每次注入的都是同一个实例。 考虑到某些bean可能是可变的，Spring定义了不同的作用域，可以基于这些作用域创建不同的bean，  单例是默认的作用域，如果选择@Scope注解选择其他作用域，这可以和@Component和@Bean一起使用。">
-<meta name="twitter:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1gco2xb0bj9j20nn0cet8m.jpg">
+<meta name="twitter:image" content="http://qiniu.lfeng.tech/20220128204458_c43f0.jpg">
+
+
+<link rel="canonical" href="http://yoursite.com/2020/03/26/Spring_3_Advanced_Bean_Configuration/">
 
 
 
-<script type="text/javascript" id="hexo.configurations">
-  var NexT = window.NexT || {};
-  var CONFIG = {
-    root: '/',
-    scheme: 'Pisces',
-    version: '5.1.3',
-    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
-    fancybox: true,
-    tabs: true,
-    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
-    duoshuo: {
-      userId: '0',
-      author: 'Author'
-    },
-    algolia: {
-      applicationID: '',
-      apiKey: '',
-      indexName: '',
-      hits: {"per_page":10},
-      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
-    }
-  };
-</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://yoursite.com/2020/03/26/Spring_3_Advanced_Bean_Configuration/","path":"2020/03/26/Spring_3_Advanced_Bean_Configuration/","title":"Spring MVC系列-(3) Bean的高级装配"}</script>
 
-
-
-  <link rel="canonical" href="http://yoursite.com/2020/03/26/Spring_3_Advanced_Bean_Configuration/">
-
-
-
-
-
-  <title>Spring MVC系列-(3) Bean的高级装配 | Vincent's Notes</title>
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Spring MVC系列-(3) Bean的高级装配 | Vincent's Notes</title>
   
 
 
 
 
-
-
-
-
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
 
-  
-  
-    
-  
-
-  <div class="container sidebar-position-left page-post-detail">
-    <div class="headband"></div>
-
-    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-brand-wrapper">
-  <div class="site-meta ">
-    
-
-    <div class="custom-logo-site-title">
-      <a href="/" class="brand" rel="start">
-        <span class="logo-line-before"><i></i></span>
-        <span class="site-title">Vincent's Notes</span>
-        <span class="logo-line-after"><i></i></span>
-      </a>
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
     </div>
-      
-        <p class="site-subtitle"></p>
-      
   </div>
 
-  <div class="site-nav-toggle">
-    <button>
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-    </button>
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Vincent's Notes</p>
+      <i class="logo-line"></i>
+    </a>
+      <img class="custom-logo-image" src="/%5Bobject%20Object%5D" alt="Vincent's Notes">
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
   </div>
 </div>
 
+
+
 <nav class="site-nav">
-  
-
-  
-    <ul id="menu" class="menu">
-      
-        
-        <li class="menu-item menu-item-home">
-          <a href="/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
-            
-            Home
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-archives">
-          <a href="/archives/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
-            
-            Archives
-          </a>
-        </li>
-      
-
-      
-    </ul>
-  
-
-  
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="home fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="archive fa-fw"></i>Archives</a></li>
+  </ul>
 </nav>
 
 
 
- </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E9%AB%98%E7%BA%A7%E8%A3%85%E9%85%8DBean"><span class="nav-number">1.</span> <span class="nav-text">3. 高级装配Bean</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-Bean%E7%9A%84%E4%BD%9C%E7%94%A8%E5%9F%9F"><span class="nav-number">1.1.</span> <span class="nav-text">3.1 Bean的作用域</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-Lazy%E6%87%92%E5%8A%A0%E8%BD%BD"><span class="nav-number">1.2.</span> <span class="nav-text">3.2 Lazy懒加载</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-Conditional%E6%9D%A1%E4%BB%B6%E6%B3%A8%E5%86%8CBean"><span class="nav-number">1.3.</span> <span class="nav-text">3.3 Conditional条件注册Bean</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-4-import%E6%B3%A8%E5%86%8CBean"><span class="nav-number">1.4.</span> <span class="nav-text">3.4 import注册Bean</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-5-%E8%BF%90%E8%A1%8C%E6%97%B6%E6%B3%A8%E5%85%A5"><span class="nav-number">1.5.</span> <span class="nav-text">3.5 运行时注入</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Value"><span class="nav-number">1.5.1.</span> <span class="nav-text">@Value</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Autowired"><span class="nav-number">1.5.2.</span> <span class="nav-text">@Autowired</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-6-Bean-Vs-Component"><span class="nav-number">1.6.</span> <span class="nav-text">3.6 @Bean Vs @Component</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Vincent</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">56</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/teckee" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;teckee" rel="noopener" target="_blank"><i class="github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:h0ck@foxmail.com" title="E-Mail → mailto:h0ck@foxmail.com" rel="noopener" target="_blank"><i class="envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
     </header>
 
-    <main id="main" class="main">
-      <div class="main-inner">
-        <div class="content-wrap">
-          <div id="content" class="content">
-            
-
-  <div id="posts" class="posts-expand">
     
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
 
   
 
-  
+
+<div class="post-block">
   
   
 
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/26/Spring_3_Advanced_Bean_Configuration/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Vincent">
-      <meta itemprop="description" content>
       <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Vincent">
+      <meta itemprop="description" content="">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="Vincent's Notes">
     </span>
-
-    
       <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Spring MVC系列-(3) Bean的高级装配
+        </h1>
 
-        
-        
-          <h1 class="post-title" itemprop="name headline">Spring MVC系列-(3) Bean的高级装配</h1>
-        
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
 
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-03-26T23:43:49+08:00">
-                2020-03-26
-              </time>
-            
+      <time title="Created: 2020-03-26 23:43:49" itemprop="dateCreated datePublished" datetime="2020-03-26T23:43:49+08:00">2020-03-26</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Spring/" itemprop="url" rel="index"><span itemprop="name">Spring</span></a>
+        </span>
+    </span>
 
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Spring/" itemprop="url" rel="index">
-                    <span itemprop="name">Spring</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2020/03/26/Spring_3_Advanced_Bean_Configuration/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2020/03/26/Spring_3_Advanced_Bean_Configuration/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-             <span id="/2020/03/26/Spring_3_Advanced_Bean_Configuration/" class="leancloud_visitors" data-flag-title="Spring MVC系列-(3) Bean的高级装配">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">Visitors&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
+  
+    <span id="/2020/03/26/Spring_3_Advanced_Bean_Configuration/" class="post-meta-item leancloud_visitors" data-flag-title="Spring MVC系列-(3) Bean的高级装配" title="Views">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2020/03/26/Spring_3_Advanced_Bean_Configuration/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2020/03/26/Spring_3_Advanced_Bean_Configuration/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
 
         </div>
       </header>
-    
 
     
     
     
     <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        <p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1gco2xb0bj9j20nn0cet8m.jpg" alt="Spring.png"></p>
+        <p><img src="http://qiniu.lfeng.tech/20220128204458_c43f0.jpg" alt="Spring.png"></p>
 <h2 id="3-高级装配Bean"><a href="#3-高级装配Bean" class="headerlink" title="3. 高级装配Bean"></a>3. 高级装配Bean</h2><h3 id="3-1-Bean的作用域"><a href="#3-1-Bean的作用域" class="headerlink" title="3.1 Bean的作用域"></a>3.1 Bean的作用域</h3><p>默认情况下，Spring中的bean都是以单例的形式存在的，无论注入多少次，每次注入的都是同一个实例。</p>
 <p>考虑到某些bean可能是可变的，Spring定义了不同的作用域，可以基于这些作用域创建不同的bean，</p>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1gbgroffyd6j212g07y79e.jpg" alt="Screen Shot 2020-01-30 at 3.44.24 PM.png"></p>
+<p><img src="http://qiniu.lfeng.tech/20220128204500_b24d8.jpg" alt="Screen Shot 2020-01-30 at 3.44.24 PM.png"></p>
 <p>单例是默认的作用域，如果选择<code>@Scope</code>注解选择其他作用域，这可以和<code>@Component</code>和<code>@Bean</code>一起使用。</p>
-<a id="more"></a>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">@Configuration</span><br><span class="line">public class Cap3MainConfig &#123;</span><br><span class="line">	//给容器中注册一个bean, 类型为返回值的类型, 默认是单实例</span><br><span class="line">	/*</span><br><span class="line">	 * prototype:多实例: IOC容器启动的时候,IOC容器启动并不会去调用方法创建对象, 而是每次获取的时候才会调用方法创建对象</span><br><span class="line">	 * singleton:单实例(默认):IOC容器启动的时候会调用方法创建对象并放到IOC容器中,以后每次获取的就是直接从容器中拿(大Map.get)的同一个bean</span><br><span class="line">	 * request: 主要针对web应用, 递交一次请求创建一个实例</span><br><span class="line">	 * session:同一个session创建一个实例</span><br><span class="line">	 */</span><br><span class="line">	@Scope(&quot;prototype&quot;)</span><br><span class="line">	@Bean</span><br><span class="line">	public Person person()&#123;</span><br><span class="line">		return new Person(&quot;vincent&quot;,20);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<span id="more"></span>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">@Configuration</span><br><span class="line">public class Cap3MainConfig &#123;</span><br><span class="line">	//给容器中注册一个bean, 类型为返回值的类型, 默认是单实例</span><br><span class="line">	/*</span><br><span class="line">	 * prototype:多实例: IOC容器启动的时候,IOC容器启动并不会去调用方法创建对象, 而是每次获取的时候才会调用方法创建对象</span><br><span class="line">	 * singleton:单实例(默认):IOC容器启动的时候会调用方法创建对象并放到IOC容器中,以后每次获取的就是直接从容器中拿(大Map.get)的同一个bean</span><br><span class="line">	 * request: 主要针对web应用, 递交一次请求创建一个实例</span><br><span class="line">	 * session:同一个session创建一个实例</span><br><span class="line">	 */</span><br><span class="line">	@Scope(&quot;prototype&quot;)</span><br><span class="line">	@Bean</span><br><span class="line">	public Person person()&#123;</span><br><span class="line">		return new Person(&quot;vincent&quot;,20);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h3 id="3-2-Lazy懒加载"><a href="#3-2-Lazy懒加载" class="headerlink" title="3.2 Lazy懒加载"></a>3.2 Lazy懒加载</h3><p>顾名思义，懒加载推迟加载Bean。默认情况下，在IOC容器初始化时，会将各个Bean注册到容器中；如果在定义Bean时，使用<code>@Lazy</code>声明，则该Bean只有在第一次使用时，才会被注册到IOC容器中。</p>
 <p>下面的例子中，person实例将会在第一次被获取的时候才会初始化。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">@Configuration</span><br><span class="line">public class Cap4MainConfig &#123;</span><br><span class="line">	//给容器中注册一个bean, 类型为返回值的类型, 默认是单实例</span><br><span class="line">	/*</span><br><span class="line">	 * 懒加载: 主要针对单实例bean:默认在容器启动的时候创建对象</span><br><span class="line">	 * 懒加载: 容器启动时候不创建对象, 仅当第一次使用(获取)bean的时候才创建被初始化</span><br><span class="line">	 */</span><br><span class="line">	@Lazy</span><br><span class="line">	@Bean</span><br><span class="line">	public Person person()&#123;</span><br><span class="line">		System.out.println(&quot;给容器中添加person.......&quot;);</span><br><span class="line">		return new Person(&quot;vincent&quot;,20);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">@Configuration</span><br><span class="line">public class Cap4MainConfig &#123;</span><br><span class="line">	//给容器中注册一个bean, 类型为返回值的类型, 默认是单实例</span><br><span class="line">	/*</span><br><span class="line">	 * 懒加载: 主要针对单实例bean:默认在容器启动的时候创建对象</span><br><span class="line">	 * 懒加载: 容器启动时候不创建对象, 仅当第一次使用(获取)bean的时候才创建被初始化</span><br><span class="line">	 */</span><br><span class="line">	@Lazy</span><br><span class="line">	@Bean</span><br><span class="line">	public Person person()&#123;</span><br><span class="line">		System.out.println(&quot;给容器中添加person.......&quot;);</span><br><span class="line">		return new Person(&quot;vincent&quot;,20);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>可以使用如下测试程序进行测试：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">public class Cap4Test &#123;</span><br><span class="line">	@Test</span><br><span class="line">	public void test01()&#123;</span><br><span class="line">		AnnotationConfigApplicationContext app = new AnnotationConfigApplicationContext(Cap4MainConfig.class);</span><br><span class="line">		</span><br><span class="line">		String[] names = app.getBeanDefinitionNames();</span><br><span class="line">		</span><br><span class="line">		// 此时可以获取到person的name，但是person依然未实例化</span><br><span class="line">		for(String name:names)&#123;</span><br><span class="line">			System.out.println(name);</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">		System.out.println(&quot;IOC容器创建完成........&quot;);</span><br><span class="line">		</span><br><span class="line">		// 实例化person</span><br><span class="line">		app.getBean(&quot;person&quot;);//执行获取的时候才创建并初始化bean</span><br><span class="line">		</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">public class Cap4Test &#123;</span><br><span class="line">	@Test</span><br><span class="line">	public void test01()&#123;</span><br><span class="line">		AnnotationConfigApplicationContext app = new AnnotationConfigApplicationContext(Cap4MainConfig.class);</span><br><span class="line">		</span><br><span class="line">		String[] names = app.getBeanDefinitionNames();</span><br><span class="line">		</span><br><span class="line">		// 此时可以获取到person的name，但是person依然未实例化</span><br><span class="line">		for(String name:names)&#123;</span><br><span class="line">			System.out.println(name);</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">		System.out.println(&quot;IOC容器创建完成........&quot;);</span><br><span class="line">		</span><br><span class="line">		// 实例化person</span><br><span class="line">		app.getBean(&quot;person&quot;);//执行获取的时候才创建并初始化bean</span><br><span class="line">		</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h3 id="3-3-Conditional条件注册Bean"><a href="#3-3-Conditional条件注册Bean" class="headerlink" title="3.3 Conditional条件注册Bean"></a>3.3 Conditional条件注册Bean</h3><p>Spring4引入了<code>@Conditional</code>注解，用于条件化注册Bean。如果给定的条件，计算结果为true，就会创建这个bean，否则的话，bean会被忽略。</p>
 <p>下面的例子中，将IOC容器注册bean时, 当操作系统为WINDOWS时,注册Lison实例; 当操作系统为LINUX时, 注册James实例,此时要用得@Conditional注解进行定制化条件选择注册bean;</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">@Configuration</span><br><span class="line">public class Cap5MainConfig &#123;</span><br><span class="line">	@Bean(&quot;person&quot;)</span><br><span class="line">	public Person person()&#123;</span><br><span class="line">		System.out.println(&quot;给容器中添加person.......&quot;);</span><br><span class="line">		return new Person(&quot;person&quot;,20);</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	@Conditional(WinCondition.class)</span><br><span class="line">	@Bean(&quot;lison&quot;)</span><br><span class="line">	public Person lison()&#123;</span><br><span class="line">		System.out.println(&quot;给容器中添加win.......&quot;);</span><br><span class="line">		return new Person(&quot;win&quot;,58);</span><br><span class="line">	&#125;</span><br><span class="line">	@Conditional(LinCondition.class)</span><br><span class="line">	@Bean(&quot;james&quot;)//bean在容器中的ID为james, IOC容器MAP,  map.put(&quot;id&quot;,value)</span><br><span class="line">	public Person james()&#123;</span><br><span class="line">		System.out.println(&quot;给容器中添加mac.......&quot;);</span><br><span class="line">		return new Person(&quot;mac&quot;,20);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">@Configuration</span><br><span class="line">public class Cap5MainConfig &#123;</span><br><span class="line">	@Bean(&quot;person&quot;)</span><br><span class="line">	public Person person()&#123;</span><br><span class="line">		System.out.println(&quot;给容器中添加person.......&quot;);</span><br><span class="line">		return new Person(&quot;person&quot;,20);</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	@Conditional(WinCondition.class)</span><br><span class="line">	@Bean(&quot;lison&quot;)</span><br><span class="line">	public Person lison()&#123;</span><br><span class="line">		System.out.println(&quot;给容器中添加win.......&quot;);</span><br><span class="line">		return new Person(&quot;win&quot;,58);</span><br><span class="line">	&#125;</span><br><span class="line">	@Conditional(LinCondition.class)</span><br><span class="line">	@Bean(&quot;james&quot;)//bean在容器中的ID为james, IOC容器MAP,  map.put(&quot;id&quot;,value)</span><br><span class="line">	public Person james()&#123;</span><br><span class="line">		System.out.println(&quot;给容器中添加mac.......&quot;);</span><br><span class="line">		return new Person(&quot;mac&quot;,20);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>注意到，我们需要自己实现对应的<code>WinCondition.class</code>和<code>LinCondition.class</code>类，以其中的一个为例，如下可以看到，需要实现自己的match函数，</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">public class LinCondition implements Condition&#123;</span><br><span class="line">	/*</span><br><span class="line">	*ConditionContext: 判断条件可以使用的上下文(环境)</span><br><span class="line">	*AnnotatedTypeMetadata: 注解的信息</span><br><span class="line">	*/</span><br><span class="line">	@Override</span><br><span class="line">	public boolean matches(ConditionContext context, AnnotatedTypeMetadata metadata) &#123;</span><br><span class="line">		// TODO 是否为WINDOW系统</span><br><span class="line">		//能获取到IOC容器正在使用的beanFactory</span><br><span class="line">		ConfigurableListableBeanFactory beanFactory = context.getBeanFactory();</span><br><span class="line">		//获取当前环境变量(包括我们操作系统是WIN还是LINUX??)</span><br><span class="line">		Environment environment = context.getEnvironment();</span><br><span class="line">		String os_name = environment.getProperty(&quot;os.name&quot;);</span><br><span class="line">		if(os_name.contains(&quot;Mac&quot;))&#123;</span><br><span class="line">			return true;</span><br><span class="line">		&#125;</span><br><span class="line">		return false;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">public class LinCondition implements Condition&#123;</span><br><span class="line">	/*</span><br><span class="line">	*ConditionContext: 判断条件可以使用的上下文(环境)</span><br><span class="line">	*AnnotatedTypeMetadata: 注解的信息</span><br><span class="line">	*/</span><br><span class="line">	@Override</span><br><span class="line">	public boolean matches(ConditionContext context, AnnotatedTypeMetadata metadata) &#123;</span><br><span class="line">		// TODO 是否为WINDOW系统</span><br><span class="line">		//能获取到IOC容器正在使用的beanFactory</span><br><span class="line">		ConfigurableListableBeanFactory beanFactory = context.getBeanFactory();</span><br><span class="line">		//获取当前环境变量(包括我们操作系统是WIN还是LINUX??)</span><br><span class="line">		Environment environment = context.getEnvironment();</span><br><span class="line">		String os_name = environment.getProperty(&quot;os.name&quot;);</span><br><span class="line">		if(os_name.contains(&quot;Mac&quot;))&#123;</span><br><span class="line">			return true;</span><br><span class="line">		&#125;</span><br><span class="line">		return false;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <h3 id="3-4-import注册Bean"><a href="#3-4-import注册Bean" class="headerlink" title="3.4 import注册Bean"></a>3.4 import注册Bean</h3><p>这节中，首先总结一下Spring中常见的注入Bean的方法。</p>
 <ol>
 <li><strong>@Bean</strong>: [导入第三方的类或包的组件],比如Person为第三方的类, 需要在我们的IOC容器中使用</li>
@@ -388,15 +300,15 @@
 </ol>
 <p>前两种方法在上一章已经介绍了，现在主要介绍剩下两类。</p>
 <p>下面的配置类中，直接将Dog和Cat import到配置中，本身配置类中也定义了person的实例bean以及自定义的factoryBean。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">@Configuration</span><br><span class="line">@Import(value = &#123; Dog.class,Cat.class, JamesImportSelector.class,</span><br><span class="line">JamesImportBeanDefinitionRegistrar.class &#125;)</span><br><span class="line">public class Cap6MainConfig &#123;</span><br><span class="line">	//容器启动时初始化person的bean实例</span><br><span class="line">	@Bean(&quot;person&quot;)</span><br><span class="line">	public Person persond()&#123;</span><br><span class="line">		System.out.println(&quot;aaaaaaaaaaaa&quot;);</span><br><span class="line">		return new Person(&quot;james&quot;,20);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	@Bean</span><br><span class="line">	public JamesFactoryBean jamesFactoryBean()&#123;</span><br><span class="line">		return new JamesFactoryBean();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">@Configuration</span><br><span class="line">@Import(value = &#123; Dog.class,Cat.class, JamesImportSelector.class,</span><br><span class="line">JamesImportBeanDefinitionRegistrar.class &#125;)</span><br><span class="line">public class Cap6MainConfig &#123;</span><br><span class="line">	//容器启动时初始化person的bean实例</span><br><span class="line">	@Bean(&quot;person&quot;)</span><br><span class="line">	public Person persond()&#123;</span><br><span class="line">		System.out.println(&quot;aaaaaaaaaaaa&quot;);</span><br><span class="line">		return new Person(&quot;james&quot;,20);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	@Bean</span><br><span class="line">	public JamesFactoryBean jamesFactoryBean()&#123;</span><br><span class="line">		return new JamesFactoryBean();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>在<code>JamesImportSelector.class</code>实现中，只需要返回所有需要import的class类名即可。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">public class JamesImportSelector implements ImportSelector&#123;</span><br><span class="line">	@Override</span><br><span class="line">	public String[] selectImports(AnnotationMetadata importingClassMetadata)&#123;</span><br><span class="line">		//返回全类名的bean</span><br><span class="line">		return new String[]&#123;&quot;com.enjoy.cap6.bean.Fish&quot;,&quot;com.enjoy.cap6.bean.Tiger&quot;&#125;;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">public class JamesImportSelector implements ImportSelector&#123;</span><br><span class="line">	@Override</span><br><span class="line">	public String[] selectImports(AnnotationMetadata importingClassMetadata)&#123;</span><br><span class="line">		//返回全类名的bean</span><br><span class="line">		return new String[]&#123;&quot;com.enjoy.cap6.bean.Fish&quot;,&quot;com.enjoy.cap6.bean.Tiger&quot;&#125;;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>在<code>JamesImportBeanDefinitionRegistrar.class</code>中，根据需要可以手动注入需要的bean实例，</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">public class JamesImportBeanDefinitionRegistrar implements ImportBeanDefinitionRegistrar &#123;</span><br><span class="line"></span><br><span class="line">	/*</span><br><span class="line">	*AnnotationMetadata:当前类的注解信息</span><br><span class="line">	*BeanDefinitionRegistry:BeanDefinition注册类</span><br><span class="line">	*    把所有需要添加到容器中的bean加入;</span><br><span class="line">	*    @Scope</span><br><span class="line">	*/</span><br><span class="line">	@Override</span><br><span class="line">	public void registerBeanDefinitions(AnnotationMetadata importingClassMetadata, BeanDefinitionRegistry registry) &#123;</span><br><span class="line">		boolean bean1 = registry.containsBeanDefinition(&quot;com.enjoy.cap6.bean.Dog&quot;);</span><br><span class="line">		boolean bean2 = registry.containsBeanDefinition(&quot;com.enjoy.cap6.bean.Cat&quot;);</span><br><span class="line">		//如果Dog和Cat同时存在于我们IOC容器中,那么创建Pig类, 加入到容器</span><br><span class="line">		//对于我们要注册的bean, 给bean进行封装,</span><br><span class="line">		if(bean1 &amp;&amp; bean2)&#123;</span><br><span class="line">			RootBeanDefinition beanDefinition = new RootBeanDefinition(Pig.class);</span><br><span class="line">			registry.registerBeanDefinition(&quot;pig&quot;, beanDefinition);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">public class JamesImportBeanDefinitionRegistrar implements ImportBeanDefinitionRegistrar &#123;</span><br><span class="line"></span><br><span class="line">	/*</span><br><span class="line">	*AnnotationMetadata:当前类的注解信息</span><br><span class="line">	*BeanDefinitionRegistry:BeanDefinition注册类</span><br><span class="line">	*    把所有需要添加到容器中的bean加入;</span><br><span class="line">	*    @Scope</span><br><span class="line">	*/</span><br><span class="line">	@Override</span><br><span class="line">	public void registerBeanDefinitions(AnnotationMetadata importingClassMetadata, BeanDefinitionRegistry registry) &#123;</span><br><span class="line">		boolean bean1 = registry.containsBeanDefinition(&quot;com.enjoy.cap6.bean.Dog&quot;);</span><br><span class="line">		boolean bean2 = registry.containsBeanDefinition(&quot;com.enjoy.cap6.bean.Cat&quot;);</span><br><span class="line">		//如果Dog和Cat同时存在于我们IOC容器中,那么创建Pig类, 加入到容器</span><br><span class="line">		//对于我们要注册的bean, 给bean进行封装,</span><br><span class="line">		if(bean1 &amp;&amp; bean2)&#123;</span><br><span class="line">			RootBeanDefinition beanDefinition = new RootBeanDefinition(Pig.class);</span><br><span class="line">			registry.registerBeanDefinition(&quot;pig&quot;, beanDefinition);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>注意到上面，也可以通过FactoryBean的方法来将所需要的bean注入到IOC容器中，在这其中，需要手动实现其中的getObject等方法。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">public class JamesFactoryBean implements FactoryBean&lt;Monkey&gt;&#123;</span><br><span class="line"></span><br><span class="line">	@Override</span><br><span class="line">	public Monkey getObject() throws Exception &#123;</span><br><span class="line">		// TODO Auto-generated method stub</span><br><span class="line">		return new Monkey();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	@Override</span><br><span class="line">	public Class&lt;?&gt; getObjectType() &#123;</span><br><span class="line">		// TODO Auto-generated method stub</span><br><span class="line">		return Monkey.class;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	@Override</span><br><span class="line">	public boolean isSingleton() &#123;</span><br><span class="line">		return true;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">public class JamesFactoryBean implements FactoryBean&lt;Monkey&gt;&#123;</span><br><span class="line"></span><br><span class="line">	@Override</span><br><span class="line">	public Monkey getObject() throws Exception &#123;</span><br><span class="line">		// TODO Auto-generated method stub</span><br><span class="line">		return new Monkey();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	@Override</span><br><span class="line">	public Class&lt;?&gt; getObjectType() &#123;</span><br><span class="line">		// TODO Auto-generated method stub</span><br><span class="line">		return Monkey.class;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	@Override</span><br><span class="line">	public boolean isSingleton() &#123;</span><br><span class="line">		return true;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>下面是实际的测试程序，需要注意的是，直接使用getBean(bean name)是取出FactoryBean里面封装的Monkey实例，如果需要拿到FactoryBean本身，需要加上<code>&amp;</code>符号。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">public class Cap6Test &#123;</span><br><span class="line">	@Test</span><br><span class="line">	public void test01()&#123;</span><br><span class="line">		AnnotationConfigApplicationContext app = new AnnotationConfigApplicationContext(Cap6MainConfig.class);</span><br><span class="line">		</span><br><span class="line">		System.out.println(&quot;IOC容器创建完成........&quot;);</span><br><span class="line">		</span><br><span class="line">		</span><br><span class="line">		Object bean1 = app.getBean(&quot;jamesFactoryBean&quot;);</span><br><span class="line">		Object bean2 = app.getBean(&quot;jamesFactoryBean&quot;);//取Monkey bean</span><br><span class="line">		System.out.println(&quot;bean的类型=&quot;+bean1.getClass());</span><br><span class="line">		System.out.println(bean1 == bean2);</span><br><span class="line"></span><br><span class="line">		Object bean3 = app.getBean(&quot;&amp;jamesFactoryBean&quot;);//取factoryBean</span><br><span class="line">		System.out.println(&quot;bean的类型=&quot;+bean3.getClass());</span><br><span class="line">		</span><br><span class="line">		// 打印输出所有bean</span><br><span class="line">		String[] beanDefinitionNames = app.getBeanDefinitionNames();</span><br><span class="line">		for(String name:beanDefinitionNames)&#123;</span><br><span class="line">			System.out.println(name);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">public class Cap6Test &#123;</span><br><span class="line">	@Test</span><br><span class="line">	public void test01()&#123;</span><br><span class="line">		AnnotationConfigApplicationContext app = new AnnotationConfigApplicationContext(Cap6MainConfig.class);</span><br><span class="line">		</span><br><span class="line">		System.out.println(&quot;IOC容器创建完成........&quot;);</span><br><span class="line">		</span><br><span class="line">		</span><br><span class="line">		Object bean1 = app.getBean(&quot;jamesFactoryBean&quot;);</span><br><span class="line">		Object bean2 = app.getBean(&quot;jamesFactoryBean&quot;);//取Monkey bean</span><br><span class="line">		System.out.println(&quot;bean的类型=&quot;+bean1.getClass());</span><br><span class="line">		System.out.println(bean1 == bean2);</span><br><span class="line"></span><br><span class="line">		Object bean3 = app.getBean(&quot;&amp;jamesFactoryBean&quot;);//取factoryBean</span><br><span class="line">		System.out.println(&quot;bean的类型=&quot;+bean3.getClass());</span><br><span class="line">		</span><br><span class="line">		// 打印输出所有bean</span><br><span class="line">		String[] beanDefinitionNames = app.getBeanDefinitionNames();</span><br><span class="line">		for(String name:beanDefinitionNames)&#123;</span><br><span class="line">			System.out.println(name);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <p>Spring中出现了BeanFactory和FactoryBean，下面对两者的区别进行解释：</p>
 <blockquote>
 <p><strong>BeanFactory</strong>是个Factory，也就是IOC容器或对象工厂，FactoryBean是个Bean。在Spring中，所有的Bean都是由BeanFactory(也就是IOC容器)来进行管理的。<br><strong>FactoryBean</strong>是一个Bean，这个Bean不是简单的Bean，而是一个能生产或者修饰对象生成的工厂Bean,它的实现与设计模式中的工厂模式和修饰器模式类似。</p>
@@ -423,34 +335,34 @@
 <li>String[] getAliases(String name) 返回给定bean名称的所有别名 </li>
 </ul>
 <p><strong>2. FactoryBean</strong></p>
-<p>一般情况下，Spring通过反射机制利用<bean>的class属性指定实现类实例化Bean，在某些情况下，实例化Bean过程比较复杂，如果按照传统的方式，则需要在<bean>中提供大量的配置信息。配置方式的灵活性是受限的，这时采用编码的方式可能会得到一个简单的方案。</bean></bean></p>
-<p>Spring为此提供了一个org.springframework.bean.factory.FactoryBean的工厂类接口，用户可以通过实现该接口定制实例化Bean的逻辑。FactoryBean接口对于Spring框架来说占用重要的地位，Spring自身就提供了70多个FactoryBean的实现。它们隐藏了实例化一些复杂Bean的细节，给上层应用带来了便利。从Spring3.0开始，FactoryBean开始支持泛型，即接口声明改为FactoryBean<t>的形式</t></p>
-<p><strong>以Bean结尾，表示它是一个Bean，不同于普通Bean的是：它是实现了FactoryBean<t>接口的Bean，根据该Bean的ID从BeanFactory中获取的实际上是FactoryBean的getObject()返回的对象，而不是FactoryBean本身，如果要获取FactoryBean对象，请在id前面加一个&amp;符号来获取。</t></strong></p>
+<p>一般情况下，Spring通过反射机制利用<bean>的class属性指定实现类实例化Bean，在某些情况下，实例化Bean过程比较复杂，如果按照传统的方式，则需要在<bean>中提供大量的配置信息。配置方式的灵活性是受限的，这时采用编码的方式可能会得到一个简单的方案。</p>
+<p>Spring为此提供了一个org.springframework.bean.factory.FactoryBean的工厂类接口，用户可以通过实现该接口定制实例化Bean的逻辑。FactoryBean接口对于Spring框架来说占用重要的地位，Spring自身就提供了70多个FactoryBean的实现。它们隐藏了实例化一些复杂Bean的细节，给上层应用带来了便利。从Spring3.0开始，FactoryBean开始支持泛型，即接口声明改为FactoryBean<T>的形式</p>
+<p><strong>以Bean结尾，表示它是一个Bean，不同于普通Bean的是：它是实现了FactoryBean<T>接口的Bean，根据该Bean的ID从BeanFactory中获取的实际上是FactoryBean的getObject()返回的对象，而不是FactoryBean本身，如果要获取FactoryBean对象，请在id前面加一个&amp;符号来获取。</strong></p>
 <h3 id="3-5-运行时注入"><a href="#3-5-运行时注入" class="headerlink" title="3.5 运行时注入"></a>3.5 运行时注入</h3><p>本节介绍Spring在运行时的两种常见注入方式，@Value和@Autowired。</p>
-<h4 id="Value"><a href="#Value" class="headerlink" title="@Value"></a>@Value</h4><p>该注解的作用是将我们配置文件的属性读出来，有<code>@Value(“${}”)</code>和<code>@Value(“#{}”)</code>两种方式。</p>
+<h4 id="Value"><a href="#Value" class="headerlink" title="@Value"></a>@Value</h4><p>该注解的作用是将我们配置文件的属性读出来，有<code>@Value(“$&#123;&#125;”)</code>和<code>@Value(“#&#123;&#125;”)</code>两种方式。</p>
 <p><strong>1. @Value(“${}”)</strong>：注入的是外部配置文件对应的property</p>
 <p>在application.propertites配置属性如下：</p>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1gbkqpbvr52j20zs0bg0ws.jpg" alt="Screen Shot 2020-02-04 at 10.29.30 PM.png"></p>
+<p><img src="http://qiniu.lfeng.tech/20220128204501_2e7b6.jpg" alt="Screen Shot 2020-02-04 at 10.29.30 PM.png"></p>
 <p>在程序中动态读取server.port属性，</p>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1gbkqqvuewlj20k80dgdik.jpg" alt="Screen Shot 2020-02-04 at 10.31.09 PM.png">@w=300</p>
+<p><img src="http://qiniu.lfeng.tech/20220128204501_e7542.jpg" alt="Screen Shot 2020-02-04 at 10.31.09 PM.png">@w=300</p>
 <p>这样server.port=8000就注入到了对应的参数中。</p>
-<p><strong>2. @Value(“#{}”)</strong>：常用的方式是<code>#{obj.property ? :default_value}</code>，注意与上一种方式不同的是，这种方式中的obj需要是一个对象。也可以在其中填写<code>SpEL表达式</code>。</p>
+<p><strong>2. @Value(“#{}”)</strong>：常用的方式是<code>#&#123;obj.property ? :default_value&#125;</code>，注意与上一种方式不同的是，这种方式中的obj需要是一个对象。也可以在其中填写<code>SpEL表达式</code>。</p>
 <blockquote>
 <p>Spring表达式语言全称为“Spring Expression Language”，缩写为“SpEL”，类似于Struts2x中使用的OGNL表达式语言，能在运行时构建复杂表达式、存取对象图属性、对象方法调用等等，并且能与Spring功能完美整合，如能用来配置Bean定义。</p>
 </blockquote>
 <p>下面的例子中，首先定义UserBean并从property文件中读取属性，属性值为mysql。</p>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1gbkr2o7i87j20uu0g4adw.jpg" alt="Screen Shot 2020-02-04 at 10.42.30 PM.png">@w=400</p>
+<p><img src="http://qiniu.lfeng.tech/20220128204502_59e95.jpg" alt="Screen Shot 2020-02-04 at 10.42.30 PM.png">@w=400</p>
 <p>接着在另一个Controller类中注入UserBean的属性。</p>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1gbkr4ahjjmj20kc0g6n0o.jpg" alt="Screen Shot 2020-02-04 at 10.44.04 PM.png">@w=300</p>
+<p><img src="http://qiniu.lfeng.tech/20220128204503_a293b.jpg" alt="Screen Shot 2020-02-04 at 10.44.04 PM.png">@w=300</p>
 <h4 id="Autowired"><a href="#Autowired" class="headerlink" title="@Autowired"></a>@Autowired</h4><p>Spring中常利用<code>@Autowired</code>完成依赖注入(DI), 对IOC容器中的各个组件的依赖关系赋值。</p>
 <p>下面的例子中，是常见的DAO、Service、Controller模型，采用Autowired可以方便的在Service层和Controller层中注入对应的Bean实例。</p>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1gblb3p3gkyj219005ydlj.jpg" alt="Screen Shot 2020-02-05 at 10.15.23 AM.png"></p>
+<p><img src="http://qiniu.lfeng.tech/20220128204503_0acc3.jpg" alt="Screen Shot 2020-02-05 at 10.15.23 AM.png"></p>
 <blockquote>
 <p>@Autowired实现原理就是：<strong>默认优先按类型去容器中找对应的组件</strong>,相当于anno.getBean(TestDao.class)去容器获取id为testDao的bean, 并注入到TestService的bean中;</p>
 </blockquote>
 <p>但是当容器中有多个testDao时，使用默认的@Autowired就会发生异常，IOC容器此时无法确定哪个bean作为依赖注入的对象，Spring引入了<strong>Qualifier</strong>和<strong>Primary</strong>来解决这个问题。</p>
 <p>假定有两个testDao，其bean id分别为testDao1和testDao2，此时可以使用@Autowired和<code>@Qualifier</code>结合来指定注入哪一个bean,下面的例子中，指定bean id为testDao，注意还可以加上<code>required=false</code>当容器中找不到这个bean时，也不会报错，此时该对象注入失败为null。</p>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1gblcz12isqj20w40a80z4.jpg" alt="Screen Shot 2020-02-05 at 11.20.09 AM.png"></p>
+<p><img src="http://qiniu.lfeng.tech/20220128204504_2b93a.jpg" alt="Screen Shot 2020-02-05 at 11.20.09 AM.png"></p>
 <p>如果不使用<code>@Qualifier</code>，可以使用<code>@Primary</code>来指定默认的首选bean。此时通过getBean和autowired获取到的都是<code>@Primary</code>指定的bean。</p>
 <p>当<code>@Qualifier</code>和<code>@Primary</code>共存时，<code>@Qualifier</code>会按照bean id来获取指定的bean，不会受到<code>@Primary</code>的影响。此时使用getBean获取到的就是<code>@Primary</code>标识的bean。</p>
 <p><strong>扩展：</strong></p>
@@ -460,531 +372,104 @@
 <blockquote>
 <p>@Resource和Autowired一样可以装配bean<br>@Resource缺点: 不能支持@Primary功能，不能支持@Autowired(required = false)的功能</p>
 </blockquote>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1gbldib1l5aj20qm07igpb.jpg" alt="Screen Shot 2020-02-05 at 11.38.40 AM.png"></p>
+<p><img src="http://qiniu.lfeng.tech/20220128204505_ef844.jpg" alt="Screen Shot 2020-02-05 at 11.38.40 AM.png"></p>
 <ol start="2">
 <li>@Inject</li>
 </ol>
 <blockquote>
 <p>@Inject和Autowired一样可以装配bean, 支持@Primary功能, 可用于非spring框架.<br>@Inject缺点: 但不能支持<code>@Autowired(required = false)</code>的功能,需要引入第三方包javax.inject </p>
 </blockquote>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1gbldlo4bbuj20jo0ag79t.jpg" alt="Screen Shot 2020-02-05 at 11.41.57 AM.png">@w=350</p>
+<p><img src="http://qiniu.lfeng.tech/20220128204506_1f28c.jpg" alt="Screen Shot 2020-02-05 at 11.41.57 AM.png">@w=350</p>
 <p>Autowired属于spring的, 不能脱离spring,  @Resource和@Inject都是JAVA规范<br>推荐使用@Autowired。</p>
 <h3 id="3-6-Bean-Vs-Component"><a href="#3-6-Bean-Vs-Component" class="headerlink" title="3.6 @Bean Vs @Component"></a>3.6 @Bean Vs @Component</h3><p><code>@Component</code>主要和ComponentScan结合，用于自动检测和配置Bean，Bean和被注解的类是一一对应的关系。</p>
 <p><code>@Bean</code>用于显式声明一个单独的Bean，而不是让Spring自动完成该过程，通过该注解可以将类的定义和Bean的声明解耦。特别是使用第三方的库时，只能通过@Bean来将某些类注入到容器中。</p>
 <hr>
-<p>本文由『后端精进之路』原创，首发于博客 <a href="http://teckee.github.io/" target="_blank" rel="noopener">http://teckee.github.io/</a> , 转载请注明出处</p>
+<p>本文由『后端精进之路』原创，首发于博客 <a target="_blank" rel="noopener" href="http://teckee.github.io/">http://teckee.github.io/</a> , 转载请注明出处</p>
 <p>搜索『后端精进之路』关注公众号，立刻获取最新文章和<strong>价值2000元的BATJ精品面试课程</strong>。</p>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1g9v9luujswj21n10l9jux.jpg" alt="后端精进之路.png"></p>
+<p><img src="http://qiniu.lfeng.tech/20220128204506_8102e.jpg" alt="后端精进之路.png"></p>
 
-      
     </div>
-    
-    
-    
 
     
-
     
-
     
 
     <footer class="post-footer">
-      
-        <div class="post-tags">
-          
-            <a href="/tags/Spring/" rel="tag"># Spring</a>
-          
-        </div>
-      
-
-      
-      
-      
-
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-              <a href="/2020/03/18/Spring_2_Bean_Configuration/" rel="next" title="Spring MVC系列-(2) Bean的装配">
-                <i class="fa fa-chevron-left"></i> Spring MVC系列-(2) Bean的装配
-              </a>
-            
+          <div class="post-tags">
+              <a href="/tags/Spring/" rel="tag"># Spring</a>
           </div>
 
-          <span class="post-nav-divider"></span>
-
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2020/03/28/Spring_4_Bean_lifecycle/" rel="prev" title="Spring MVC系列-(4) Bean的生命周期">
-                Spring MVC系列-(4) Bean的生命周期 <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
-      
-
-      
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-
-    <div class="post-spread">
-      
-    </div>
-  </div>
-
-
-          </div>
-          
-
-
-          
-  
-    <div class="comments" id="comments">
-      <div id="disqus_thread">
-        <noscript>
-          Please enable JavaScript to view the
-          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
-        </noscript>
-      </div>
-    </div>
-  
-
-
-        </div>
         
-          
-  
-  <div class="sidebar-toggle">
-    <div class="sidebar-toggle-line-wrap">
-      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
-    </div>
-  </div>
 
-  <aside id="sidebar" class="sidebar">
-    
-    <div class="sidebar-inner">
-
-      
-
-      
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            Table of Contents
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            Overview
-          </li>
-        </ul>
-      
-
-      <section class="site-overview-wrap sidebar-panel">
-        <div class="site-overview">
-          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-            
-              <p class="site-author-name" itemprop="name">Vincent</p>
-              <p class="site-description motion-element" itemprop="description"></p>
-          </div>
-
-          <nav class="site-state motion-element">
-
-            
-              <div class="site-state-item site-state-posts">
-              
-                <a href="/archives/">
-              
-                  <span class="site-state-item-count">56</span>
-                  <span class="site-state-item-name">posts</span>
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/03/18/Spring_2_Bean_Configuration/" rel="prev" title="Spring MVC系列-(2) Bean的装配">
+                  <i class="fa fa-chevron-left"></i> Spring MVC系列-(2) Bean的装配
                 </a>
-              </div>
-            
-
-            
-              
-              
-              <div class="site-state-item site-state-categories">
-                
-                  <span class="site-state-item-count">12</span>
-                  <span class="site-state-item-name">categories</span>
-                
-              </div>
-            
-
-            
-              
-              
-              <div class="site-state-item site-state-tags">
-                
-                  <span class="site-state-item-count">22</span>
-                  <span class="site-state-item-name">tags</span>
-                
-              </div>
-            
-
-          </nav>
-
-          
-
-          <div class="links-of-author motion-element">
-            
-              
-                <span class="links-of-author-item">
-                  <a href="https://github.com/teckee" target="_blank" title="GitHub">
-                    
-                      <i class="fa fa-fw fa-github"></i>GitHub</a>
-                </span>
-              
-                <span class="links-of-author-item">
-                  <a href="mailto:h0ck@foxmail.com" target="_blank" title="E-Mail">
-                    
-                      <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
-                </span>
-              
-            
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/03/28/Spring_4_Bean_lifecycle/" rel="next" title="Spring MVC系列-(4) Bean的生命周期">
+                  Spring MVC系列-(4) Bean的生命周期 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
           </div>
-
-          
-          
-
-          
-          
-
-          
-
-        </div>
-      </section>
-
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-高级装配Bean"><span class="nav-number">1.</span> <span class="nav-text">3. 高级装配Bean</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-Bean的作用域"><span class="nav-number">1.1.</span> <span class="nav-text">3.1 Bean的作用域</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-Lazy懒加载"><span class="nav-number">1.2.</span> <span class="nav-text">3.2 Lazy懒加载</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-Conditional条件注册Bean"><span class="nav-number">1.3.</span> <span class="nav-text">3.3 Conditional条件注册Bean</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-4-import注册Bean"><span class="nav-number">1.4.</span> <span class="nav-text">3.4 import注册Bean</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-5-运行时注入"><span class="nav-number">1.5.</span> <span class="nav-text">3.5 运行时注入</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Value"><span class="nav-number">1.5.1.</span> <span class="nav-text">@Value</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Autowired"><span class="nav-number">1.5.2.</span> <span class="nav-text">@Autowired</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-6-Bean-Vs-Component"><span class="nav-number">1.6.</span> <span class="nav-text">3.6 @Bean Vs @Component</span></a></li></ol></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
-      
-
-      
-
-    </div>
-  </aside>
-
-
-        
-      </div>
-    </main>
-
-    <footer id="footer" class="footer">
-      <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
-  <span class="with-love">
-    <i class="fa fa-user"></i>
-  </span>
-  <span class="author" itemprop="copyrightHolder">Vincent</span>
-
-  
+    </footer>
+  </article>
 </div>
 
 
-  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
 
 
 
-  <span class="post-meta-divider">|</span>
-
-
-
-  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.3</div>
-
-
-
-
-        
-
-
-
-
-
-
-
-        
-      </div>
-    </footer>
 
     
-      <div class="back-to-top">
-        <i class="fa fa-arrow-up"></i>
-        
-      </div>
-    
+  <div class="comments" id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
 
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class=""></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Vincent</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a>
   </div>
 
+    </div>
+  </footer>
+
   
-
-<script type="text/javascript">
-  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
-    window.Promise = null;
-  }
-</script>
-
-
-
-
-
-
-
-
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
 
   
 
 
 
-
-
-
-
-
-
-
-
-
-  
-  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
-
-  
-  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
-
-  
-  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
-
-  
-  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
-
-  
-  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
-
-  
-  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  <script src="/js/third-party/fancybox.js"></script>
 
 
   
 
 
-  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
-
-  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
-
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"D1FSFUo2Xco7NLfkEF2KRu4x-gzGzoHsz","app_key":"t0gAn7CG0IuQuatwXySKh0Lx","server_url":null,"security":true}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
 
 
-  
-  
-
-
-  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
-
-  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
-
-
-
-  
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
-<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
-
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
-
-
-
-  
-
-
-  
-
-    
-      <script id="dsq-count-scr" src="https://frankier-me.disqus.com/count.js" async></script>
-    
-
-    
-      <script type="text/javascript">
-        var disqus_config = function () {
-          this.page.url = 'http://yoursite.com/2020/03/26/Spring_3_Advanced_Bean_Configuration/';
-          this.page.identifier = '2020/03/26/Spring_3_Advanced_Bean_Configuration/';
-          this.page.title = 'Spring MVC系列-(3) Bean的高级装配';
-        };
-        var d = document, s = d.createElement('script');
-        s.src = 'https://frankier-me.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', '' + +new Date());
-        (d.head || d.body).appendChild(s);
-      </script>
-    
-
-  
-
-
-
-
-	
-
-
-
-
-
-  
-
-
-
-
-
-
-
-
-
-
-  
-
-
-
-
-
-  
-
-  
-  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
-  <script>AV.initialize("D1FSFUo2Xco7NLfkEF2KRu4x-gzGzoHsz", "t0gAn7CG0IuQuatwXySKh0Lx");</script>
-  <script>
-    function showTime(Counter) {
-      var query = new AV.Query(Counter);
-      var entries = [];
-      var $visitors = $(".leancloud_visitors");
-
-      $visitors.each(function () {
-        entries.push( $(this).attr("id").trim() );
-      });
-
-      query.containedIn('url', entries);
-      query.find()
-        .done(function (results) {
-          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
-
-          if (results.length === 0) {
-            $visitors.find(COUNT_CONTAINER_REF).text(0);
-            return;
-          }
-
-          for (var i = 0; i < results.length; i++) {
-            var item = results[i];
-            var url = item.get('url');
-            var time = item.get('time');
-            var element = document.getElementById(url);
-
-            $(element).find(COUNT_CONTAINER_REF).text(time);
-          }
-          for(var i = 0; i < entries.length; i++) {
-            var url = entries[i];
-            var element = document.getElementById(url);
-            var countSpan = $(element).find(COUNT_CONTAINER_REF);
-            if( countSpan.text() == '') {
-              countSpan.text(0);
-            }
-          }
-        })
-        .fail(function (object, error) {
-          console.log("Error: " + error.code + " " + error.message);
-        });
-    }
-
-    function addCount(Counter) {
-      var $visitors = $(".leancloud_visitors");
-      var url = $visitors.attr('id').trim();
-      var title = $visitors.attr('data-flag-title').trim();
-      var query = new AV.Query(Counter);
-
-      query.equalTo("url", url);
-      query.find({
-        success: function(results) {
-          if (results.length > 0) {
-            var counter = results[0];
-            counter.fetchWhenSave(true);
-            counter.increment("time");
-            counter.save(null, {
-              success: function(counter) {
-                var $element = $(document.getElementById(url));
-                $element.find('.leancloud-visitors-count').text(counter.get('time'));
-              },
-              error: function(counter, error) {
-                console.log('Failed to save Visitor num, with error message: ' + error.message);
-              }
-            });
-          } else {
-            var newcounter = new Counter();
-            /* Set ACL */
-            var acl = new AV.ACL();
-            acl.setPublicReadAccess(true);
-            acl.setPublicWriteAccess(true);
-            newcounter.setACL(acl);
-            /* End Set ACL */
-            newcounter.set("title", title);
-            newcounter.set("url", url);
-            newcounter.set("time", 1);
-            newcounter.save(null, {
-              success: function(newcounter) {
-                var $element = $(document.getElementById(url));
-                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
-              },
-              error: function(newcounter, error) {
-                console.log('Failed to create');
-              }
-            });
-          }
-        },
-        error: function(error) {
-          console.log('Error:' + error.code + " " + error.message);
-        }
-      });
-    }
-
-    $(function() {
-      var Counter = AV.Object.extend("Counter");
-      if ($('.leancloud_visitors').length == 1) {
-        addCount(Counter);
-      } else if ($('.post-title-link').length > 1) {
-        showTime(Counter);
-      }
-    });
-  </script>
-
-
-
-  
-
-  
-
-  
-
-  
-
-  
+<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"frankier-me","count":true,"i18n":{"disqus":"disqus"}}</script>
+<script src="/js/third-party/comments/disqus.js"></script>
 
 </body>
 </html>

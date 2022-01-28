@@ -1,378 +1,290 @@
 <!DOCTYPE html>
-
-
-
-  
-
-
-<html class="theme-next pisces use-motion" lang="en">
-<head><meta name="generator" content="Hexo 3.9.0">
+<html lang="en">
+<head>
   <meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="viewport" content="width=device-width">
 <meta name="theme-color" content="#222">
-<meta name="referrer" content="no-referrer">
+<meta name="generator" content="Hexo 6.0.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
 
 
 
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
 
-
-
-
-
-<meta http-equiv="Cache-Control" content="no-transform">
-<meta http-equiv="Cache-Control" content="no-siteapp">
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-  
-  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
-
-
-
-
-
-
-
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
-
-<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css">
-
-
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
-
-
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
-
-
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
-
-
-  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
-
-
-
-
-
-  <meta name="keywords" content="Linux,">
-
-
-
-
-
-
-
-
-
-
+<script class="next-config" data-name="main" type="application/json">{"hostname":"yoursite.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.9.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
 <meta name="description" content="操作系统的四个特征： 并发、共享、异步、虚拟 并发：指两个或多个事件在同一时间间隔内发生。在多道程序环境下，一段时间内，宏观上有多个程序在同时运行，而每一时刻，单处理器环境下仅能有一道程序执行，故微观上这些程序还是在分时地交替执行。操作系统的并发性是通过分时实现的。 共享：指系统中的资源可以被多个并发执行的程序共同使用，而不是被其中一个独占。资源共享有两种方式，互斥访问和同时访问。 异步：在多道">
-<meta name="keywords" content="Linux">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Linux操作系统-(1) 内存管理">
 <meta property="og:url" content="http://yoursite.com/2019/08/01/Linux_1_memory_management/index.html">
 <meta property="og:site_name" content="Vincent&#39;s Notes">
 <meta property="og:description" content="操作系统的四个特征： 并发、共享、异步、虚拟 并发：指两个或多个事件在同一时间间隔内发生。在多道程序环境下，一段时间内，宏观上有多个程序在同时运行，而每一时刻，单处理器环境下仅能有一道程序执行，故微观上这些程序还是在分时地交替执行。操作系统的并发性是通过分时实现的。 共享：指系统中的资源可以被多个并发执行的程序共同使用，而不是被其中一个独占。资源共享有两种方式，互斥访问和同时访问。 异步：在多道">
-<meta property="og:locale" content="en">
-<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlgy1gf83kk26p8j30dw074glm.jpg">
-<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlgy1gezxe0grj8j30s10ewwmr.jpg">
-<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlgy1gezxe6k2w8j30s203zmyr.jpg">
-<meta property="og:image" content="http://ww4.sinaimg.cn/large/a18449c6jw1f2jk2xnbblj20b7022a9y.jpg">
-<meta property="og:image" content="http://ww2.sinaimg.cn/large/a18449c6jw1f2jk3jhh5lj20bi023q2t.jpg">
-<meta property="og:image" content="http://ww3.sinaimg.cn/large/a18449c6jw1f2jmvty46kj20fn0b2mym.jpg">
-<meta property="og:image" content="http://ww2.sinaimg.cn/large/a18449c6jw1f2jnc3vpvrj20bh04wglv.jpg">
-<meta property="og:image" content="http://ww4.sinaimg.cn/large/a18449c6jw1f2o4avw0g9j20fl0c7jsn.jpg">
-<meta property="og:image" content="http://ww3.sinaimg.cn/large/a18449c6jw1f2o4g9tw6rj208y0c274i.jpg">
-<meta property="og:image" content="http://ww2.sinaimg.cn/large/a18449c6jw1f2o4dmzvnpj20jy07qgmb.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6jw1f2o4eq3y42j20dz07h74f.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g9v9luujswj21n10l9jux.jpg">
-<meta property="og:updated_time" content="2020-05-28T05:36:58.390Z">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204554_8a459.jpg">
+<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204555_460c4.jpg">
+<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204555_a9dc8.jpg">
+<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204556_d4727.jpg">
+<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204556_bf6f3.jpg">
+<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204556_f9035.jpg">
+<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204558_f68ce.jpg">
+<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204558_4232f.jpg">
+<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204559_0165d.jpg">
+<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204559_18e90.jpg">
+<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204600_34308.jpg">
+<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204600_f6150.jpg">
+<meta property="article:published_time" content="2019-08-01T13:43:49.000Z">
+<meta property="article:modified_time" content="2022-01-28T12:46:00.952Z">
+<meta property="article:author" content="Vincent">
+<meta property="article:tag" content="Linux">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Linux操作系统-(1) 内存管理">
-<meta name="twitter:description" content="操作系统的四个特征： 并发、共享、异步、虚拟 并发：指两个或多个事件在同一时间间隔内发生。在多道程序环境下，一段时间内，宏观上有多个程序在同时运行，而每一时刻，单处理器环境下仅能有一道程序执行，故微观上这些程序还是在分时地交替执行。操作系统的并发性是通过分时实现的。 共享：指系统中的资源可以被多个并发执行的程序共同使用，而不是被其中一个独占。资源共享有两种方式，互斥访问和同时访问。 异步：在多道">
-<meta name="twitter:image" content="https://tva1.sinaimg.cn/large/007S8ZIlgy1gf83kk26p8j30dw074glm.jpg">
+<meta name="twitter:image" content="http://qiniu.lfeng.tech/20220128204554_8a459.jpg">
+
+
+<link rel="canonical" href="http://yoursite.com/2019/08/01/Linux_1_memory_management/">
 
 
 
-<script type="text/javascript" id="hexo.configurations">
-  var NexT = window.NexT || {};
-  var CONFIG = {
-    root: '/',
-    scheme: 'Pisces',
-    version: '5.1.3',
-    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
-    fancybox: true,
-    tabs: true,
-    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
-    duoshuo: {
-      userId: '0',
-      author: 'Author'
-    },
-    algolia: {
-      applicationID: '',
-      apiKey: '',
-      indexName: '',
-      hits: {"per_page":10},
-      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
-    }
-  };
-</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://yoursite.com/2019/08/01/Linux_1_memory_management/","path":"2019/08/01/Linux_1_memory_management/","title":"Linux操作系统-(1) 内存管理"}</script>
 
-
-
-  <link rel="canonical" href="http://yoursite.com/2019/08/01/Linux_1_memory_management/">
-
-
-
-
-
-  <title>Linux操作系统-(1) 内存管理 | Vincent's Notes</title>
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Linux操作系统-(1) 内存管理 | Vincent's Notes</title>
   
 
 
 
 
-
-
-
-
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
 
-  
-  
-    
-  
-
-  <div class="container sidebar-position-left page-post-detail">
-    <div class="headband"></div>
-
-    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-brand-wrapper">
-  <div class="site-meta ">
-    
-
-    <div class="custom-logo-site-title">
-      <a href="/" class="brand" rel="start">
-        <span class="logo-line-before"><i></i></span>
-        <span class="site-title">Vincent's Notes</span>
-        <span class="logo-line-after"><i></i></span>
-      </a>
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
     </div>
-      
-        <p class="site-subtitle"></p>
-      
   </div>
 
-  <div class="site-nav-toggle">
-    <button>
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-    </button>
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Vincent's Notes</p>
+      <i class="logo-line"></i>
+    </a>
+      <img class="custom-logo-image" src="/%5Bobject%20Object%5D" alt="Vincent's Notes">
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
   </div>
 </div>
 
+
+
 <nav class="site-nav">
-  
-
-  
-    <ul id="menu" class="menu">
-      
-        
-        <li class="menu-item menu-item-home">
-          <a href="/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
-            
-            Home
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-archives">
-          <a href="/archives/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
-            
-            Archives
-          </a>
-        </li>
-      
-
-      
-    </ul>
-  
-
-  
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="home fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="archive fa-fw"></i>Archives</a></li>
+  </ul>
 </nav>
 
 
 
- </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86"><span class="nav-number">1.</span> <span class="nav-text">1. 内存管理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-%E8%99%9A%E6%8B%9F%E5%9C%B0%E5%9D%80%E3%80%81%E9%80%BB%E8%BE%91%E5%9C%B0%E5%9D%80%E3%80%81%E7%BA%BF%E6%80%A7%E5%9C%B0%E5%9D%80%E3%80%81%E7%89%A9%E7%90%86%E5%9C%B0%E5%9D%80"><span class="nav-number">1.1.</span> <span class="nav-text">1.1 虚拟地址、逻辑地址、线性地址、物理地址</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D%E7%AE%A1%E7%90%86%E6%96%B9%E5%BC%8F"><span class="nav-number">1.2.</span> <span class="nav-text">1.2 内存分配管理方式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-1-%E5%9F%BA%E6%9C%AC%E5%88%86%E9%A1%B5%E5%82%A8%E5%AD%98%E7%AE%A1%E7%90%86%E6%96%B9%E5%BC%8F"><span class="nav-number">1.2.1.</span> <span class="nav-text">1.2.1 基本分页储存管理方式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-2-%E5%9F%BA%E6%9C%AC%E5%88%86%E6%AE%B5%E5%82%A8%E5%AD%98%E7%AE%A1%E7%90%86%E6%96%B9%E5%BC%8F"><span class="nav-number">1.2.2.</span> <span class="nav-text">1.2.2 基本分段储存管理方式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-3-%E6%AE%B5%E9%A1%B5%E5%BC%8F%E5%AD%98%E5%82%A8"><span class="nav-number">1.2.3.</span> <span class="nav-text">1.2.3 段页式存储</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-4-%E5%88%86%E9%A1%B5%E5%92%8C%E5%88%86%E6%AE%B5%E7%9A%84%E6%AF%94%E8%BE%83"><span class="nav-number">1.2.4.</span> <span class="nav-text">1.2.4 分页和分段的比较</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-%E8%99%9A%E6%8B%9F%E5%86%85%E5%AD%98"><span class="nav-number">1.3.</span> <span class="nav-text">1.3 虚拟内存</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-3-1-%E8%99%9A%E6%8B%9F%E5%AD%98%E5%82%A8%E5%99%A8%E7%9A%84%E5%AE%9A%E4%B9%89%E5%92%8C%E7%89%B9%E5%BE%81"><span class="nav-number">1.3.1.</span> <span class="nav-text">1.3.1 虚拟存储器的定义和特征</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-3-2-%E8%99%9A%E6%8B%9F%E5%86%85%E5%AD%98%E7%9A%84%E5%AE%9E%E7%8E%B0"><span class="nav-number">1.3.2.</span> <span class="nav-text">1.3.2 虚拟内存的实现</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-3-3-%E9%A1%B5%E5%BC%8F%E8%99%9A%E6%8B%9F%E5%AD%98%E5%82%A8%E5%99%A8"><span class="nav-number">1.3.3.</span> <span class="nav-text">1.3.3 页式虚拟存储器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-3-4-%E6%AE%B5%E5%BC%8F%E8%99%9A%E6%8B%9F%E5%AD%98%E5%82%A8%E5%99%A8"><span class="nav-number">1.3.4.</span> <span class="nav-text">1.3.4 段式虚拟存储器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-3-5-%E6%AE%B5%E9%A1%B5%E5%BC%8F%E8%99%9A%E6%8B%9F%E5%AD%98%E5%82%A8%E5%99%A8"><span class="nav-number">1.3.5.</span> <span class="nav-text">1.3.5 段页式虚拟存储器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-3-6-%E9%A1%B5%E9%9D%A2%E6%9B%BF%E6%8D%A2%E7%AE%97%E6%B3%95"><span class="nav-number">1.3.6.</span> <span class="nav-text">1.3.6 页面替换算法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-3-7-%E5%86%85%E5%AD%98%E7%A2%8E%E7%89%87"><span class="nav-number">1.3.7.</span> <span class="nav-text">1.3.7 内存碎片</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-4-%E5%8A%A8%E6%80%81%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D"><span class="nav-number">1.4.</span> <span class="nav-text">1.4 动态内存分配</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-4-1-%E6%98%BE%E5%BC%8F%E5%88%86%E9%85%8D%E5%99%A8"><span class="nav-number">1.4.1.</span> <span class="nav-text">1.4.1 显式分配器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-4-2-%E9%9A%90%E5%BC%8F%E7%A9%BA%E9%97%B2%E9%93%BE%E8%A1%A8%E5%92%8C%E6%98%BE%E5%BC%8F%E7%A9%BA%E9%97%B2%E9%93%BE%E8%A1%A8"><span class="nav-number">1.4.2.</span> <span class="nav-text">1.4.2 隐式空闲链表和显式空闲链表</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-4-3-%E5%86%85%E5%AD%98%E5%9D%97%E7%9A%84%E9%80%89%E6%8B%A9%E7%AE%97%E6%B3%95"><span class="nav-number">1.4.3.</span> <span class="nav-text">1.4.3 内存块的选择算法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-4-4-%E5%86%85%E5%AD%98%E7%A2%8E%E7%89%87"><span class="nav-number">1.4.4.</span> <span class="nav-text">1.4.4 内存碎片</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-4-5-malloc%E5%AE%9E%E7%8E%B0"><span class="nav-number">1.4.5.</span> <span class="nav-text">1.4.5 malloc实现</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-5-Linux%E5%85%B1%E4%BA%AB%E5%86%85%E5%AD%98%E5%AE%9E%E7%8E%B0"><span class="nav-number">1.5.</span> <span class="nav-text">1.5 Linux共享内存实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-6-Windows%E4%B8%8B%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86"><span class="nav-number">1.6.</span> <span class="nav-text">1.6 Windows下内存管理</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Vincent</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">56</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/teckee" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;teckee" rel="noopener" target="_blank"><i class="github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:h0ck@foxmail.com" title="E-Mail → mailto:h0ck@foxmail.com" rel="noopener" target="_blank"><i class="envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
     </header>
 
-    <main id="main" class="main">
-      <div class="main-inner">
-        <div class="content-wrap">
-          <div id="content" class="content">
-            
-
-  <div id="posts" class="posts-expand">
     
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
 
   
 
-  
+
+<div class="post-block">
   
   
 
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/08/01/Linux_1_memory_management/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Vincent">
-      <meta itemprop="description" content>
       <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Vincent">
+      <meta itemprop="description" content="">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="Vincent's Notes">
     </span>
-
-    
       <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Linux操作系统-(1) 内存管理
+        </h1>
 
-        
-        
-          <h1 class="post-title" itemprop="name headline">Linux操作系统-(1) 内存管理</h1>
-        
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
 
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-08-01T21:43:49+08:00">
-                2019-08-01
-              </time>
-            
+      <time title="Created: 2019-08-01 21:43:49" itemprop="dateCreated datePublished" datetime="2019-08-01T21:43:49+08:00">2019-08-01</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
+        </span>
+    </span>
 
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Linux/" itemprop="url" rel="index">
-                    <span itemprop="name">Linux</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2019/08/01/Linux_1_memory_management/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/08/01/Linux_1_memory_management/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-             <span id="/2019/08/01/Linux_1_memory_management/" class="leancloud_visitors" data-flag-title="Linux操作系统-(1) 内存管理">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">Visitors&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
+  
+    <span id="/2019/08/01/Linux_1_memory_management/" class="post-meta-item leancloud_visitors" data-flag-title="Linux操作系统-(1) 内存管理" title="Views">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2019/08/01/Linux_1_memory_management/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/08/01/Linux_1_memory_management/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
 
         </div>
       </header>
-    
 
     
     
     
     <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        <p><img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1gf83kk26p8j30dw074glm.jpg" alt="Linux"></p>
+        <p><img src="http://qiniu.lfeng.tech/20220128204554_8a459.jpg" alt="Linux"></p>
 <p><strong>操作系统的四个特征：</strong> 并发、共享、异步、虚拟</p>
 <p><strong>并发</strong>：指两个或多个事件在同一时间间隔内发生。在多道程序环境下，一段时间内，宏观上有多个程序在同时运行，而每一时刻，单处理器环境下仅能有一道程序执行，故微观上这些程序还是在分时地交替执行。操作系统的并发性是通过分时实现的。</p>
 <p><strong>共享</strong>：指系统中的资源可以被多个并发执行的程序共同使用，而不是被其中一个独占。资源共享有两种方式，互斥访问和同时访问。</p>
 <p><strong>异步</strong>：在多道程序环境下，允许多个程序并发执行，但由于资源有限，进程的执行不是一管到底，而是走走停停，以不可预知的速度向前推进，这就是进程的异步性。异步性使得操作系统运行在一种随机的环境下，可能导致进程产生与时间有关的错误。但只要运行环境相同，操作系统必须保证多次运行程序，都获得相同的结果。</p>
 <p><strong>虚拟</strong>：虚拟性是一种管理技术，把物理上的一个实体变成逻辑上的一个或多个对应物。采用虚拟技术的目的是为用户提供易于使用、方便高效的操作环境。</p>
-<a id="more"></a>
-<h2 id="1-内存管理"><a href="#1-内存管理" class="headerlink" title="1. 内存管理"></a>1. 内存管理</h2><h3 id="1-1-虚拟地址、逻辑地址、线性地址、物理地址"><a href="#1-1-虚拟地址、逻辑地址、线性地址、物理地址" class="headerlink" title="1.1 虚拟地址、逻辑地址、线性地址、物理地址"></a>1.1 虚拟地址、逻辑地址、线性地址、物理地址</h3><p><img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1gezxe0grj8j30s10ewwmr.jpg" alt><br><img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1gezxe6k2w8j30s203zmyr.jpg" alt></p>
+<span id="more"></span>
+<h2 id="1-内存管理"><a href="#1-内存管理" class="headerlink" title="1. 内存管理"></a>1. 内存管理</h2><h3 id="1-1-虚拟地址、逻辑地址、线性地址、物理地址"><a href="#1-1-虚拟地址、逻辑地址、线性地址、物理地址" class="headerlink" title="1.1 虚拟地址、逻辑地址、线性地址、物理地址"></a>1.1 虚拟地址、逻辑地址、线性地址、物理地址</h3><p><img src="http://qiniu.lfeng.tech/20220128204555_460c4.jpg" alt=""><br><img src="http://qiniu.lfeng.tech/20220128204555_a9dc8.jpg" alt=""></p>
 <h3 id="1-2-内存分配管理方式"><a href="#1-2-内存分配管理方式" class="headerlink" title="1.2 内存分配管理方式"></a>1.2 内存分配管理方式</h3><p>内存分配管理包括<strong>连续分配管理方式</strong>和<strong>非连续分配管理方式</strong>。</p>
 <p>连续分配方式，是指为一个用户分配一个连续的内存空间。主要包括单一连续分配、固定分区分配和动态分区分配。<br>非连续分配管理方式允许一个程序分散地装入到不相邻的内存分区中，根据分区的大小是否固定分为分页存储管理方式和分段存储管理方式。分页存储管理方式中，又根据运行作业时是否需要把所有页面都装入内存才能运行分为基本分页储存管理方式和请求分页储存管理方式。</p>
-<h4 id="1-2-1-基本分页储存管理方式"><a href="#1-2-1-基本分页储存管理方式" class="headerlink" title="1.2.1 基本分页储存管理方式"></a>1.2.1 基本分页储存管理方式</h4><p><img src="http://ww4.sinaimg.cn/large/a18449c6jw1f2jk2xnbblj20b7022a9y.jpg" alt="|center|"></p>
+<h4 id="1-2-1-基本分页储存管理方式"><a href="#1-2-1-基本分页储存管理方式" class="headerlink" title="1.2.1 基本分页储存管理方式"></a>1.2.1 基本分页储存管理方式</h4><p><img src="http://qiniu.lfeng.tech/20220128204556_d4727.jpg" alt="|center|"></p>
 <ul>
 <li><strong>页面和页面大小</strong>。进程中的块称为页(Page)，内存中的块称为页框（Page Frame，或页帧）。外存也以同样的单位进行划分，直接称为块(Block)。进程在执行时需要申请主存空间，就是要为每个页面分配主存中的可用页框，这就产生了页和页框的一一对应。</li>
 <li><strong>地址结构包含两部分：前一部分为页号P，后一部分为页内偏移量W。</strong>地址长度为32 位，其中0~11位为页内地址，即每页大小为4KB；12~31位为页号，地址空间最多允许有220页。</li>
 <li><strong>页表。</strong>为了便于在内存中找到进程的每个页面所对应的物理块，系统为每个进程建立一张页表，记录页面在内存中对应的物理块号，页表一般存放在内存中。</li>
 </ul>
-<h4 id="1-2-2-基本分段储存管理方式"><a href="#1-2-2-基本分段储存管理方式" class="headerlink" title="1.2.2 基本分段储存管理方式"></a>1.2.2 基本分段储存管理方式</h4><p><img src="http://ww2.sinaimg.cn/large/a18449c6jw1f2jk3jhh5lj20bi023q2t.jpg" alt="|center|"></p>
+<h4 id="1-2-2-基本分段储存管理方式"><a href="#1-2-2-基本分段储存管理方式" class="headerlink" title="1.2.2 基本分段储存管理方式"></a>1.2.2 基本分段储存管理方式</h4><p><img src="http://qiniu.lfeng.tech/20220128204556_bf6f3.jpg" alt="|center|"></p>
 <p><strong>段式管理方式按照用户进程中的自然段划分逻辑空间。</strong>例如，用户进程由主程序、两个子程序、栈和一段数据组成，于是可以把这个用户进程划分为5个段，每段从0 开始编址，并分配一段连续的地址空间（段内要求连续，段间不要求连续，因此整个作业的地址空间是二维的）。其逻辑地址由段号S与段内偏移量W两部分组成。</p>
 <p><strong>每个进程都有一张逻辑空间与内存空间映射的段表</strong>，其中每一个段表项对应进程的一个段，段表项记录该段在内存中的起始地址和段的长度。</p>
 <p>分段管理方式的引入原因：</p>
@@ -456,8 +368,7 @@
 <p>分配器将堆视为一组不同大小的块，每个块为虚拟存储器的一个连续组块，是已分配的或空闲的。</p>
 <p>有两种分配器。显式分配器要求应用显式地释放任何已分配的块，如C的 malloc/free 和C++的 new/delete 。隐式分配器则由分配器检测不再被使用的已分配块，并释放块，也称为垃圾收集器，Lisp、ML和Java等高级语言使用垃圾收集。</p>
 <h4 id="1-4-1-显式分配器"><a href="#1-4-1-显式分配器" class="headerlink" title="1.4.1 显式分配器"></a>1.4.1 显式分配器</h4><p>C标准库提供了 malloc 程序包作为显式分配器，包括 malloc 、 calloc 、 realloc 、 free 函数。</p>
-<p><strong>动态存储分配器</strong>可以使用 mmap 和 munmap 函数显式地分配和释放堆，还有 sbrk、brk 函数：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;unistd.h&gt;</span><br><span class="line"></span><br><span class="line">/** 将内核的brk指针增加increment来扩展和收缩堆，increment为0时返回brk当前值</span><br><span class="line"> * @return      返回brk的旧值，出错返回-1，并设errno为ENOMEM */</span><br><span class="line">void *sbrk(intptr_t increment);</span><br><span class="line"></span><br><span class="line">int brk(void *end_data_segment);  // 参数为分配或者释放后的堆的绝对地址</span><br></pre></td></tr></table></figure></p>
-<p>显式分配器的要求和目标：</p>
+<p><strong>动态存储分配器</strong>可以使用 mmap 和 munmap 函数显式地分配和释放堆，还有 sbrk、brk 函数：<br><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;unistd.h&gt;</span><br><span class="line"></span><br><span class="line">/** 将内核的brk指针增加increment来扩展和收缩堆，increment为0时返回brk当前值</span><br><span class="line"> * @return      返回brk的旧值，出错返回-1，并设errno为ENOMEM */</span><br><span class="line">void *sbrk(intptr_t increment);</span><br><span class="line"></span><br><span class="line">int brk(void *end_data_segment);  // 参数为分配或者释放后的堆的绝对地址</span><br></pre></td></tr></table></figure><br>显式分配器的要求和目标：</p>
 <ul>
 <li>能够处理任意（分配和释放）请求的序列，释放请求必须对应以前分配请求分配的块。</li>
 <li>立即响应分配请求，不允许分配器为了提高性能重新排列或者缓冲请求</li>
@@ -466,10 +377,10 @@
 <li>不修改已分配的块。</li>
 </ul>
 <h4 id="1-4-2-隐式空闲链表和显式空闲链表"><a href="#1-4-2-隐式空闲链表和显式空闲链表" class="headerlink" title="1.4.2 隐式空闲链表和显式空闲链表"></a>1.4.2 隐式空闲链表和显式空闲链表</h4><p><strong>1. 隐式空闲链表</strong></p>
-<p>空闲块是通过头部中的大小字段隐含地连接着的，分配器可以通过遍历堆中的所有块，从而间接地遍历整个空闲块的集合。但是需要某种特殊标记的结束块，在下图的示例中，就是一个设置了已分配位而大小为0的终止头部。<br><img src="http://ww3.sinaimg.cn/large/a18449c6jw1f2jmvty46kj20fn0b2mym.jpg" alt><br>隐式空闲链表由N个块组成，一个块由头部、有效载荷（只包括已分配的块），以及可能的一些额外的填充（为了保证内存字节对齐而需要的填充）和尾部组成。头部大小为4个字节，在强加双字对齐的约束之后，块大小总是8的倍数，所以用高29位来表示存储块大小，剩余3位中利用最低位来表示块是否已分配(1表示已分配，0表示空闲)；尾部和头部的内容一样，加入尾部是为了分配器可以判断出一个块的起始位置和状态。整个堆空间就是一个隐式空闲链表，从低地址向高地址生长，第一个和最后一个8字节标记为已分配，以确定堆的大小。</p>
+<p>空闲块是通过头部中的大小字段隐含地连接着的，分配器可以通过遍历堆中的所有块，从而间接地遍历整个空闲块的集合。但是需要某种特殊标记的结束块，在下图的示例中，就是一个设置了已分配位而大小为0的终止头部。<br><img src="http://qiniu.lfeng.tech/20220128204556_f9035.jpg" alt=""><br>隐式空闲链表由N个块组成，一个块由头部、有效载荷（只包括已分配的块），以及可能的一些额外的填充（为了保证内存字节对齐而需要的填充）和尾部组成。头部大小为4个字节，在强加双字对齐的约束之后，块大小总是8的倍数，所以用高29位来表示存储块大小，剩余3位中利用最低位来表示块是否已分配(1表示已分配，0表示空闲)；尾部和头部的内容一样，加入尾部是为了分配器可以判断出一个块的起始位置和状态。整个堆空间就是一个隐式空闲链表，从低地址向高地址生长，第一个和最后一个8字节标记为已分配，以确定堆的大小。</p>
 <p>优点：简单，缺点：任何操作的开销，对链表的搜索与堆中已分配块和空闲块的总数呈线性关系。</p>
 <p><strong>2. 显式空闲链表</strong></p>
-<p>对于通用的分配器，隐式空闲链表并不适合，因为它的块分配和堆块的总数呈线性关系。可以在空闲块中增加一种显式的数据结构。下面是双向空闲链表的堆块的格式。双向链表使首次适配时间从块总数的线性时间减少到了空闲块数的线性时间。<br><img src="http://ww2.sinaimg.cn/large/a18449c6jw1f2jnc3vpvrj20bh04wglv.jpg" alt></p>
+<p>对于通用的分配器，隐式空闲链表并不适合，因为它的块分配和堆块的总数呈线性关系。可以在空闲块中增加一种显式的数据结构。下面是双向空闲链表的堆块的格式。双向链表使首次适配时间从块总数的线性时间减少到了空闲块数的线性时间。<br><img src="http://qiniu.lfeng.tech/20220128204558_f68ce.jpg" alt=""></p>
 <p>用一个链表将可用的内存块连接为一个长长的列表，称为空闲链表。将堆组织成双向空闲链表，每一个空闲块结点都包含一个祖先指针和一个后继指针。链表中的每个结点记录一个连续的、未分配的内存小块。结点的结构很简单，只需要记录可用内存小块的首地址和大小即可。</p>
 <p>显式链表的缺点是空闲块必须足够大来包含结构，这增大了最小块的大小，也潜在提高了内部碎片的程度。</p>
 <h4 id="1-4-3-内存块的选择算法"><a href="#1-4-3-内存块的选择算法" class="headerlink" title="1.4.3 内存块的选择算法"></a>1.4.3 内存块的选择算法</h4><ul>
@@ -494,17 +405,17 @@
 <p><strong>相关知识：</strong></p>
 <p><strong>1. Linux进程的虚拟空间及其划分</strong></p>
 <p>在32位硬件平台上，Linux的逻辑地址为32位，因此，每个进程的虚拟地址空间为4GB，在4GB的空间中，操作系统占用了高端的1GB，而低端的3GB则留给用户程序使用。如下图所示：</p>
-<p><img src="http://ww4.sinaimg.cn/large/a18449c6jw1f2o4avw0g9j20fl0c7jsn.jpg" alt><br><img src="http://ww3.sinaimg.cn/large/a18449c6jw1f2o4g9tw6rj208y0c274i.jpg" alt></p>
+<p><img src="http://qiniu.lfeng.tech/20220128204558_4232f.jpg" alt=""><br><img src="http://qiniu.lfeng.tech/20220128204559_0165d.jpg" alt=""></p>
 <p><strong>2. Linux内核虚拟存储器</strong></p>
 <p>Linux中1GB的内核虚拟存储器空间又被划分为物理内存映射区、虚拟内存分配区、高端页面映射区、专用页面映射区和系统保留映射区这几个区域。<br>一般情况下，物理内存映射区最大长度为896MB，系统的物理内存被顺序映射到物理内存映射区中。当系统物理内存大于896MB时，超过系统物理内存的那部分内存称为<strong>高端内存</strong>（小于896MB的系统物理内存称为<strong>常规内存</strong>），内核在存取高端内存时必须将它们映射到高端内存映射区中。下图可以反映出Linux内核虚拟存储器与物理内存之间的映射关系。</p>
-<p><img src="http://ww2.sinaimg.cn/large/a18449c6jw1f2o4dmzvnpj20jy07qgmb.jpg" alt></p>
+<p><img src="http://qiniu.lfeng.tech/20220128204559_18e90.jpg" alt=""></p>
 <blockquote>
 <p>注意：物理内存中0~896MB区域通常由内核使用，当然内核不用时用户程序可以使用；896MB以上的区域通常由用户程序来使用。</p>
 </blockquote>
 <p><strong>3. Linux用户虚拟存储器</strong></p>
 <p>Linux用户虚拟存储器总是通过页表访问内存，决不会直接访问。如下图所示：</p>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6jw1f2o4eq3y42j20dz07h74f.jpg" alt></p>
-<p><strong>参考：</strong><br><a href="https://www.zhihu.com/question/20220583" target="_blank" rel="noopener">1. 知乎-malloc 的实现涉及物理内存，虚拟内存</a><br><a href="http://blog.sina.com.cn/s/blog_8d13a22b0100vb1b.html" target="_blank" rel="noopener">2. 嵌入式动态内存分配过程</a><br><a href="http://blog.chinaunix.net/uid-28263175-id-3541869.html" target="_blank" rel="noopener">3. Linux的内存映射 </a><br><a href="http://wushank.blog.51cto.com/3489095/1406480" target="_blank" rel="noopener">4. linux内核内存管理</a></p>
+<p><img src="http://qiniu.lfeng.tech/20220128204600_34308.jpg" alt=""></p>
+<p><strong>参考：</strong><br><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/20220583">1. 知乎-malloc 的实现涉及物理内存，虚拟内存</a><br><a target="_blank" rel="noopener" href="http://blog.sina.com.cn/s/blog_8d13a22b0100vb1b.html">2. 嵌入式动态内存分配过程</a><br><a target="_blank" rel="noopener" href="http://blog.chinaunix.net/uid-28263175-id-3541869.html">3. Linux的内存映射 </a><br><a target="_blank" rel="noopener" href="http://wushank.blog.51cto.com/3489095/1406480">4. linux内核内存管理</a></p>
 <h3 id="1-5-Linux共享内存实现"><a href="#1-5-Linux共享内存实现" class="headerlink" title="1.5 Linux共享内存实现"></a>1.5 Linux共享内存实现</h3><p>共享内存允许两个或多个进程共享一个给定的存储区，因为数据不需要来回复制，所以是最快的一种进程间通信机制。共享内存可以通过mmap()映射普通文件（特殊情况下还可以采用匿名映射）机制实现，也可以通过系统V共享内存机制实现。应用接口和原理很简单，内部机制复杂。为了实现更安全通信，往往还与信号灯等同步机制共同使用。</p>
 <p>实现共享内存主要有如下两种机制：</p>
 <ul>
@@ -517,519 +428,92 @@
 <p>1、mmap有两种方式，一种是映射内存，它把普通文件映射为实际物理内存页，访问它就和访问物理内存一样（这也就和shm的功能一样了）（同时不用刷新到文件）<br>2、mmap可以映射文件，不确定会不会像windows“内存映射文件”一样的功能，如果是，那么他就能映射好几G甚至好几百G的内存数据，对大数据处理将提供强大功能了？？？<br>3、shm只做内存映射，和mmap第一个功能一样！只不过不是普通文件而已，但都是物理内存。</p>
 <h3 id="1-6-Windows下内存管理"><a href="#1-6-Windows下内存管理" class="headerlink" title="1.6 Windows下内存管理"></a>1.6 Windows下内存管理</h3><p>1：虚拟内存，最适合用来管理大型对象或者结构数组；<br>2：内存映射文件，最适合用来管理大型数据流（通常来自文件）以及在单个计算机上运行多个进程之间共享数据；<br>3：内存堆栈，最适合用来管理大量的小对象。<br>　<br>Windows操纵内存可以分两个层面：物理内存和虚拟内存。<br>其中物理内存由系统管理，不允许应用程序直接访问</p>
 <hr>
-<p>本文由『后端精进之路』原创，首发于博客 <a href="http://teckee.github.io/" target="_blank" rel="noopener">http://teckee.github.io/</a> , 转载请注明出处</p>
+<p>本文由『后端精进之路』原创，首发于博客 <a target="_blank" rel="noopener" href="http://teckee.github.io/">http://teckee.github.io/</a> , 转载请注明出处</p>
 <p>搜索『后端精进之路』关注公众号，立刻获取最新文章和<strong>价值2000元的BATJ精品面试课程</strong>。</p>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1g9v9luujswj21n10l9jux.jpg" alt="后端精进之路.png"></p>
+<p><img src="http://qiniu.lfeng.tech/20220128204600_f6150.jpg" alt="后端精进之路.png"></p>
 
-      
     </div>
-    
-    
-    
 
     
-
     
-
     
 
     <footer class="post-footer">
-      
-        <div class="post-tags">
-          
-            <a href="/tags/Linux/" rel="tag"># Linux</a>
-          
-        </div>
-      
-
-      
-      
-      
-
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-              <a href="/2019/07/22/Crontab-usage/" rel="next" title="Linux基础 - Crontab定时任务">
-                <i class="fa fa-chevron-left"></i> Linux基础 - Crontab定时任务
-              </a>
-            
+          <div class="post-tags">
+              <a href="/tags/Linux/" rel="tag"># Linux</a>
           </div>
 
-          <span class="post-nav-divider"></span>
-
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/08/10/Linux_2_process/" rel="prev" title="Linux操作系统-(2) 进程">
-                Linux操作系统-(2) 进程 <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
-      
-
-      
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-
-    <div class="post-spread">
-      
-    </div>
-  </div>
-
-
-          </div>
-          
-
-
-          
-  
-    <div class="comments" id="comments">
-      <div id="disqus_thread">
-        <noscript>
-          Please enable JavaScript to view the
-          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
-        </noscript>
-      </div>
-    </div>
-  
-
-
-        </div>
         
-          
-  
-  <div class="sidebar-toggle">
-    <div class="sidebar-toggle-line-wrap">
-      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
-    </div>
-  </div>
 
-  <aside id="sidebar" class="sidebar">
-    
-    <div class="sidebar-inner">
-
-      
-
-      
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            Table of Contents
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            Overview
-          </li>
-        </ul>
-      
-
-      <section class="site-overview-wrap sidebar-panel">
-        <div class="site-overview">
-          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-            
-              <p class="site-author-name" itemprop="name">Vincent</p>
-              <p class="site-description motion-element" itemprop="description"></p>
-          </div>
-
-          <nav class="site-state motion-element">
-
-            
-              <div class="site-state-item site-state-posts">
-              
-                <a href="/archives/">
-              
-                  <span class="site-state-item-count">56</span>
-                  <span class="site-state-item-name">posts</span>
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/07/22/Crontab-usage/" rel="prev" title="Linux基础 - Crontab定时任务">
+                  <i class="fa fa-chevron-left"></i> Linux基础 - Crontab定时任务
                 </a>
-              </div>
-            
-
-            
-              
-              
-              <div class="site-state-item site-state-categories">
-                
-                  <span class="site-state-item-count">12</span>
-                  <span class="site-state-item-name">categories</span>
-                
-              </div>
-            
-
-            
-              
-              
-              <div class="site-state-item site-state-tags">
-                
-                  <span class="site-state-item-count">22</span>
-                  <span class="site-state-item-name">tags</span>
-                
-              </div>
-            
-
-          </nav>
-
-          
-
-          <div class="links-of-author motion-element">
-            
-              
-                <span class="links-of-author-item">
-                  <a href="https://github.com/teckee" target="_blank" title="GitHub">
-                    
-                      <i class="fa fa-fw fa-github"></i>GitHub</a>
-                </span>
-              
-                <span class="links-of-author-item">
-                  <a href="mailto:h0ck@foxmail.com" target="_blank" title="E-Mail">
-                    
-                      <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
-                </span>
-              
-            
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/08/10/Linux_2_process/" rel="next" title="Linux操作系统-(2) 进程">
+                  Linux操作系统-(2) 进程 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
           </div>
-
-          
-          
-
-          
-          
-
-          
-
-        </div>
-      </section>
-
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-内存管理"><span class="nav-number">1.</span> <span class="nav-text">1. 内存管理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-虚拟地址、逻辑地址、线性地址、物理地址"><span class="nav-number">1.1.</span> <span class="nav-text">1.1 虚拟地址、逻辑地址、线性地址、物理地址</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-内存分配管理方式"><span class="nav-number">1.2.</span> <span class="nav-text">1.2 内存分配管理方式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-1-基本分页储存管理方式"><span class="nav-number">1.2.1.</span> <span class="nav-text">1.2.1 基本分页储存管理方式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-2-基本分段储存管理方式"><span class="nav-number">1.2.2.</span> <span class="nav-text">1.2.2 基本分段储存管理方式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-3-段页式存储"><span class="nav-number">1.2.3.</span> <span class="nav-text">1.2.3 段页式存储</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-4-分页和分段的比较"><span class="nav-number">1.2.4.</span> <span class="nav-text">1.2.4 分页和分段的比较</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-虚拟内存"><span class="nav-number">1.3.</span> <span class="nav-text">1.3 虚拟内存</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-3-1-虚拟存储器的定义和特征"><span class="nav-number">1.3.1.</span> <span class="nav-text">1.3.1 虚拟存储器的定义和特征</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-3-2-虚拟内存的实现"><span class="nav-number">1.3.2.</span> <span class="nav-text">1.3.2 虚拟内存的实现</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-3-3-页式虚拟存储器"><span class="nav-number">1.3.3.</span> <span class="nav-text">1.3.3 页式虚拟存储器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-3-4-段式虚拟存储器"><span class="nav-number">1.3.4.</span> <span class="nav-text">1.3.4 段式虚拟存储器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-3-5-段页式虚拟存储器"><span class="nav-number">1.3.5.</span> <span class="nav-text">1.3.5 段页式虚拟存储器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-3-6-页面替换算法"><span class="nav-number">1.3.6.</span> <span class="nav-text">1.3.6 页面替换算法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-3-7-内存碎片"><span class="nav-number">1.3.7.</span> <span class="nav-text">1.3.7 内存碎片</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-4-动态内存分配"><span class="nav-number">1.4.</span> <span class="nav-text">1.4 动态内存分配</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-4-1-显式分配器"><span class="nav-number">1.4.1.</span> <span class="nav-text">1.4.1 显式分配器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-4-2-隐式空闲链表和显式空闲链表"><span class="nav-number">1.4.2.</span> <span class="nav-text">1.4.2 隐式空闲链表和显式空闲链表</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-4-3-内存块的选择算法"><span class="nav-number">1.4.3.</span> <span class="nav-text">1.4.3 内存块的选择算法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-4-4-内存碎片"><span class="nav-number">1.4.4.</span> <span class="nav-text">1.4.4 内存碎片</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-4-5-malloc实现"><span class="nav-number">1.4.5.</span> <span class="nav-text">1.4.5 malloc实现</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-5-Linux共享内存实现"><span class="nav-number">1.5.</span> <span class="nav-text">1.5 Linux共享内存实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-6-Windows下内存管理"><span class="nav-number">1.6.</span> <span class="nav-text">1.6 Windows下内存管理</span></a></li></ol></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
-      
-
-      
-
-    </div>
-  </aside>
-
-
-        
-      </div>
-    </main>
-
-    <footer id="footer" class="footer">
-      <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
-  <span class="with-love">
-    <i class="fa fa-user"></i>
-  </span>
-  <span class="author" itemprop="copyrightHolder">Vincent</span>
-
-  
+    </footer>
+  </article>
 </div>
 
 
-  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
 
 
 
-  <span class="post-meta-divider">|</span>
-
-
-
-  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.3</div>
-
-
-
-
-        
-
-
-
-
-
-
-
-        
-      </div>
-    </footer>
 
     
-      <div class="back-to-top">
-        <i class="fa fa-arrow-up"></i>
-        
-      </div>
-    
+  <div class="comments" id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
 
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class=""></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Vincent</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a>
   </div>
 
+    </div>
+  </footer>
+
   
-
-<script type="text/javascript">
-  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
-    window.Promise = null;
-  }
-</script>
-
-
-
-
-
-
-
-
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
 
   
 
 
 
-
-
-
-
-
-
-
-
-
-  
-  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
-
-  
-  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
-
-  
-  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
-
-  
-  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
-
-  
-  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
-
-  
-  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  <script src="/js/third-party/fancybox.js"></script>
 
 
   
 
 
-  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
-
-  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
-
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"D1FSFUo2Xco7NLfkEF2KRu4x-gzGzoHsz","app_key":"t0gAn7CG0IuQuatwXySKh0Lx","server_url":null,"security":true}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
 
 
-  
-  
-
-
-  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
-
-  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
-
-
-
-  
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
-<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
-
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
-
-
-
-  
-
-
-  
-
-    
-      <script id="dsq-count-scr" src="https://frankier-me.disqus.com/count.js" async></script>
-    
-
-    
-      <script type="text/javascript">
-        var disqus_config = function () {
-          this.page.url = 'http://yoursite.com/2019/08/01/Linux_1_memory_management/';
-          this.page.identifier = '2019/08/01/Linux_1_memory_management/';
-          this.page.title = 'Linux操作系统-(1) 内存管理';
-        };
-        var d = document, s = d.createElement('script');
-        s.src = 'https://frankier-me.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', '' + +new Date());
-        (d.head || d.body).appendChild(s);
-      </script>
-    
-
-  
-
-
-
-
-	
-
-
-
-
-
-  
-
-
-
-
-
-
-
-
-
-
-  
-
-
-
-
-
-  
-
-  
-  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
-  <script>AV.initialize("D1FSFUo2Xco7NLfkEF2KRu4x-gzGzoHsz", "t0gAn7CG0IuQuatwXySKh0Lx");</script>
-  <script>
-    function showTime(Counter) {
-      var query = new AV.Query(Counter);
-      var entries = [];
-      var $visitors = $(".leancloud_visitors");
-
-      $visitors.each(function () {
-        entries.push( $(this).attr("id").trim() );
-      });
-
-      query.containedIn('url', entries);
-      query.find()
-        .done(function (results) {
-          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
-
-          if (results.length === 0) {
-            $visitors.find(COUNT_CONTAINER_REF).text(0);
-            return;
-          }
-
-          for (var i = 0; i < results.length; i++) {
-            var item = results[i];
-            var url = item.get('url');
-            var time = item.get('time');
-            var element = document.getElementById(url);
-
-            $(element).find(COUNT_CONTAINER_REF).text(time);
-          }
-          for(var i = 0; i < entries.length; i++) {
-            var url = entries[i];
-            var element = document.getElementById(url);
-            var countSpan = $(element).find(COUNT_CONTAINER_REF);
-            if( countSpan.text() == '') {
-              countSpan.text(0);
-            }
-          }
-        })
-        .fail(function (object, error) {
-          console.log("Error: " + error.code + " " + error.message);
-        });
-    }
-
-    function addCount(Counter) {
-      var $visitors = $(".leancloud_visitors");
-      var url = $visitors.attr('id').trim();
-      var title = $visitors.attr('data-flag-title').trim();
-      var query = new AV.Query(Counter);
-
-      query.equalTo("url", url);
-      query.find({
-        success: function(results) {
-          if (results.length > 0) {
-            var counter = results[0];
-            counter.fetchWhenSave(true);
-            counter.increment("time");
-            counter.save(null, {
-              success: function(counter) {
-                var $element = $(document.getElementById(url));
-                $element.find('.leancloud-visitors-count').text(counter.get('time'));
-              },
-              error: function(counter, error) {
-                console.log('Failed to save Visitor num, with error message: ' + error.message);
-              }
-            });
-          } else {
-            var newcounter = new Counter();
-            /* Set ACL */
-            var acl = new AV.ACL();
-            acl.setPublicReadAccess(true);
-            acl.setPublicWriteAccess(true);
-            newcounter.setACL(acl);
-            /* End Set ACL */
-            newcounter.set("title", title);
-            newcounter.set("url", url);
-            newcounter.set("time", 1);
-            newcounter.save(null, {
-              success: function(newcounter) {
-                var $element = $(document.getElementById(url));
-                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
-              },
-              error: function(newcounter, error) {
-                console.log('Failed to create');
-              }
-            });
-          }
-        },
-        error: function(error) {
-          console.log('Error:' + error.code + " " + error.message);
-        }
-      });
-    }
-
-    $(function() {
-      var Counter = AV.Object.extend("Counter");
-      if ($('.leancloud_visitors').length == 1) {
-        addCount(Counter);
-      } else if ($('.post-title-link').length > 1) {
-        showTime(Counter);
-      }
-    });
-  </script>
-
-
-
-  
-
-  
-
-  
-
-  
-
-  
+<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"frankier-me","count":true,"i18n":{"disqus":"disqus"}}</script>
+<script src="/js/third-party/comments/disqus.js"></script>
 
 </body>
 </html>

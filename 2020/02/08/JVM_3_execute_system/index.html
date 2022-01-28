@@ -1,365 +1,277 @@
 <!DOCTYPE html>
-
-
-
-  
-
-
-<html class="theme-next pisces use-motion" lang="en">
-<head><meta name="generator" content="Hexo 3.9.0">
+<html lang="en">
+<head>
   <meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="viewport" content="width=device-width">
 <meta name="theme-color" content="#222">
-<meta name="referrer" content="no-referrer">
+<meta name="generator" content="Hexo 6.0.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
 
 
 
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
 
-
-
-
-
-<meta http-equiv="Cache-Control" content="no-transform">
-<meta http-equiv="Cache-Control" content="no-siteapp">
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-  
-  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
-
-
-
-
-
-
-
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
-
-<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css">
-
-
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
-
-
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
-
-
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
-
-
-  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
-
-
-
-
-
-  <meta name="keywords" content="Java,">
-
-
-
-
-
-
-
-
-
-
+<script class="next-config" data-name="main" type="application/json">{"hostname":"yoursite.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.9.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
 <meta name="description" content="3. 虚拟机执行子系统3.1 Java跨平台的基础Java刚诞生的宣传口号：一次编写，到处运行（Write Once, Run Anywhere），其中字节码是构成平台无关的基石，也是语言无关性的基础。 Java虚拟机不和包括Java在内的任何语言绑定，它只与Class文件这种特定的二进制文件格式所关联，这使得任何语言的都可以使用特定的编译器将其源码编译成Class文件，从而在虚拟机上运行。">
-<meta name="keywords" content="Java">
 <meta property="og:type" content="article">
 <meta property="og:title" content="JVM性能优化系列-(3) 虚拟机执行子系统">
 <meta property="og:url" content="http://yoursite.com/2020/02/08/JVM_3_execute_system/index.html">
 <meta property="og:site_name" content="Vincent&#39;s Notes">
 <meta property="og:description" content="3. 虚拟机执行子系统3.1 Java跨平台的基础Java刚诞生的宣传口号：一次编写，到处运行（Write Once, Run Anywhere），其中字节码是构成平台无关的基石，也是语言无关性的基础。 Java虚拟机不和包括Java在内的任何语言绑定，它只与Class文件这种特定的二进制文件格式所关联，这使得任何语言的都可以使用特定的编译器将其源码编译成Class文件，从而在虚拟机上运行。">
-<meta property="og:locale" content="en">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1gam0dn947ej20zk0k0wfo.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1ga5lbyhpfqj20wm0hg0yp.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1ga5tgvosk4j20r80bnjs5.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1ga5vypztacj215c0iqq7k.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1ga6e534965j20qy0igtft.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1ga6hoxhz5wj20o6100gqa.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1ga6hwg43vlj21040s6qhu.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1ga6iirpn08j20pi0qe466.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1ga6jh205cej20jd0d9n1o.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1ga6jmoexhdj211o0q0dud.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g9v9luujswj21n10l9jux.jpg">
-<meta property="og:updated_time" content="2020-02-08T15:22:44.334Z">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204511_ac3ed.jpg">
+<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204511_1db9d.jpg">
+<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204512_1b31c.jpg">
+<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204513_a1b9b.jpg">
+<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204513_67d59.jpg">
+<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204514_83cea.jpg">
+<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204515_29521.jpg">
+<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204515_b9df1.jpg">
+<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204516_1fa3b.jpg">
+<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204516_844f5.jpg">
+<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204517_e1c6d.jpg">
+<meta property="article:published_time" content="2020-02-08T15:43:49.000Z">
+<meta property="article:modified_time" content="2022-01-28T12:45:17.230Z">
+<meta property="article:author" content="Vincent">
+<meta property="article:tag" content="Java">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="JVM性能优化系列-(3) 虚拟机执行子系统">
-<meta name="twitter:description" content="3. 虚拟机执行子系统3.1 Java跨平台的基础Java刚诞生的宣传口号：一次编写，到处运行（Write Once, Run Anywhere），其中字节码是构成平台无关的基石，也是语言无关性的基础。 Java虚拟机不和包括Java在内的任何语言绑定，它只与Class文件这种特定的二进制文件格式所关联，这使得任何语言的都可以使用特定的编译器将其源码编译成Class文件，从而在虚拟机上运行。">
-<meta name="twitter:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1gam0dn947ej20zk0k0wfo.jpg">
+<meta name="twitter:image" content="http://qiniu.lfeng.tech/20220128204511_ac3ed.jpg">
+
+
+<link rel="canonical" href="http://yoursite.com/2020/02/08/JVM_3_execute_system/">
 
 
 
-<script type="text/javascript" id="hexo.configurations">
-  var NexT = window.NexT || {};
-  var CONFIG = {
-    root: '/',
-    scheme: 'Pisces',
-    version: '5.1.3',
-    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
-    fancybox: true,
-    tabs: true,
-    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
-    duoshuo: {
-      userId: '0',
-      author: 'Author'
-    },
-    algolia: {
-      applicationID: '',
-      apiKey: '',
-      indexName: '',
-      hits: {"per_page":10},
-      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
-    }
-  };
-</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://yoursite.com/2020/02/08/JVM_3_execute_system/","path":"2020/02/08/JVM_3_execute_system/","title":"JVM性能优化系列-(3) 虚拟机执行子系统"}</script>
 
-
-
-  <link rel="canonical" href="http://yoursite.com/2020/02/08/JVM_3_execute_system/">
-
-
-
-
-
-  <title>JVM性能优化系列-(3) 虚拟机执行子系统 | Vincent's Notes</title>
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>JVM性能优化系列-(3) 虚拟机执行子系统 | Vincent's Notes</title>
   
 
 
 
 
-
-
-
-
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
 
-  
-  
-    
-  
-
-  <div class="container sidebar-position-left page-post-detail">
-    <div class="headband"></div>
-
-    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-brand-wrapper">
-  <div class="site-meta ">
-    
-
-    <div class="custom-logo-site-title">
-      <a href="/" class="brand" rel="start">
-        <span class="logo-line-before"><i></i></span>
-        <span class="site-title">Vincent's Notes</span>
-        <span class="logo-line-after"><i></i></span>
-      </a>
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
     </div>
-      
-        <p class="site-subtitle"></p>
-      
   </div>
 
-  <div class="site-nav-toggle">
-    <button>
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-    </button>
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Vincent's Notes</p>
+      <i class="logo-line"></i>
+    </a>
+      <img class="custom-logo-image" src="/%5Bobject%20Object%5D" alt="Vincent's Notes">
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
   </div>
 </div>
 
+
+
 <nav class="site-nav">
-  
-
-  
-    <ul id="menu" class="menu">
-      
-        
-        <li class="menu-item menu-item-home">
-          <a href="/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
-            
-            Home
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-archives">
-          <a href="/archives/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
-            
-            Archives
-          </a>
-        </li>
-      
-
-      
-    </ul>
-  
-
-  
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="home fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="archive fa-fw"></i>Archives</a></li>
+  </ul>
 </nav>
 
 
 
- </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%89%A7%E8%A1%8C%E5%AD%90%E7%B3%BB%E7%BB%9F"><span class="nav-number">1.</span> <span class="nav-text">3. 虚拟机执行子系统</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-Java%E8%B7%A8%E5%B9%B3%E5%8F%B0%E7%9A%84%E5%9F%BA%E7%A1%80"><span class="nav-number">1.1.</span> <span class="nav-text">3.1 Java跨平台的基础</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-Class%E7%B1%BB%E7%9A%84%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84"><span class="nav-number">1.2.</span> <span class="nav-text">3.2 Class类的文件结构</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%AD%94%E6%95%B0%E4%B8%8EClass%E6%96%87%E4%BB%B6%E7%9A%84%E7%89%88%E6%9C%AC"><span class="nav-number">1.2.1.</span> <span class="nav-text">魔数与Class文件的版本</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B8%B8%E9%87%8F%E6%B1%A0"><span class="nav-number">1.2.2.</span> <span class="nav-text">常量池</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%AE%BF%E9%97%AE%E6%A0%87%E5%BF%97"><span class="nav-number">1.2.3.</span> <span class="nav-text">访问标志</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%B1%BB%E7%B4%A2%E5%BC%95%E3%80%81%E7%88%B6%E7%B1%BB%E7%B4%A2%E5%BC%95%E4%B8%8E%E6%8E%A5%E5%8F%A3%E7%B4%A2%E5%BC%95%E9%9B%86%E5%90%88"><span class="nav-number">1.2.4.</span> <span class="nav-text">类索引、父类索引与接口索引集合</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AD%97%E6%AE%B5%E8%A1%A8%E9%9B%86%E5%90%88"><span class="nav-number">1.2.5.</span> <span class="nav-text">字段表集合</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%96%B9%E6%B3%95%E8%A1%A8%E9%9B%86%E5%90%88"><span class="nav-number">1.2.6.</span> <span class="nav-text">方法表集合</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B1%9E%E6%80%A7%E8%A1%A8%E9%9B%86%E5%90%88"><span class="nav-number">1.2.7.</span> <span class="nav-text">属性表集合</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-%E5%AD%97%E8%8A%82%E7%A0%81%E6%8C%87%E4%BB%A4"><span class="nav-number">1.3.</span> <span class="nav-text">3.3 字节码指令</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8A%A0%E8%BD%BD%E5%92%8C%E5%AD%98%E5%82%A8%E5%91%BD%E4%BB%A4"><span class="nav-number">1.3.1.</span> <span class="nav-text">加载和存储命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BF%90%E7%AE%97%E6%8C%87%E4%BB%A4"><span class="nav-number">1.3.2.</span> <span class="nav-text">运算指令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2%E6%8C%87%E4%BB%A4"><span class="nav-number">1.3.3.</span> <span class="nav-text">类型转换指令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AF%B9%E8%B1%A1%E5%88%9B%E5%BB%BA%E4%B8%8E%E8%AE%BF%E9%97%AE%E6%8C%87%E4%BB%A4"><span class="nav-number">1.3.4.</span> <span class="nav-text">对象创建与访问指令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%93%8D%E4%BD%9C%E6%95%B0%E6%A0%88%E7%AE%A1%E7%90%86%E6%8C%87%E4%BB%A4"><span class="nav-number">1.3.5.</span> <span class="nav-text">操作数栈管理指令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%8E%A7%E5%88%B6%E8%BD%AC%E7%A7%BB%E6%8C%87%E4%BB%A4"><span class="nav-number">1.3.6.</span> <span class="nav-text">控制转移指令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%96%B9%E6%B3%95%E8%B0%83%E7%94%A8%E6%8C%87%E4%BB%A4"><span class="nav-number">1.3.7.</span> <span class="nav-text">方法调用指令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%96%B9%E6%B3%95%E8%BF%94%E5%9B%9E%E6%8C%87%E4%BB%A4"><span class="nav-number">1.3.8.</span> <span class="nav-text">方法返回指令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%E6%8C%87%E4%BB%A4"><span class="nav-number">1.3.9.</span> <span class="nav-text">异常处理指令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%90%8C%E6%AD%A5%E6%8C%87%E4%BB%A4"><span class="nav-number">1.3.10.</span> <span class="nav-text">同步指令</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-4-%E7%B1%BB%E5%8A%A0%E8%BD%BD%E6%9C%BA%E5%88%B6"><span class="nav-number">1.4.</span> <span class="nav-text">3.4 类加载机制</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%B8%E5%9E%8B%E9%9D%A2%E8%AF%95%E9%A2%98%EF%BC%9A%E7%B1%BB%E5%8A%A0%E8%BD%BD%E8%BF%87%E7%A8%8B%EF%BC%9F%E4%BB%80%E4%B9%88%E6%98%AF%E5%8F%8C%E4%BA%B2%E5%A7%94%E6%B4%BE%EF%BC%9F"><span class="nav-number">1.4.1.</span> <span class="nav-text">典型面试题：类加载过程？什么是双亲委派？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="nav-number">1.4.2.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8A%A0%E8%BD%BD"><span class="nav-number">1.4.3.</span> <span class="nav-text">加载</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%AA%8C%E8%AF%81"><span class="nav-number">1.4.4.</span> <span class="nav-text">验证</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%87%86%E5%A4%87%E9%98%B6%E6%AE%B5"><span class="nav-number">1.4.5.</span> <span class="nav-text">准备阶段</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%A7%A3%E6%9E%90%E9%98%B6%E6%AE%B5"><span class="nav-number">1.4.6.</span> <span class="nav-text">解析阶段</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="nav-number">1.4.7.</span> <span class="nav-text">初始化</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-5-%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8"><span class="nav-number">1.5.</span> <span class="nav-text">3.5 类加载器</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%B1%BB%E4%B8%8E%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8"><span class="nav-number">1.5.1.</span> <span class="nav-text">类与类加载器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%8C%E4%BA%B2%E5%A7%94%E6%B4%BE%E6%9C%BA%E5%88%B6"><span class="nav-number">1.5.2.</span> <span class="nav-text">双亲委派机制</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8"><span class="nav-number">1.5.3.</span> <span class="nav-text">自定义类加载器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Class-forName%E5%92%8CClassLoader-loadClass"><span class="nav-number">1.5.4.</span> <span class="nav-text">Class.forName和ClassLoader.loadClass</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%8C%E4%BA%B2%E5%A7%94%E6%B4%BE%E6%9C%BA%E5%88%B6%E7%9A%84%E7%A0%B4%E5%9D%8F"><span class="nav-number">1.5.5.</span> <span class="nav-text">双亲委派机制的破坏</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Tomcat%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8"><span class="nav-number">1.5.6.</span> <span class="nav-text">Tomcat类加载器</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-6-%E8%BF%90%E8%A1%8C%E6%97%B6%E6%A0%88%E5%B8%A7%E7%BB%93%E6%9E%84"><span class="nav-number">1.6.</span> <span class="nav-text">3.6 运行时栈帧结构</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B1%80%E9%83%A8%E5%8F%98%E9%87%8F%E8%A1%A8"><span class="nav-number">1.6.1.</span> <span class="nav-text">局部变量表</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%93%8D%E4%BD%9C%E6%95%B0%E6%A0%88"><span class="nav-number">1.6.2.</span> <span class="nav-text">操作数栈</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8A%A8%E6%80%81%E8%BF%9E%E6%8E%A5"><span class="nav-number">1.6.3.</span> <span class="nav-text">动态连接</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%96%B9%E6%B3%95%E8%BF%94%E5%9B%9E%E5%9C%B0%E5%9D%80"><span class="nav-number">1.6.4.</span> <span class="nav-text">方法返回地址</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%99%84%E5%8A%A0%E4%BF%A1%E6%81%AF"><span class="nav-number">1.6.5.</span> <span class="nav-text">附加信息</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-7-%E6%96%B9%E6%B3%95%E8%B0%83%E7%94%A8"><span class="nav-number">1.7.</span> <span class="nav-text">3.7 方法调用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%A7%A3%E6%9E%90"><span class="nav-number">1.7.1.</span> <span class="nav-text">解析</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-8-%E5%88%86%E6%B4%BE"><span class="nav-number">1.8.</span> <span class="nav-text">3.8 分派</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%9D%99%E6%80%81%E5%88%86%E6%B4%BE"><span class="nav-number">1.8.1.</span> <span class="nav-text">静态分派</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8A%A8%E6%80%81%E5%88%86%E6%B4%BE"><span class="nav-number">1.8.2.</span> <span class="nav-text">动态分派</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-9-%E5%9F%BA%E4%BA%8E%E6%A0%88%E7%9A%84%E5%AD%97%E8%8A%82%E7%A0%81%E8%A7%A3%E9%87%8A%E6%89%A7%E8%A1%8C%E5%BC%95%E6%93%8E"><span class="nav-number">1.9.</span> <span class="nav-text">3.9 基于栈的字节码解释执行引擎</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8E%E6%A0%88%E7%9A%84%E6%8C%87%E4%BB%A4%E9%9B%86%E4%B8%8E%E5%9F%BA%E4%BA%8E%E5%AF%84%E5%AD%98%E5%99%A8%E7%9A%84%E6%8C%87%E4%BB%A4%E9%9B%86"><span class="nav-number">1.9.1.</span> <span class="nav-text">基于栈的指令集与基于寄存器的指令集</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Vincent</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">56</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/teckee" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;teckee" rel="noopener" target="_blank"><i class="github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:h0ck@foxmail.com" title="E-Mail → mailto:h0ck@foxmail.com" rel="noopener" target="_blank"><i class="envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
     </header>
 
-    <main id="main" class="main">
-      <div class="main-inner">
-        <div class="content-wrap">
-          <div id="content" class="content">
-            
-
-  <div id="posts" class="posts-expand">
     
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
 
   
 
-  
+
+<div class="post-block">
   
   
 
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/08/JVM_3_execute_system/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Vincent">
-      <meta itemprop="description" content>
       <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Vincent">
+      <meta itemprop="description" content="">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="Vincent's Notes">
     </span>
-
-    
       <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          JVM性能优化系列-(3) 虚拟机执行子系统
+        </h1>
 
-        
-        
-          <h1 class="post-title" itemprop="name headline">JVM性能优化系列-(3) 虚拟机执行子系统</h1>
-        
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
 
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-02-08T23:43:49+08:00">
-                2020-02-08
-              </time>
-            
+      <time title="Created: 2020-02-08 23:43:49" itemprop="dateCreated datePublished" datetime="2020-02-08T23:43:49+08:00">2020-02-08</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a>
+        </span>
+    </span>
 
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java/" itemprop="url" rel="index">
-                    <span itemprop="name">Java</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2020/02/08/JVM_3_execute_system/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2020/02/08/JVM_3_execute_system/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-             <span id="/2020/02/08/JVM_3_execute_system/" class="leancloud_visitors" data-flag-title="JVM性能优化系列-(3) 虚拟机执行子系统">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">Visitors&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
+  
+    <span id="/2020/02/08/JVM_3_execute_system/" class="post-meta-item leancloud_visitors" data-flag-title="JVM性能优化系列-(3) 虚拟机执行子系统" title="Views">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2020/02/08/JVM_3_execute_system/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2020/02/08/JVM_3_execute_system/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
 
         </div>
       </header>
-    
 
     
     
     
     <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        <p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1gam0dn947ej20zk0k0wfo.jpg" alt="JVM.jpg"></p>
+        <p><img src="http://qiniu.lfeng.tech/20220128204511_ac3ed.jpg" alt="JVM.jpg"></p>
 <h2 id="3-虚拟机执行子系统"><a href="#3-虚拟机执行子系统" class="headerlink" title="3. 虚拟机执行子系统"></a>3. 虚拟机执行子系统</h2><h3 id="3-1-Java跨平台的基础"><a href="#3-1-Java跨平台的基础" class="headerlink" title="3.1 Java跨平台的基础"></a>3.1 Java跨平台的基础</h3><p>Java刚诞生的宣传口号：一次编写，到处运行（Write Once, Run Anywhere），其中字节码是构成平台无关的基石，也是语言无关性的基础。</p>
 <p>Java虚拟机不和包括Java在内的任何语言绑定，它只与Class文件这种特定的二进制文件格式所关联，这使得任何语言的都可以使用特定的编译器将其源码编译成Class文件，从而在虚拟机上运行。</p>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1ga5lbyhpfqj20wm0hg0yp.jpg" alt="Screen Shot 2019-12-22 at 4.41.27 PM.png"></p>
-<a id="more"></a>
+<p><img src="http://qiniu.lfeng.tech/20220128204511_1db9d.jpg" alt="Screen Shot 2019-12-22 at 4.41.27 PM.png"></p>
+<span id="more"></span>
 <h3 id="3-2-Class类的文件结构"><a href="#3-2-Class类的文件结构" class="headerlink" title="3.2 Class类的文件结构"></a>3.2 Class类的文件结构</h3><p>任何一个Class文件都对应着唯一一个类或接口的定义信息，但反过来说，Class文件实际上它并不一定以磁盘文件的形式存在。</p>
 <p><strong>Class文件是一组以8位字节为基础单位的二进制流。</strong></p>
 <p>各个数据项目严格按照顺序紧凑地排列在Class文件之中，中间没有添加任何分隔符，这使得整个Class文件中存储的内容几乎全部是程序运行的必要数据，没有空隙存在。<br>Class文件格式采用一种类似于C语言结构体的伪结构来存储数据，这种伪结构中只有两种数据类型：<strong>无符号数和表</strong>。</p>
@@ -513,7 +425,7 @@
 <ul>
 <li>将一个局部变量加载到操作栈：iload、iload_&lt;\n&gt;、lload、lload_&lt;\n&gt;、fload、fload_&lt;\n&gt;、dload、dload_&lt;\n&gt;、aload、aload_&lt;\n&gt;</li>
 <li>将一个数值从操作数栈存储到局部变量表：istore、istore_&lt;\n&gt;、lstore、lstore_&lt;\n&gt;、fstore、fstore_&lt;\n&gt;、dstore、dstore_&lt;\n&gt;、astore、astore_&lt;\n&gt;</li>
-<li>将一个参数加载到操作数栈：bipush、sipush、ldc、ldc_w、ldc2_w、aconst_null、iconst_m1、iconst_&lt;\i&gt;、lconst_<l>、fconst_&lt;\f&gt;、dconst_&lt;\d&gt;</l></li>
+<li>将一个参数加载到操作数栈：bipush、sipush、ldc、ldc_w、ldc2_w、aconst_null、iconst_m1、iconst_&lt;\i&gt;、lconst_<l>、fconst_&lt;\f&gt;、dconst_&lt;\d&gt;</li>
 <li>扩充局部变量表的访问索引的指令：wide</li>
 </ul>
 <p>上面带尖括号的指令实际上是代表的一组指令，如iload_0、iload_1、iload_2和iload_3。这些指令把操作数隐含在名称内，不需要进行取操作数的动作。</p>
@@ -591,7 +503,7 @@
 <p><strong>双亲委派模型：</strong></p>
 <p>简单说就是当类加载器（Class-Loader）试图加载某个类型的时候，除非父加载器找不到相应类型，否则尽量将这个任务代理给当前加载器的父加载器去做。使用委派模型的目的是避免重复加载 Java 类型。</p>
 <h4 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h4><p>类从被加载到虚拟机内存中开始，到卸载出内存为止，它的整个生命周期包括：<strong>加载</strong>（Loading）、<strong>验证</strong>（Verificatio）、<strong>准备</strong>（Preparation）、<strong>解析</strong>（Resolution）、<strong>初始化</strong>（Initialization）、<strong>使用</strong>（Using）和<strong>卸载</strong>（Unloading）7个阶段。其中验证、准备、解析3个部分统称为连接（Linking）。</p>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1ga5tgvosk4j20r80bnjs5.jpg" alt="class lifeCycle.png"></p>
+<p><img src="http://qiniu.lfeng.tech/20220128204512_1b31c.jpg" alt="class lifeCycle.png"></p>
 <p>于初始化阶段，虚拟机规范则是严格规定了有且只有5种情况必须立即对类进行“初始化”（而加载、验证、准备自然需要在此之前开始）：</p>
 <ol>
 <li>遇到<strong>new、getstatic、putstatic或invokestatic</strong>这4条字节码指令时，如果类没有进行过初始化，则需要先触发其初始化。生成这4条指令的最常见的Java代码场景是：使用new关键字实例化对象的时候、读取或设置一个类的静态字段（被final修饰、已在编译期把结果放入常量池的静态字段除外）的时候，以及调用一个类的静态方法的时候。</li>
@@ -607,9 +519,9 @@
 <li>常量在编译阶段会存入调用类的常量池中，本质上并没有直接引用到定义常量的类，因此不会触发定义常量的类的初始化。</li>
 </ol>
 <p>下面是测试程序：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">public class SuperClass &#123;</span><br><span class="line">	static &#123;</span><br><span class="line">		System.out.println(&quot;SuperClass init!&quot;);</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	public static int value = 123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public class SubClass extends SuperClass &#123;</span><br><span class="line">	static &#123;</span><br><span class="line">		System.out.println(&quot;Subclass init!&quot;);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public class ConstClass &#123;</span><br><span class="line">	static &#123;</span><br><span class="line">		System.out.println(&quot;ConstClass init!&quot;);</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	public static final String HELLOWORLD_STRING = &quot;hello world&quot;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">public class SuperClass &#123;</span><br><span class="line">	static &#123;</span><br><span class="line">		System.out.println(&quot;SuperClass init!&quot;);</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	public static int value = 123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public class SubClass extends SuperClass &#123;</span><br><span class="line">	static &#123;</span><br><span class="line">		System.out.println(&quot;Subclass init!&quot;);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public class ConstClass &#123;</span><br><span class="line">	static &#123;</span><br><span class="line">		System.out.println(&quot;ConstClass init!&quot;);</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	public static final String HELLOWORLD_STRING = &quot;hello world&quot;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>以下是对三种情况的测试程序：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">public class NotInitialization &#123;</span><br><span class="line">	public static void main(String[] args) &#123;</span><br><span class="line">		// 1. 只有直接定义这个字段的类才会被初始化，因此通过其子类来引用父类中定义的静态字段，只会触发父类的初始化而不会触发子类的初始化。</span><br><span class="line">		// Result: SuperClass init! 123</span><br><span class="line">		System.out.println(SubClass.value);</span><br><span class="line">		</span><br><span class="line">		// 2. 通过数组定义来引用类，不会触发此类的初始化</span><br><span class="line">		SuperClass[] superClasses = new SubClass[10];</span><br><span class="line">		</span><br><span class="line">		// 3. 常量在编译阶段会存入调用类的常量池中，本质上并没有直接引用到定义常量的类，因此不会触发定义常量的类的初始化</span><br><span class="line">		// Result: hello world</span><br><span class="line">		System.out.println(ConstClass.HELLOWORLD_STRING);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">public class NotInitialization &#123;</span><br><span class="line">	public static void main(String[] args) &#123;</span><br><span class="line">		// 1. 只有直接定义这个字段的类才会被初始化，因此通过其子类来引用父类中定义的静态字段，只会触发父类的初始化而不会触发子类的初始化。</span><br><span class="line">		// Result: SuperClass init! 123</span><br><span class="line">		System.out.println(SubClass.value);</span><br><span class="line">		</span><br><span class="line">		// 2. 通过数组定义来引用类，不会触发此类的初始化</span><br><span class="line">		SuperClass[] superClasses = new SubClass[10];</span><br><span class="line">		</span><br><span class="line">		// 3. 常量在编译阶段会存入调用类的常量池中，本质上并没有直接引用到定义常量的类，因此不会触发定义常量的类的初始化</span><br><span class="line">		// Result: hello world</span><br><span class="line">		System.out.println(ConstClass.HELLOWORLD_STRING);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h4 id="加载"><a href="#加载" class="headerlink" title="加载"></a>加载</h4><p>在加载阶段，虚拟机需要完成下列3件事：</p>
 <ol>
 <li>通过一个类的全限定名来获取定义此类的二进制字节流</li>
@@ -629,7 +541,7 @@
 <p>public static int value=123；</p>
 <p>那变量value在准备阶段过后的初始值为0而不是123，因为这时候尚未开始执行任何Java方法，而把value赋值为123的putstatic指令是程序被编译后，存放于类构造器＜clinit＞（）方法之中，所以把value赋值为123的动作将在初始化阶段才会执行。</p>
 <p>表7-1列出了Java中所有基本数据类型的零值：</p>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1ga5vypztacj215c0iqq7k.jpg" alt="Java的数据类型.png"></p>
+<p><img src="http://qiniu.lfeng.tech/20220128204513_a1b9b.jpg" alt="Java的数据类型.png"></p>
 <p>假设上面类变量value的定义变为：public static final int value=123；<br>编译时Javac将会为value生成ConstantValue属性，在准备阶段虚拟机就会根据ConstantValue的设置将value赋值为123。</p>
 <h4 id="解析阶段"><a href="#解析阶段" class="headerlink" title="解析阶段"></a>解析阶段</h4><p>是虚拟机将常量池内的符号引用替换为直接引用的过程。</p>
 <ul>
@@ -644,7 +556,7 @@
 <li>由于父类的<code>&lt;clinit&gt;()</code>方法先执行，因此父类中定义的静态语句块要先于子类执行。</li>
 <li><code>&lt;clinit&gt;()</code>方法对于类或接口来说不是必需的，如果一个类中没有静态语句块，也没有对变量赋值操作，那么编译器可以不为这个类生成<code>&lt;clinit&gt;()</code>方法。</li>
 <li>接口中不能使用静态语句块，但仍然由变量初始化的赋值操作，因此接口与类一样都会生成<code>&lt;clinit&gt;()</code>方法，但与类不同的是，执行接口的<code>&lt;clinit&gt;()</code>方法不需要先执行父接口的<code>&lt;clinit&gt;()</code>方法，只有当父接口中定义的变量使用时，父接口才会初始化。另外，接口的实现类在初始化时也一样不会执行接口的<code>&lt;clinit&gt;()</code>方法。</li>
-<li>虚拟机会保证一个类的<clinit>()方法在多线程环境中被正确地加锁、同步。</clinit></li>
+<li>虚拟机会保证一个类的<clinit>()方法在多线程环境中被正确地加锁、同步。</li>
 </ul>
 <h3 id="3-5-类加载器"><a href="#3-5-类加载器" class="headerlink" title="3.5 类加载器"></a>3.5 类加载器</h3><h4 id="类与类加载器"><a href="#类与类加载器" class="headerlink" title="类与类加载器"></a>类与类加载器</h4><p>类加载器虽然只用于实现类的加载动作，但在java程序中起到的作用却远不止类加载阶段。</p>
 <p>对于任意一个类，都需要由加载它的<strong>类加载器和这个类本身一同确立其在java虚拟机中的唯一性</strong>，每个类加载器，都拥有一个独立的类命名空间。当一个Class文件被不同的类加载器加载时，加载生成的两个类必定不相等（equals()、isAssignableFrom()、isInstance()、instanceof关键字的结果为false）。</p>
@@ -654,22 +566,22 @@
 <li><strong>扩展类加载器</strong>（Extension ClassLoader）：这个加载器由sun.misc.Launcher$ExtClassLoader实现，它负责加载&lt;JAVA_HOME&gt;\lib\ext目录中或者被java.ext.dirs系统变量所指定的路径中的所有类库，开发者可以直接使用扩展类加载器。</li>
 <li><strong>应用程序类加载器</strong>（Application ClassLoader）：这个类加载器由sun.misc.Launcher$AppClassLoader实现。由于这个类加载器是ClassLoader中的getSystemClassLoader()方法的返回值，所以一般也称为系统类加载器，负责加载用户类路径（ClassPath）上所指定的类库，开发者可以直接使用这个类加载器。</li>
 </ul>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1ga6e534965j20qy0igtft.jpg" alt="Screen Shot 2019-12-23 at 9.18.17 AM.png"></p>
+<p><img src="http://qiniu.lfeng.tech/20220128204513_67d59.jpg" alt="Screen Shot 2019-12-23 at 9.18.17 AM.png"></p>
 <p>双亲委派模型的工作过程是：如果一个类加载器收到了类加载的请求，它首先不会自己去尝试加载这个类，而是<strong>把这个请求委派给父类加载器去完成</strong>，每一个层次的类加载器都是如此，因此<strong>所有的加载请求最终都应该传送到顶层的启动类加载器中</strong>，只有当<strong>父加载器反馈自己无法完成这个加载请求（它的搜索范围中没有找到所需的类）时，子加载器才会尝试自己去加载</strong>。</p>
 <blockquote>
 <p>使用双亲委派模型来组织类加载器之间的关系，有一个显而易见的好处就是Java类随着它的类加载器一起具备了一种带有优先级的层次关系。例如类java.lang.Object，它存放在rt.jar之中，无论哪一个类加载器要加载这个类，最终都是委派给处于模型最顶端的启动类加载器进行加载，因此Object类在程序的各种类加载器环境中都是同一个类。相反，如果没有使用双亲委派模型，由各个类加载器自行去加载的话，如果用户自己编写了一个称为java.lang.Object的类，并放在程序的ClassPath中，那系统中将会出现多个不同的Object类，Java类型体系中最基础的行为也就无法保证，应用程序也将会变得一片混乱。</p>
 </blockquote>
 <h4 id="自定义类加载器"><a href="#自定义类加载器" class="headerlink" title="自定义类加载器"></a>自定义类加载器</h4><p>首先看一下实现双亲委派模型的代码，逻辑就是先检查类是否已经被加载，如果没有则调用父加载器的loadClass（）方法，如果父加载器为空则默认使用启动类加载器作为父加载器。如果父类加载失败，抛出ClassNotFoundException异常后，再调用自己的findClass（）方法进行加载。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">protected Class&lt;?&gt; loadClass(String name, boolean resolve)</span><br><span class="line">      throws ClassNotFoundException</span><br><span class="line">  &#123;</span><br><span class="line">      synchronized (getClassLoadingLock(name)) &#123;</span><br><span class="line">          // 先从缓存查找该class对象，找到就不用重新加载</span><br><span class="line">          Class&lt;?&gt; c = findLoadedClass(name);</span><br><span class="line">          if (c == null) &#123;</span><br><span class="line">              try &#123;</span><br><span class="line">                  if (parent != null) &#123;</span><br><span class="line">                      //如果找不到，则委托给父类加载器去加载</span><br><span class="line">                      c = parent.loadClass(name, false);</span><br><span class="line">                  &#125; else &#123;</span><br><span class="line">                  //如果没有父类，则委托给启动加载器去加载</span><br><span class="line">                      c = findBootstrapClassOrNull(name);</span><br><span class="line">                  &#125;</span><br><span class="line">              &#125; catch (ClassNotFoundException e) &#123;</span><br><span class="line">                  // ClassNotFoundException thrown if class not found</span><br><span class="line">                  // from the non-null parent class loader</span><br><span class="line">              &#125;</span><br><span class="line"></span><br><span class="line">              if (c == null) &#123;</span><br><span class="line">                  // If still not found, then invoke findClass in order</span><br><span class="line">                  // 如果都没有找到，则通过自定义实现的findClass去查找并加载</span><br><span class="line">                  c = findClass(name);</span><br><span class="line">              &#125;</span><br><span class="line">          &#125;</span><br><span class="line">          if (resolve) &#123;//是否需要在加载时进行解析</span><br><span class="line">              resolveClass(c);</span><br><span class="line">          &#125;</span><br><span class="line">          return c;</span><br><span class="line">      &#125;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">protected Class&lt;?&gt; loadClass(String name, boolean resolve)</span><br><span class="line">      throws ClassNotFoundException</span><br><span class="line">  &#123;</span><br><span class="line">      synchronized (getClassLoadingLock(name)) &#123;</span><br><span class="line">          // 先从缓存查找该class对象，找到就不用重新加载</span><br><span class="line">          Class&lt;?&gt; c = findLoadedClass(name);</span><br><span class="line">          if (c == null) &#123;</span><br><span class="line">              try &#123;</span><br><span class="line">                  if (parent != null) &#123;</span><br><span class="line">                      //如果找不到，则委托给父类加载器去加载</span><br><span class="line">                      c = parent.loadClass(name, false);</span><br><span class="line">                  &#125; else &#123;</span><br><span class="line">                  //如果没有父类，则委托给启动加载器去加载</span><br><span class="line">                      c = findBootstrapClassOrNull(name);</span><br><span class="line">                  &#125;</span><br><span class="line">              &#125; catch (ClassNotFoundException e) &#123;</span><br><span class="line">                  // ClassNotFoundException thrown if class not found</span><br><span class="line">                  // from the non-null parent class loader</span><br><span class="line">              &#125;</span><br><span class="line"></span><br><span class="line">              if (c == null) &#123;</span><br><span class="line">                  // If still not found, then invoke findClass in order</span><br><span class="line">                  // 如果都没有找到，则通过自定义实现的findClass去查找并加载</span><br><span class="line">                  c = findClass(name);</span><br><span class="line">              &#125;</span><br><span class="line">          &#125;</span><br><span class="line">          if (resolve) &#123;//是否需要在加载时进行解析</span><br><span class="line">              resolveClass(c);</span><br><span class="line">          &#125;</span><br><span class="line">          return c;</span><br><span class="line">      &#125;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
 <p>在实现自己的类加载器时，通常有两种做法，一种是重写loadClass方法，另一种是重写findClass方法。其实这两种方法本质上差不多，毕竟loadClass也会调用findClass，但是最好不要直接修改loadClass的内部逻辑，以免破坏双亲委派的逻辑。推荐的做法是只在findClass里重写自定义类的加载方法。</p>
 <p>下面例子实现了文件系统类加载器，</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">public class FileSystemClassLoader extends ClassLoader &#123; </span><br><span class="line"> </span><br><span class="line">   private String rootDir; </span><br><span class="line"> </span><br><span class="line">   public FileSystemClassLoader(String rootDir) &#123; </span><br><span class="line">       this.rootDir = rootDir; </span><br><span class="line">   &#125; </span><br><span class="line"> </span><br><span class="line">   protected Class&lt;?&gt; findClass(String name) throws ClassNotFoundException &#123; </span><br><span class="line">       byte[] classData = getClassData(name); </span><br><span class="line">       if (classData == null) &#123; </span><br><span class="line">           throw new ClassNotFoundException(); </span><br><span class="line">       &#125; </span><br><span class="line">       else &#123; </span><br><span class="line">           return defineClass(name, classData, 0, classData.length); </span><br><span class="line">       &#125; </span><br><span class="line">   &#125; </span><br><span class="line"> </span><br><span class="line">   private byte[] getClassData(String className) &#123; </span><br><span class="line">       String path = classNameToPath(className); </span><br><span class="line">       try &#123; </span><br><span class="line">           InputStream ins = new FileInputStream(path); </span><br><span class="line">           ByteArrayOutputStream baos = new ByteArrayOutputStream(); </span><br><span class="line">           int bufferSize = 4096; </span><br><span class="line">           byte[] buffer = new byte[bufferSize]; </span><br><span class="line">           int bytesNumRead = 0; </span><br><span class="line">           while ((bytesNumRead = ins.read(buffer)) != -1) &#123; </span><br><span class="line">               baos.write(buffer, 0, bytesNumRead); </span><br><span class="line">           &#125; </span><br><span class="line">           return baos.toByteArray(); </span><br><span class="line">       &#125; catch (IOException e) &#123; </span><br><span class="line">           e.printStackTrace(); </span><br><span class="line">       &#125; </span><br><span class="line">       return null; </span><br><span class="line">   &#125; </span><br><span class="line"> </span><br><span class="line">   private String classNameToPath(String className) &#123; </span><br><span class="line">       return rootDir + File.separatorChar </span><br><span class="line">               + className.replace(&apos;.&apos;, File.separatorChar) + &quot;.class&quot;; </span><br><span class="line">   &#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">public class FileSystemClassLoader extends ClassLoader &#123; </span><br><span class="line"> </span><br><span class="line">   private String rootDir; </span><br><span class="line"> </span><br><span class="line">   public FileSystemClassLoader(String rootDir) &#123; </span><br><span class="line">       this.rootDir = rootDir; </span><br><span class="line">   &#125; </span><br><span class="line"> </span><br><span class="line">   protected Class&lt;?&gt; findClass(String name) throws ClassNotFoundException &#123; </span><br><span class="line">       byte[] classData = getClassData(name); </span><br><span class="line">       if (classData == null) &#123; </span><br><span class="line">           throw new ClassNotFoundException(); </span><br><span class="line">       &#125; </span><br><span class="line">       else &#123; </span><br><span class="line">           return defineClass(name, classData, 0, classData.length); </span><br><span class="line">       &#125; </span><br><span class="line">   &#125; </span><br><span class="line"> </span><br><span class="line">   private byte[] getClassData(String className) &#123; </span><br><span class="line">       String path = classNameToPath(className); </span><br><span class="line">       try &#123; </span><br><span class="line">           InputStream ins = new FileInputStream(path); </span><br><span class="line">           ByteArrayOutputStream baos = new ByteArrayOutputStream(); </span><br><span class="line">           int bufferSize = 4096; </span><br><span class="line">           byte[] buffer = new byte[bufferSize]; </span><br><span class="line">           int bytesNumRead = 0; </span><br><span class="line">           while ((bytesNumRead = ins.read(buffer)) != -1) &#123; </span><br><span class="line">               baos.write(buffer, 0, bytesNumRead); </span><br><span class="line">           &#125; </span><br><span class="line">           return baos.toByteArray(); </span><br><span class="line">       &#125; catch (IOException e) &#123; </span><br><span class="line">           e.printStackTrace(); </span><br><span class="line">       &#125; </span><br><span class="line">       return null; </span><br><span class="line">   &#125; </span><br><span class="line"> </span><br><span class="line">   private String classNameToPath(String className) &#123; </span><br><span class="line">       return rootDir + File.separatorChar </span><br><span class="line">               + className.replace(&#x27;.&#x27;, File.separatorChar) + &quot;.class&quot;; </span><br><span class="line">   &#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h4 id="Class-forName和ClassLoader-loadClass"><a href="#Class-forName和ClassLoader-loadClass" class="headerlink" title="Class.forName和ClassLoader.loadClass"></a>Class.forName和ClassLoader.loadClass</h4><blockquote>
 <p>Class.forName是Class类的方法public static Class&lt;?&gt; forName(String className) throws ClassNotFoundException</p>
 <p>ClassLoader.loadClass是ClassLoader类的方法public Class&lt;?&gt; loadClass(String name) throws ClassNotFoundException</p>
 </blockquote>
 <p>Class.forName和ClassLoader.loadClass都可以用来进行类型加载，而在Java进行类型加载的时刻，一般会有多个ClassLoader可以使用，并可以使用多种方式进行类型加载。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">class A &#123;</span><br><span class="line">    public void m() &#123;</span><br><span class="line">        A.class.getClassLoader().loadClass(“B”);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">class A &#123;</span><br><span class="line">    public void m() &#123;</span><br><span class="line">        A.class.getClassLoader().loadClass(“B”);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>在<code>A.class.getClassLoader().loadClass(“B”)</code>;代码执行B的加载过程时，一般会有三个概念上的ClassLoader提供使用。</p>
 <ul>
 <li><strong>CurrentClassLoader</strong>，称之为当前类加载器，简称CCL，在代码中对应的就是类型A的类加载器。</li>
@@ -700,7 +612,7 @@
 <p>答案是不行的。为什么？</p>
 <p>第一个问题，如果使用默认的类加载器机制，那么是无法加载两个相同类库的不同版本的，默认的累加器是不管你是什么版本的，只在乎你的全限定类名，并且只有一份。<br>第二个问题，默认的类加载器是能够实现的，因为他的职责就是保证唯一性。<br>第三个问题和第一个问题一样。<br>第四个问题，我们要怎么实现jsp文件的热修改（楼主起的名字），jsp 文件其实也就是class文件，那么如果修改了，但类名还是一样，类加载器会直接取方法区中已经存在的，修改后的jsp是不会重新加载的。那么怎么办呢？我们可以直接卸载掉这jsp文件的类加载器，所以你应该想到了，每个jsp文件对应一个唯一的类加载器，当一个jsp文件修改了，就直接卸载这个jsp类加载器。重新创建类加载器，重新加载jsp文件。</p>
 <p><strong>Tomcat 如何实现自己独特的类加载机制？</strong></p>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1ga6hoxhz5wj20o6100gqa.jpg" alt="Screen Shot 2019-12-23 at 11.21.18 AM.png"></p>
+<p><img src="http://qiniu.lfeng.tech/20220128204514_83cea.jpg" alt="Screen Shot 2019-12-23 at 11.21.18 AM.png"></p>
 <p>前面3个类加载和默认的一致，<strong>CommonClassLoader</strong>、<strong>CatalinaClassLoader</strong>、<strong>SharedClassLoader</strong>和<strong>WebappClassLoader</strong>则是Tomcat自己定义的类加载器，它们分别加载<code>/common/*</code>、<code>/server/*</code>、<code>/shared/*</code>（在tomcat 6之后已经合并到根目录下的lib目录下）和<code>/WebApp/WEB-INF/*</code>中的Java类库。其中WebApp类加载器和Jsp类加载器通常会存在多个实例，每一个Web应用程序对应一个WebApp类加载器，每一个JSP文件对应一个Jsp类加载器。</p>
 <ul>
 <li>commonLoader：Tomcat最基本的类加载器，加载路径中的class可以被Tomcat容器本身以及各个Webapp访问；</li>
@@ -715,7 +627,7 @@
 <p>而JasperLoader的加载范围仅仅是这个JSP文件所编译出来的那一个.Class文件，它出现的目的就是为了被丢弃：当Web容器检测到JSP文件被修改时，会替换掉目前的JasperLoader的实例，并通过再建立一个新的Jsp类加载器来实现JSP文件的HotSwap功能。</p>
 </blockquote>
 <p>下图展示了Tomcat的类加载流程：</p>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1ga6hwg43vlj21040s6qhu.jpg" alt="Screen Shot 2019-12-23 at 11.28.25 AM.png"></p>
+<p><img src="http://qiniu.lfeng.tech/20220128204515_29521.jpg" alt="Screen Shot 2019-12-23 at 11.28.25 AM.png"></p>
 <p>当tomcat启动时，会创建几种类加载器：</p>
 <p><strong>1. Bootstrap 引导类加载器</strong></p>
 <p>加载JVM启动所需的类，以及标准扩展类（位于jre/lib/ext下）</p>
@@ -737,13 +649,13 @@
 <hr>
 <p>参考：</p>
 <ul>
-<li><a href="https://www.cnblogs.com/aspirant/p/8991830.html" target="_blank" rel="noopener">https://www.cnblogs.com/aspirant/p/8991830.html</a></li>
-<li><a href="https://www.ibm.com/developerworks/cn/java/j-lo-classloader/index.html" target="_blank" rel="noopener">https://www.ibm.com/developerworks/cn/java/j-lo-classloader/index.html</a></li>
-<li><a href="https://www.jianshu.com/p/f745187e4010" target="_blank" rel="noopener">https://www.jianshu.com/p/f745187e4010</a></li>
-<li><a href="https://www.jianshu.com/p/aedee0e14319" target="_blank" rel="noopener">https://www.jianshu.com/p/aedee0e14319</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/aspirant/p/8991830.html">https://www.cnblogs.com/aspirant/p/8991830.html</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.ibm.com/developerworks/cn/java/j-lo-classloader/index.html">https://www.ibm.com/developerworks/cn/java/j-lo-classloader/index.html</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/f745187e4010">https://www.jianshu.com/p/f745187e4010</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/aedee0e14319">https://www.jianshu.com/p/aedee0e14319</a></li>
 </ul>
 <h3 id="3-6-运行时栈帧结构"><a href="#3-6-运行时栈帧结构" class="headerlink" title="3.6 运行时栈帧结构"></a>3.6 运行时栈帧结构</h3><p><strong>栈帧</strong>（Stack Frame）是用于支持虚拟机进行方法调用和方法执行的数据结构，它是虚拟机运行时数据区中的虚拟机栈的栈元素。典型栈帧结构：</p>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1ga6iirpn08j20pi0qe466.jpg" alt="Screen Shot 2019-12-23 at 11.49.57 AM.png"></p>
+<p><img src="http://qiniu.lfeng.tech/20220128204515_b9df1.jpg" alt="Screen Shot 2019-12-23 at 11.49.57 AM.png"></p>
 <p>下面对各个部分进行仔细介绍：</p>
 <h4 id="局部变量表"><a href="#局部变量表" class="headerlink" title="局部变量表"></a>局部变量表</h4><p><strong>局部变量表</strong>（Local Variable Table）是一组变量值存储空间，用于存放方法参数和方法内部定义的局部变量。局部变量表的容量以<strong>变量槽</strong>（Variable Slot）为最小单位，虚拟机规范中并没有明确指定一个Slot应占用的内存空间大小，只是规定每个Slot都应该能存放一个boolean、byte、char、short、int、float、reference或returnAddress类型的数据，这样可以屏蔽32位跟64位虚拟机在内存空间上的差异。</p>
 <p>虚拟机通过索引定位的方式使用局部变量表，索引值的范围从0到最大Slot数量，索引n对应第n个Slot。局部变量表中第0位索引的Slot默认是用于传递方法所属对象实例的引用，即this。</p>
@@ -770,39 +682,39 @@
 <ul>
 <li><strong>invokestatic</strong>：调用静态方法</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">System.exit(1);</span><br><span class="line">==&gt;编译</span><br><span class="line">iconst_1    ;将1放入栈内</span><br><span class="line">            ;执行System.exit()</span><br><span class="line">invokestatic java/lang/System/exit(I)V</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">System.exit(1);</span><br><span class="line">==&gt;编译</span><br><span class="line">iconst_1    ;将1放入栈内</span><br><span class="line">            ;执行System.exit()</span><br><span class="line">invokestatic java/lang/System/exit(I)V</span><br></pre></td></tr></table></figure>
 <ul>
-<li><strong>invokespecial</strong>：调用实例构造器<init>方法、私有方法和父类方法。</init></li>
+<li><strong>invokespecial</strong>：调用实例构造器<init>方法、私有方法和父类方法。</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">//&lt;init&gt;方法</span><br><span class="line">new StringBuffer()</span><br><span class="line">==&gt;编译</span><br><span class="line">new java/lang/StringBuffer    ;创建一个StringBuffer对象</span><br><span class="line">dup                           ;将对象弹出栈顶</span><br><span class="line">                              ;执行&lt;init&gt;()来初始化对象</span><br><span class="line">invokespecial java/lang/StringBuffer/&lt;init&gt;()V</span><br><span class="line"></span><br><span class="line">//父类方法</span><br><span class="line">super.equals(x);</span><br><span class="line">==&gt;编译</span><br><span class="line">aload_0   ;将this入栈</span><br><span class="line">aload_1   ;将第一个参数入栈</span><br><span class="line">          ;执行Object的equals()方法</span><br><span class="line">invokespecial java/lang/Object/equals(Ljava/lang/Object;)Z</span><br><span class="line"></span><br><span class="line">//私有方法</span><br><span class="line">与父类方法类似</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">//&lt;init&gt;方法</span><br><span class="line">new StringBuffer()</span><br><span class="line">==&gt;编译</span><br><span class="line">new java/lang/StringBuffer    ;创建一个StringBuffer对象</span><br><span class="line">dup                           ;将对象弹出栈顶</span><br><span class="line">                              ;执行&lt;init&gt;()来初始化对象</span><br><span class="line">invokespecial java/lang/StringBuffer/&lt;init&gt;()V</span><br><span class="line"></span><br><span class="line">//父类方法</span><br><span class="line">super.equals(x);</span><br><span class="line">==&gt;编译</span><br><span class="line">aload_0   ;将this入栈</span><br><span class="line">aload_1   ;将第一个参数入栈</span><br><span class="line">          ;执行Object的equals()方法</span><br><span class="line">invokespecial java/lang/Object/equals(Ljava/lang/Object;)Z</span><br><span class="line"></span><br><span class="line">//私有方法</span><br><span class="line">与父类方法类似</span><br></pre></td></tr></table></figure>
 <ul>
 <li><strong>invokevirtual</strong>：调用所有的虚方法。</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">X x;</span><br><span class="line">...</span><br><span class="line">x.equals(&quot;abc&quot;);</span><br><span class="line">==&gt;编译</span><br><span class="line">aload_1   ;将x入栈</span><br><span class="line">ldc &quot;abc&quot;   ;将“abc”入栈</span><br><span class="line">          ;执行equals()方法</span><br><span class="line">invokevirtual X/equals(Ljava/lang/Object;)Z</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">X x;</span><br><span class="line">...</span><br><span class="line">x.equals(&quot;abc&quot;);</span><br><span class="line">==&gt;编译</span><br><span class="line">aload_1   ;将x入栈</span><br><span class="line">ldc &quot;abc&quot;   ;将“abc”入栈</span><br><span class="line">          ;执行equals()方法</span><br><span class="line">invokevirtual X/equals(Ljava/lang/Object;)Z</span><br></pre></td></tr></table></figure>
 <ul>
 <li><strong>invokeinterface</strong>：调用接口方法，会在运行时再确定一个实现此接口的对象。</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">List x;</span><br><span class="line">...</span><br><span class="line">x.toString();</span><br><span class="line">==&gt;编译</span><br><span class="line">aload_1   ;将x入栈</span><br><span class="line">          ;执行toString()方法</span><br><span class="line">invokeinterface java/util/List/toString()Z</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">List x;</span><br><span class="line">...</span><br><span class="line">x.toString();</span><br><span class="line">==&gt;编译</span><br><span class="line">aload_1   ;将x入栈</span><br><span class="line">          ;执行toString()方法</span><br><span class="line">invokeinterface java/util/List/toString()Z</span><br></pre></td></tr></table></figure>
 <ul>
 <li><strong>invokedynamic</strong>：先在运行时动态解析出调用点限定符所引用的方法，然后再执行该方法。</li>
 </ul>
-<p>在编译阶段就可以确定唯一调用版本的方法有：<strong>静态方法（类名）</strong>、<strong>私有方法</strong>、<strong>实例构造器（<init>）</init></strong>、<strong>父类方法(super)</strong>、<strong>final方法</strong>。其它统称为虚方法，在编译阶段无法确定调用版本，需要在运行期通过分派将符号引用转变为直接引用。</p>
+<p>在编译阶段就可以确定唯一调用版本的方法有：<strong>静态方法（类名）</strong>、<strong>私有方法</strong>、<strong>实例构造器（<init>）</strong>、<strong>父类方法(super)</strong>、<strong>final方法</strong>。其它统称为虚方法，在编译阶段无法确定调用版本，需要在运行期通过分派将符号引用转变为直接引用。</p>
 <h3 id="3-8-分派"><a href="#3-8-分派" class="headerlink" title="3.8 分派"></a>3.8 分派</h3><h4 id="静态分派"><a href="#静态分派" class="headerlink" title="静态分派"></a>静态分派</h4><p>指在运行时对类内相同名称的方法根据描述符来确定执行版本的分派，<strong>多见于方法的重载。</strong></p>
 <p>下面的例子中，输出结果均为<code>hello guy</code>。</p>
 <p>“Human”称为变量的静态类型（Static Type），或者叫做的外观类型（Apparent Type），后面的“Man”则称为变量的实际类型（Actual Type），静态类型和实际类型在程序中都可以发生一些变化，区别是静态类型的变化仅仅在使用时发生，变量本身的静态类型不会被改变，并且最终的静态类型是在编译期可知的；而实际类型变化的结果在运行期才可确定，编译器在编译程序的时候并不知道一个对象的实际类型是什么。</p>
 <p>代码中定义了两个静态类型相同但实际类型不同的变量，但<strong>虚拟机（准确地说是编译器）在重载时是通过参数的静态类型而不是实际类型作为判定依据的。并且静态类型是编译期可知的</strong>，因此，在编译阶段，Javac编译器会根据参数的静态类型决定使用哪个重载版本，所以选择了sayHello（Human）作为调用目标。所有依赖静态类型来定位方法执行版本的分派动作称为静态分派。静态分派的典型应用是方法重载。<strong>静态分派发生在编译阶段，因此确定静态分派的动作实际上不是由虚拟机来执行的。</strong></p>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1ga6jh205cej20jd0d9n1o.jpg" alt="Picture1.png"></p>
+<p><img src="http://qiniu.lfeng.tech/20220128204516_1fa3b.jpg" alt="Picture1.png"></p>
 <h4 id="动态分派"><a href="#动态分派" class="headerlink" title="动态分派"></a>动态分派</h4><p>指对于相同方法签名的方法根据实际执行对象来确定执行版本的分派。编译器是根据引用类型来判断方法是否可执行，真正执行的是实际对象方法。<strong>多见于类多态的实现。</strong></p>
 <p>动态分配的实现，最常用的手段就是为类在方法区中建立一个虚方法表。虚方法表中存放着各个方法的实际入口地址。<strong>如果某个方法在子类中没有被重写，那子类的虚方法表里面的地址入口和父类相同方法的地址入口是一致的，都指向父类的实现入口。如果子类中重写了这个方法，子类方法表中的地址将会替换为指向子类实现版本的入口地址</strong>。PPT图中，Son重写了来自Father的全部方法，因此Son的方法表没有指向Father类型数据的箭头。但是Son和Father都没有重写来自Object的方法，所以它们的方法表中所有从Object继承来的方法都指向了Object的数据类型。</p>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1ga6jmoexhdj211o0q0dud.jpg" alt="Screen Shot 2019-12-23 at 12.28.21 PM.png"></p>
+<p><img src="http://qiniu.lfeng.tech/20220128204516_844f5.jpg" alt="Screen Shot 2019-12-23 at 12.28.21 PM.png"></p>
 <h3 id="3-9-基于栈的字节码解释执行引擎"><a href="#3-9-基于栈的字节码解释执行引擎" class="headerlink" title="3.9 基于栈的字节码解释执行引擎"></a>3.9 基于栈的字节码解释执行引擎</h3><p>Java语言经常被人们定位为“解释执行”语言，在Java初生的JDK1.0时代，这种定义还比较准确的，但当主流的虚拟机中都包含了即时编译后，Class文件中的代码到底会被解释执行还是编译执行，就成了只有虚拟机自己才能准确判断的事情。再后来，Java也发展出来了直接生成本地代码的编译器[如何GCJ（GNU Compiler for the Java）]，而C/C++也出现了通过解释器执行的版本（如CINT），这时候再笼统的说“解释执行”，对于整个Java语言来说就成了几乎没有任何意义的概念。</p>
 <h4 id="基于栈的指令集与基于寄存器的指令集"><a href="#基于栈的指令集与基于寄存器的指令集" class="headerlink" title="基于栈的指令集与基于寄存器的指令集"></a>基于栈的指令集与基于寄存器的指令集</h4><p><strong>基于栈的指令集</strong>：指令流中的指令大部分都是零地址指令，它们依赖操作数栈进行工作。</p>
 <p><strong>基于寄存器的指令集</strong>：最典型的就是X86的地址指令集，通俗一点，就是现在我们主流的PC机中直接支持的指令集架构，这些指令集依赖寄存器工作。</p>
 <p>举个简单例子，分别使用这两种指令计算1+1的结果，基于栈的指令集会是这个样子：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">iconst_1</span><br><span class="line">iconst_1</span><br><span class="line">iadd</span><br><span class="line">istore_0</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">iconst_1</span><br><span class="line">iconst_1</span><br><span class="line">iadd</span><br><span class="line">istore_0</span><br></pre></td></tr></table></figure>
 <p>两条iconst_1指令连续把两个常量1压入栈后，iadd指令把栈顶的两个值出栈、相加，然后将结果放回栈顶，最后istore_0把栈顶的值放到局部变量表中的第0个Slot中。</p>
 <p>如果基于寄存器的指令集，那程序可能会是这个样子：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mov eax, 1</span><br><span class="line">add eax, 1</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mov eax, 1</span><br><span class="line">add eax, 1</span><br></pre></td></tr></table></figure>
 <p>mov指令把EAX寄存器的值设置为1，然后add指令再把这个值加1，将结果就保存在EAX寄存器里面。</p>
 <blockquote>
 <p><strong>基于栈的指令集：</strong></p>
@@ -813,522 +725,95 @@
 <hr>
 <p>参考链接：</p>
 <ul>
-<li><a href="https://www.jianshu.com/p/62241c6cd5ef" target="_blank" rel="noopener">https://www.jianshu.com/p/62241c6cd5ef</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/62241c6cd5ef">https://www.jianshu.com/p/62241c6cd5ef</a></li>
 </ul>
 <hr>
-<p>本文由『后端精进之路』原创，首发于博客 <a href="http://teckee.github.io/" target="_blank" rel="noopener">http://teckee.github.io/</a> , 转载请注明出处</p>
+<p>本文由『后端精进之路』原创，首发于博客 <a target="_blank" rel="noopener" href="http://teckee.github.io/">http://teckee.github.io/</a> , 转载请注明出处</p>
 <p>搜索『后端精进之路』关注公众号，立刻获取最新文章和<strong>价值2000元的BATJ精品面试课程</strong>。</p>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1g9v9luujswj21n10l9jux.jpg" alt="后端精进之路.png"></p>
+<p><img src="http://qiniu.lfeng.tech/20220128204517_e1c6d.jpg" alt="后端精进之路.png"></p>
 
-      
     </div>
-    
-    
-    
 
     
-
     
-
     
 
     <footer class="post-footer">
-      
-        <div class="post-tags">
-          
-            <a href="/tags/Java/" rel="tag"># Java</a>
-          
-        </div>
-      
-
-      
-      
-      
-
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-              <a href="/2020/01/17/JVM_2_GC/" rel="next" title="JVM性能优化系列-(2) 垃圾收集器与内存分配策略">
-                <i class="fa fa-chevron-left"></i> JVM性能优化系列-(2) 垃圾收集器与内存分配策略
-              </a>
-            
+          <div class="post-tags">
+              <a href="/tags/Java/" rel="tag"># Java</a>
           </div>
 
-          <span class="post-nav-divider"></span>
-
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2020/02/21/JVM_4_write_high_performance_code/" rel="prev" title="JVM性能优化系列-(4) 编写高效Java程序">
-                JVM性能优化系列-(4) 编写高效Java程序 <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
-      
-
-      
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-
-    <div class="post-spread">
-      
-    </div>
-  </div>
-
-
-          </div>
-          
-
-
-          
-  
-    <div class="comments" id="comments">
-      <div id="disqus_thread">
-        <noscript>
-          Please enable JavaScript to view the
-          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
-        </noscript>
-      </div>
-    </div>
-  
-
-
-        </div>
         
-          
-  
-  <div class="sidebar-toggle">
-    <div class="sidebar-toggle-line-wrap">
-      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
-    </div>
-  </div>
 
-  <aside id="sidebar" class="sidebar">
-    
-    <div class="sidebar-inner">
-
-      
-
-      
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            Table of Contents
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            Overview
-          </li>
-        </ul>
-      
-
-      <section class="site-overview-wrap sidebar-panel">
-        <div class="site-overview">
-          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-            
-              <p class="site-author-name" itemprop="name">Vincent</p>
-              <p class="site-description motion-element" itemprop="description"></p>
-          </div>
-
-          <nav class="site-state motion-element">
-
-            
-              <div class="site-state-item site-state-posts">
-              
-                <a href="/archives/">
-              
-                  <span class="site-state-item-count">56</span>
-                  <span class="site-state-item-name">posts</span>
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/01/17/JVM_2_GC/" rel="prev" title="JVM性能优化系列-(2) 垃圾收集器与内存分配策略">
+                  <i class="fa fa-chevron-left"></i> JVM性能优化系列-(2) 垃圾收集器与内存分配策略
                 </a>
-              </div>
-            
-
-            
-              
-              
-              <div class="site-state-item site-state-categories">
-                
-                  <span class="site-state-item-count">12</span>
-                  <span class="site-state-item-name">categories</span>
-                
-              </div>
-            
-
-            
-              
-              
-              <div class="site-state-item site-state-tags">
-                
-                  <span class="site-state-item-count">22</span>
-                  <span class="site-state-item-name">tags</span>
-                
-              </div>
-            
-
-          </nav>
-
-          
-
-          <div class="links-of-author motion-element">
-            
-              
-                <span class="links-of-author-item">
-                  <a href="https://github.com/teckee" target="_blank" title="GitHub">
-                    
-                      <i class="fa fa-fw fa-github"></i>GitHub</a>
-                </span>
-              
-                <span class="links-of-author-item">
-                  <a href="mailto:h0ck@foxmail.com" target="_blank" title="E-Mail">
-                    
-                      <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
-                </span>
-              
-            
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/02/21/JVM_4_write_high_performance_code/" rel="next" title="JVM性能优化系列-(4) 编写高效Java程序">
+                  JVM性能优化系列-(4) 编写高效Java程序 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
           </div>
-
-          
-          
-
-          
-          
-
-          
-
-        </div>
-      </section>
-
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-虚拟机执行子系统"><span class="nav-number">1.</span> <span class="nav-text">3. 虚拟机执行子系统</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-Java跨平台的基础"><span class="nav-number">1.1.</span> <span class="nav-text">3.1 Java跨平台的基础</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-Class类的文件结构"><span class="nav-number">1.2.</span> <span class="nav-text">3.2 Class类的文件结构</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#魔数与Class文件的版本"><span class="nav-number">1.2.1.</span> <span class="nav-text">魔数与Class文件的版本</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#常量池"><span class="nav-number">1.2.2.</span> <span class="nav-text">常量池</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#访问标志"><span class="nav-number">1.2.3.</span> <span class="nav-text">访问标志</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#类索引、父类索引与接口索引集合"><span class="nav-number">1.2.4.</span> <span class="nav-text">类索引、父类索引与接口索引集合</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#字段表集合"><span class="nav-number">1.2.5.</span> <span class="nav-text">字段表集合</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#方法表集合"><span class="nav-number">1.2.6.</span> <span class="nav-text">方法表集合</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#属性表集合"><span class="nav-number">1.2.7.</span> <span class="nav-text">属性表集合</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-字节码指令"><span class="nav-number">1.3.</span> <span class="nav-text">3.3 字节码指令</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#加载和存储命令"><span class="nav-number">1.3.1.</span> <span class="nav-text">加载和存储命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#运算指令"><span class="nav-number">1.3.2.</span> <span class="nav-text">运算指令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#类型转换指令"><span class="nav-number">1.3.3.</span> <span class="nav-text">类型转换指令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#对象创建与访问指令"><span class="nav-number">1.3.4.</span> <span class="nav-text">对象创建与访问指令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#操作数栈管理指令"><span class="nav-number">1.3.5.</span> <span class="nav-text">操作数栈管理指令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#控制转移指令"><span class="nav-number">1.3.6.</span> <span class="nav-text">控制转移指令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#方法调用指令"><span class="nav-number">1.3.7.</span> <span class="nav-text">方法调用指令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#方法返回指令"><span class="nav-number">1.3.8.</span> <span class="nav-text">方法返回指令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#异常处理指令"><span class="nav-number">1.3.9.</span> <span class="nav-text">异常处理指令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#同步指令"><span class="nav-number">1.3.10.</span> <span class="nav-text">同步指令</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-4-类加载机制"><span class="nav-number">1.4.</span> <span class="nav-text">3.4 类加载机制</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#典型面试题：类加载过程？什么是双亲委派？"><span class="nav-number">1.4.1.</span> <span class="nav-text">典型面试题：类加载过程？什么是双亲委派？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#概述"><span class="nav-number">1.4.2.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#加载"><span class="nav-number">1.4.3.</span> <span class="nav-text">加载</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#验证"><span class="nav-number">1.4.4.</span> <span class="nav-text">验证</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#准备阶段"><span class="nav-number">1.4.5.</span> <span class="nav-text">准备阶段</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#解析阶段"><span class="nav-number">1.4.6.</span> <span class="nav-text">解析阶段</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#初始化"><span class="nav-number">1.4.7.</span> <span class="nav-text">初始化</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-5-类加载器"><span class="nav-number">1.5.</span> <span class="nav-text">3.5 类加载器</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#类与类加载器"><span class="nav-number">1.5.1.</span> <span class="nav-text">类与类加载器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#双亲委派机制"><span class="nav-number">1.5.2.</span> <span class="nav-text">双亲委派机制</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#自定义类加载器"><span class="nav-number">1.5.3.</span> <span class="nav-text">自定义类加载器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Class-forName和ClassLoader-loadClass"><span class="nav-number">1.5.4.</span> <span class="nav-text">Class.forName和ClassLoader.loadClass</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#双亲委派机制的破坏"><span class="nav-number">1.5.5.</span> <span class="nav-text">双亲委派机制的破坏</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Tomcat类加载器"><span class="nav-number">1.5.6.</span> <span class="nav-text">Tomcat类加载器</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-6-运行时栈帧结构"><span class="nav-number">1.6.</span> <span class="nav-text">3.6 运行时栈帧结构</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#局部变量表"><span class="nav-number">1.6.1.</span> <span class="nav-text">局部变量表</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#操作数栈"><span class="nav-number">1.6.2.</span> <span class="nav-text">操作数栈</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#动态连接"><span class="nav-number">1.6.3.</span> <span class="nav-text">动态连接</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#方法返回地址"><span class="nav-number">1.6.4.</span> <span class="nav-text">方法返回地址</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#附加信息"><span class="nav-number">1.6.5.</span> <span class="nav-text">附加信息</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-7-方法调用"><span class="nav-number">1.7.</span> <span class="nav-text">3.7 方法调用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#解析"><span class="nav-number">1.7.1.</span> <span class="nav-text">解析</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-8-分派"><span class="nav-number">1.8.</span> <span class="nav-text">3.8 分派</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#静态分派"><span class="nav-number">1.8.1.</span> <span class="nav-text">静态分派</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#动态分派"><span class="nav-number">1.8.2.</span> <span class="nav-text">动态分派</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-9-基于栈的字节码解释执行引擎"><span class="nav-number">1.9.</span> <span class="nav-text">3.9 基于栈的字节码解释执行引擎</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#基于栈的指令集与基于寄存器的指令集"><span class="nav-number">1.9.1.</span> <span class="nav-text">基于栈的指令集与基于寄存器的指令集</span></a></li></ol></li></ol></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
-      
-
-      
-
-    </div>
-  </aside>
-
-
-        
-      </div>
-    </main>
-
-    <footer id="footer" class="footer">
-      <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
-  <span class="with-love">
-    <i class="fa fa-user"></i>
-  </span>
-  <span class="author" itemprop="copyrightHolder">Vincent</span>
-
-  
+    </footer>
+  </article>
 </div>
 
 
-  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
 
 
 
-  <span class="post-meta-divider">|</span>
-
-
-
-  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.3</div>
-
-
-
-
-        
-
-
-
-
-
-
-
-        
-      </div>
-    </footer>
 
     
-      <div class="back-to-top">
-        <i class="fa fa-arrow-up"></i>
-        
-      </div>
-    
+  <div class="comments" id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
 
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class=""></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Vincent</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a>
   </div>
 
+    </div>
+  </footer>
+
   
-
-<script type="text/javascript">
-  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
-    window.Promise = null;
-  }
-</script>
-
-
-
-
-
-
-
-
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
 
   
 
 
 
-
-
-
-
-
-
-
-
-
-  
-  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
-
-  
-  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
-
-  
-  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
-
-  
-  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
-
-  
-  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
-
-  
-  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  <script src="/js/third-party/fancybox.js"></script>
 
 
   
 
 
-  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
-
-  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
-
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"D1FSFUo2Xco7NLfkEF2KRu4x-gzGzoHsz","app_key":"t0gAn7CG0IuQuatwXySKh0Lx","server_url":null,"security":true}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
 
 
-  
-  
-
-
-  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
-
-  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
-
-
-
-  
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
-<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
-
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
-
-
-
-  
-
-
-  
-
-    
-      <script id="dsq-count-scr" src="https://frankier-me.disqus.com/count.js" async></script>
-    
-
-    
-      <script type="text/javascript">
-        var disqus_config = function () {
-          this.page.url = 'http://yoursite.com/2020/02/08/JVM_3_execute_system/';
-          this.page.identifier = '2020/02/08/JVM_3_execute_system/';
-          this.page.title = 'JVM性能优化系列-(3) 虚拟机执行子系统';
-        };
-        var d = document, s = d.createElement('script');
-        s.src = 'https://frankier-me.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', '' + +new Date());
-        (d.head || d.body).appendChild(s);
-      </script>
-    
-
-  
-
-
-
-
-	
-
-
-
-
-
-  
-
-
-
-
-
-
-
-
-
-
-  
-
-
-
-
-
-  
-
-  
-  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
-  <script>AV.initialize("D1FSFUo2Xco7NLfkEF2KRu4x-gzGzoHsz", "t0gAn7CG0IuQuatwXySKh0Lx");</script>
-  <script>
-    function showTime(Counter) {
-      var query = new AV.Query(Counter);
-      var entries = [];
-      var $visitors = $(".leancloud_visitors");
-
-      $visitors.each(function () {
-        entries.push( $(this).attr("id").trim() );
-      });
-
-      query.containedIn('url', entries);
-      query.find()
-        .done(function (results) {
-          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
-
-          if (results.length === 0) {
-            $visitors.find(COUNT_CONTAINER_REF).text(0);
-            return;
-          }
-
-          for (var i = 0; i < results.length; i++) {
-            var item = results[i];
-            var url = item.get('url');
-            var time = item.get('time');
-            var element = document.getElementById(url);
-
-            $(element).find(COUNT_CONTAINER_REF).text(time);
-          }
-          for(var i = 0; i < entries.length; i++) {
-            var url = entries[i];
-            var element = document.getElementById(url);
-            var countSpan = $(element).find(COUNT_CONTAINER_REF);
-            if( countSpan.text() == '') {
-              countSpan.text(0);
-            }
-          }
-        })
-        .fail(function (object, error) {
-          console.log("Error: " + error.code + " " + error.message);
-        });
-    }
-
-    function addCount(Counter) {
-      var $visitors = $(".leancloud_visitors");
-      var url = $visitors.attr('id').trim();
-      var title = $visitors.attr('data-flag-title').trim();
-      var query = new AV.Query(Counter);
-
-      query.equalTo("url", url);
-      query.find({
-        success: function(results) {
-          if (results.length > 0) {
-            var counter = results[0];
-            counter.fetchWhenSave(true);
-            counter.increment("time");
-            counter.save(null, {
-              success: function(counter) {
-                var $element = $(document.getElementById(url));
-                $element.find('.leancloud-visitors-count').text(counter.get('time'));
-              },
-              error: function(counter, error) {
-                console.log('Failed to save Visitor num, with error message: ' + error.message);
-              }
-            });
-          } else {
-            var newcounter = new Counter();
-            /* Set ACL */
-            var acl = new AV.ACL();
-            acl.setPublicReadAccess(true);
-            acl.setPublicWriteAccess(true);
-            newcounter.setACL(acl);
-            /* End Set ACL */
-            newcounter.set("title", title);
-            newcounter.set("url", url);
-            newcounter.set("time", 1);
-            newcounter.save(null, {
-              success: function(newcounter) {
-                var $element = $(document.getElementById(url));
-                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
-              },
-              error: function(newcounter, error) {
-                console.log('Failed to create');
-              }
-            });
-          }
-        },
-        error: function(error) {
-          console.log('Error:' + error.code + " " + error.message);
-        }
-      });
-    }
-
-    $(function() {
-      var Counter = AV.Object.extend("Counter");
-      if ($('.leancloud_visitors').length == 1) {
-        addCount(Counter);
-      } else if ($('.post-title-link').length > 1) {
-        showTime(Counter);
-      }
-    });
-  </script>
-
-
-
-  
-
-  
-
-  
-
-  
-
-  
+<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"frankier-me","count":true,"i18n":{"disqus":"disqus"}}</script>
+<script src="/js/third-party/comments/disqus.js"></script>
 
 </body>
 </html>

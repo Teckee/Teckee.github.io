@@ -1,393 +1,305 @@
 <!DOCTYPE html>
-
-
-
-  
-
-
-<html class="theme-next pisces use-motion" lang="en">
-<head><meta name="generator" content="Hexo 3.9.0">
+<html lang="en">
+<head>
   <meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="viewport" content="width=device-width">
 <meta name="theme-color" content="#222">
-<meta name="referrer" content="no-referrer">
+<meta name="generator" content="Hexo 6.0.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
 
 
 
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
 
-
-
-
-
-<meta http-equiv="Cache-Control" content="no-transform">
-<meta http-equiv="Cache-Control" content="no-siteapp">
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-  
-  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
-
-
-
-
-
-
-
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
-
-<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css">
-
-
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
-
-
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
-
-
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
-
-
-  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
-
-
-
-
-
-  <meta name="keywords" content="Java,">
-
-
-
-
-
-
-
-
-
-
+<script class="next-config" data-name="main" type="application/json">{"hostname":"yoursite.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.9.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
 <meta name="description" content="9.1 CompletableFutureCompletableFuture是JDK 8中引入的工具类，实现了Future接口，对以往的FutureTask的功能进行了增强。 手动设置完成状态CompletableFuture和Future一样，可以作为函数调用的契约，当向CompletableFuture请求数据时，如果数据还没有准备好，请求线程就会等待。但是，我们可以手动设置Completa">
-<meta name="keywords" content="Java">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Java并发编程系列-(9) JDK 8&#x2F;9&#x2F;10中的并发">
 <meta property="og:url" content="http://yoursite.com/2020/01/02/Java_concurrent_9_jdk_8_9_10_concurrent/index.html">
 <meta property="og:site_name" content="Vincent&#39;s Notes">
 <meta property="og:description" content="9.1 CompletableFutureCompletableFuture是JDK 8中引入的工具类，实现了Future接口，对以往的FutureTask的功能进行了增强。 手动设置完成状态CompletableFuture和Future一样，可以作为函数调用的契约，当向CompletableFuture请求数据时，如果数据还没有准备好，请求线程就会等待。但是，我们可以手动设置Completa">
-<meta property="og:locale" content="en">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g9m74n4c2sj21ts0usnpd.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g9xftgw7gkj211y0527bc.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g9xg32rilfj211o0ikqo3.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g9xg7hu8d0j211m0kgnjw.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g9xgg4mzs6j211u0jqaxb.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g9xgkq84rtj211u08gqer.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g9xgmtkuovj211m0b8ncp.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g9xgpmwssej211o0nokip.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g9xha46nc1j211o0yue81.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g9xirykhk3j211s0bmgos.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g9v9luujswj21n10l9jux.jpg">
-<meta property="og:updated_time" content="2020-01-02T11:58:51.036Z">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204522_57e55.jpg">
+<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204523_fe0d3.jpg">
+<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204523_372d6.jpg">
+<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204524_9c86e.jpg">
+<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204525_47305.jpg">
+<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204525_408db.jpg">
+<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204525_a7d48.jpg">
+<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204526_9809a.jpg">
+<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204527_ddfc9.jpg">
+<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204527_6212a.jpg">
+<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204527_220fe.jpg">
+<meta property="article:published_time" content="2020-01-02T12:43:49.000Z">
+<meta property="article:modified_time" content="2022-01-28T12:45:28.084Z">
+<meta property="article:author" content="Vincent">
+<meta property="article:tag" content="Java">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Java并发编程系列-(9) JDK 8&#x2F;9&#x2F;10中的并发">
-<meta name="twitter:description" content="9.1 CompletableFutureCompletableFuture是JDK 8中引入的工具类，实现了Future接口，对以往的FutureTask的功能进行了增强。 手动设置完成状态CompletableFuture和Future一样，可以作为函数调用的契约，当向CompletableFuture请求数据时，如果数据还没有准备好，请求线程就会等待。但是，我们可以手动设置Completa">
-<meta name="twitter:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g9m74n4c2sj21ts0usnpd.jpg">
+<meta name="twitter:image" content="http://qiniu.lfeng.tech/20220128204522_57e55.jpg">
+
+
+<link rel="canonical" href="http://yoursite.com/2020/01/02/Java_concurrent_9_jdk_8_9_10_concurrent/">
 
 
 
-<script type="text/javascript" id="hexo.configurations">
-  var NexT = window.NexT || {};
-  var CONFIG = {
-    root: '/',
-    scheme: 'Pisces',
-    version: '5.1.3',
-    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
-    fancybox: true,
-    tabs: true,
-    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
-    duoshuo: {
-      userId: '0',
-      author: 'Author'
-    },
-    algolia: {
-      applicationID: '',
-      apiKey: '',
-      indexName: '',
-      hits: {"per_page":10},
-      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
-    }
-  };
-</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://yoursite.com/2020/01/02/Java_concurrent_9_jdk_8_9_10_concurrent/","path":"2020/01/02/Java_concurrent_9_jdk_8_9_10_concurrent/","title":"Java并发编程系列-(9) JDK 8/9/10中的并发"}</script>
 
-
-
-  <link rel="canonical" href="http://yoursite.com/2020/01/02/Java_concurrent_9_jdk_8_9_10_concurrent/">
-
-
-
-
-
-  <title>Java并发编程系列-(9) JDK 8/9/10中的并发 | Vincent's Notes</title>
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Java并发编程系列-(9) JDK 8/9/10中的并发 | Vincent's Notes</title>
   
 
 
 
 
-
-
-
-
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
 
-  
-  
-    
-  
-
-  <div class="container sidebar-position-left page-post-detail">
-    <div class="headband"></div>
-
-    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-brand-wrapper">
-  <div class="site-meta ">
-    
-
-    <div class="custom-logo-site-title">
-      <a href="/" class="brand" rel="start">
-        <span class="logo-line-before"><i></i></span>
-        <span class="site-title">Vincent's Notes</span>
-        <span class="logo-line-after"><i></i></span>
-      </a>
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
     </div>
-      
-        <p class="site-subtitle"></p>
-      
   </div>
 
-  <div class="site-nav-toggle">
-    <button>
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-    </button>
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Vincent's Notes</p>
+      <i class="logo-line"></i>
+    </a>
+      <img class="custom-logo-image" src="/%5Bobject%20Object%5D" alt="Vincent's Notes">
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
   </div>
 </div>
 
+
+
 <nav class="site-nav">
-  
-
-  
-    <ul id="menu" class="menu">
-      
-        
-        <li class="menu-item menu-item-home">
-          <a href="/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
-            
-            Home
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-archives">
-          <a href="/archives/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
-            
-            Archives
-          </a>
-        </li>
-      
-
-      
-    </ul>
-  
-
-  
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="home fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="archive fa-fw"></i>Archives</a></li>
+  </ul>
 </nav>
 
 
 
- </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#9-1-CompletableFuture"><span class="nav-number">1.</span> <span class="nav-text">9.1 CompletableFuture</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%89%8B%E5%8A%A8%E8%AE%BE%E7%BD%AE%E5%AE%8C%E6%88%90%E7%8A%B6%E6%80%81"><span class="nav-number">1.1.</span> <span class="nav-text">手动设置完成状态</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BC%82%E6%AD%A5%E6%89%A7%E8%A1%8C%E4%BB%BB%E5%8A%A1"><span class="nav-number">1.2.</span> <span class="nav-text">异步执行任务</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B5%81%E5%BC%8F%E8%B0%83%E7%94%A8"><span class="nav-number">1.3.</span> <span class="nav-text">流式调用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86"><span class="nav-number">1.4.</span> <span class="nav-text">异常处理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BB%84%E5%90%88%E5%A4%9A%E4%B8%AACompletableFuture"><span class="nav-number">1.5.</span> <span class="nav-text">组合多个CompletableFuture</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%94%AF%E6%8C%81timeout"><span class="nav-number">1.6.</span> <span class="nav-text">支持timeout</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-2-%E6%94%B9%E8%BF%9B%E7%9A%84%E8%AF%BB%E5%86%99%E9%94%81%EF%BC%9AStampedLock"><span class="nav-number">2.</span> <span class="nav-text">9.2 改进的读写锁：StampedLock</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-2-%E6%9B%B4%E5%BF%AB%E7%9A%84%E5%8E%9F%E5%AD%90%E7%B1%BB%EF%BC%9ALongAdder"><span class="nav-number">3.</span> <span class="nav-text">9.2 更快的原子类：LongAdder</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Vincent</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">56</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/teckee" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;teckee" rel="noopener" target="_blank"><i class="github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:h0ck@foxmail.com" title="E-Mail → mailto:h0ck@foxmail.com" rel="noopener" target="_blank"><i class="envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
     </header>
 
-    <main id="main" class="main">
-      <div class="main-inner">
-        <div class="content-wrap">
-          <div id="content" class="content">
-            
-
-  <div id="posts" class="posts-expand">
     
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
 
   
 
-  
+
+<div class="post-block">
   
   
 
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/01/02/Java_concurrent_9_jdk_8_9_10_concurrent/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Vincent">
-      <meta itemprop="description" content>
       <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Vincent">
+      <meta itemprop="description" content="">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="Vincent's Notes">
     </span>
-
-    
       <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Java并发编程系列-(9) JDK 8/9/10中的并发
+        </h1>
 
-        
-        
-          <h1 class="post-title" itemprop="name headline">Java并发编程系列-(9) JDK 8/9/10中的并发</h1>
-        
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
 
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-01-02T20:43:49+08:00">
-                2020-01-02
-              </time>
-            
+      <time title="Created: 2020-01-02 20:43:49" itemprop="dateCreated datePublished" datetime="2020-01-02T20:43:49+08:00">2020-01-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a>
+        </span>
+    </span>
 
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java/" itemprop="url" rel="index">
-                    <span itemprop="name">Java</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2020/01/02/Java_concurrent_9_jdk_8_9_10_concurrent/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2020/01/02/Java_concurrent_9_jdk_8_9_10_concurrent/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-             <span id="/2020/01/02/Java_concurrent_9_jdk_8_9_10_concurrent/" class="leancloud_visitors" data-flag-title="Java并发编程系列-(9) JDK 8/9/10中的并发">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">Visitors&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
+  
+    <span id="/2020/01/02/Java_concurrent_9_jdk_8_9_10_concurrent/" class="post-meta-item leancloud_visitors" data-flag-title="Java并发编程系列-(9) JDK 8/9/10中的并发" title="Views">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2020/01/02/Java_concurrent_9_jdk_8_9_10_concurrent/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2020/01/02/Java_concurrent_9_jdk_8_9_10_concurrent/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
 
         </div>
       </header>
-    
 
     
     
     
     <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        <p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1g9m74n4c2sj21ts0usnpd.jpg" alt></p>
+        <p><img src="http://qiniu.lfeng.tech/20220128204522_57e55.jpg" alt=""></p>
 <h3 id="9-1-CompletableFuture"><a href="#9-1-CompletableFuture" class="headerlink" title="9.1 CompletableFuture"></a>9.1 CompletableFuture</h3><p>CompletableFuture是JDK 8中引入的工具类，实现了Future接口，对以往的FutureTask的功能进行了增强。</p>
 <h4 id="手动设置完成状态"><a href="#手动设置完成状态" class="headerlink" title="手动设置完成状态"></a>手动设置完成状态</h4><p>CompletableFuture和Future一样，可以作为函数调用的契约，当向CompletableFuture请求数据时，如果数据还没有准备好，请求线程就会等待。但是，我们可以手动设置CompletableFuture的完成状态。</p>
 <p>下面的例子中，创建了CompletableFuture对象实例进行计算，同时另外一个线程进行等待，接着，模拟等待一段时间之后，设置完成状态为完成，此时等待线程继续执行。</p>
-<a id="more"></a>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">public class CompletableFutureTest &#123;</span><br><span class="line"></span><br><span class="line">	public static class waitThread implements Runnable &#123;</span><br><span class="line">		CompletableFuture&lt;Integer&gt; resultCompletableFuture = null;</span><br><span class="line"></span><br><span class="line">		public waitThread(CompletableFuture&lt;Integer&gt; resultCompletableFuture) &#123;</span><br><span class="line">			super();</span><br><span class="line">			this.resultCompletableFuture = resultCompletableFuture;</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">		@Override</span><br><span class="line">		public void run() &#123;</span><br><span class="line">			int myResult = 0;</span><br><span class="line">			try &#123;</span><br><span class="line">				System.out.println(&quot;Waiting for the result...&quot;);</span><br><span class="line">				myResult = resultCompletableFuture.get();</span><br><span class="line">				System.out.println(&quot;Result got, it&apos;s &quot; + myResult);</span><br><span class="line">			&#125; catch (Exception e) &#123;</span><br><span class="line">				e.printStackTrace();</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	public static void main(String[] args) throws InterruptedException &#123;</span><br><span class="line">		final CompletableFuture&lt;Integer&gt; future = new CompletableFuture&lt;Integer&gt;();</span><br><span class="line">		new Thread(new waitThread(future)).start();</span><br><span class="line">		// 模拟等待过程</span><br><span class="line">		Thread.sleep(2000);</span><br><span class="line">		// 设置完成的结果</span><br><span class="line">		future.complete(666);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<span id="more"></span>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">public class CompletableFutureTest &#123;</span><br><span class="line"></span><br><span class="line">	public static class waitThread implements Runnable &#123;</span><br><span class="line">		CompletableFuture&lt;Integer&gt; resultCompletableFuture = null;</span><br><span class="line"></span><br><span class="line">		public waitThread(CompletableFuture&lt;Integer&gt; resultCompletableFuture) &#123;</span><br><span class="line">			super();</span><br><span class="line">			this.resultCompletableFuture = resultCompletableFuture;</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">		@Override</span><br><span class="line">		public void run() &#123;</span><br><span class="line">			int myResult = 0;</span><br><span class="line">			try &#123;</span><br><span class="line">				System.out.println(&quot;Waiting for the result...&quot;);</span><br><span class="line">				myResult = resultCompletableFuture.get();</span><br><span class="line">				System.out.println(&quot;Result got, it&#x27;s &quot; + myResult);</span><br><span class="line">			&#125; catch (Exception e) &#123;</span><br><span class="line">				e.printStackTrace();</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	public static void main(String[] args) throws InterruptedException &#123;</span><br><span class="line">		final CompletableFuture&lt;Integer&gt; future = new CompletableFuture&lt;Integer&gt;();</span><br><span class="line">		new Thread(new waitThread(future)).start();</span><br><span class="line">		// 模拟等待过程</span><br><span class="line">		Thread.sleep(2000);</span><br><span class="line">		// 设置完成的结果</span><br><span class="line">		future.complete(666);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h4 id="异步执行任务"><a href="#异步执行任务" class="headerlink" title="异步执行任务"></a>异步执行任务</h4><p>CompletableFuture提供了很方便的异步执行接口，</p>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1g9xftgw7gkj211y0527bc.jpg" alt="Screen Shot 2019-12-15 at 3.25.31 PM.png"></p>
+<p><img src="http://qiniu.lfeng.tech/20220128204523_fe0d3.jpg" alt="Screen Shot 2019-12-15 at 3.25.31 PM.png"></p>
 <p>其中supplyAsync方法用于需要返回值的场景；runAsync方法用于没有返回值的场景。注意到，这两个方法中都可以接受Executor参数，可以方便的让任务在指定的线程池中运行。</p>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1g9xg32rilfj211o0ikqo3.jpg" alt="Screen Shot 2019-12-15 at 3.30.00 PM.png"></p>
+<p><img src="http://qiniu.lfeng.tech/20220128204523_372d6.jpg" alt="Screen Shot 2019-12-15 at 3.30.00 PM.png"></p>
 <h4 id="流式调用"><a href="#流式调用" class="headerlink" title="流式调用"></a>流式调用</h4><p>CompletableFuture提供了类似于JDK 8中list的流式操作，下面例子中，首先利用supplyAsync()执行一个异步任务，接着使用流式操作对任务结果进行处理。</p>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1g9xg7hu8d0j211m0kgnjw.jpg" alt="Screen Shot 2019-12-15 at 3.38.56 PM.png"></p>
+<p><img src="http://qiniu.lfeng.tech/20220128204524_9c86e.jpg" alt="Screen Shot 2019-12-15 at 3.38.56 PM.png"></p>
 <p>注意到在最后面，调用了get方法，用于获取结果，否则由于CompletableFuture异步执行，main函数不会等待计算完成，直接退出，随着主线程的结束，所有的Daemon线程也会退出，从而导致计算方法无法正常完成。</p>
 <h4 id="异常处理"><a href="#异常处理" class="headerlink" title="异常处理"></a>异常处理</h4><p>CompletableFuture在执行中遇到异常时，同样的可以利用函数式编程的方法来处理异常，CompletableFuture中提供了一个异常处理方法exceptionally():</p>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1g9xgg4mzs6j211u0jqaxb.jpg" alt="Screen Shot 2019-12-15 at 3.47.19 PM.png"></p>
+<p><img src="http://qiniu.lfeng.tech/20220128204525_47305.jpg" alt="Screen Shot 2019-12-15 at 3.47.19 PM.png"></p>
 <h4 id="组合多个CompletableFuture"><a href="#组合多个CompletableFuture" class="headerlink" title="组合多个CompletableFuture"></a>组合多个CompletableFuture</h4><p>CompletableFuture中可以组合多个CompletableFuture，主要有如下两种方法：</p>
 <p><strong>1. thenCompose方法</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">public &lt;U&gt; CompletableFuture&lt;U&gt; thenCompose(</span><br><span class="line">    Function&lt;? super T, ? extends CompletionStage&lt;U&gt;&gt; fn) &#123;</span><br><span class="line">    return uniComposeStage(null, fn);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">public &lt;U&gt; CompletableFuture&lt;U&gt; thenCompose(</span><br><span class="line">    Function&lt;? super T, ? extends CompletionStage&lt;U&gt;&gt; fn) &#123;</span><br><span class="line">    return uniComposeStage(null, fn);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>例子如下：</p>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1g9xgkq84rtj211u08gqer.jpg" alt="Screen Shot 2019-12-15 at 3.51.46 PM.png"></p>
+<p><img src="http://qiniu.lfeng.tech/20220128204525_408db.jpg" alt="Screen Shot 2019-12-15 at 3.51.46 PM.png"></p>
 <p><strong>2. thenCombine方法</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">public &lt;U,V&gt; CompletableFuture&lt;V&gt; thenCombine(</span><br><span class="line">    CompletionStage&lt;? extends U&gt; other,</span><br><span class="line">    BiFunction&lt;? super T,? super U,? extends V&gt; fn) &#123;</span><br><span class="line">    return biApplyStage(null, other, fn);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">public &lt;U,V&gt; CompletableFuture&lt;V&gt; thenCombine(</span><br><span class="line">    CompletionStage&lt;? extends U&gt; other,</span><br><span class="line">    BiFunction&lt;? super T,? super U,? extends V&gt; fn) &#123;</span><br><span class="line">    return biApplyStage(null, other, fn);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>例子如下：</p>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1g9xgmtkuovj211m0b8ncp.jpg" alt="Screen Shot 2019-12-15 at 3.53.40 PM.png"></p>
+<p><img src="http://qiniu.lfeng.tech/20220128204525_a7d48.jpg" alt="Screen Shot 2019-12-15 at 3.53.40 PM.png"></p>
 <h4 id="支持timeout"><a href="#支持timeout" class="headerlink" title="支持timeout"></a>支持timeout</h4><p>在JDK9之后的CompletableFuture增加了timeout功能，如果任务在指定时间内没有完成，则直接抛出异常。</p>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1g9xgpmwssej211o0nokip.jpg" alt="Screen Shot 2019-12-15 at 3.56.31 PM.png"></p>
+<p><img src="http://qiniu.lfeng.tech/20220128204526_9809a.jpg" alt="Screen Shot 2019-12-15 at 3.56.31 PM.png"></p>
 <h3 id="9-2-改进的读写锁：StampedLock"><a href="#9-2-改进的读写锁：StampedLock" class="headerlink" title="9.2 改进的读写锁：StampedLock"></a>9.2 改进的读写锁：StampedLock</h3><p>StampedLock是JDK 8中引入的新的锁机制，可以认为是读写锁的一个改进版本，读写锁虽然分离了读和写，使得读与读之间可以完全并发，但是读和写之间仍然是冲突的。读锁会阻塞写锁，它使用的仍然是悲观的策略，如果有大量的读线程，可能引起写线程的饥饿。</p>
 <p>stampedLock提供了一种乐观的读策略，这种乐观的策略类似与无锁的操作，使得乐观锁完全不会阻塞写线程。</p>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1g9xha46nc1j211o0yue81.jpg" alt="Screen Shot 2019-12-15 at 4.16.12 PM.png"></p>
+<p><img src="http://qiniu.lfeng.tech/20220128204527_ddfc9.jpg" alt="Screen Shot 2019-12-15 at 4.16.12 PM.png"></p>
 <p>上面的例子中，首先试图尝试乐观获取锁，方法会返回一个类似于时间戳的stamp，然后进行相应的读取操作，当然为了保证没有其他线程修改了x、y的值，需要调用validate方法来进行验证，判断这个stamp在读过程中是否发生了修改。如果没有修改，则直接进行接下来的计算，否则，升级乐观锁为悲观锁，使用readLock获取读锁。如果当前有其他线程已经获取了锁，当前线程可能被挂起。</p>
 <h3 id="9-2-更快的原子类：LongAdder"><a href="#9-2-更快的原子类：LongAdder" class="headerlink" title="9.2 更快的原子类：LongAdder"></a>9.2 更快的原子类：LongAdder</h3><p>JDK引入了LongAdder，对之前的atomicInteger的性能进行了增强，AtomicLong 的 Add() 是依赖自旋不断的 CAS 去累加一个 Long 值。如果在竞争激烈的情况下，CAS 操作不断的失败，就会有大量的线程不断的自旋尝试 CAS 会造成 CPU 的极大的消耗。</p>
 <p>对于同样的一个 add() 操作，上文说到 AtomicLong 只对一个 Long 值进行 CAS 操作。而 LongAdder 是针对 Cell 数组的某个 Cell 进行 CAS 操作 ，把线程的名字的 hash 值，作为 Cell 数组的下标，然后对 Cell[i] 的 long 进行 CAS 操作。简单粗暴的分散了高并发下的竞争压力。</p>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1g9xirykhk3j211s0bmgos.jpg" alt="Screen Shot 2019-12-15 at 5.07.54 PM.png"></p>
+<p><img src="http://qiniu.lfeng.tech/20220128204527_6212a.jpg" alt="Screen Shot 2019-12-15 at 5.07.54 PM.png"></p>
 <p>在实际的操作中，LongAdder并不会一开始就动用数组进行处理，而是将所有数据都记录在一个称为base的变量中，如果在多线程的条件下，大家修改base没有冲突，也没有必要扩展成cell数组，但是，一旦base修改发生冲突，就会初始化cell数组，使用新的策略。如果使用cell数组之后，发现在某一个cell上的更新依然存在冲突，那么系统就会尝试创建新的cell，以减少冲突。</p>
 <p><strong>AtomicLong可否可以被LongAdder替代？</strong></p>
 <p>有了传说中更高效的LongAdder，那AtomicLong可否不使用了呢？当然不是！</p>
@@ -396,523 +308,96 @@
 <hr>
 <p>参考：</p>
 <ul>
-<li><a href="https://www.jianshu.com/p/22d38d5c8c2a" target="_blank" rel="noopener">https://www.jianshu.com/p/22d38d5c8c2a</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/22d38d5c8c2a">https://www.jianshu.com/p/22d38d5c8c2a</a></li>
 <li>《实战Java高并发程序设计》</li>
 </ul>
 <hr>
-<p>本文由『后端精进之路』原创，首发于博客 <a href="http://teckee.github.io/" target="_blank" rel="noopener">http://teckee.github.io/</a> , 转载请注明出处</p>
+<p>本文由『后端精进之路』原创，首发于博客 <a target="_blank" rel="noopener" href="http://teckee.github.io/">http://teckee.github.io/</a> , 转载请注明出处</p>
 <p>搜索『后端精进之路』关注公众号，立刻获取最新文章和<strong>价值2000元的BATJ精品面试课程</strong>。</p>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1g9v9luujswj21n10l9jux.jpg" alt="后端精进之路.png"></p>
+<p><img src="http://qiniu.lfeng.tech/20220128204527_220fe.jpg" alt="后端精进之路.png"></p>
 
-      
     </div>
-    
-    
-    
 
     
-
     
-
     
 
     <footer class="post-footer">
-      
-        <div class="post-tags">
-          
-            <a href="/tags/Java/" rel="tag"># Java</a>
-          
-        </div>
-      
-
-      
-      
-      
-
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-              <a href="/2019/12/29/Java_concurrent_8_JMM/" rel="next" title="Java并发编程系列-(8) JMM和底层实现原理">
-                <i class="fa fa-chevron-left"></i> Java并发编程系列-(8) JMM和底层实现原理
-              </a>
-            
+          <div class="post-tags">
+              <a href="/tags/Java/" rel="tag"># Java</a>
           </div>
 
-          <span class="post-nav-divider"></span>
-
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2020/01/05/JVM_1_memory/" rel="prev" title="JVM性能优化系列-(1) Java内存区域">
-                JVM性能优化系列-(1) Java内存区域 <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
-      
-
-      
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-
-    <div class="post-spread">
-      
-    </div>
-  </div>
-
-
-          </div>
-          
-
-
-          
-  
-    <div class="comments" id="comments">
-      <div id="disqus_thread">
-        <noscript>
-          Please enable JavaScript to view the
-          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
-        </noscript>
-      </div>
-    </div>
-  
-
-
-        </div>
         
-          
-  
-  <div class="sidebar-toggle">
-    <div class="sidebar-toggle-line-wrap">
-      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
-    </div>
-  </div>
 
-  <aside id="sidebar" class="sidebar">
-    
-    <div class="sidebar-inner">
-
-      
-
-      
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            Table of Contents
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            Overview
-          </li>
-        </ul>
-      
-
-      <section class="site-overview-wrap sidebar-panel">
-        <div class="site-overview">
-          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-            
-              <p class="site-author-name" itemprop="name">Vincent</p>
-              <p class="site-description motion-element" itemprop="description"></p>
-          </div>
-
-          <nav class="site-state motion-element">
-
-            
-              <div class="site-state-item site-state-posts">
-              
-                <a href="/archives/">
-              
-                  <span class="site-state-item-count">56</span>
-                  <span class="site-state-item-name">posts</span>
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/12/29/Java_concurrent_8_JMM/" rel="prev" title="Java并发编程系列-(8) JMM和底层实现原理">
+                  <i class="fa fa-chevron-left"></i> Java并发编程系列-(8) JMM和底层实现原理
                 </a>
-              </div>
-            
-
-            
-              
-              
-              <div class="site-state-item site-state-categories">
-                
-                  <span class="site-state-item-count">12</span>
-                  <span class="site-state-item-name">categories</span>
-                
-              </div>
-            
-
-            
-              
-              
-              <div class="site-state-item site-state-tags">
-                
-                  <span class="site-state-item-count">22</span>
-                  <span class="site-state-item-name">tags</span>
-                
-              </div>
-            
-
-          </nav>
-
-          
-
-          <div class="links-of-author motion-element">
-            
-              
-                <span class="links-of-author-item">
-                  <a href="https://github.com/teckee" target="_blank" title="GitHub">
-                    
-                      <i class="fa fa-fw fa-github"></i>GitHub</a>
-                </span>
-              
-                <span class="links-of-author-item">
-                  <a href="mailto:h0ck@foxmail.com" target="_blank" title="E-Mail">
-                    
-                      <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
-                </span>
-              
-            
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/01/05/JVM_1_memory/" rel="next" title="JVM性能优化系列-(1) Java内存区域">
+                  JVM性能优化系列-(1) Java内存区域 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
           </div>
-
-          
-          
-
-          
-          
-
-          
-
-        </div>
-      </section>
-
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#9-1-CompletableFuture"><span class="nav-number">1.</span> <span class="nav-text">9.1 CompletableFuture</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#手动设置完成状态"><span class="nav-number">1.1.</span> <span class="nav-text">手动设置完成状态</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#异步执行任务"><span class="nav-number">1.2.</span> <span class="nav-text">异步执行任务</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#流式调用"><span class="nav-number">1.3.</span> <span class="nav-text">流式调用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#异常处理"><span class="nav-number">1.4.</span> <span class="nav-text">异常处理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#组合多个CompletableFuture"><span class="nav-number">1.5.</span> <span class="nav-text">组合多个CompletableFuture</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#支持timeout"><span class="nav-number">1.6.</span> <span class="nav-text">支持timeout</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-2-改进的读写锁：StampedLock"><span class="nav-number">2.</span> <span class="nav-text">9.2 改进的读写锁：StampedLock</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-2-更快的原子类：LongAdder"><span class="nav-number">3.</span> <span class="nav-text">9.2 更快的原子类：LongAdder</span></a></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
-      
-
-      
-
-    </div>
-  </aside>
-
-
-        
-      </div>
-    </main>
-
-    <footer id="footer" class="footer">
-      <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
-  <span class="with-love">
-    <i class="fa fa-user"></i>
-  </span>
-  <span class="author" itemprop="copyrightHolder">Vincent</span>
-
-  
+    </footer>
+  </article>
 </div>
 
 
-  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
 
 
 
-  <span class="post-meta-divider">|</span>
-
-
-
-  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.3</div>
-
-
-
-
-        
-
-
-
-
-
-
-
-        
-      </div>
-    </footer>
 
     
-      <div class="back-to-top">
-        <i class="fa fa-arrow-up"></i>
-        
-      </div>
-    
+  <div class="comments" id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
 
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class=""></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Vincent</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a>
   </div>
 
+    </div>
+  </footer>
+
   
-
-<script type="text/javascript">
-  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
-    window.Promise = null;
-  }
-</script>
-
-
-
-
-
-
-
-
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
 
   
 
 
 
-
-
-
-
-
-
-
-
-
-  
-  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
-
-  
-  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
-
-  
-  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
-
-  
-  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
-
-  
-  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
-
-  
-  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  <script src="/js/third-party/fancybox.js"></script>
 
 
   
 
 
-  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
-
-  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
-
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"D1FSFUo2Xco7NLfkEF2KRu4x-gzGzoHsz","app_key":"t0gAn7CG0IuQuatwXySKh0Lx","server_url":null,"security":true}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
 
 
-  
-  
-
-
-  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
-
-  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
-
-
-
-  
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
-<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
-
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
-
-
-
-  
-
-
-  
-
-    
-      <script id="dsq-count-scr" src="https://frankier-me.disqus.com/count.js" async></script>
-    
-
-    
-      <script type="text/javascript">
-        var disqus_config = function () {
-          this.page.url = 'http://yoursite.com/2020/01/02/Java_concurrent_9_jdk_8_9_10_concurrent/';
-          this.page.identifier = '2020/01/02/Java_concurrent_9_jdk_8_9_10_concurrent/';
-          this.page.title = 'Java并发编程系列-(9) JDK 8/9/10中的并发';
-        };
-        var d = document, s = d.createElement('script');
-        s.src = 'https://frankier-me.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', '' + +new Date());
-        (d.head || d.body).appendChild(s);
-      </script>
-    
-
-  
-
-
-
-
-	
-
-
-
-
-
-  
-
-
-
-
-
-
-
-
-
-
-  
-
-
-
-
-
-  
-
-  
-  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
-  <script>AV.initialize("D1FSFUo2Xco7NLfkEF2KRu4x-gzGzoHsz", "t0gAn7CG0IuQuatwXySKh0Lx");</script>
-  <script>
-    function showTime(Counter) {
-      var query = new AV.Query(Counter);
-      var entries = [];
-      var $visitors = $(".leancloud_visitors");
-
-      $visitors.each(function () {
-        entries.push( $(this).attr("id").trim() );
-      });
-
-      query.containedIn('url', entries);
-      query.find()
-        .done(function (results) {
-          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
-
-          if (results.length === 0) {
-            $visitors.find(COUNT_CONTAINER_REF).text(0);
-            return;
-          }
-
-          for (var i = 0; i < results.length; i++) {
-            var item = results[i];
-            var url = item.get('url');
-            var time = item.get('time');
-            var element = document.getElementById(url);
-
-            $(element).find(COUNT_CONTAINER_REF).text(time);
-          }
-          for(var i = 0; i < entries.length; i++) {
-            var url = entries[i];
-            var element = document.getElementById(url);
-            var countSpan = $(element).find(COUNT_CONTAINER_REF);
-            if( countSpan.text() == '') {
-              countSpan.text(0);
-            }
-          }
-        })
-        .fail(function (object, error) {
-          console.log("Error: " + error.code + " " + error.message);
-        });
-    }
-
-    function addCount(Counter) {
-      var $visitors = $(".leancloud_visitors");
-      var url = $visitors.attr('id').trim();
-      var title = $visitors.attr('data-flag-title').trim();
-      var query = new AV.Query(Counter);
-
-      query.equalTo("url", url);
-      query.find({
-        success: function(results) {
-          if (results.length > 0) {
-            var counter = results[0];
-            counter.fetchWhenSave(true);
-            counter.increment("time");
-            counter.save(null, {
-              success: function(counter) {
-                var $element = $(document.getElementById(url));
-                $element.find('.leancloud-visitors-count').text(counter.get('time'));
-              },
-              error: function(counter, error) {
-                console.log('Failed to save Visitor num, with error message: ' + error.message);
-              }
-            });
-          } else {
-            var newcounter = new Counter();
-            /* Set ACL */
-            var acl = new AV.ACL();
-            acl.setPublicReadAccess(true);
-            acl.setPublicWriteAccess(true);
-            newcounter.setACL(acl);
-            /* End Set ACL */
-            newcounter.set("title", title);
-            newcounter.set("url", url);
-            newcounter.set("time", 1);
-            newcounter.save(null, {
-              success: function(newcounter) {
-                var $element = $(document.getElementById(url));
-                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
-              },
-              error: function(newcounter, error) {
-                console.log('Failed to create');
-              }
-            });
-          }
-        },
-        error: function(error) {
-          console.log('Error:' + error.code + " " + error.message);
-        }
-      });
-    }
-
-    $(function() {
-      var Counter = AV.Object.extend("Counter");
-      if ($('.leancloud_visitors').length == 1) {
-        addCount(Counter);
-      } else if ($('.post-title-link').length > 1) {
-        showTime(Counter);
-      }
-    });
-  </script>
-
-
-
-  
-
-  
-
-  
-
-  
-
-  
+<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"frankier-me","count":true,"i18n":{"disqus":"disqus"}}</script>
+<script src="/js/third-party/comments/disqus.js"></script>
 
 </body>
 </html>
