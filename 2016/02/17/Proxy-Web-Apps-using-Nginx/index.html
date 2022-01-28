@@ -28,13 +28,13 @@
 <meta property="og:site_name" content="Vincent&#39;s Notes">
 <meta property="og:description" content="利用Nginx可以方便的进行反向代理，用的比较多的就是反代Google，详细的教程有很多，这里谈一下Nginx多端口映射的问题  反代Google这部分可以参考https:&#x2F;&#x2F;github.com&#x2F;cuber&#x2F;ngx_http_google_filter_module 的教程，里面介绍了详细的安装配置过程。">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204510_67ccb.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gw1f12mojyc3vj20kc05y0t6.jpg">
 <meta property="article:published_time" content="2016-02-17T13:02:49.000Z">
-<meta property="article:modified_time" content="2022-01-28T12:45:11.036Z">
+<meta property="article:modified_time" content="2016-02-17T13:13:44.000Z">
 <meta property="article:author" content="Vincent">
 <meta property="article:tag" content="Linux">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://qiniu.lfeng.tech/20220128204510_67ccb.jpg">
+<meta name="twitter:image" content="http://ww1.sinaimg.cn/large/a18449c6gw1f12mojyc3vj20kc05y0t6.jpg">
 
 
 <link rel="canonical" href="http://yoursite.com/2016/02/17/Proxy-Web-Apps-using-Nginx/">
@@ -249,7 +249,7 @@
 <h2 id="反代Google"><a href="#反代Google" class="headerlink" title="反代Google"></a>反代Google</h2><p>这部分可以参考<a target="_blank" rel="noopener" href="https://github.com/cuber/ngx_http_google_filter_module">https://github.com/cuber/ngx_http_google_filter_module</a> 的教程，里面介绍了详细的安装配置过程。</p>
 <span id="more"></span>
 <p>如果想绑定二级域名进行反代Google，怎么配置二级域名比如<code>xxx.frankier.me</code>，其实很简单，如果使用DNSPOD进行dns解析，只需添加一条A记录即可，如下图所示，<code>XXX</code>为子域名，记录值里填你配置Nginx的VPS的实际IP即可；</p>
-<p><img src="http://qiniu.lfeng.tech/20220128204510_67ccb.jpg"></p>
+<p><img src="http://ww1.sinaimg.cn/large/a18449c6gw1f12mojyc3vj20kc05y0t6.jpg"></p>
 <h2 id="端口转发"><a href="#端口转发" class="headerlink" title="端口转发"></a>端口转发</h2><p>如果你有2个域名<code>example1.com</code>和<code>example2.com</code>,都利用VPS作为服务器，只是不同的域名请求发向不同的端口，可以直接在Nginx的配置文件中增加如下两项，下面的例子将两个域名的请求分配给8080和8181端口；</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">    listen       80;</span><br><span class="line">    server_name  example1.com;</span><br><span class="line"></span><br><span class="line">    location / &#123;</span><br><span class="line">        proxy_pass http://127.0.0.1:8080;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">server &#123;</span><br><span class="line">    listen       80;</span><br><span class="line">    server_name  example2.com;</span><br><span class="line"></span><br><span class="line">    location / &#123;</span><br><span class="line">        proxy_pass http://127.0.0.1:8181;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>实际过程中，也有可能想要<code>main.com/example1</code>和<code>main.com/example2</code>,同样很简单，只是需要更改location部分的内容即可。这部分可以参考<a target="_blank" rel="noopener" href="https://gist.github.com/soheilhy/8b94347ff8336d971ad0">How to proxy web apps using nginx?</a>，这里有详细介绍。</p>

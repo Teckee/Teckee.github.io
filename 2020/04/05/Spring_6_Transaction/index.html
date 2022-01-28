@@ -28,18 +28,18 @@
 <meta property="og:site_name" content="Vincent&#39;s Notes">
 <meta property="og:description" content="6 声明式事务6.1 Spring中事务的使用在进行数据操作事，通常会将多条SQL语句作为整体进行操作，这一条或者多条SQL语句就称为数据库事务。数据库事务可以确保该事务范围内的所有操作都可以全部成功或者全部失败。如果事务失败，那么效果就和没有执行这些SQL一样，不会对数据库数据有任何改动。 事务是恢复和并发控制的基本单位。 事务应该具有4个属性：原子性、一致性、隔离性、持久性。这四个属性通常称">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204508_80c5e.jpg">
-<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204509_b803b.jpg">
-<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204510_82fad.jpg">
-<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204511_1436f.jpg">
-<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204512_a1a81.jpg">
-<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204513_81a0d.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1gco2xb0bj9j20nn0cet8m.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1gbzr9rp1crj21de0h0tlx.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1gbzrnoadbpj21cu0wagz2.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1gbztdtzc19j21bk0tgajv.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1gbztc95ghlj21800owh72.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g9v9luujswj21n10l9jux.jpg">
 <meta property="article:published_time" content="2020-04-05T13:43:49.000Z">
-<meta property="article:modified_time" content="2022-01-28T12:45:13.489Z">
+<meta property="article:modified_time" content="2020-05-28T04:08:18.947Z">
 <meta property="article:author" content="Vincent">
 <meta property="article:tag" content="Spring">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://qiniu.lfeng.tech/20220128204508_80c5e.jpg">
+<meta name="twitter:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1gco2xb0bj9j20nn0cet8m.jpg">
 
 
 <link rel="canonical" href="http://yoursite.com/2020/04/05/Spring_6_Transaction/">
@@ -248,7 +248,7 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <p><img src="http://qiniu.lfeng.tech/20220128204508_80c5e.jpg" alt="Spring.png"></p>
+        <p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1gco2xb0bj9j20nn0cet8m.jpg" alt="Spring.png"></p>
 <h2 id="6-声明式事务"><a href="#6-声明式事务" class="headerlink" title="6 声明式事务"></a>6 声明式事务</h2><h3 id="6-1-Spring中事务的使用"><a href="#6-1-Spring中事务的使用" class="headerlink" title="6.1 Spring中事务的使用"></a>6.1 Spring中事务的使用</h3><p>在进行数据操作事，通常会将多条SQL语句作为整体进行操作，这一条或者多条SQL语句就称为数据库事务。数据库事务可以确保该事务范围内的所有操作都可以全部成功或者全部失败。如果事务失败，那么效果就和没有执行这些SQL一样，不会对数据库数据有任何改动。</p>
 <p>事务是恢复和并发控制的基本单位。</p>
 <p>事务应该具有4个属性：<strong>原子性、一致性、隔离性、持久性</strong>。这四个属性通常称为ACID特性。</p>
@@ -281,11 +281,11 @@
 
 <h3 id="6-2-Spring事务原理分析"><a href="#6-2-Spring事务原理分析" class="headerlink" title="6.2 Spring事务原理分析"></a>6.2 Spring事务原理分析</h3><p>在上面的例子中，为了使事务能够生效，需要加上<code>@EnableTransactionManagement</code>注解，整个源码实现和AOP原理一致，在注册Bean时对对象进行包装，生成增强的Bean，返回代理对象。在执行阶段，利用事务拦截器来运行有事务注解的代码，当出现异常时进行回滚。</p>
 <p>通过<code>@EnableTransactionManagement</code>引入的class可以看到，默认PROXY模式下，会引入<code>AutoProxyRegistrar.class</code>和<code>ProxyTransactionManagementConfiguration.class</code>，下面分析这两个组件的功能。 </p>
-<p><img src="http://qiniu.lfeng.tech/20220128204509_b803b.jpg" alt="Screen Shot 2020-02-17 at 10.14.19 PM.png"></p>
+<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1gbzr9rp1crj21de0h0tlx.jpg" alt="Screen Shot 2020-02-17 at 10.14.19 PM.png"></p>
 <h4 id="AutoProxyRegistrar-class"><a href="#AutoProxyRegistrar-class" class="headerlink" title="AutoProxyRegistrar.class"></a>AutoProxyRegistrar.class</h4><p>从下面的代码可以看到，和AOP类似，该组件会往容器中注册InfrastructureAdvisorAutoProxyCreator，利用后置处理器机制在对象创建以后，包装对象，返回一个代理对象（增强器），代理对象执行方法利用拦截器链进行调用。</p>
-<p><img src="http://qiniu.lfeng.tech/20220128204510_82fad.jpg" alt="Screen Shot 2020-02-17 at 10.25.28 PM.png"></p>
+<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1gbzrnoadbpj21cu0wagz2.jpg" alt="Screen Shot 2020-02-17 at 10.25.28 PM.png"></p>
 <h4 id="ProxyTransactionManagementConfiguration-class"><a href="#ProxyTransactionManagementConfiguration-class" class="headerlink" title="ProxyTransactionManagementConfiguration.class"></a>ProxyTransactionManagementConfiguration.class</h4><p>事务增强器要用事务注解的信息，AnnotationTransactionAttributeSource解析事务注解。</p>
-<p><img src="http://qiniu.lfeng.tech/20220128204511_1436f.jpg" alt="Screen Shot 2020-02-17 at 11.27.29 PM.png"></p>
+<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1gbztdtzc19j21bk0tgajv.jpg" alt="Screen Shot 2020-02-17 at 11.27.29 PM.png"></p>
 <h4 id="拦截执行流程"><a href="#拦截执行流程" class="headerlink" title="拦截执行流程"></a>拦截执行流程</h4><p>和AOP类似，在拦截执行的时候，首先会获取拦截链，然后依次执行拦截器的proceed方法。</p>
 <p>事务拦截器是TransactionInterceptor，它也是MethodInterceptor的子类，下面是其执行时的主要逻辑，归纳可以分为如下几步：</p>
 <ol>
@@ -297,7 +297,7 @@
 <li>如果异常，获取到事务管理器，利用事务管理回滚操作；</li>
 <li>如果正常，利用事务管理器，提交事务。</li>
 </ul>
-<p><img src="http://qiniu.lfeng.tech/20220128204512_a1a81.jpg" alt="Screen Shot 2020-02-17 at 11.25.32 PM.png"></p>
+<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1gbztc95ghlj21800owh72.jpg" alt="Screen Shot 2020-02-17 at 11.25.32 PM.png"></p>
 <h3 id="6-3-Spring的事务隔离级别与传播性"><a href="#6-3-Spring的事务隔离级别与传播性" class="headerlink" title="6.3 Spring的事务隔离级别与传播性"></a>6.3 Spring的事务隔离级别与传播性</h3><h4 id="隔离级别"><a href="#隔离级别" class="headerlink" title="隔离级别"></a>隔离级别</h4><p>隔离性（Isolation）作为事务特性的一个关键特性，它要求每个读写事务的对象对其他事务的操作对象能相互分离，即该事务提交前对其他事务都不可见，在数据库层面都是使用锁来实现。</p>
 <p>在辨析不同的隔离级别之前，引入几个基本概念：</p>
 <p><strong>1. 脏读</strong> ：脏读就是指当一个事务正在访问数据，并且对数据进行了修改，而这种修改还没有提交到数据库中，这时，另外一个事务也访问这个数据，然后使用了这个数据。</p>
@@ -357,7 +357,7 @@
 <hr>
 <p>本文由『后端精进之路』原创，首发于博客 <a target="_blank" rel="noopener" href="http://teckee.github.io/">http://teckee.github.io/</a> , 转载请注明出处</p>
 <p>搜索『后端精进之路』关注公众号，立刻获取最新文章和<strong>价值2000元的BATJ精品面试课程</strong>。</p>
-<p><img src="http://qiniu.lfeng.tech/20220128204513_81a0d.jpg" alt="后端精进之路.png"></p>
+<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1g9v9luujswj21n10l9jux.jpg" alt="后端精进之路.png"></p>
 
     </div>
 

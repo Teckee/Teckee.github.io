@@ -28,34 +28,34 @@
 <meta property="og:site_name" content="Vincent&#39;s Notes">
 <meta property="og:description" content="8. JMM和底层实现原理8.1 线程间的通信与同步线程之间的通信线程的通信是指线程之间以何种机制来交换信息。在编程中，线程之间的通信机制有两种，共享内存和消息传递。 在共享内存的并发模型里，线程之间共享程序的公共状态，线程之间通过写-读内存中的公共状态来隐式进行通信，典型的共享内存通信方式就是通过共享对象进行通信。">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204511_93a34.jpg">
-<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204511_c056d.jpg">
-<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204512_a8253.jpg">
-<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204513_1555b.jpg">
-<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204513_2fff9.jpg">
-<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204514_6848c.jpg">
-<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204515_872cf.jpg">
-<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204515_266d3.jpg">
-<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204515_b1e46.jpg">
-<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204516_5877c.jpg">
-<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204516_3f9a9.jpg">
-<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204517_dd8d1.jpg">
-<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204518_90dc3.jpg">
-<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204518_fa052.jpg">
-<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204518_c10da.jpg">
-<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204519_34161.jpg">
-<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204519_81281.jpg">
-<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204520_25629.jpg">
-<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204520_0194a.jpg">
-<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204521_8db67.jpg">
-<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204521_b1026.jpg">
-<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204522_3fb56.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g9m74n4c2sj21ts0usnpd.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g9wa7rfyrkj20p20av442.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g9wa9acivjj20l20ivacq.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g9wahq4kr4j20mm0h2jti.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g9waki11ifj20nj0g9dhs.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g9wantu747j218i06nwit.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g9war3lv7zj20nd0a2myv.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g9wbbdfxekj20gh0kf40i.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g9wbcrpkkwj20ma0djmy7.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g9wbftl5cij21ay0ggtl0.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g9wc1s6jbuj20ol0dd40j.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g9wc292twhj20tm0dyacj.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g9wc6pyuosj20mo0fqabi.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g9wc76hd5lj20sa0ioac6.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g9wcdkaq9kj20mg0fa41h.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g9wce15p0sj20mz0ex77b.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g9wcgx7o53j20i40f3t9k.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g9wcilxfhhj20l20hdgnq.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g9we080w39j20mq03tmy4.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g9we1lu0u6j219m0bw428.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g9we4wvp9kj20k00r8abn.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g9v9luujswj21n10l9jux.jpg">
 <meta property="article:published_time" content="2019-12-29T10:43:49.000Z">
-<meta property="article:modified_time" content="2022-01-28T12:45:22.572Z">
+<meta property="article:modified_time" content="2019-12-29T15:07:07.356Z">
 <meta property="article:author" content="Vincent">
 <meta property="article:tag" content="Java">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://qiniu.lfeng.tech/20220128204511_93a34.jpg">
+<meta name="twitter:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g9m74n4c2sj21ts0usnpd.jpg">
 
 
 <link rel="canonical" href="http://yoursite.com/2019/12/29/Java_concurrent_8_JMM/">
@@ -264,7 +264,7 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <p><img src="http://qiniu.lfeng.tech/20220128204511_93a34.jpg"></p>
+        <p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1g9m74n4c2sj21ts0usnpd.jpg"></p>
 <h2 id="8-JMM和底层实现原理"><a href="#8-JMM和底层实现原理" class="headerlink" title="8. JMM和底层实现原理"></a>8. JMM和底层实现原理</h2><h3 id="8-1-线程间的通信与同步"><a href="#8-1-线程间的通信与同步" class="headerlink" title="8.1 线程间的通信与同步"></a>8.1 线程间的通信与同步</h3><h4 id="线程之间的通信"><a href="#线程之间的通信" class="headerlink" title="线程之间的通信"></a>线程之间的通信</h4><p>线程的通信是指线程之间以何种机制来交换信息。在编程中，线程之间的通信机制有两种，<strong>共享内存和消息传递。</strong></p>
 <p>在<strong>共享内存</strong>的并发模型里，线程之间共享程序的公共状态，线程之间通过写-读内存中的公共状态来隐式进行通信，典型的共享内存通信方式就是通过共享对象进行通信。</p>
 <span id="more"></span>
@@ -275,26 +275,26 @@
 <p>注意到，<strong>Java的并发采用的是共享内存模型</strong>，接下来将会主要进行介绍。</p>
 <h3 id="8-2-Java内存模型（JMM）"><a href="#8-2-Java内存模型（JMM）" class="headerlink" title="8.2 Java内存模型（JMM）"></a>8.2 Java内存模型（JMM）</h3><h4 id="JMM"><a href="#JMM" class="headerlink" title="JMM"></a>JMM</h4><p>Java的内存模型如下图所示：</p>
 <p>每个Java线程拥有对应的工作内存，工作内寸通过Save和Load操作和主内存进行数据交互。</p>
-<p><img src="http://qiniu.lfeng.tech/20220128204511_c056d.jpg" alt="Picture1.png"></p>
+<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1g9wa7rfyrkj20p20av442.jpg" alt="Picture1.png"></p>
 <p>在JVM内部，Java内存模型把内存分成了两部分：线程栈区和堆区</p>
-<p><img src="http://qiniu.lfeng.tech/20220128204512_a8253.jpg" alt="Picture1.png"></p>
+<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1g9wa9acivjj20l20ivacq.jpg" alt="Picture1.png"></p>
 <p>JVM中运行的每个线程都拥有自己的线程栈，线程栈包含了当前线程执行的方法调用相关信息，我们也把它称作调用栈。随着代码的不断执行，调用栈会不断变化。</p>
 <p>线程栈还包含了当前方法的所有局部变量信息。一个线程只能读取自己的线程栈，也就是说，<strong>线程中的本地变量对其它线程是不可见的</strong>。即使两个线程执行的是同一段代码，它们也会各自在自己的线程栈中创建局部变量，因此，每个线程中的局部变量都会有自己的版本。</p>
 <p><strong>堆中的对象可以被多线程共享</strong>，如果一个线程获得一个对象的应用，它便可访问这个对象的成员变量。如果两个线程同时调用了同一个对象的同一个方法，那么这两个线程便可同时访问这个对象的成员变量，但是对于局部变量，每个线程都会拷贝一份到自己的线程栈中。</p>
 <h4 id="JMM带来的问题"><a href="#JMM带来的问题" class="headerlink" title="JMM带来的问题"></a>JMM带来的问题</h4><p>上述介绍的JMM也带来了一些问题：</p>
 <p><strong>1. 共享对象对各个线程的可见性</strong></p>
 <p>在一个线程中修改了共享数据后，如何保证对另外一个线程可见？</p>
-<p><img src="http://qiniu.lfeng.tech/20220128204513_1555b.jpg" alt="Picture1.png"></p>
+<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1g9wahq4kr4j20mm0h2jti.jpg" alt="Picture1.png"></p>
 <p><strong>2. 共享对象的竞争现象</strong></p>
 <p>对于同一个共享数据，如何保证两个线程正确的修改？</p>
-<p><img src="http://qiniu.lfeng.tech/20220128204513_2fff9.jpg" alt="Picture1.png"></p>
+<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1g9waki11ifj20nj0g9dhs.jpg" alt="Picture1.png"></p>
 <h4 id="指令重排"><a href="#指令重排" class="headerlink" title="指令重排"></a>指令重排</h4><p>除了之前提到的JMM中存在的两个问题之外，指令重排也可能对程序的正确性产生影响。</p>
-<p><img src="http://qiniu.lfeng.tech/20220128204514_6848c.jpg" alt="Picture111.png"></p>
+<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1g9wantu747j218i06nwit.jpg" alt="Picture111.png"></p>
 <p>如上图所示，JVM中为了提高指令执行的效率，可能在不改变运行结果的情况下，重排部分指令的顺序达到并发执行的效果。</p>
 <p>单线程下，这种指令重排序会遵从以下两个规则：</p>
 <p><strong>1. 数据依赖性</strong></p>
 <p>在下面三种情况，数据存在依赖关系，指令重排必须保证这种情况下的正确性。</p>
-<p><img src="http://qiniu.lfeng.tech/20220128204515_872cf.jpg" alt="Picture231.png"></p>
+<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1g9war3lv7zj20nd0a2myv.jpg" alt="Picture231.png"></p>
 <p><strong>2. 控制依赖性</strong></p>
 <p>对于控制依赖性，比如下面的例子，b的值依赖于a的状态，这种情况下，指令重排也会保证这种关系的正确性。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">if （a == 1）&#123;</span><br><span class="line">    b = 2;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -303,10 +303,10 @@
 <p>as-if-serial语义:不管怎么重排序（编译器和处理器为了提高并行度），<strong>（单线程）程序</strong>的执行结果不会改变。在as-if-serial语义下，编译器和处理器不会对存在数据依赖关系的操作做重排序，因为这种重排序会改变执行结果。</p>
 </blockquote>
 <p>但是在指令重排并不保证并发执行的正确性，因此可能带来比较严重的问题，比如下面的例子中，use（）通过判断flag是否为true，来获取初始化完成的信息。但是由于指令重排，可能拿到错误的a的值。</p>
-<p><img src="http://qiniu.lfeng.tech/20220128204515_266d3.jpg" alt="Picture451.png"></p>
-<p><img src="http://qiniu.lfeng.tech/20220128204515_b1e46.jpg" alt="Picture4441.png"></p>
+<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1g9wbbdfxekj20gh0kf40i.jpg" alt="Picture451.png"></p>
+<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1g9wbcrpkkwj20ma0djmy7.jpg" alt="Picture4441.png"></p>
 <p>在并发情况下，为了解决重排序带来的问题，引入了内存屏障来阻止重排序：</p>
-<p><img src="http://qiniu.lfeng.tech/20220128204516_5877c.jpg" alt="Screen Shot 2019-12-14 at 4.08.25 PM.png"></p>
+<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1g9wbftl5cij21ay0ggtl0.jpg" alt="Screen Shot 2019-12-14 at 4.08.25 PM.png"></p>
 <h3 id="8-3-Happens-Before"><a href="#8-3-Happens-Before" class="headerlink" title="8.3 Happens-Before"></a>8.3 Happens-Before</h3><h4 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h4><p>用happens-before的概念来阐述操作之间的内存可见性。在JMM中，如果一个操作执行的结果需要对另一个操作可见，那么这两个操作之间必须要存在happens-before关系 。</p>
 <p>两个操作之间具有happens-before关系，<strong>并不意味着前一个操作必须要在后一个操作之前执行</strong>！happens-before仅仅要求前一个操作（执行的结果）对后一个操作可见，且前一个操作按顺序排在第二个操作之前（the first is visible to and ordered before the second）。</p>
 <p>对于happens-before，可以从下面两个方面去理解：</p>
@@ -332,26 +332,26 @@
 </li>
 </ul>
 <p>具体来看，可以把对volatile变量的单个读/写，看成是使用同一个锁对这些单个读/写操作做了同步。如下面的例子所示：</p>
-<p><img src="http://qiniu.lfeng.tech/20220128204516_3f9a9.jpg" alt="Pictu23442re1.png"></p>
+<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1g9wc1s6jbuj20ol0dd40j.jpg" alt="Pictu23442re1.png"></p>
 <p>等价于：</p>
-<p><img src="http://qiniu.lfeng.tech/20220128204517_dd8d1.jpg" alt="Pictur57e1.png"></p>
+<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1g9wc292twhj20tm0dyacj.jpg" alt="Pictur57e1.png"></p>
 <h4 id="volatile写与读"><a href="#volatile写与读" class="headerlink" title="volatile写与读"></a>volatile写与读</h4><ol>
 <li><strong>volatile写</strong>的内存语义如下：当写一个volatile变量时，JMM会把该线程对应的本地内存中的共享变量值刷新到主内存。</li>
 </ol>
-<p><img src="http://qiniu.lfeng.tech/20220128204518_90dc3.jpg" alt="Pict45654664re1.png"></p>
+<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1g9wc6pyuosj20mo0fqabi.jpg" alt="Pict45654664re1.png"></p>
 <ol start="2">
 <li><strong>volatile读</strong>的内存语义如下：当读一个volatile变量时，JMM会把该线程对应的本地内存置为无效。线程接下来将从主内存中读取共享变量。</li>
 </ol>
-<p><img src="http://qiniu.lfeng.tech/20220128204518_fa052.jpg" alt="Pict4678467ure1.png"></p>
+<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1g9wc76hd5lj20sa0ioac6.jpg" alt="Pict4678467ure1.png"></p>
 <h4 id="volatile内存语义的实现"><a href="#volatile内存语义的实现" class="headerlink" title="volatile内存语义的实现"></a>volatile内存语义的实现</h4><p>JMM通过内存屏障插入策略，来实现volatile的读写语义。</p>
 <ul>
 <li>在每个volatile写操作的前面插入一个StoreStore屏障。在每个volatile写操作的后面插入一个StoreLoad屏障。</li>
 </ul>
-<p><img src="http://qiniu.lfeng.tech/20220128204518_c10da.jpg" alt="Pictur234e1.png"></p>
+<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1g9wcdkaq9kj20mg0fa41h.jpg" alt="Pictur234e1.png"></p>
 <ul>
 <li>在每个volatile读操作的后面插入一个LoadLoad屏障。在每个volatile读操作的后面插入一个LoadStore屏障。</li>
 </ul>
-<p><img src="http://qiniu.lfeng.tech/20220128204519_34161.jpg" alt="Pictuadfgbre1.png"></p>
+<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1g9wce15p0sj20mz0ex77b.jpg" alt="Pictuadfgbre1.png"></p>
 <blockquote>
 <p><strong>volatile的底层实现原理：</strong><br>有volatile变量修饰的共享变量进行写操作的时候会使用CPU提供的Lock前缀指令。</p>
 <ul>
@@ -366,11 +366,11 @@
 <h3 id="8-5-锁的内存语义"><a href="#8-5-锁的内存语义" class="headerlink" title="8.5 锁的内存语义"></a>8.5 锁的内存语义</h3><ul>
 <li>当线程释放锁时，JMM会把该线程对应的本地内存中的共享变量刷新到主内存中。</li>
 </ul>
-<p><img src="http://qiniu.lfeng.tech/20220128204519_81281.jpg" alt="sfrrth.png"></p>
+<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1g9wcgx7o53j20i40f3t9k.jpg" alt="sfrrth.png"></p>
 <ul>
 <li>当线程获取锁时，JMM会把该线程对应的本地内存置为无效。从而使得被监视器保护的临界区代码必须从主内存中读取共享变量。 </li>
 </ul>
-<p><img src="http://qiniu.lfeng.tech/20220128204520_25629.jpg" alt="sfgtnms.png"></p>
+<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1g9wcilxfhhj20l20hdgnq.jpg" alt="sfgtnms.png"></p>
 <h3 id="8-5-final的内存语义"><a href="#8-5-final的内存语义" class="headerlink" title="8.5 final的内存语义"></a>8.5 final的内存语义</h3><p><strong>编译器和处理器要遵守两个重排序规则：</strong></p>
 <ul>
 <li>在构造函数内对一个final域的写入，与随后把这个被构造对象的引用赋值给一个引用变量，这两个操作之间不能重排序。</li>
@@ -400,12 +400,12 @@
 <li>Mark Word用于存储对象自身的运行时数据，它是实现轻量级锁和偏向锁的关键，其中储存的数据，如哈希码（HashCode）、GC分代年龄、锁状态标志、线程持有的锁、偏向线程 ID、偏向时间戳等等。</li>
 </ul>
 <p>Java对象头一般占有两个机器码（在32位虚拟机中，1个机器码等于4字节，也就是32bit），但是如果对象是数组类型，则需要三个机器码，因为JVM虚拟机可以通过Java对象的元数据信息确定Java对象的大小，但是无法从数组的元数据来确认数组的大小，所以用一块来记录数组长度。下图是Java对象头的存储结构（32位虚拟机）：</p>
-<p><img src="http://qiniu.lfeng.tech/20220128204520_0194a.jpg" alt="Picture1.png"></p>
+<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1g9we080w39j20mq03tmy4.jpg" alt="Picture1.png"></p>
 <p>对象头信息是与对象自身定义的数据无关的额外存储成本，但是考虑到虚拟机的空间效率，Mark Word被设计成一个非固定的数据结构以便在极小的空间内存存储尽量多的数据，它会根据对象的状态复用自己的存储空间，也就是说，Mark Word会随着程序的运行发生变化，变化状态如下（32位虚拟机）： </p>
-<p><img src="http://qiniu.lfeng.tech/20220128204521_8db67.jpg" alt="Screen Shot 2019-12-14 at 5.38.08 PM.png"></p>
+<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1g9we1lu0u6j219m0bw428.jpg" alt="Screen Shot 2019-12-14 at 5.38.08 PM.png"></p>
 <p><strong>Monitor</strong></p>
 <p>Monitor可以把它理解为一个同步工具，也可以描述为一种同步机制，它通常被描述为一个对象。<br>与一切皆对象一样，所有的Java对象是天生的Monitor，每一个Java对象都有成为Monitor的潜质，因为在Java的设计中 ，每一个Java对象自生成后就自带一种看不见的锁，它叫做内部锁或者Monitor锁。<br>Monitor 是线程私有的数据结构，每一个线程都有一个可用monitor record列表，同时还有一个全局的可用列表。每一个被锁住的对象都会和一个monitor关联（对象头的MarkWord中的LockWord指向monitor的起始地址），同时monitor中有一个Owner字段存放拥有该锁的线程的唯一标识，表示该锁被这个线程占用。其结构如下：</p>
-<p><img src="http://qiniu.lfeng.tech/20220128204521_b1026.jpg" alt="Screen Shot 2019-12-14 at 5.41.55 PM.png"></p>
+<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1g9we4wvp9kj20k00r8abn.jpg" alt="Screen Shot 2019-12-14 at 5.41.55 PM.png"></p>
 <ul>
 <li>Owner：初始时为NULL表示当前没有任何线程拥有该monitor record，当线程成功拥有该锁后保存线程唯一标识，当锁被释放时又设置为NULL； </li>
 <li>EntryQ:关联一个系统互斥锁（semaphore），阻塞所有试图锁住monitor record失败的线程。 </li>
@@ -482,7 +482,7 @@
 <hr>
 <p>本文由『后端精进之路』原创，首发于博客 <a target="_blank" rel="noopener" href="http://teckee.github.io/">http://teckee.github.io/</a> , 转载请注明出处</p>
 <p>搜索『后端精进之路』关注公众号，立刻获取最新文章和<strong>价值2000元的BATJ精品面试课程</strong>。</p>
-<p><img src="http://qiniu.lfeng.tech/20220128204522_3fb56.jpg" alt="后端精进之路.png"></p>
+<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1g9v9luujswj21n10l9jux.jpg" alt="后端精进之路.png"></p>
 
     </div>
 

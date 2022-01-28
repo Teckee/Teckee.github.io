@@ -28,23 +28,23 @@
 <meta property="og:site_name" content="Vincent&#39;s Notes">
 <meta property="og:description" content="3. 高级装配Bean3.1 Bean的作用域默认情况下，Spring中的bean都是以单例的形式存在的，无论注入多少次，每次注入的都是同一个实例。 考虑到某些bean可能是可变的，Spring定义了不同的作用域，可以基于这些作用域创建不同的bean，  单例是默认的作用域，如果选择@Scope注解选择其他作用域，这可以和@Component和@Bean一起使用。">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204458_c43f0.jpg">
-<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204500_b24d8.jpg">
-<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204501_2e7b6.jpg">
-<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204501_e7542.jpg">
-<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204502_59e95.jpg">
-<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204503_a293b.jpg">
-<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204503_0acc3.jpg">
-<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204504_2b93a.jpg">
-<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204505_ef844.jpg">
-<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204506_1f28c.jpg">
-<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204506_8102e.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1gco2xb0bj9j20nn0cet8m.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1gbgroffyd6j212g07y79e.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1gbkqpbvr52j20zs0bg0ws.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1gbkqqvuewlj20k80dgdik.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1gbkr2o7i87j20uu0g4adw.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1gbkr4ahjjmj20kc0g6n0o.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1gblb3p3gkyj219005ydlj.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1gblcz12isqj20w40a80z4.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1gbldib1l5aj20qm07igpb.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1gbldlo4bbuj20jo0ag79t.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g9v9luujswj21n10l9jux.jpg">
 <meta property="article:published_time" content="2020-03-26T15:43:49.000Z">
-<meta property="article:modified_time" content="2022-01-28T12:45:07.055Z">
+<meta property="article:modified_time" content="2020-05-28T04:16:55.197Z">
 <meta property="article:author" content="Vincent">
 <meta property="article:tag" content="Spring">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://qiniu.lfeng.tech/20220128204458_c43f0.jpg">
+<meta name="twitter:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1gco2xb0bj9j20nn0cet8m.jpg">
 
 
 <link rel="canonical" href="http://yoursite.com/2020/03/26/Spring_3_Advanced_Bean_Configuration/">
@@ -253,10 +253,10 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <p><img src="http://qiniu.lfeng.tech/20220128204458_c43f0.jpg" alt="Spring.png"></p>
+        <p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1gco2xb0bj9j20nn0cet8m.jpg" alt="Spring.png"></p>
 <h2 id="3-高级装配Bean"><a href="#3-高级装配Bean" class="headerlink" title="3. 高级装配Bean"></a>3. 高级装配Bean</h2><h3 id="3-1-Bean的作用域"><a href="#3-1-Bean的作用域" class="headerlink" title="3.1 Bean的作用域"></a>3.1 Bean的作用域</h3><p>默认情况下，Spring中的bean都是以单例的形式存在的，无论注入多少次，每次注入的都是同一个实例。</p>
 <p>考虑到某些bean可能是可变的，Spring定义了不同的作用域，可以基于这些作用域创建不同的bean，</p>
-<p><img src="http://qiniu.lfeng.tech/20220128204500_b24d8.jpg" alt="Screen Shot 2020-01-30 at 3.44.24 PM.png"></p>
+<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1gbgroffyd6j212g07y79e.jpg" alt="Screen Shot 2020-01-30 at 3.44.24 PM.png"></p>
 <p>单例是默认的作用域，如果选择<code>@Scope</code>注解选择其他作用域，这可以和<code>@Component</code>和<code>@Bean</code>一起使用。</p>
 <span id="more"></span>
 
@@ -339,27 +339,27 @@
 <h4 id="Value"><a href="#Value" class="headerlink" title="@Value"></a>@Value</h4><p>该注解的作用是将我们配置文件的属性读出来，有<code>@Value(“$&#123;&#125;”)</code>和<code>@Value(“#&#123;&#125;”)</code>两种方式。</p>
 <p>**1. @Value(“${}”)**：注入的是外部配置文件对应的property</p>
 <p>在application.propertites配置属性如下：</p>
-<p><img src="http://qiniu.lfeng.tech/20220128204501_2e7b6.jpg" alt="Screen Shot 2020-02-04 at 10.29.30 PM.png"></p>
+<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1gbkqpbvr52j20zs0bg0ws.jpg" alt="Screen Shot 2020-02-04 at 10.29.30 PM.png"></p>
 <p>在程序中动态读取server.port属性，</p>
-<p><img src="http://qiniu.lfeng.tech/20220128204501_e7542.jpg" alt="Screen Shot 2020-02-04 at 10.31.09 PM.png">@w=300</p>
+<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1gbkqqvuewlj20k80dgdik.jpg" alt="Screen Shot 2020-02-04 at 10.31.09 PM.png">@w=300</p>
 <p>这样server.port=8000就注入到了对应的参数中。</p>
 <p>**2. @Value(“#{}”)**：常用的方式是<code>#&#123;obj.property ? :default_value&#125;</code>，注意与上一种方式不同的是，这种方式中的obj需要是一个对象。也可以在其中填写<code>SpEL表达式</code>。</p>
 <blockquote>
 <p>Spring表达式语言全称为“Spring Expression Language”，缩写为“SpEL”，类似于Struts2x中使用的OGNL表达式语言，能在运行时构建复杂表达式、存取对象图属性、对象方法调用等等，并且能与Spring功能完美整合，如能用来配置Bean定义。</p>
 </blockquote>
 <p>下面的例子中，首先定义UserBean并从property文件中读取属性，属性值为mysql。</p>
-<p><img src="http://qiniu.lfeng.tech/20220128204502_59e95.jpg" alt="Screen Shot 2020-02-04 at 10.42.30 PM.png">@w=400</p>
+<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1gbkr2o7i87j20uu0g4adw.jpg" alt="Screen Shot 2020-02-04 at 10.42.30 PM.png">@w=400</p>
 <p>接着在另一个Controller类中注入UserBean的属性。</p>
-<p><img src="http://qiniu.lfeng.tech/20220128204503_a293b.jpg" alt="Screen Shot 2020-02-04 at 10.44.04 PM.png">@w=300</p>
+<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1gbkr4ahjjmj20kc0g6n0o.jpg" alt="Screen Shot 2020-02-04 at 10.44.04 PM.png">@w=300</p>
 <h4 id="Autowired"><a href="#Autowired" class="headerlink" title="@Autowired"></a>@Autowired</h4><p>Spring中常利用<code>@Autowired</code>完成依赖注入(DI), 对IOC容器中的各个组件的依赖关系赋值。</p>
 <p>下面的例子中，是常见的DAO、Service、Controller模型，采用Autowired可以方便的在Service层和Controller层中注入对应的Bean实例。</p>
-<p><img src="http://qiniu.lfeng.tech/20220128204503_0acc3.jpg" alt="Screen Shot 2020-02-05 at 10.15.23 AM.png"></p>
+<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1gblb3p3gkyj219005ydlj.jpg" alt="Screen Shot 2020-02-05 at 10.15.23 AM.png"></p>
 <blockquote>
 <p>@Autowired实现原理就是：<strong>默认优先按类型去容器中找对应的组件</strong>,相当于anno.getBean(TestDao.class)去容器获取id为testDao的bean, 并注入到TestService的bean中;</p>
 </blockquote>
 <p>但是当容器中有多个testDao时，使用默认的@Autowired就会发生异常，IOC容器此时无法确定哪个bean作为依赖注入的对象，Spring引入了<strong>Qualifier</strong>和<strong>Primary</strong>来解决这个问题。</p>
 <p>假定有两个testDao，其bean id分别为testDao1和testDao2，此时可以使用@Autowired和<code>@Qualifier</code>结合来指定注入哪一个bean,下面的例子中，指定bean id为testDao，注意还可以加上<code>required=false</code>当容器中找不到这个bean时，也不会报错，此时该对象注入失败为null。</p>
-<p><img src="http://qiniu.lfeng.tech/20220128204504_2b93a.jpg" alt="Screen Shot 2020-02-05 at 11.20.09 AM.png"></p>
+<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1gblcz12isqj20w40a80z4.jpg" alt="Screen Shot 2020-02-05 at 11.20.09 AM.png"></p>
 <p>如果不使用<code>@Qualifier</code>，可以使用<code>@Primary</code>来指定默认的首选bean。此时通过getBean和autowired获取到的都是<code>@Primary</code>指定的bean。</p>
 <p>当<code>@Qualifier</code>和<code>@Primary</code>共存时，<code>@Qualifier</code>会按照bean id来获取指定的bean，不会受到<code>@Primary</code>的影响。此时使用getBean获取到的就是<code>@Primary</code>标识的bean。</p>
 <p><strong>扩展：</strong></p>
@@ -369,21 +369,21 @@
 <blockquote>
 <p>@Resource和Autowired一样可以装配bean<br>@Resource缺点: 不能支持@Primary功能，不能支持@Autowired(required = false)的功能</p>
 </blockquote>
-<p><img src="http://qiniu.lfeng.tech/20220128204505_ef844.jpg" alt="Screen Shot 2020-02-05 at 11.38.40 AM.png"></p>
+<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1gbldib1l5aj20qm07igpb.jpg" alt="Screen Shot 2020-02-05 at 11.38.40 AM.png"></p>
 <ol start="2">
 <li>@Inject</li>
 </ol>
 <blockquote>
 <p>@Inject和Autowired一样可以装配bean, 支持@Primary功能, 可用于非spring框架.<br>@Inject缺点: 但不能支持<code>@Autowired(required = false)</code>的功能,需要引入第三方包javax.inject </p>
 </blockquote>
-<p><img src="http://qiniu.lfeng.tech/20220128204506_1f28c.jpg" alt="Screen Shot 2020-02-05 at 11.41.57 AM.png">@w=350</p>
+<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1gbldlo4bbuj20jo0ag79t.jpg" alt="Screen Shot 2020-02-05 at 11.41.57 AM.png">@w=350</p>
 <p>Autowired属于spring的, 不能脱离spring,  @Resource和@Inject都是JAVA规范<br>推荐使用@Autowired。</p>
 <h3 id="3-6-Bean-Vs-Component"><a href="#3-6-Bean-Vs-Component" class="headerlink" title="3.6 @Bean Vs @Component"></a>3.6 @Bean Vs @Component</h3><p><code>@Component</code>主要和ComponentScan结合，用于自动检测和配置Bean，Bean和被注解的类是一一对应的关系。</p>
 <p><code>@Bean</code>用于显式声明一个单独的Bean，而不是让Spring自动完成该过程，通过该注解可以将类的定义和Bean的声明解耦。特别是使用第三方的库时，只能通过@Bean来将某些类注入到容器中。</p>
 <hr>
 <p>本文由『后端精进之路』原创，首发于博客 <a target="_blank" rel="noopener" href="http://teckee.github.io/">http://teckee.github.io/</a> , 转载请注明出处</p>
 <p>搜索『后端精进之路』关注公众号，立刻获取最新文章和<strong>价值2000元的BATJ精品面试课程</strong>。</p>
-<p><img src="http://qiniu.lfeng.tech/20220128204506_8102e.jpg" alt="后端精进之路.png"></p>
+<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1g9v9luujswj21n10l9jux.jpg" alt="后端精进之路.png"></p>
 
     </div>
 

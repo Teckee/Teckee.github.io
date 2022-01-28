@@ -28,15 +28,15 @@
 <meta property="og:site_name" content="Vincent&#39;s Notes">
 <meta property="og:description" content="Github绑定域名需要完成以下两步  1. 域名解析购买域名之后，设置CNAME记录指向github博客。比如在阿里云购买域名之后，直接增加一条CNAME记录指向 teckee.github.io即可">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204507_63ec2.jpg">
-<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204508_b300d.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g9p5v2hrbsj21li0de41k.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/mw690/a18449c6gy1g9p5yjyxy1j20j40a4jst.jpg">
 <meta property="article:published_time" content="2019-01-27T08:17:44.000Z">
-<meta property="article:modified_time" content="2022-01-28T12:45:08.205Z">
+<meta property="article:modified_time" content="2020-12-13T10:37:15.082Z">
 <meta property="article:author" content="Vincent">
 <meta property="article:tag" content="hexo">
 <meta property="article:tag" content="domain">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://qiniu.lfeng.tech/20220128204507_63ec2.jpg">
+<meta name="twitter:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g9p5v2hrbsj21li0de41k.jpg">
 
 
 <link rel="canonical" href="http://yoursite.com/2019/01/27/hexo-blog-domain/">
@@ -249,11 +249,11 @@
 <p>Github绑定域名需要完成以下两步</p>
 </blockquote>
 <h2 id="1-域名解析"><a href="#1-域名解析" class="headerlink" title="1. 域名解析"></a>1. 域名解析</h2><p>购买域名之后，设置CNAME记录指向github博客。比如在阿里云购买域名之后，直接增加一条CNAME记录指向 teckee.github.io即可</p>
-<p><img src="http://qiniu.lfeng.tech/20220128204507_63ec2.jpg" alt="Screen Shot 2019-12-08 at 11.36.16 AM.png"></p>
+<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1g9p5v2hrbsj21li0de41k.jpg" alt="Screen Shot 2019-12-08 at 11.36.16 AM.png"></p>
 <span id="more"></span>
 
 <h2 id="2-github增加CNAME记录"><a href="#2-github增加CNAME记录" class="headerlink" title="2. github增加CNAME记录"></a>2. github增加CNAME记录</h2><p>在blog下面的source目录增加CNAME文件，里面写上你要绑定的域名，比如way2backend.tech,注意这里的域名不需要加上https/http等前缀。</p>
-<p><img src="http://qiniu.lfeng.tech/20220128204508_b300d.jpg" alt="Screen Shot 2019-12-08 at 11.40.22 AM.png"></p>
+<p><img src="http://ww1.sinaimg.cn/mw690/a18449c6gy1g9p5yjyxy1j20j40a4jst.jpg" alt="Screen Shot 2019-12-08 at 11.40.22 AM.png"></p>
 <p>注意这样配置以后，还是可能出现每次<code>hexo g &amp;&amp; hexo d</code>时，在public目录下生成的CNAME文件为空，这个时候需要去主题目录下，删除默认的空CNAME文件.</p>
 <p>举例，我用的next主题，这样的话需要到themes/next/source下将空的CNAME文件删除。</p>
 <p>这样以后每次更新博客，就会从source目录进行拷贝CNAME，确保了CNAME不会被覆盖。</p>

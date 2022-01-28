@@ -28,33 +28,33 @@
 <meta property="og:site_name" content="Vincent&#39;s Notes">
 <meta property="og:description" content="2. 垃圾收集器与内存分配策略 垃圾收集（Garbage Collection, GC）是JVM实现里非常重要的一环，JVM成熟的内存动态分配与回收技术使Java（当然还有其他运行在JVM上的语言，如Scala等）程序员在提升开发效率上获得了惊人的便利。理解GC，对于理解JVM和Java语言有着非常重要的作用。并且当我们需要排查各种内存溢出、内存泄漏问题时，当垃圾收集称为系统达到更高并发量的瓶颈">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204525_39c63.jpg">
-<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204525_dc304.jpg">
-<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204526_6eb2d.jpg">
-<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204526_74d38.jpg">
-<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204527_0045f.jpg">
-<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204528_a8b50.jpg">
-<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204528_0c6a7.jpg">
-<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204528_cb497.jpg">
-<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204529_e5546.jpg">
-<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204529_f1d40.jpg">
-<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204529_522e0.jpg">
-<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204530_96909.jpg">
-<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204530_049ee.jpg">
-<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204530_a2455.jpg">
-<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204531_bd48e.jpg">
-<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204531_471b0.jpg">
-<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204532_acc29.jpg">
-<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204533_d8a1a.jpg">
-<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204533_abf53.jpg">
-<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204534_4827d.jpg">
-<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204535_07c1c.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1gam0dn947ej20zk0k0wfo.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1ga2bicbfrij20ez08dq36.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1ga2bs8410yj21840fqgr2.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1ga2bvi5mobj21c402wglt.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1ga2cbultfqj20fe078mxo.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1ga2cf3dtaij20fv07pgm7.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1ga2cm9m3zfj20fa0780t7.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1ga2dhh0hsbj20k20gemyn.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1ga2e8opdi4j20ja0770tg.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1ga2edcqc48j20jl078gmd.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1ga2epzschqj20k007nwf9.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1ga2eu1lw72j20oo08pjsf.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1ga2fg2102yj20rc096mxr.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1ga2fh0bledj20ok08d3zi.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1ga2fmrdkmwj20xm0f2gs6.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1ga2fn04m9kj20wy0kqk1w.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1ga36w3p225j218o074di6.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1ga36ywtlecj21lk09mgpp.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1ga3727n5maj21am078jtr.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1ga3751mvhlj21li09qae3.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g9v9luujswj21n10l9jux.jpg">
 <meta property="article:published_time" content="2020-01-17T13:43:49.000Z">
-<meta property="article:modified_time" content="2022-01-28T12:45:35.241Z">
+<meta property="article:modified_time" content="2020-01-17T14:36:15.679Z">
 <meta property="article:author" content="Vincent">
 <meta property="article:tag" content="Java">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://qiniu.lfeng.tech/20220128204525_39c63.jpg">
+<meta name="twitter:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1gam0dn947ej20zk0k0wfo.jpg">
 
 
 <link rel="canonical" href="http://yoursite.com/2020/01/17/JVM_2_GC/">
@@ -263,7 +263,7 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <p><img src="http://qiniu.lfeng.tech/20220128204525_39c63.jpg" alt="JVM.jpg"></p>
+        <p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1gam0dn947ej20zk0k0wfo.jpg" alt="JVM.jpg"></p>
 <h2 id="2-垃圾收集器与内存分配策略"><a href="#2-垃圾收集器与内存分配策略" class="headerlink" title="2. 垃圾收集器与内存分配策略"></a>2. 垃圾收集器与内存分配策略</h2><blockquote>
 <p>垃圾收集（Garbage Collection, GC）是JVM实现里非常重要的一环，JVM成熟的内存动态分配与回收技术使Java（当然还有其他运行在JVM上的语言，如Scala等）程序员在提升开发效率上获得了惊人的便利。理解GC，对于理解JVM和Java语言有着非常重要的作用。并且当我们需要排查各种内存溢出、内存泄漏问题时，当垃圾收集称为系统达到更高并发量的瓶颈时，只有深入理解GC和内存分配，才能对这些“自动化”的技术实施必要的监控和调节。</p>
 </blockquote>
@@ -281,7 +281,7 @@
 <p>引用计数算法的实现简单，判定效率也很高，大部分情况下是一个不错的算法。它没有被JVM采用的原因是它很难解决对象之间循环引用的问题。</p>
 <h4 id="可达性分析算法"><a href="#可达性分析算法" class="headerlink" title="可达性分析算法"></a>可达性分析算法</h4><p>在主流商用程序语言的实现中，都是通过可达性分析（tracing GC）来判定对象是否存活的。</p>
 <p>算法的基本思路是：通过一系列的称为“GC Roots”的对象作为起点，从这些节点向下搜索，搜索所走过的路径称为引用链（Reference Chain），当一个对象到GC Roots没有任何引用链相连（用图论的话来说，就是GC Roots 到这个对象不可达）时，则证明此对象时不可用的。用下图来加以说明：</p>
-<p><img src="http://qiniu.lfeng.tech/20220128204525_dc304.jpg" alt="0635cbe8.png"></p>
+<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1ga2bicbfrij20ez08dq36.jpg" alt="0635cbe8.png"></p>
 <p>作为GC Roots的对象包括下面几种：</p>
 <ul>
 <li>虚拟机栈（栈帧中的本地变量表）中引用的对象。</li>
@@ -295,13 +295,13 @@
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">public class TestSoftRef &#123;</span><br><span class="line">	</span><br><span class="line">	public static class User&#123;</span><br><span class="line">		public int id = 0;</span><br><span class="line">		public String name = &quot;&quot;;</span><br><span class="line">		public User(int id, String name) &#123;</span><br><span class="line">			super();</span><br><span class="line">			this.id = id;</span><br><span class="line">			this.name = name;</span><br><span class="line">		&#125;</span><br><span class="line">		@Override</span><br><span class="line">		public String toString() &#123;</span><br><span class="line">			return &quot;User [id=&quot; + id + &quot;, name=&quot; + name + &quot;]&quot;;</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	public static void main(String[] args) &#123;</span><br><span class="line"></span><br><span class="line">		User u = new User(1,&quot;Vincent&quot;);</span><br><span class="line">		SoftReference&lt;User&gt; userSoft = new SoftReference&lt;&gt;(u);</span><br><span class="line">		u = null;//保证new User(1,&quot;Vincent&quot;)这个实例只有userSoft在软引用</span><br><span class="line">		</span><br><span class="line">		System.out.println(userSoft.get());</span><br><span class="line">		System.gc();//展示gc的时候，SoftReference不一定会被回收</span><br><span class="line">		System.out.println(&quot;AfterGc&quot;);</span><br><span class="line">		System.out.println(userSoft.get());//new User(1,&quot;Vincent&quot;)没有被回收</span><br><span class="line">		List&lt;byte[]&gt; list = new LinkedList&lt;&gt;();</span><br><span class="line">		</span><br><span class="line">		try &#123;</span><br><span class="line">			for(int i=0;i&lt;100;i++) &#123;</span><br><span class="line">				//User(1,&quot;Vincent&quot;)实例一直存在</span><br><span class="line">				System.out.println(&quot;********************&quot;+userSoft.get());</span><br><span class="line">				list.add(new byte[1024*1024*1]);</span><br><span class="line">			&#125;</span><br><span class="line">		&#125; catch (Throwable e) &#123;</span><br><span class="line">			//抛出了OOM异常后打印的，User(1,&quot;Vincent&quot;)这个实例被回收了</span><br><span class="line">			System.out.println(&quot;Throwable********************&quot;+userSoft.get());</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>程序输出结果：</p>
-<p><img src="http://qiniu.lfeng.tech/20220128204526_6eb2d.jpg" alt="Screen Shot 2019-12-19 at 8.52.43 PM.png"></p>
+<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1ga2bs8410yj21840fqgr2.jpg" alt="Screen Shot 2019-12-19 at 8.52.43 PM.png"></p>
 <h4 id="弱引用-WeakReference"><a href="#弱引用-WeakReference" class="headerlink" title="弱引用 WeakReference"></a>弱引用 WeakReference</h4><p>一些有用（程度比软引用更低）但是并非必需，用弱引用关联的对象，<strong>只能生存到下一次垃圾回收之前</strong>，GC发生时，不管内存够不够，都会被回收。</p>
 <p>下面的例子中，发生gc后，弱引用所关联的对象被回收。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">public class TestWeakRef &#123;</span><br><span class="line">	public static class User&#123;</span><br><span class="line">		public int id = 0;</span><br><span class="line">		public String name = &quot;&quot;;</span><br><span class="line">		public User(int id, String name) &#123;</span><br><span class="line">			super();</span><br><span class="line">			this.id = id;</span><br><span class="line">			this.name = name;</span><br><span class="line">		&#125;</span><br><span class="line">		@Override</span><br><span class="line">		public String toString() &#123;</span><br><span class="line">			return &quot;User [id=&quot; + id + &quot;, name=&quot; + name + &quot;]&quot;;</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	public static void main(String[] args) &#123;</span><br><span class="line">		User u = new User(1,&quot;Vincent&quot;);</span><br><span class="line">		WeakReference&lt;User&gt; userWeak = new WeakReference&lt;&gt;(u);</span><br><span class="line">		u = null;</span><br><span class="line">		System.out.println(userWeak.get());</span><br><span class="line">		System.gc();</span><br><span class="line">		System.out.println(&quot;AfterGc&quot;);</span><br><span class="line">		System.out.println(userWeak.get());</span><br><span class="line">		</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>输出结果如下：</p>
-<p><img src="http://qiniu.lfeng.tech/20220128204526_74d38.jpg" alt="Screen Shot 2019-12-19 at 8.56.46 PM.png"></p>
+<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1ga2bvi5mobj21c402wglt.jpg" alt="Screen Shot 2019-12-19 at 8.56.46 PM.png"></p>
 <h4 id="虚引用"><a href="#虚引用" class="headerlink" title="虚引用"></a>虚引用</h4><p>又称为幽灵引用或者幻影引用。一个对象是否有虚引用的存在，完全不会对其生存时间构成影响，也无法通过虚引用取得一个对象。</p>
 <p>为一个对象设置虚引用关联的唯一目的，就是能在<strong>这个对象被回收时收到一个系统通知</strong>。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Object obj = new Object();</span><br><span class="line">PhantomReference&lt;Object&gt; pf = new PhantomReference&lt;Object&gt;(obj);</span><br><span class="line">obj = null;</span><br></pre></td></tr></table></figure>
@@ -314,7 +314,7 @@
 <p>话句话说，只要类加载器存活，其加载的类的元数据也是存活的，因而不会被回收掉。<strong>当一个类加载器被垃圾回收器标记为不再存活，其对应的元空间会被回收。</strong></p>
 <h3 id="2-4-垃圾收集算法"><a href="#2-4-垃圾收集算法" class="headerlink" title="2.4 垃圾收集算法"></a>2.4 垃圾收集算法</h3><h4 id="标记-清除算法（Mark-Sweep）"><a href="#标记-清除算法（Mark-Sweep）" class="headerlink" title="标记-清除算法（Mark-Sweep）"></a>标记-清除算法（Mark-Sweep）</h4><p>算法分成“标记”、“清除”两个阶段：首先标记出所有需要回收的对象，在标记完成后统一回收所有被标记的对象。</p>
 <p>算法的执行过程如下图所示：</p>
-<p><img src="http://qiniu.lfeng.tech/20220128204527_0045f.jpg" alt="efc6204a.jpg"></p>
+<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1ga2cbultfqj20fe078mxo.jpg" alt="efc6204a.jpg"></p>
 <p>标记－清除算法的不足主要有以下两点：</p>
 <ul>
 <li><p>空间问题，标记清除之后会产生大量不连续的内存碎片，空间碎片太多可能会导致以后在程序运行过程中需要分配较大对象时，无法找到足够的连续内存而不得不触发另一次垃圾收集动作。</p>
@@ -324,9 +324,9 @@
 </ul>
 <h4 id="复制算法（Copying）"><a href="#复制算法（Copying）" class="headerlink" title="复制算法（Copying）"></a>复制算法（Copying）</h4><p>将可用内存按容量分成大小相等的两块，每次只使用其中的一块。当这一块内存用完，就将还存活着的对象复制到另一块上面，然后再把已使用过的内存空间一次清理掉。</p>
 <p>这样做使得每次都是对整个半区进行内存回收，内存分配时也就不用考虑内存碎片等复杂情况，只要移动堆顶指针，按顺序分配内存即可，实现简单，运行高效。<strong>只是这种算法的代价是将内存缩小为原来的一半。</strong> 复制算法的执行过程如下图所示：</p>
-<p><img src="http://qiniu.lfeng.tech/20220128204528_a8b50.jpg" alt="f1cada8a.jpg"></p>
+<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1ga2cf3dtaij20fv07pgm7.jpg" alt="f1cada8a.jpg"></p>
 <h4 id="标记-整理算法（Mark-Compact）"><a href="#标记-整理算法（Mark-Compact）" class="headerlink" title="标记-整理算法（Mark-Compact）"></a>标记-整理算法（Mark-Compact）</h4><p>根据老年代的特点，标记－整理（Mark-Compact）算法被提出来，主要思想为：此算法的标记过程与标记－清除算法一样，但后续步骤不是直接对可回收对象进行清理，而是让所有存活的对象都向一端移动，然后直接清理掉边界以外的内存。具体示意图如下所示：</p>
-<p><img src="http://qiniu.lfeng.tech/20220128204528_0c6a7.jpg" alt="d3d3277f.jpg"></p>
+<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1ga2cm9m3zfj20fa0780t7.jpg" alt="d3d3277f.jpg"></p>
 <h4 id="分代收集算法（Generational-Collection）"><a href="#分代收集算法（Generational-Collection）" class="headerlink" title="分代收集算法（Generational Collection）"></a>分代收集算法（Generational Collection）</h4><p>当前商业虚拟机的垃圾收集都采用分代收集（Generational Collection）算法，此算法相较于前几种没有什么新的特征，主要思想为：根据对象存活周期的不同将内存划分为几块，一般是把Java堆分为新生代和老年代，这样就可以根据各个年代的特点采用最适合的收集算法：</p>
 <ul>
 <li>新生代</li>
@@ -356,7 +356,7 @@
 <h4 id="安全区域"><a href="#安全区域" class="headerlink" title="安全区域"></a>安全区域</h4><p>安全区域是指在一段代码片段之中，引用关系不会发生变化，在这个区域内的任何地方进行GC都是安全的。可以看成是扩展的安全点。</p>
 <h3 id="2-6-垃圾收集器"><a href="#2-6-垃圾收集器" class="headerlink" title="2.6 垃圾收集器"></a>2.6 垃圾收集器</h3><p>目前为止并没有一个最好的收集器，也没有万能的收集器，通常是根据具体情况选择合适的收集器。</p>
 <p>接下来要介绍的收集器如下图所示，7种收集器分别作用于不同的区域，<code>如果两个收集器之间存在连线，就说明可以搭配使用。</code>虚拟机所处的位置，代表是属于新生代收集器还是老年代收集器。</p>
-<p><img src="http://qiniu.lfeng.tech/20220128204528_cb497.jpg" alt="All-GC.jpg"></p>
+<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1ga2dhh0hsbj20k20gemyn.jpg" alt="All-GC.jpg"></p>
 <h4 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h4><p><strong>1. 并行与并发</strong></p>
 <ul>
 <li><p>并行（Parallel）：指多条垃圾收集线程并行工作，但此时用户线程仍然处于等待状态。</p>
@@ -374,11 +374,11 @@
 <h4 id="Serial-Serial-Old-收集器"><a href="#Serial-Serial-Old-收集器" class="headerlink" title="Serial/Serial Old 收集器"></a>Serial/Serial Old 收集器</h4><p>Serial是一个“单线程”的<code>新生代收集器</code>，使用<code>复制算法</code>，它只会使用一个CPU或者一条收集器线程去完成垃圾收集工作，并且它在垃圾收集时，必须暂停所有其他的工作线程，直到它收集结束。“Stop The World”会在用户不可见的情况下，把用户的工作线程全部停掉。</p>
 <p>Serial Old是Serial收集器的老年代版本，同样是一个“单线程”收集器，使用标记-整理算法。这个收集器主要是给Client模式下的虚拟机使用，Server模式下还有两个用途，一个是在JDK1.5及之前的版本中与Parallel Scavenge收集器搭配使用，另一个是作为CMS收集器的后备预案，在并发收集发生Concurrent Mode Failure时使用。</p>
 <p>下图是 Serial/Serial Old 收集器运行示意图：</p>
-<p><img src="http://qiniu.lfeng.tech/20220128204529_e5546.jpg" alt="GC-Serial.jpg"></p>
+<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1ga2e8opdi4j20ja0770tg.jpg" alt="GC-Serial.jpg"></p>
 <p>上图中，<code>新生代是Serial收集器采用复制算法</code>，<code>老年代是Serial Old收集器采用标记-整理算法</code>。Serial虽然是一个缺点鲜明的收集器，但它依然是虚拟机在Client模式下的默认收集器，它也有优点，比如简单高效（与其他收集器单线程相比），对于单个CPU来说，Serial由于没有线程交互的开销，效率比较高</p>
 <h4 id="ParNew-收集器"><a href="#ParNew-收集器" class="headerlink" title="ParNew 收集器"></a>ParNew 收集器</h4><p><code>ParNew收集器是Serial收集器的多线程版本</code>，也是使用复制算法的新生代收集器，它除了使用多条线程进行垃圾收集以外，其他的比如收集器的控制参数、收集算法、Stop-The-World、对象分配规则、回收策略都和Serial收集器完全一样。</p>
 <p>下图是 ParNew/Serial Old 收集器运行示意图：</p>
-<p><img src="http://qiniu.lfeng.tech/20220128204529_f1d40.jpg" alt="GC-ParNew.jpg"></p>
+<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1ga2edcqc48j20jl078gmd.jpg" alt="GC-ParNew.jpg"></p>
 <p>上图中，新生代是<code>ParNew收集器采用复制算法</code>，老年代是<code>Serial Old收集器采用标记-整理算法</code>。ParNew是许多Server模式下虚拟机的首选新生代收集器，因为它能与CMS收集器配合工作。CMS收集器是HotSpot虚拟机中第一个并发的垃圾收集器，CMS第一次实现了让用户线程与垃圾收集线程同时工作。</p>
 <h4 id="Parallel-Scavenge（ParallerGC）-Parallel-Old-收集器"><a href="#Parallel-Scavenge（ParallerGC）-Parallel-Old-收集器" class="headerlink" title="Parallel Scavenge（ParallerGC）/ Parallel Old 收集器"></a>Parallel Scavenge（ParallerGC）/ Parallel Old 收集器</h4><p>Parallel Scavenge也是使用复制算法的新生代收集器，并且也是一个并行的多线程收集器。Parallel收集器跟其它收集器关注GC停顿时间不同，它关注的是吞吐量。低停顿时间适合需要与用户交互的程序，而高吞吐量可以高效率的利用CPU时间，能尽快完成运算任务，适合用于后台计算较多而交互较少的任务。</p>
 <p>Parallel收集器提供了两个虚拟机参数用以控制吞吐量，<code>-XX:MaxGCPauseMillis</code>参数可以控制垃圾收集的最大停顿时间，<code>-XX:GCTimeRatio</code>参数可以直接设置吞吐量大小。</p>
@@ -393,7 +393,7 @@
 </blockquote>
 <p><strong>Parallel Old收集器</strong>是Parallel Scavenge的老年代版本，使用多线程和标记-整理算法。此收集器在JDK1.6中开始出现，在Parallel Old出现之前，只有Serial Old能够与Parallel Scavenge收集器配合使用。由于Serial Old这种单线程收集器的性能拖累，导致在老年代比较大的场景下，Parallel Scavenge和Serial Old的组合吞吐量甚至还不如ParNew加CMS的组合。而有了Parallel Old收集器之后，Parallel Scavenge与Parallel Old成了名副其实的吞吐量优先的组合，在注重吞吐量和CPU资源敏感的场景下，都可以优先考虑这对组合。</p>
 <p>下图是 Parallel Scavenge（ParallerGC）/ Parallel Old 收集器运行示意图：</p>
-<p><img src="http://qiniu.lfeng.tech/20220128204529_522e0.jpg" alt="GC-Parallel.jpg"></p>
+<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1ga2epzschqj20k007nwf9.jpg" alt="GC-Parallel.jpg"></p>
 <h4 id="CMS-收集器"><a href="#CMS-收集器" class="headerlink" title="CMS 收集器"></a>CMS 收集器</h4><p>CMS(Concurrent Mark Sweep)收集器是基于<code>标记-清除算法</code>的<code>老年代收集器</code>，它以获取<code>最短回收停顿时间</code>为目标。CMS是一款优秀的收集器，特点是并发收集、低停顿，它的运行过程稍微复杂些，分为4个步骤：</p>
 <ol>
 <li>初始标记（CMS initial mark）</li>
@@ -403,7 +403,7 @@
 </ol>
 <p>4个步骤中只有初始标记、重新标记这两步需要“Stop The World”。<code>初始标记</code>只是标记一下GC Roots能直接关联的对象，速度很快。<code>并发标记</code>是进行GC Roots Tracing的过程，也就是从GC Roots开始进行可达性分析。<code>重新标记</code>则是为了修正并发标记期间因用户线程继续运行而导致标记发生变动的那一部分记录。<code>并发清理</code>当然就是进行清理被标记对象的工作。</p>
 <p>下图是 CMS 收集器运行示意图：</p>
-<p><img src="http://qiniu.lfeng.tech/20220128204530_96909.jpg" alt="GC-CMS.jpg"></p>
+<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1ga2eu1lw72j20oo08pjsf.jpg" alt="GC-CMS.jpg"></p>
 <p>整个过程中，并发标记与并发清除过程耗时最长，但它们都可以与用户线程一起工作，所以整体上说，CMS收集器的内存回收过程是与用户线程一起并发执行的。</p>
 <p>但是CMS收集器也并不完美，它有以下3个缺点：</p>
 <ol>
@@ -424,13 +424,13 @@
 </ul>
 <p>G1收集器之所以能建立可预测的停顿时间模型，是因为它可以避免在整个Java堆中进行全区域的垃圾收集，G1根据各个Region里垃圾堆积的价值大小（回收所获空间大小及所需时间的经验值），在后台维护一个优先列表，每次根据允许的收集时间，优先回收价值最大的Region，这也是Garbage-First名称的由来。</p>
 <p>G1收集器的Region如下图所示：</p>
-<p><img src="http://qiniu.lfeng.tech/20220128204530_049ee.jpg" alt="GC-G1-Region.jpg"></p>
+<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1ga2fg2102yj20rc096mxr.jpg" alt="GC-G1-Region.jpg"></p>
 <p>图中的E代表是Eden区，S代表Survivor，O代表Old区，H代表humongous表示巨型对象(大于Region空间的对象)。从图中可以看出各个区域逻辑上并不是连续的，并且一个Region在某一个时刻是Eden，在另一个时刻就可能属于老年代。<code>G1在进行垃圾清理的时候就是将一个Region的对象拷贝到另外一个Region中。</code></p>
 <blockquote>
 <p>避免全堆扫描：G1中引入了Remembered Set(记忆集)。每个Region中都有一个Remembered Set，记录的是其他Region中的对象引用本Region对象的关系（谁引用了我的对象）。所以在垃圾回收时，在GC根节点的枚举范围中加入Remembered Set即可保证不对全堆扫描也不会有遗漏。G1里面还有另外一种数据结构叫Collection Set，Collection Set记录的是GC要收集的Region的集合，Collection Set里的Region可以是任意代的。在GC的时候，对于跨代对象引用，只要扫描对应的Collection Set中的Remembered Set即可。</p>
 </blockquote>
 <p>G1收集器的收集过程如下图所示：</p>
-<p><img src="http://qiniu.lfeng.tech/20220128204530_a2455.jpg" alt="G1.jpg"></p>
+<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1ga2fh0bledj20ok08d3zi.jpg" alt="G1.jpg"></p>
 <p>如图所示，G1收集过程有如下几个阶段：</p>
 <ul>
 <li>初始标记（Initial Marking）：标记一下GC Roots能关联到的对象，需要停顿线程但是耗时短，会停顿用户线程（Stop the World）</li>
@@ -439,8 +439,8 @@
 <li>筛选回收（Live Data Counting and Evacuation）：会对各个Region的回收价值和成本进行排序，根据用户期望的GC停顿时间来制定回收计划，该阶段也是会停顿用户线程（Stop the World）。</li>
 </ul>
 <p>以下是对所有垃圾收集器的总结：</p>
-<p><img src="http://qiniu.lfeng.tech/20220128204531_bd48e.jpg" alt="Screen Shot 2019-12-19 at 11.06.27 PM.png"></p>
-<p><img src="http://qiniu.lfeng.tech/20220128204531_471b0.jpg" alt="Screen Shot 2019-12-19 at 11.06.40 PM.png"></p>
+<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1ga2fmrdkmwj20xm0f2gs6.jpg" alt="Screen Shot 2019-12-19 at 11.06.27 PM.png"></p>
+<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1ga2fn04m9kj20wy0kqk1w.jpg" alt="Screen Shot 2019-12-19 at 11.06.40 PM.png"></p>
 <h4 id="常用的垃圾收集器参数"><a href="#常用的垃圾收集器参数" class="headerlink" title="常用的垃圾收集器参数"></a>常用的垃圾收集器参数</h4><p>以下是JVM中常用的垃圾收集器参数：</p>
 <table>
 <thead>
@@ -620,22 +620,22 @@
 <li>-Xms20M -Xmx20M -XX:+PrintGCDetails –Xmn2m -XX:SurvivorRatio=2</li>
 </ol>
 <p>没有垃圾回收，数组都在老年代。</p>
-<p><img src="http://qiniu.lfeng.tech/20220128204532_acc29.jpg" alt="Screen Shot 2019-12-20 at 2.49.47 PM.png"></p>
+<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1ga36w3p225j218o074di6.jpg" alt="Screen Shot 2019-12-20 at 2.49.47 PM.png"></p>
 <ol start="2">
 <li>-Xms20M -Xmx20M -XX:+PrintGCDetails -Xmn7m -XX:SurvivorRatio=2</li>
 </ol>
 <p>发生了垃圾回收，新生代存了部分数组，老年代也保存了部分数组，发生了晋升现象。</p>
-<p><img src="http://qiniu.lfeng.tech/20220128204533_d8a1a.jpg" alt="Screen Shot 2019-12-20 at 2.52.01 PM.png"></p>
+<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1ga36ywtlecj21lk09mgpp.jpg" alt="Screen Shot 2019-12-20 at 2.52.01 PM.png"></p>
 <ol start="3">
 <li>-Xms20M -Xmx20M -XX:+PrintGCDetails -Xmn15m -XX:SurvivorRatio=8</li>
 </ol>
 <p>新生代可以放下所有的数组，老年代没放。</p>
-<p><img src="http://qiniu.lfeng.tech/20220128204533_abf53.jpg" alt="Screen Shot 2019-12-20 at 2.55.46 PM.png"></p>
+<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1ga3727n5maj21am078jtr.jpg" alt="Screen Shot 2019-12-20 at 2.55.46 PM.png"></p>
 <ol start="4">
 <li>-Xms20M -Xmx20M -XX:+PrintGCDetails -XX:NewRatio=2</li>
 </ol>
 <p>发生了垃圾回收，出现了空间分配担保，而且发生了FullGC。</p>
-<p><img src="http://qiniu.lfeng.tech/20220128204534_4827d.jpg" alt="Screen Shot 2019-12-20 at 2.58.30 PM.png"></p>
+<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1ga3751mvhlj21li09qae3.jpg" alt="Screen Shot 2019-12-20 at 2.58.30 PM.png"></p>
 <h3 id="2-10-内存泄漏和内存溢出"><a href="#2-10-内存泄漏和内存溢出" class="headerlink" title="2.10 内存泄漏和内存溢出"></a>2.10 内存泄漏和内存溢出</h3><ul>
 <li><p>内存溢出：实实在在的内存空间不足导致；</p>
 </li>
@@ -669,7 +669,7 @@
 <hr>
 <p>本文由『后端精进之路』原创，首发于博客 <a target="_blank" rel="noopener" href="http://teckee.github.io/">http://teckee.github.io/</a> , 转载请注明出处</p>
 <p>搜索『后端精进之路』关注公众号，立刻获取最新文章和<strong>价值2000元的BATJ精品面试课程</strong>。</p>
-<p><img src="http://qiniu.lfeng.tech/20220128204535_07c1c.jpg" alt="后端精进之路.png"></p>
+<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1g9v9luujswj21n10l9jux.jpg" alt="后端精进之路.png"></p>
 
     </div>
 

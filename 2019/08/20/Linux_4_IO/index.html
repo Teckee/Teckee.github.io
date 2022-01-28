@@ -28,19 +28,19 @@
 <meta property="og:site_name" content="Vincent&#39;s Notes">
 <meta property="og:description" content="4. I&#x2F;O4.1 相关概念说明4.1.1 用户空间与内核空间现在操作系统都是采用虚拟存储器，那么对32位操作系统而言，它的寻址空间（虚拟存储空间）为4G（2的32次方）。操作系统的核心是内核，独立于普通的应用程序，可以访问受保护的内存空间，也有访问底层硬件设备的所有权限。为了保证用户进程不能直接操作内核（kernel），保证内核的安全，操心系统将虚拟空间划分为两部分，一部分为内核空间，一部分为">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204513_e2751.jpg">
-<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204514_375e5.jpg">
-<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204514_8785b.jpg">
-<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204514_61281.jpg">
-<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204515_88f51.jpg">
-<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204515_301c3.jpg">
-<meta property="og:image" content="http://qiniu.lfeng.tech/20220128204515_87538.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlgy1gf83kk26p8j30dw074glm.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlgy1gezxib07z0j30fc097wfq.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlgy1gezximd1h9j30go097abw.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlgy1gezxizh51dj30go08x406.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlgy1gezxjiiwysj30fw090q4a.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlgy1gezxk1ck9xj30h2093wgj.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g9v9luujswj21n10l9jux.jpg">
 <meta property="article:published_time" content="2019-08-20T13:43:49.000Z">
-<meta property="article:modified_time" content="2022-01-28T12:45:15.828Z">
+<meta property="article:modified_time" content="2020-05-28T05:42:41.027Z">
 <meta property="article:author" content="Vincent">
 <meta property="article:tag" content="Linux">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://qiniu.lfeng.tech/20220128204513_e2751.jpg">
+<meta name="twitter:image" content="https://tva1.sinaimg.cn/large/007S8ZIlgy1gf83kk26p8j30dw074glm.jpg">
 
 
 <link rel="canonical" href="http://yoursite.com/2019/08/20/Linux_4_IO/">
@@ -249,7 +249,7 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <p><img src="http://qiniu.lfeng.tech/20220128204513_e2751.jpg" alt="Linux"></p>
+        <p><img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1gf83kk26p8j30dw074glm.jpg" alt="Linux"></p>
 <h2 id="4-I-O"><a href="#4-I-O" class="headerlink" title="4. I/O"></a>4. I/O</h2><h3 id="4-1-相关概念说明"><a href="#4-1-相关概念说明" class="headerlink" title="4.1 相关概念说明"></a>4.1 相关概念说明</h3><h4 id="4-1-1-用户空间与内核空间"><a href="#4-1-1-用户空间与内核空间" class="headerlink" title="4.1.1 用户空间与内核空间"></a>4.1.1 用户空间与内核空间</h4><p>现在操作系统都是采用虚拟存储器，那么对32位操作系统而言，它的寻址空间（虚拟存储空间）为4G（2的32次方）。<strong>操作系统的核心是内核，独立于普通的应用程序，可以访问受保护的内存空间，也有访问底层硬件设备的所有权限。</strong>为了保证用户进程不能直接操作内核（kernel），保证内核的安全，操心系统将虚拟空间划分为两部分，一部分为内核空间，一部分为用户空间。针对linux操作系统而言，将最高的1G字节（从虚拟地址0xC0000000到0xFFFFFFFF），供内核使用，称为内核空间，而将较低的3G字节（从虚拟地址0x00000000到0xBFFFFFFF），供各个进程使用，称为用户空间。</p>
 <span id="more"></span>
 
@@ -284,19 +284,19 @@
 <li>异步 I/O（asynchronous IO）</li>
 </ul>
 <h4 id="4-2-1-阻塞I-O（blocking-IO）"><a href="#4-2-1-阻塞I-O（blocking-IO）" class="headerlink" title="4.2.1 阻塞I/O（blocking IO）"></a>4.2.1 阻塞I/O（blocking IO）</h4><p>在linux中，默认情况下所有的socket都是blocking，一个典型的读操作流程大概是这样：</p>
-<p><img src="http://qiniu.lfeng.tech/20220128204514_375e5.jpg"></p>
+<p><img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1gezxib07z0j30fc097wfq.jpg"></p>
 <p>当用户进程调用了recvfrom这个系统调用，kernel就开始了IO的第一个阶段：<strong>准备数据</strong>（对于网络IO来说，很多时候数据在一开始还没有到达。比如，还没有收到一个完整的UDP包。这个时候kernel就要等待足够的数据到来）。<strong>这个过程需要等待，也就是说数据被拷贝到操作系统内核的缓冲区中是需要一个过程的。</strong>而在用户进程这边，整个进程会被阻塞（当然，是进程自己选择的阻塞）。<strong>当kernel一直等到数据准备好了，它就会将数据从kernel中拷贝到用户内存，然后kernel返回结果，用户进程才解除block的状态，重新运行起来。</strong></p>
 <blockquote>
 <p>所以，blocking IO的特点就是在IO执行的两个阶段都被block了。</p>
 </blockquote>
 <h4 id="4-2-2-非阻塞I-O（nonblocking-IO）"><a href="#4-2-2-非阻塞I-O（nonblocking-IO）" class="headerlink" title="4.2.2 非阻塞I/O（nonblocking IO）"></a>4.2.2 非阻塞I/O（nonblocking IO）</h4><p>linux下，可以通过设置socket使其变为non-blocking。当对一个non-blocking socket执行读操作时，流程是这个样子：</p>
-<p><img src="http://qiniu.lfeng.tech/20220128204514_8785b.jpg"></p>
+<p><img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1gezximd1h9j30go097abw.jpg"></p>
 <p>当用户进程发出read操作时，如果kernel中的数据还没有准备好，那么它并不会block用户进程，而是立刻返回一个error。从用户进程角度讲 ，它发起一个read操作后，并不需要等待，而是马上就得到了一个结果。用户进程判断结果是一个error时，它就知道数据还没有准备好，于是它可以再次发送read操作。一旦kernel中的数据准备好了，并且又再次收到了用户进程的system call，那么它马上就将数据拷贝到了用户内存，然后返回。</p>
 <blockquote>
 <p>所以，nonblocking IO的特点是用户进程需要不断的主动询问kernel数据好了没有。</p>
 </blockquote>
 <h4 id="4-2-3-I-O-多路复用（-IO-multiplexing）"><a href="#4-2-3-I-O-多路复用（-IO-multiplexing）" class="headerlink" title="4.2.3 I/O 多路复用（ IO multiplexing）"></a>4.2.3 I/O 多路复用（ IO multiplexing）</h4><p>IO multiplexing就是我们说的select，poll，epoll，有些地方也称这种IO方式为event driven IO。select/epoll的好处就在于单个process就可以同时处理多个网络连接的IO。它的基本原理就是select，poll，epoll这个function会不断的轮询所负责的所有socket，当某个socket有数据到达了，就通知用户进程。</p>
-<p><img src="http://qiniu.lfeng.tech/20220128204514_61281.jpg"></p>
+<p><img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1gezxizh51dj30go08x406.jpg"></p>
 <p><code>当用户进程调用了select，那么整个进程会被block</code>，而同时，kernel会“监视”所有select负责的socket，当任何一个socket中的数据准备好了，select就会返回。这个时候用户进程再调用read操作，将数据从kernel拷贝到用户进程。</p>
 <blockquote>
 <p>所以，I/O 多路复用的特点是通过一种机制一个进程能同时等待多个文件描述符，而这些文件描述符（套接字描述符）其中的任意一个进入读就绪状态，select()函数就可以返回。</p>
@@ -306,7 +306,7 @@
 <p>在IO multiplexing Model中，实际中，对于每一个socket，一般都设置成为non-blocking，但是，如上图所示，整个用户的process其实是一直被block的。只不过process是被select这个函数block，而不是被socket IO给block。</p>
 <h4 id="4-2-4-信号驱动IO-（signal-driven-IO-SIGIO-）"><a href="#4-2-4-信号驱动IO-（signal-driven-IO-SIGIO-）" class="headerlink" title="4.2.4 信号驱动IO （signal driven IO (SIGIO)）"></a>4.2.4 信号驱动IO （signal driven IO (SIGIO)）</h4><p>应用程序提交read请求的system call，然后，kernel开始处理相应的IO操作，而同时，应用程序并不等kernel返回响应，就会开始执行其他的处理操作（应用程序没有被IO操作所阻塞）。当kernel执行完毕，返回read的响应，就会产生一个信号或执行一个基于线程的回调函数来完成这次 IO 处理过程。</p>
 <h4 id="4-2-5-异步-I-O（asynchronous-IO）"><a href="#4-2-5-异步-I-O（asynchronous-IO）" class="headerlink" title="4.2.5 异步 I/O（asynchronous IO）"></a>4.2.5 异步 I/O（asynchronous IO）</h4><p>Linux下的asynchronous IO其实用得很少。先看一下它的流程：</p>
-<p><img src="http://qiniu.lfeng.tech/20220128204515_88f51.jpg"></p>
+<p><img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1gezxjiiwysj30fw090q4a.jpg"></p>
 <p>用户进程发起read操作之后，立刻就可以开始去做其它的事。而另一方面，从kernel的角度，当它受到一个asynchronous read之后，首先它会立刻返回，所以不会对用户进程产生任何block。然后，kernel会等待数据准备完成，然后将数据拷贝到用户内存，当这一切都完成之后，kernel会给用户进程发送一个signal，告诉它read操作完成了。</p>
 <h4 id="4-2-6-总结"><a href="#4-2-6-总结" class="headerlink" title="4.2.6 总结"></a>4.2.6 总结</h4><p>从理论上说，<strong>阻塞IO、IO复用和信号驱动的IO都是同步IO模型</strong>。因为在这三种模型中，IO的读写操作都是在IO事件发生之后由<strong>应用程序</strong>来完成。而POSIX规范所定义的异步IO模型则不同。<code>对异步IO而言，用户可以直接对IO执行读写操作，这些操作告诉内核用户读写缓冲区的位置，以及IO操作完成后内核通知应用程序的方式</code>。异步IO读写操作总是立即返回，而不论IO是否阻塞的，因为真正的读写操作已经由内核接管。也就是说，同步IO模型要求用户代码自行执行IO操作(将数据从内核缓冲区读入用户缓冲区，或将数据从用户缓冲区写入内核缓冲区)，而异步IO机制则是由内核来执行IO操作(数据在内核缓冲区和用户缓冲区之间的移动是由内核在后台完成的)。<strong>可以这样认为，同步IO向应用程序通知的是IO就绪事件，而异步IO向应用程序通知的是IO完成事件。</strong> linux环境下，aio.h头文件中定义的函数提供了对异步IO的支持。</p>
 <p><strong>blocking和non-blocking的区别</strong></p>
@@ -318,7 +318,7 @@
 </blockquote>
 <p>两者的区别就在于synchronous IO做”IO operation”的时候会将process阻塞。按照这个定义，之前所述的blocking IO，non-blocking IO，IO multiplexing都属于synchronous IO。<br>有人会说，non-blocking IO并没有被block啊。这里有个非常“狡猾”的地方，定义中所指的”IO operation”是指真实的IO操作，就是例子中的recvfrom这个system call。non-blocking IO在执行recvfrom这个system call的时候，如果kernel的数据没有准备好，这时候不会block进程。但是，当kernel中数据准备好的时候，recvfrom会将数据从kernel拷贝到用户内存中，这个时候进程是被block了，在这段时间内，进程是被block的。<br>而asynchronous IO则不一样，当进程发起IO 操作之后，就直接返回再也不理睬了，直到kernel发送一个信号，告诉进程说IO完成。在这整个过程中，进程完全没有被block。</p>
 <p>各个IO Model的比较如图所示：</p>
-<p><img src="http://qiniu.lfeng.tech/20220128204515_301c3.jpg"></p>
+<p><img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1gezxk1ck9xj30h2093wgj.jpg"></p>
 <p>通过上面的图片，可以发现non-blocking IO和asynchronous IO的区别还是很明显的。在non-blocking IO中，虽然进程大部分时间都不会被block，但是它仍然要求进程去主动的check，并且<code>当数据准备完成以后，也需要进程主动的再次调用recvfrom来将数据拷贝到用户内存</code>。<code>而asynchronous IO则完全不同。它就像是用户进程将整个IO操作交给了他人（kernel）完成，然后他人做完后发信号通知</code>。在此期间，用户进程不需要去检查IO操作的状态，也不需要主动的去拷贝数据。</p>
 <h3 id="4-3-I-O-多路复用之select、poll、epoll详解"><a href="#4-3-I-O-多路复用之select、poll、epoll详解" class="headerlink" title="4.3 I/O 多路复用之select、poll、epoll详解"></a>4.3 I/O 多路复用之select、poll、epoll详解</h3><p>select，poll，epoll都是IO多路复用的机制。I/O多路复用就是通过一种机制，一个进程可以监视多个描述符，一旦某个描述符就绪（一般是读就绪或者写就绪），能够通知程序进行相应的读写操作。但<code>select，poll，epoll本质上都是同步I/O</code>，因为他们都需要在读写事件就绪后自己负责进行读写，也就是说这个读写过程是阻塞的，而<code>异步I/O则无需自己负责进行读写，异步I/O的实现会负责把数据从内核拷贝到用户空间</code>。</p>
 <h4 id="4-3-1-select"><a href="#4-3-1-select" class="headerlink" title="4.3.1 select"></a>4.3.1 select</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">select</span> <span class="params">(<span class="keyword">int</span> n, fd_set *readfds, fd_set *writefds, fd_set *exceptfds, struct timeval *timeout)</span></span>;</span><br></pre></td></tr></table></figure>
@@ -372,7 +372,7 @@
 <hr>
 <p>本文由『后端精进之路』原创，首发于博客 <a target="_blank" rel="noopener" href="http://teckee.github.io/">http://teckee.github.io/</a> , 转载请注明出处</p>
 <p>搜索『后端精进之路』关注公众号，立刻获取最新文章和<strong>价值2000元的BATJ精品面试课程</strong>。</p>
-<p><img src="http://qiniu.lfeng.tech/20220128204515_87538.jpg" alt="后端精进之路.png"></p>
+<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1g9v9luujswj21n10l9jux.jpg" alt="后端精进之路.png"></p>
 
     </div>
 
