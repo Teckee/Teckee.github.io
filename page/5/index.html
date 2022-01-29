@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
@@ -13,23 +13,23 @@
 
 <link rel="stylesheet" href="/css/main.css">
 
-
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
 <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+    var CONFIG = {"hostname":"lfeng.tech","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
   <meta property="og:type" content="website">
 <meta property="og:title" content="Vincent&#39;s Notes">
-<meta property="og:url" content="http://yoursite.com/page/5/index.html">
+<meta property="og:url" content="https://lfeng.tech/page/5/index.html">
 <meta property="og:site_name" content="Vincent&#39;s Notes">
-<meta property="og:locale" content="en_US">
+<meta property="og:locale" content="zh_CN">
 <meta property="article:author" content="Vincent">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://yoursite.com/page/5/">
+<link rel="canonical" href="https://lfeng.tech/page/5/">
 
 
 <script id="page-configurations">
@@ -38,7 +38,7 @@
     sidebar: "",
     isHome : true,
     isPost : false,
-    lang   : 'en'
+    lang   : 'zh-CN'
   };
 </script>
 
@@ -82,7 +82,7 @@
     <header class="header" itemscope itemtype="http://schema.org/WPHeader">
       <div class="header-inner"><div class="site-brand-container">
   <div class="site-nav-toggle">
-    <div class="toggle" aria-label="Toggle navigation bar">
+    <div class="toggle" aria-label="切换导航栏">
       <span class="toggle-line toggle-line-first"></span>
       <span class="toggle-line toggle-line-middle"></span>
       <span class="toggle-line toggle-line-last"></span>
@@ -111,12 +111,17 @@
   <ul id="menu" class="main-menu menu">
         <li class="menu-item menu-item-home">
 
-    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
 
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
 
   </li>
   </ul>
@@ -145,8 +150,8 @@
       
   
   
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/09/Elasticsearch%20Basic%20Knowledge/">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://lfeng.tech/2018/08/10/Elasticsearch%20Basic%20Knowledge/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -160,7 +165,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2018/08/09/Elasticsearch%20Basic%20Knowledge/" class="post-title-link" itemprop="url">Elasticsearch 入门</a>
+            <a href="/2018/08/10/Elasticsearch%20Basic%20Knowledge/" class="post-title-link" itemprop="url">Elasticsearch 入门</a>
         </h2>
 
         <div class="post-meta">
@@ -168,22 +173,36 @@
               <span class="post-meta-item-icon">
                 <i class="far fa-calendar"></i>
               </span>
-              <span class="post-meta-item-text">Posted on</span>
+              <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="Created: 2018-08-09 21:34:49 / Modified: 22:48:18" itemprop="dateCreated datePublished" datetime="2018-08-09T21:34:49+08:00">2018-08-09</time>
+              <time title="创建时间：2018-08-09 21:34:49 / 修改时间：14:48:18" itemprop="dateCreated datePublished" datetime="2018-08-09T21:34:49Z">2018-08-09</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
               </span>
-              <span class="post-meta-item-text">In</span>
+              <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
                   <a href="/categories/Database/" itemprop="url" rel="index"><span itemprop="name">Database</span></a>
                 </span>
             </span>
 
           
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2018/08/10/Elasticsearch%20Basic%20Knowledge/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2018/08/10/Elasticsearch%20Basic%20Knowledge/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
 
         </div>
       </header>
@@ -201,8 +220,8 @@
 <h3 id="Node"><a href="#Node" class="headerlink" title="Node"></a>Node</h3><p>作为集群（cluster）的一部分，存储数据。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2018/08/09/Elasticsearch%20Basic%20Knowledge/#more" rel="contents">
-                Read more &raquo;
+              <a class="btn" href="/2018/08/10/Elasticsearch%20Basic%20Knowledge/#more" rel="contents">
+                阅读全文 &raquo;
               </a>
             </div>
           <!--/noindex-->
@@ -224,8 +243,8 @@
       
   
   
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/08/SQL%20optimazation/">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://lfeng.tech/2018/07/09/SQL%20optimazation/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -239,7 +258,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2018/07/08/SQL%20optimazation/" class="post-title-link" itemprop="url">SQL调优</a>
+            <a href="/2018/07/09/SQL%20optimazation/" class="post-title-link" itemprop="url">SQL调优</a>
         </h2>
 
         <div class="post-meta">
@@ -247,22 +266,36 @@
               <span class="post-meta-item-icon">
                 <i class="far fa-calendar"></i>
               </span>
-              <span class="post-meta-item-text">Posted on</span>
+              <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="Created: 2018-07-08 21:02:49 / Modified: 16:53:09" itemprop="dateCreated datePublished" datetime="2018-07-08T21:02:49+08:00">2018-07-08</time>
+              <time title="创建时间：2018-07-08 21:02:49 / 修改时间：08:53:09" itemprop="dateCreated datePublished" datetime="2018-07-08T21:02:49Z">2018-07-08</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
               </span>
-              <span class="post-meta-item-text">In</span>
+              <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
                   <a href="/categories/SQL/" itemprop="url" rel="index"><span itemprop="name">SQL</span></a>
                 </span>
             </span>
 
           
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2018/07/09/SQL%20optimazation/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2018/07/09/SQL%20optimazation/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
 
         </div>
       </header>
@@ -281,8 +314,8 @@
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> tab_comp <span class="keyword">VALUES</span> (item1, price1, qty1)，(item2, price2, qty2)，(item3, price3, qty3);</span><br></pre></td></tr></table></figure>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2018/07/08/SQL%20optimazation/#more" rel="contents">
-                Read more &raquo;
+              <a class="btn" href="/2018/07/09/SQL%20optimazation/#more" rel="contents">
+                阅读全文 &raquo;
               </a>
             </div>
           <!--/noindex-->
@@ -304,8 +337,8 @@
       
   
   
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/08/11/Python-Multiple-Threads/">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://lfeng.tech/2017/08/12/Python-Multiple-Threads/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -319,7 +352,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2017/08/11/Python-Multiple-Threads/" class="post-title-link" itemprop="url">Python多线程</a>
+            <a href="/2017/08/12/Python-Multiple-Threads/" class="post-title-link" itemprop="url">Python多线程</a>
         </h2>
 
         <div class="post-meta">
@@ -327,22 +360,36 @@
               <span class="post-meta-item-icon">
                 <i class="far fa-calendar"></i>
               </span>
-              <span class="post-meta-item-text">Posted on</span>
+              <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="Created: 2017-08-11 22:15:49 / Modified: 22:20:49" itemprop="dateCreated datePublished" datetime="2017-08-11T22:15:49+08:00">2017-08-11</time>
+              <time title="创建时间：2017-08-11 22:15:49 / 修改时间：14:20:49" itemprop="dateCreated datePublished" datetime="2017-08-11T22:15:49Z">2017-08-11</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
               </span>
-              <span class="post-meta-item-text">In</span>
+              <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
                   <a href="/categories/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a>
                 </span>
             </span>
 
           
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2017/08/12/Python-Multiple-Threads/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2017/08/12/Python-Multiple-Threads/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
 
         </div>
       </header>
@@ -360,8 +407,8 @@
 <h2 id="threading模块"><a href="#threading模块" class="headerlink" title="threading模块"></a>threading模块</h2><p>Python文档中，介绍的多线程方案，一般会引入threading模块来进行举例。主要有两种编写多线程程序的方法，下面分别进行介绍。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2017/08/11/Python-Multiple-Threads/#more" rel="contents">
-                Read more &raquo;
+              <a class="btn" href="/2017/08/12/Python-Multiple-Threads/#more" rel="contents">
+                阅读全文 &raquo;
               </a>
             </div>
           <!--/noindex-->
@@ -383,8 +430,8 @@
       
   
   
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/05/17/Android-JNI-C&&C++/">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://lfeng.tech/2016/05/18/Android-JNI-C&&C++/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -398,7 +445,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2016/05/17/Android-JNI-C&&C++/" class="post-title-link" itemprop="url">Android JNI调用C/C++程序</a>
+            <a href="/2016/05/18/Android-JNI-C&&C++/" class="post-title-link" itemprop="url">Android JNI调用C/C++程序</a>
         </h2>
 
         <div class="post-meta">
@@ -406,22 +453,36 @@
               <span class="post-meta-item-icon">
                 <i class="far fa-calendar"></i>
               </span>
-              <span class="post-meta-item-text">Posted on</span>
+              <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="Created: 2016-05-17 20:36:49 / Modified: 20:38:35" itemprop="dateCreated datePublished" datetime="2016-05-17T20:36:49+08:00">2016-05-17</time>
+              <time title="创建时间：2016-05-17 20:36:49 / 修改时间：12:38:35" itemprop="dateCreated datePublished" datetime="2016-05-17T20:36:49Z">2016-05-17</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
               </span>
-              <span class="post-meta-item-text">In</span>
+              <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
                   <a href="/categories/Android/" itemprop="url" rel="index"><span itemprop="name">Android</span></a>
                 </span>
             </span>
 
           
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2016/05/18/Android-JNI-C&&C++/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2016/05/18/Android-JNI-C&&C++/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
 
         </div>
       </header>
@@ -438,8 +499,8 @@
 <p>在Android中调用C/C++程序也是一样的，基本和Java调用的方式一致，只是Android使用NDK编译出动态链接库，供Androd程序调用。本文以一个简单的Android JNI调用程序来讲解整个过程。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2016/05/17/Android-JNI-C&&C++/#more" rel="contents">
-                Read more &raquo;
+              <a class="btn" href="/2016/05/18/Android-JNI-C&&C++/#more" rel="contents">
+                阅读全文 &raquo;
               </a>
             </div>
           <!--/noindex-->
@@ -461,8 +522,8 @@
       
   
   
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/02/17/Proxy-Web-Apps-using-Nginx/">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://lfeng.tech/2016/02/18/Proxy-Web-Apps-using-Nginx/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -476,7 +537,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2016/02/17/Proxy-Web-Apps-using-Nginx/" class="post-title-link" itemprop="url">Nginx 多端口映射</a>
+            <a href="/2016/02/18/Proxy-Web-Apps-using-Nginx/" class="post-title-link" itemprop="url">Nginx 多端口映射</a>
         </h2>
 
         <div class="post-meta">
@@ -484,22 +545,36 @@
               <span class="post-meta-item-icon">
                 <i class="far fa-calendar"></i>
               </span>
-              <span class="post-meta-item-text">Posted on</span>
+              <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="Created: 2016-02-17 21:02:49 / Modified: 21:13:44" itemprop="dateCreated datePublished" datetime="2016-02-17T21:02:49+08:00">2016-02-17</time>
+              <time title="创建时间：2016-02-17 21:02:49 / 修改时间：13:13:44" itemprop="dateCreated datePublished" datetime="2016-02-17T21:02:49Z">2016-02-17</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
               </span>
-              <span class="post-meta-item-text">In</span>
+              <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
                   <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
                 </span>
             </span>
 
           
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2016/02/18/Proxy-Web-Apps-using-Nginx/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2016/02/18/Proxy-Web-Apps-using-Nginx/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
 
         </div>
       </header>
@@ -516,8 +591,8 @@
 <h2 id="反代Google"><a href="#反代Google" class="headerlink" title="反代Google"></a>反代Google</h2><p>这部分可以参考<a target="_blank" rel="noopener" href="https://github.com/cuber/ngx_http_google_filter_module">https://github.com/cuber/ngx_http_google_filter_module</a> 的教程，里面介绍了详细的安装配置过程。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2016/02/17/Proxy-Web-Apps-using-Nginx/#more" rel="contents">
-                Read more &raquo;
+              <a class="btn" href="/2016/02/18/Proxy-Web-Apps-using-Nginx/#more" rel="contents">
+                阅读全文 &raquo;
               </a>
             </div>
           <!--/noindex-->
@@ -539,8 +614,8 @@
       
   
   
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/02/05/VPS-PPTP-VPN/">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://lfeng.tech/2016/02/06/VPS-PPTP-VPN/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -554,7 +629,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2016/02/05/VPS-PPTP-VPN/" class="post-title-link" itemprop="url">VPS设置PPTP VPN</a>
+            <a href="/2016/02/06/VPS-PPTP-VPN/" class="post-title-link" itemprop="url">VPS设置PPTP VPN</a>
         </h2>
 
         <div class="post-meta">
@@ -562,22 +637,36 @@
               <span class="post-meta-item-icon">
                 <i class="far fa-calendar"></i>
               </span>
-              <span class="post-meta-item-text">Posted on</span>
+              <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="Created: 2016-02-05 21:02:49 / Modified: 21:07:47" itemprop="dateCreated datePublished" datetime="2016-02-05T21:02:49+08:00">2016-02-05</time>
+              <time title="创建时间：2016-02-05 21:02:49 / 修改时间：13:07:47" itemprop="dateCreated datePublished" datetime="2016-02-05T21:02:49Z">2016-02-05</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
               </span>
-              <span class="post-meta-item-text">In</span>
+              <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
                   <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
                 </span>
             </span>
 
           
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2016/02/06/VPS-PPTP-VPN/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2016/02/06/VPS-PPTP-VPN/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
 
         </div>
       </header>
@@ -594,8 +683,8 @@
 <p><img src="http://ww3.sinaimg.cn/large/a18449c6gw1f0olos87ztj209o01gq32.jpg"></p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2016/02/05/VPS-PPTP-VPN/#more" rel="contents">
-                Read more &raquo;
+              <a class="btn" href="/2016/02/06/VPS-PPTP-VPN/#more" rel="contents">
+                阅读全文 &raquo;
               </a>
             </div>
           <!--/noindex-->
@@ -617,8 +706,8 @@
       
   
   
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/12/21/Check-Series-Update-by-Python/">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://lfeng.tech/2015/12/21/Check-Series-Update-by-Python/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -640,22 +729,36 @@
               <span class="post-meta-item-icon">
                 <i class="far fa-calendar"></i>
               </span>
-              <span class="post-meta-item-text">Posted on</span>
+              <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="Created: 2015-12-21 12:47:49 / Modified: 13:00:52" itemprop="dateCreated datePublished" datetime="2015-12-21T12:47:49+08:00">2015-12-21</time>
+              <time title="创建时间：2015-12-21 12:47:49 / 修改时间：05:00:52" itemprop="dateCreated datePublished" datetime="2015-12-21T12:47:49Z">2015-12-21</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
               </span>
-              <span class="post-meta-item-text">In</span>
+              <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
                   <a href="/categories/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a>
                 </span>
             </span>
 
           
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2015/12/21/Check-Series-Update-by-Python/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2015/12/21/Check-Series-Update-by-Python/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
 
         </div>
       </header>
@@ -672,7 +775,7 @@
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2015/12/21/Check-Series-Update-by-Python/#more" rel="contents">
-                Read more &raquo;
+                阅读全文 &raquo;
               </a>
             </div>
           <!--/noindex-->
@@ -694,8 +797,8 @@
       
   
   
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/07/21/extern-c/">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://lfeng.tech/2015/07/22/extern-c/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -709,7 +812,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2015/07/21/extern-c/" class="post-title-link" itemprop="url">extern "c"解析</a>
+            <a href="/2015/07/22/extern-c/" class="post-title-link" itemprop="url">extern "c"解析</a>
         </h2>
 
         <div class="post-meta">
@@ -717,28 +820,42 @@
               <span class="post-meta-item-icon">
                 <i class="far fa-calendar"></i>
               </span>
-              <span class="post-meta-item-text">Posted on</span>
+              <span class="post-meta-item-text">发表于</span>
 
-              <time title="Created: 2015-07-21 21:23:15" itemprop="dateCreated datePublished" datetime="2015-07-21T21:23:15+08:00">2015-07-21</time>
+              <time title="创建时间：2015-07-21 21:23:15" itemprop="dateCreated datePublished" datetime="2015-07-21T21:23:15Z">2015-07-21</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2015-11-15 21:28:18" itemprop="dateModified" datetime="2015-11-15T21:28:18+08:00">2015-11-15</time>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2015-11-15 13:28:18" itemprop="dateModified" datetime="2015-11-15T13:28:18Z">2015-11-15</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
               </span>
-              <span class="post-meta-item-text">In</span>
+              <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
                   <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
                 </span>
             </span>
 
           
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2015/07/22/extern-c/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2015/07/22/extern-c/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
 
         </div>
       </header>
@@ -754,8 +871,8 @@
 </blockquote>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2015/07/21/extern-c/#more" rel="contents">
-                Read more &raquo;
+              <a class="btn" href="/2015/07/22/extern-c/#more" rel="contents">
+                阅读全文 &raquo;
               </a>
             </div>
           <!--/noindex-->
@@ -777,8 +894,8 @@
       
   
   
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/07/01/heap-and-stack/">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://lfeng.tech/2015/07/02/heap-and-stack/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -792,7 +909,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2015/07/01/heap-and-stack/" class="post-title-link" itemprop="url">堆和栈</a>
+            <a href="/2015/07/02/heap-and-stack/" class="post-title-link" itemprop="url">堆和栈</a>
         </h2>
 
         <div class="post-meta">
@@ -800,28 +917,42 @@
               <span class="post-meta-item-icon">
                 <i class="far fa-calendar"></i>
               </span>
-              <span class="post-meta-item-text">Posted on</span>
+              <span class="post-meta-item-text">发表于</span>
 
-              <time title="Created: 2015-07-01 21:23:15" itemprop="dateCreated datePublished" datetime="2015-07-01T21:23:15+08:00">2015-07-01</time>
+              <time title="创建时间：2015-07-01 21:23:15" itemprop="dateCreated datePublished" datetime="2015-07-01T21:23:15Z">2015-07-01</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2015-11-15 21:26:49" itemprop="dateModified" datetime="2015-11-15T21:26:49+08:00">2015-11-15</time>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2015-11-15 13:26:49" itemprop="dateModified" datetime="2015-11-15T13:26:49Z">2015-11-15</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
               </span>
-              <span class="post-meta-item-text">In</span>
+              <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
                   <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
                 </span>
             </span>
 
           
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2015/07/02/heap-and-stack/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2015/07/02/heap-and-stack/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
 
         </div>
       </header>
@@ -835,8 +966,8 @@
           <p>简单的可以理解为：<br>heap：是由malloc之类函数分配的空间所在地。地址是由低向高增长的。<br>stack：是自动分配变量，以及函数调用的时候所使用的一些空间。地址是由高向低减少的。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2015/07/01/heap-and-stack/#more" rel="contents">
-                Read more &raquo;
+              <a class="btn" href="/2015/07/02/heap-and-stack/#more" rel="contents">
+                阅读全文 &raquo;
               </a>
             </div>
           <!--/noindex-->
@@ -858,8 +989,8 @@
       
   
   
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/06/22/bit-manipulation/">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://lfeng.tech/2015/06/23/bit-manipulation/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -873,7 +1004,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2015/06/22/bit-manipulation/" class="post-title-link" itemprop="url">位操作</a>
+            <a href="/2015/06/23/bit-manipulation/" class="post-title-link" itemprop="url">位操作</a>
         </h2>
 
         <div class="post-meta">
@@ -881,28 +1012,42 @@
               <span class="post-meta-item-icon">
                 <i class="far fa-calendar"></i>
               </span>
-              <span class="post-meta-item-text">Posted on</span>
+              <span class="post-meta-item-text">发表于</span>
 
-              <time title="Created: 2015-06-22 21:23:15" itemprop="dateCreated datePublished" datetime="2015-06-22T21:23:15+08:00">2015-06-22</time>
+              <time title="创建时间：2015-06-22 21:23:15" itemprop="dateCreated datePublished" datetime="2015-06-22T21:23:15Z">2015-06-22</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2015-11-15 21:05:52" itemprop="dateModified" datetime="2015-11-15T21:05:52+08:00">2015-11-15</time>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2015-11-15 13:05:52" itemprop="dateModified" datetime="2015-11-15T13:05:52Z">2015-11-15</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
               </span>
-              <span class="post-meta-item-text">In</span>
+              <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
                   <a href="/categories/algorithm/" itemprop="url" rel="index"><span itemprop="name">algorithm</span></a>
                 </span>
             </span>
 
           
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2015/06/23/bit-manipulation/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2015/06/23/bit-manipulation/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
 
         </div>
       </header>
@@ -918,8 +1063,8 @@
 </blockquote>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2015/06/22/bit-manipulation/#more" rel="contents">
-                Read more &raquo;
+              <a class="btn" href="/2015/06/23/bit-manipulation/#more" rel="contents">
+                阅读全文 &raquo;
               </a>
             </div>
           <!--/noindex-->
@@ -941,7 +1086,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/4/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/6/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+    <a class="extend prev" rel="prev" href="/page/4/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/6/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -985,10 +1130,10 @@
 
       <ul class="sidebar-nav motion-element">
         <li class="sidebar-nav-toc">
-          Table of Contents
+          文章目录
         </li>
         <li class="sidebar-nav-overview">
-          Overview
+          站点概览
         </li>
       </ul>
 
@@ -1010,19 +1155,27 @@
           <a href="/archives/">
         
           <span class="site-state-item-count">56</span>
-          <span class="site-state-item-name">posts</span>
+          <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
         <span class="site-state-item-count">12</span>
-        <span class="site-state-item-name">categories</span>
+        <span class="site-state-item-name">分类</span>
       </div>
       <div class="site-state-item site-state-tags">
         <span class="site-state-item-count">22</span>
-        <span class="site-state-item-name">tags</span>
+        <span class="site-state-item-name">标签</span>
       </div>
   </nav>
 </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/teckee" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;teckee" rel="noopener" target="_blank"><i class="github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:h0ck@foxmail.com" title="E-Mail → mailto:h0ck@foxmail.com" rel="noopener" target="_blank"><i class="envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
 
 
 
@@ -1053,7 +1206,7 @@
   </span>
   <span class="author" itemprop="copyrightHolder">Vincent</span>
 </div>
-  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
   </div>
 
         
@@ -1079,7 +1232,7 @@
 <script src="/js/motion.js"></script>
 
 
-<script src="/js/schemes/muse.js"></script>
+<script src="/js/schemes/pisces.js"></script>
 
 
 <script src="/js/next-boot.js"></script>
@@ -1106,6 +1259,35 @@
   
 
   
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'cgQ905Fj6xbazWtyi9b1hafr-gzGzoHsz',
+      appKey     : '68EFTwnd9XYY352gRUJlJyMu',
+      placeholder: "Just go go",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
 
 </body>
 </html>

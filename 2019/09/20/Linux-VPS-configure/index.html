@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+<meta name="referrer" content="no-referrer" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"lfeng.tech","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="本文记录了VPS下的基础配置过程，包括科学上网、安全等方面的内容  用户组管理在root用户下，使用如下的指令，创建新用户，并添加用户到sudoers 12useradd -m username (-m stand for create home) -s &#x2F;bin&#x2F;bash (指定用户登入后所使用的shell,默认值为&#x2F;bin&#x2F;bash。最好手动指定)adduser &lt;username&amp;g">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux VPS配置">
+<meta property="og:url" content="https://lfeng.tech/2019/09/20/Linux-VPS-configure/index.html">
+<meta property="og:site_name" content="Vincent&#39;s Notes">
+<meta property="og:description" content="本文记录了VPS下的基础配置过程，包括科学上网、安全等方面的内容  用户组管理在root用户下，使用如下的指令，创建新用户，并添加用户到sudoers 12useradd -m username (-m stand for create home) -s &#x2F;bin&#x2F;bash (指定用户登入后所使用的shell,默认值为&#x2F;bin&#x2F;bash。最好手动指定)adduser &lt;username&amp;g">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6jw1exznpch8hrj20d70cy75g.jpg">
+<meta property="og:image" content="http://ww4.sinaimg.cn/large/a18449c6jw1exznwdupxyj20d70cracg.jpg">
+<meta property="og:image" content="http://ww2.sinaimg.cn/large/a18449c6jw1exzo9esth2j20cj0c3dim.jpg">
+<meta property="og:image" content="http://ww2.sinaimg.cn/large/a18449c6jw1exzoxa6jmqj209n07jaav.jpg">
+<meta property="article:published_time" content="2019-09-19T21:23:15.000Z">
+<meta property="article:modified_time" content="2019-11-27T14:17:56.080Z">
+<meta property="article:author" content="Vincent">
+<meta property="article:tag" content="Linux">
+<meta property="article:tag" content="VPS">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://ww1.sinaimg.cn/large/a18449c6jw1exznpch8hrj20d70cy75g.jpg">
+
+<link rel="canonical" href="https://lfeng.tech/2019/09/20/Linux-VPS-configure/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Linux VPS配置 | Vincent's Notes</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Vincent's Notes</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://lfeng.tech/2019/09/20/Linux-VPS-configure/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Vincent">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Vincent's Notes">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Linux VPS配置
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-09-19 21:23:15" itemprop="dateCreated datePublished" datetime="2019-09-19T21:23:15Z">2019-09-19</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-11-27 14:17:56" itemprop="dateModified" datetime="2019-11-27T14:17:56Z">2019-11-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2019/09/20/Linux-VPS-configure/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2019/09/20/Linux-VPS-configure/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <blockquote>
+<p>本文记录了VPS下的基础配置过程，包括科学上网、安全等方面的内容</p>
+</blockquote>
+<h1 id="用户组管理"><a href="#用户组管理" class="headerlink" title="用户组管理"></a>用户组管理</h1><p>在root用户下，使用如下的指令，创建新用户，并添加用户到<code>sudoers</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">useradd -m username (-m stand <span class="keyword">for</span> create home) -s /bin/bash (指定用户登入后所使用的shell,默认值为/bin/bash。最好手动指定)</span><br><span class="line">adduser &lt;username&gt; sudo (add user to the sudoers)</span><br></pre></td></tr></table></figure>
+<p>以后使用<code>username</code>(你的用户名)登录就OK了，需要使用<code>root</code>权限时利用<code>sudo</code>就行了</p>
+<p>更改当前用户密码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ passwd</span><br></pre></td></tr></table></figure>
+
+<p>更改某个用户的密码，此时需要登录到root用户，</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ passwd username</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>关于如何删除用户，可以参考：<a target="_blank" rel="noopener" href="https://www.tecmint.com/delete-remove-a-user-account-with-home-directory-in-linux/">Deleting/Removing a User Account with His/Her Home Directory</a></p>
+</blockquote>
+<span id="more"></span> 
+
+<h1 id="配置公钥和私钥"><a href="#配置公钥和私钥" class="headerlink" title="配置公钥和私钥"></a>配置公钥和私钥</h1><h2 id="Windows"><a href="#Windows" class="headerlink" title="Windows"></a>Windows</h2><ul>
+<li><a target="_blank" rel="noopener" href="http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html">下载</a>并运行<code>PUTTYGEN.EXE</code><br><img src="http://ww1.sinaimg.cn/large/a18449c6jw1exznpch8hrj20d70cy75g.jpg" alt="运行"></li>
+<li>选择默认的 RSA 加密即可,并点击Generate，此时需要鼠标在空白处随机移动<br><img src="http://ww4.sinaimg.cn/large/a18449c6jw1exznwdupxyj20d70cracg.jpg" alt="Generate"></li>
+<li>生成好后，分别保存公钥和私钥，这里可以选择使用密码，如果选择使用密码，则在验证key的时候需要输入密码，增强的安全性</li>
+<li>注意公钥的保存格式如下,其中 ssh-rsa 为加密类型， showfom-rsa-key-20130701 为说明，可以是任意文本，如 showfom-notebook<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAQEAna/D52fTZ1YNjxnwAJAUhxRdPCwar8ZfWLdwHEmT64Zqtxrz65KRxesHFRVND8Xn1GKtuQIQMu/d5fFhEajFbjoSw/n+Mz58irzUXDbE34Y/nxy1/iWc6aJz6lX6wT7nnDcVoqX8Be8j/8sjS7cMFarn3Iy+0bSQNON3681+hEFM7mpoYyqrCVBpARfiiEZb8tNkfzrKJFrciZ87yaKkncPeDCIbYKjuJY2hciK+Y+IptLdoMj5kQkSXStJFQUfFg+s3FQJ9Istu4C7BF3ZafD4mEupA7P90RRUjLj95mUW/P/ebWGsMVbnxz/Xmq3OL/TOuo85umbSN44DmSB3NEQ== showfom-rsa-key-20130701</span><br></pre></td></tr></table></figure></li>
+<li>上传至服务器。编辑<code>~/.ssh/authorized_keys</code>文件，粘贴public key的内容。</li>
+</ul>
+<p>在mac或者Linux可以直接采用ssh-copy-id将public key传输到远端VPS。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-copy-id username@remote_host (copy the public keys to the remote server)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>使用ssh key登录</li>
+</ul>
+<ol>
+<li><code>PUTTY</code>中在<code>Connection-ssh-Auth</code>中设置使用的私钥，如下图：<br><img src="http://ww2.sinaimg.cn/large/a18449c6jw1exzo9esth2j20cj0c3dim.jpg" alt="putty设置"></li>
+</ol>
+<p><strong>winscp</strong>的设置和putty类似，两者可以使用相同的私钥<br>2. Linux, Mac可以直接使用ssh指令登录</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh username@remote_host</span><br></pre></td></tr></table></figure>
+<p>也可以在本机<code>.ssh</code>目录下的config中配置VPS的别名，以后就可以直接使用<code>ssh + 别名</code>进行登录</p>
+<ul>
+<li><p><strong>确保能够通过ssh key登录后</strong>，关闭ssh密码登录<br>使用命令<code>vim /etc/ssh/sshd_config</code>,找到如下行进行设置</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">port 12345 <span class="comment">#修改默认端口</span></span><br><span class="line">PermitRootLogin no <span class="comment">#禁止root登录</span></span><br><span class="line">PermitEmptyPasswords no  <span class="comment">#禁止空密码</span></span><br><span class="line">PasswordAuthentication no  <span class="comment">#禁止密码登录</span></span><br><span class="line">AllowUsers username  <span class="comment">##允许你自己的用户登录</span></span><br></pre></td></tr></table></figure></li>
+<li><p><strong>重启SSH使配置生效</strong></p>
+</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">service ssh restart</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>此部分主要介绍了windows下配置ssh key的方法，如果不想配置，可以通过修改端口号到22333等五位数的端口和禁止root用户登录来增加安全性，不过为了最大程度上确保安全，还是使用ssh key的方式登录。<strong>注意保管好自己的ssh私钥</strong></p>
+</blockquote>
+<h2 id="Linux-Mac"><a href="#Linux-Mac" class="headerlink" title="Linux/Mac"></a>Linux/Mac</h2><p>可以参考<a target="_blank" rel="noopener" href="https://support.rackspace.com/how-to/connecting-to-a-server-using-ssh-on-linux-or-mac-os/">Connect to a server by using SSH on Linux or Mac OS X
+</a>进行配置。</p>
+<h1 id="Shadowsocks科学上网"><a href="#Shadowsocks科学上网" class="headerlink" title="Shadowsocks科学上网"></a>Shadowsocks科学上网</h1><ul>
+<li>Ubuntu下安装shadowsocks<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">apt-get install python-pip</span><br><span class="line">pip install shadowsocks</span><br></pre></td></tr></table></figure></li>
+<li>修改配置文件<code>vi /etc/shadowsocks.json</code>,配置文件范例如下：<br><img src="http://ww2.sinaimg.cn/large/a18449c6jw1exzoxa6jmqj209n07jaav.jpg" alt="Shadowsocks"><br>图中只需要修改<code>server</code>以及<code>port_password</code>两项，上面是一个多端口的配置文件，可以为不同的端口分配不同的密码</li>
+<li>后台运行shadowsocks，使用如下指令<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ssserver -c /etc/shadowsocks.json -d start</span><br><span class="line">ssserver -c /etc/shadowsocks.json -d stop</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>如果启动报错，可以参考这里替换function name即可，<a target="_blank" rel="noopener" href="https://blog.csdn.net/youshaoduo/article/details/80745196">Shadows启动报错undefined symbol EVP_CIPHER_CTX_cleanup</a>。</p>
+</blockquote>
+</li>
+</ul>
+<p>Shadowsocks利用KCPTun加速, 可以参考如下的博客：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://doub.io/ss-jc36/">Shadowsocks另一种双边加速软件 —— KCPTun（服务端教程）</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.kuoruan.com/102.html">小内存福音，Kcptun Shadowsocks加速方案）</a></li>
+</ul>
+<h1 id="scp上传下载文件"><a href="#scp上传下载文件" class="headerlink" title="scp上传下载文件"></a>scp上传下载文件</h1><p>如果在Mac/Linux下配置好ssh config之后，可以直接采用如下的指令来下载VPS上的文件到本地。其中<code>vps</code>为你的VPS的<code>Host</code>,这在<code>.ssh</code>目录下的<code>config</code>文件中可以进行配置。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scp vps:/path/foo /home/user/Desktop   # copy to local</span><br></pre></td></tr></table></figure>
+<p>其他的scp操作可以参考manual。</p>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Vincent
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://lfeng.tech/2019/09/20/Linux-VPS-configure/" title="Linux VPS配置">https://lfeng.tech/2019/09/20/Linux-VPS-configure/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Linux/" rel="tag"># Linux</a>
+              <a href="/tags/VPS/" rel="tag"># VPS</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2019/08/29/Linux_5_boot_process/" rel="prev" title="Linux操作系统-(5) Linux启动流程">
+      <i class="fa fa-chevron-left"></i> Linux操作系统-(5) Linux启动流程
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2019/11/24/docker_1_introduction/" rel="next" title="Docker系列-(1) 原理与基本操作">
+      Docker系列-(1) 原理与基本操作 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%94%A8%E6%88%B7%E7%BB%84%E7%AE%A1%E7%90%86"><span class="nav-number">1.</span> <span class="nav-text">用户组管理</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E5%85%AC%E9%92%A5%E5%92%8C%E7%A7%81%E9%92%A5"><span class="nav-number">2.</span> <span class="nav-text">配置公钥和私钥</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Windows"><span class="nav-number">2.1.</span> <span class="nav-text">Windows</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Linux-Mac"><span class="nav-number">2.2.</span> <span class="nav-text">Linux&#x2F;Mac</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Shadowsocks%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91"><span class="nav-number">3.</span> <span class="nav-text">Shadowsocks科学上网</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#scp%E4%B8%8A%E4%BC%A0%E4%B8%8B%E8%BD%BD%E6%96%87%E4%BB%B6"><span class="nav-number">4.</span> <span class="nav-text">scp上传下载文件</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Vincent"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Vincent</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">56</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/teckee" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;teckee" rel="noopener" target="_blank"><i class="github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:h0ck@foxmail.com" title="E-Mail → mailto:h0ck@foxmail.com" rel="noopener" target="_blank"><i class="envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+  <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">沪ICP备19042895号-2 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Vincent</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'cgQ905Fj6xbazWtyi9b1hafr-gzGzoHsz',
+      appKey     : '68EFTwnd9XYY352gRUJlJyMu',
+      placeholder: "Just go go",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

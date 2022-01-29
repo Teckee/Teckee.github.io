@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+<meta name="referrer" content="no-referrer" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"lfeng.tech","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="9.1 CompletableFutureCompletableFuture是JDK 8中引入的工具类，实现了Future接口，对以往的FutureTask的功能进行了增强。 手动设置完成状态CompletableFuture和Future一样，可以作为函数调用的契约，当向CompletableFuture请求数据时，如果数据还没有准备好，请求线程就会等待。但是，我们可以手动设置Completa">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java并发编程系列-(9) JDK 8&#x2F;9&#x2F;10中的并发">
+<meta property="og:url" content="https://lfeng.tech/2020/01/03/Java_concurrent_9_jdk_8_9_10_concurrent/index.html">
+<meta property="og:site_name" content="Vincent&#39;s Notes">
+<meta property="og:description" content="9.1 CompletableFutureCompletableFuture是JDK 8中引入的工具类，实现了Future接口，对以往的FutureTask的功能进行了增强。 手动设置完成状态CompletableFuture和Future一样，可以作为函数调用的契约，当向CompletableFuture请求数据时，如果数据还没有准备好，请求线程就会等待。但是，我们可以手动设置Completa">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g9m74n4c2sj21ts0usnpd.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g9xftgw7gkj211y0527bc.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g9xg32rilfj211o0ikqo3.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g9xg7hu8d0j211m0kgnjw.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g9xgg4mzs6j211u0jqaxb.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g9xgkq84rtj211u08gqer.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g9xgmtkuovj211m0b8ncp.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g9xgpmwssej211o0nokip.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g9xha46nc1j211o0yue81.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g9xirykhk3j211s0bmgos.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g9v9luujswj21n10l9jux.jpg">
+<meta property="article:published_time" content="2020-01-02T20:43:49.000Z">
+<meta property="article:modified_time" content="2020-01-02T11:58:51.036Z">
+<meta property="article:author" content="Vincent">
+<meta property="article:tag" content="Java">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g9m74n4c2sj21ts0usnpd.jpg">
+
+<link rel="canonical" href="https://lfeng.tech/2020/01/03/Java_concurrent_9_jdk_8_9_10_concurrent/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Java并发编程系列-(9) JDK 8/9/10中的并发 | Vincent's Notes</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Vincent's Notes</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://lfeng.tech/2020/01/03/Java_concurrent_9_jdk_8_9_10_concurrent/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Vincent">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Vincent's Notes">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Java并发编程系列-(9) JDK 8/9/10中的并发
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-01-02 20:43:49 / 修改时间：11:58:51" itemprop="dateCreated datePublished" datetime="2020-01-02T20:43:49Z">2020-01-02</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2020/01/03/Java_concurrent_9_jdk_8_9_10_concurrent/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/01/03/Java_concurrent_9_jdk_8_9_10_concurrent/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1g9m74n4c2sj21ts0usnpd.jpg"></p>
+<h3 id="9-1-CompletableFuture"><a href="#9-1-CompletableFuture" class="headerlink" title="9.1 CompletableFuture"></a>9.1 CompletableFuture</h3><p>CompletableFuture是JDK 8中引入的工具类，实现了Future接口，对以往的FutureTask的功能进行了增强。</p>
+<h4 id="手动设置完成状态"><a href="#手动设置完成状态" class="headerlink" title="手动设置完成状态"></a>手动设置完成状态</h4><p>CompletableFuture和Future一样，可以作为函数调用的契约，当向CompletableFuture请求数据时，如果数据还没有准备好，请求线程就会等待。但是，我们可以手动设置CompletableFuture的完成状态。</p>
+<p>下面的例子中，创建了CompletableFuture对象实例进行计算，同时另外一个线程进行等待，接着，模拟等待一段时间之后，设置完成状态为完成，此时等待线程继续执行。</p>
+<span id="more"></span>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">public class CompletableFutureTest &#123;</span><br><span class="line"></span><br><span class="line">	public static class waitThread implements Runnable &#123;</span><br><span class="line">		CompletableFuture&lt;Integer&gt; resultCompletableFuture = null;</span><br><span class="line"></span><br><span class="line">		public waitThread(CompletableFuture&lt;Integer&gt; resultCompletableFuture) &#123;</span><br><span class="line">			super();</span><br><span class="line">			this.resultCompletableFuture = resultCompletableFuture;</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">		@Override</span><br><span class="line">		public void run() &#123;</span><br><span class="line">			int myResult = 0;</span><br><span class="line">			try &#123;</span><br><span class="line">				System.out.println(&quot;Waiting for the result...&quot;);</span><br><span class="line">				myResult = resultCompletableFuture.get();</span><br><span class="line">				System.out.println(&quot;Result got, it&#x27;s &quot; + myResult);</span><br><span class="line">			&#125; catch (Exception e) &#123;</span><br><span class="line">				e.printStackTrace();</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	public static void main(String[] args) throws InterruptedException &#123;</span><br><span class="line">		final CompletableFuture&lt;Integer&gt; future = new CompletableFuture&lt;Integer&gt;();</span><br><span class="line">		new Thread(new waitThread(future)).start();</span><br><span class="line">		// 模拟等待过程</span><br><span class="line">		Thread.sleep(2000);</span><br><span class="line">		// 设置完成的结果</span><br><span class="line">		future.complete(666);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="异步执行任务"><a href="#异步执行任务" class="headerlink" title="异步执行任务"></a>异步执行任务</h4><p>CompletableFuture提供了很方便的异步执行接口，</p>
+<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1g9xftgw7gkj211y0527bc.jpg" alt="Screen Shot 2019-12-15 at 3.25.31 PM.png"></p>
+<p>其中supplyAsync方法用于需要返回值的场景；runAsync方法用于没有返回值的场景。注意到，这两个方法中都可以接受Executor参数，可以方便的让任务在指定的线程池中运行。</p>
+<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1g9xg32rilfj211o0ikqo3.jpg" alt="Screen Shot 2019-12-15 at 3.30.00 PM.png"></p>
+<h4 id="流式调用"><a href="#流式调用" class="headerlink" title="流式调用"></a>流式调用</h4><p>CompletableFuture提供了类似于JDK 8中list的流式操作，下面例子中，首先利用supplyAsync()执行一个异步任务，接着使用流式操作对任务结果进行处理。</p>
+<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1g9xg7hu8d0j211m0kgnjw.jpg" alt="Screen Shot 2019-12-15 at 3.38.56 PM.png"></p>
+<p>注意到在最后面，调用了get方法，用于获取结果，否则由于CompletableFuture异步执行，main函数不会等待计算完成，直接退出，随着主线程的结束，所有的Daemon线程也会退出，从而导致计算方法无法正常完成。</p>
+<h4 id="异常处理"><a href="#异常处理" class="headerlink" title="异常处理"></a>异常处理</h4><p>CompletableFuture在执行中遇到异常时，同样的可以利用函数式编程的方法来处理异常，CompletableFuture中提供了一个异常处理方法exceptionally():</p>
+<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1g9xgg4mzs6j211u0jqaxb.jpg" alt="Screen Shot 2019-12-15 at 3.47.19 PM.png"></p>
+<h4 id="组合多个CompletableFuture"><a href="#组合多个CompletableFuture" class="headerlink" title="组合多个CompletableFuture"></a>组合多个CompletableFuture</h4><p>CompletableFuture中可以组合多个CompletableFuture，主要有如下两种方法：</p>
+<p><strong>1. thenCompose方法</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">public &lt;U&gt; CompletableFuture&lt;U&gt; thenCompose(</span><br><span class="line">    Function&lt;? super T, ? extends CompletionStage&lt;U&gt;&gt; fn) &#123;</span><br><span class="line">    return uniComposeStage(null, fn);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>例子如下：</p>
+<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1g9xgkq84rtj211u08gqer.jpg" alt="Screen Shot 2019-12-15 at 3.51.46 PM.png"></p>
+<p><strong>2. thenCombine方法</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">public &lt;U,V&gt; CompletableFuture&lt;V&gt; thenCombine(</span><br><span class="line">    CompletionStage&lt;? extends U&gt; other,</span><br><span class="line">    BiFunction&lt;? super T,? super U,? extends V&gt; fn) &#123;</span><br><span class="line">    return biApplyStage(null, other, fn);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>例子如下：</p>
+<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1g9xgmtkuovj211m0b8ncp.jpg" alt="Screen Shot 2019-12-15 at 3.53.40 PM.png"></p>
+<h4 id="支持timeout"><a href="#支持timeout" class="headerlink" title="支持timeout"></a>支持timeout</h4><p>在JDK9之后的CompletableFuture增加了timeout功能，如果任务在指定时间内没有完成，则直接抛出异常。</p>
+<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1g9xgpmwssej211o0nokip.jpg" alt="Screen Shot 2019-12-15 at 3.56.31 PM.png"></p>
+<h3 id="9-2-改进的读写锁：StampedLock"><a href="#9-2-改进的读写锁：StampedLock" class="headerlink" title="9.2 改进的读写锁：StampedLock"></a>9.2 改进的读写锁：StampedLock</h3><p>StampedLock是JDK 8中引入的新的锁机制，可以认为是读写锁的一个改进版本，读写锁虽然分离了读和写，使得读与读之间可以完全并发，但是读和写之间仍然是冲突的。读锁会阻塞写锁，它使用的仍然是悲观的策略，如果有大量的读线程，可能引起写线程的饥饿。</p>
+<p>stampedLock提供了一种乐观的读策略，这种乐观的策略类似与无锁的操作，使得乐观锁完全不会阻塞写线程。</p>
+<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1g9xha46nc1j211o0yue81.jpg" alt="Screen Shot 2019-12-15 at 4.16.12 PM.png"></p>
+<p>上面的例子中，首先试图尝试乐观获取锁，方法会返回一个类似于时间戳的stamp，然后进行相应的读取操作，当然为了保证没有其他线程修改了x、y的值，需要调用validate方法来进行验证，判断这个stamp在读过程中是否发生了修改。如果没有修改，则直接进行接下来的计算，否则，升级乐观锁为悲观锁，使用readLock获取读锁。如果当前有其他线程已经获取了锁，当前线程可能被挂起。</p>
+<h3 id="9-2-更快的原子类：LongAdder"><a href="#9-2-更快的原子类：LongAdder" class="headerlink" title="9.2 更快的原子类：LongAdder"></a>9.2 更快的原子类：LongAdder</h3><p>JDK引入了LongAdder，对之前的atomicInteger的性能进行了增强，AtomicLong 的 Add() 是依赖自旋不断的 CAS 去累加一个 Long 值。如果在竞争激烈的情况下，CAS 操作不断的失败，就会有大量的线程不断的自旋尝试 CAS 会造成 CPU 的极大的消耗。</p>
+<p>对于同样的一个 add() 操作，上文说到 AtomicLong 只对一个 Long 值进行 CAS 操作。而 LongAdder 是针对 Cell 数组的某个 Cell 进行 CAS 操作 ，把线程的名字的 hash 值，作为 Cell 数组的下标，然后对 Cell[i] 的 long 进行 CAS 操作。简单粗暴的分散了高并发下的竞争压力。</p>
+<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1g9xirykhk3j211s0bmgos.jpg" alt="Screen Shot 2019-12-15 at 5.07.54 PM.png"></p>
+<p>在实际的操作中，LongAdder并不会一开始就动用数组进行处理，而是将所有数据都记录在一个称为base的变量中，如果在多线程的条件下，大家修改base没有冲突，也没有必要扩展成cell数组，但是，一旦base修改发生冲突，就会初始化cell数组，使用新的策略。如果使用cell数组之后，发现在某一个cell上的更新依然存在冲突，那么系统就会尝试创建新的cell，以减少冲突。</p>
+<p><strong>AtomicLong可否可以被LongAdder替代？</strong></p>
+<p>有了传说中更高效的LongAdder，那AtomicLong可否不使用了呢？当然不是！</p>
+<p>答案就在LongAdder的java doc中，从我们翻译的那段可以看出，LongAdder适合的场景是统计求和计数的场景，而且LongAdder基本只提供了add方法，而AtomicLong还具有cas方法(要使用cas，在不直接使用unsafe之外只能借助AtomicXXX了)</p>
+<p><strong>LongAdder有啥用？</strong><br>从java doc中可以看出，其适用于统计计数的场景，例如计算qps这种场景。在高并发场景下，qps这个值会被多个线程频繁更新的，所以LongAdder很适合。</p>
+<hr>
+<p>参考：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/22d38d5c8c2a">https://www.jianshu.com/p/22d38d5c8c2a</a></li>
+<li>《实战Java高并发程序设计》</li>
+</ul>
+<hr>
+<p>本文由『后端精进之路』原创，首发于博客 <a target="_blank" rel="noopener" href="http://teckee.github.io/">http://teckee.github.io/</a> , 转载请注明出处</p>
+<p>搜索『后端精进之路』关注公众号，立刻获取最新文章和<strong>价值2000元的BATJ精品面试课程</strong>。</p>
+<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1g9v9luujswj21n10l9jux.jpg" alt="后端精进之路.png"></p>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Vincent
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://lfeng.tech/2020/01/03/Java_concurrent_9_jdk_8_9_10_concurrent/" title="Java并发编程系列-(9) JDK 8&#x2F;9&#x2F;10中的并发">https://lfeng.tech/2020/01/03/Java_concurrent_9_jdk_8_9_10_concurrent/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Java/" rel="tag"># Java</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2019/12/30/Java_concurrent_8_JMM/" rel="prev" title="Java并发编程系列-(8) JMM和底层实现原理">
+      <i class="fa fa-chevron-left"></i> Java并发编程系列-(8) JMM和底层实现原理
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/01/06/JVM_1_memory/" rel="next" title="JVM性能优化系列-(1) Java内存区域">
+      JVM性能优化系列-(1) Java内存区域 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#9-1-CompletableFuture"><span class="nav-number">1.</span> <span class="nav-text">9.1 CompletableFuture</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%89%8B%E5%8A%A8%E8%AE%BE%E7%BD%AE%E5%AE%8C%E6%88%90%E7%8A%B6%E6%80%81"><span class="nav-number">1.1.</span> <span class="nav-text">手动设置完成状态</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BC%82%E6%AD%A5%E6%89%A7%E8%A1%8C%E4%BB%BB%E5%8A%A1"><span class="nav-number">1.2.</span> <span class="nav-text">异步执行任务</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B5%81%E5%BC%8F%E8%B0%83%E7%94%A8"><span class="nav-number">1.3.</span> <span class="nav-text">流式调用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86"><span class="nav-number">1.4.</span> <span class="nav-text">异常处理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BB%84%E5%90%88%E5%A4%9A%E4%B8%AACompletableFuture"><span class="nav-number">1.5.</span> <span class="nav-text">组合多个CompletableFuture</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%94%AF%E6%8C%81timeout"><span class="nav-number">1.6.</span> <span class="nav-text">支持timeout</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-2-%E6%94%B9%E8%BF%9B%E7%9A%84%E8%AF%BB%E5%86%99%E9%94%81%EF%BC%9AStampedLock"><span class="nav-number">2.</span> <span class="nav-text">9.2 改进的读写锁：StampedLock</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-2-%E6%9B%B4%E5%BF%AB%E7%9A%84%E5%8E%9F%E5%AD%90%E7%B1%BB%EF%BC%9ALongAdder"><span class="nav-number">3.</span> <span class="nav-text">9.2 更快的原子类：LongAdder</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Vincent"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Vincent</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">56</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/teckee" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;teckee" rel="noopener" target="_blank"><i class="github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:h0ck@foxmail.com" title="E-Mail → mailto:h0ck@foxmail.com" rel="noopener" target="_blank"><i class="envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+  <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">沪ICP备19042895号-2 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Vincent</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'cgQ905Fj6xbazWtyi9b1hafr-gzGzoHsz',
+      appKey     : '68EFTwnd9XYY352gRUJlJyMu',
+      placeholder: "Just go go",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

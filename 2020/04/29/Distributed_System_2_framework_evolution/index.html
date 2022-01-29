@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+<meta name="referrer" content="no-referrer" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"lfeng.tech","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="2. 分布式架构演进2.1 架构演进一: 早期雏形 特征：应用程序主要做静态文件读取，返回内容给浏览器。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="分布式思维-(2) 分布式架构演进">
+<meta property="og:url" content="https://lfeng.tech/2020/04/29/Distributed_System_2_framework_evolution/index.html">
+<meta property="og:site_name" content="Vincent&#39;s Notes">
+<meta property="og:description" content="2. 分布式架构演进2.1 架构演进一: 早期雏形 特征：应用程序主要做静态文件读取，返回内容给浏览器。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlgy1gf84m3xkv3j30zk0k075d.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlly1gf26w11exzj318s0di761.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlly1gf26x1ep9fj31ge0jiq5i.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlly1gf26xw3andj30sy0l4dhq.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlly1gf26yyr73tj31860jodjn.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlly1gf270omxqoj31a80l4aeu.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlly1gf271uni3kj319y0q4dl3.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlly1gf27im18vxj30os0voad0.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlly1gf27l2t7ktj314s0jc0w5.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlly1gf27o8dpk8j30qq0ikmy4.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlly1gf2izcqg2cj314a0puwi1.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlly1gf2j6j1oc2j30z20ostbg.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlly1gf2ndy1kaaj30xe0mq41c.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g9v9luujswj21n10l9jux.jpg">
+<meta property="article:published_time" content="2020-04-28T21:43:49.000Z">
+<meta property="article:modified_time" content="2020-05-28T06:11:06.951Z">
+<meta property="article:author" content="Vincent">
+<meta property="article:tag" content="Java">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://tva1.sinaimg.cn/large/007S8ZIlgy1gf84m3xkv3j30zk0k075d.jpg">
+
+<link rel="canonical" href="https://lfeng.tech/2020/04/29/Distributed_System_2_framework_evolution/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>分布式思维-(2) 分布式架构演进 | Vincent's Notes</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Vincent's Notes</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://lfeng.tech/2020/04/29/Distributed_System_2_framework_evolution/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Vincent">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Vincent's Notes">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          分布式思维-(2) 分布式架构演进
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-04-28 21:43:49" itemprop="dateCreated datePublished" datetime="2020-04-28T21:43:49Z">2020-04-28</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-05-28 06:11:06" itemprop="dateModified" datetime="2020-05-28T06:11:06Z">2020-05-28</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2020/04/29/Distributed_System_2_framework_evolution/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/04/29/Distributed_System_2_framework_evolution/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1gf84m3xkv3j30zk0k075d.jpg" alt="distributed_system"></p>
+<h2 id="2-分布式架构演进"><a href="#2-分布式架构演进" class="headerlink" title="2. 分布式架构演进"></a>2. 分布式架构演进</h2><h3 id="2-1-架构演进一-早期雏形"><a href="#2-1-架构演进一-早期雏形" class="headerlink" title="2.1 架构演进一: 早期雏形"></a>2.1 架构演进一: 早期雏形</h3><p><img src="https://tva1.sinaimg.cn/large/007S8ZIlly1gf26w11exzj318s0di761.jpg"></p>
+<p>特征：应用程序主要做静态文件读取，返回内容给浏览器。</p>
+<span id="more"></span>
+
+<h3 id="2-2-架构演进二-数据库开发（LAMP特长）"><a href="#2-2-架构演进二-数据库开发（LAMP特长）" class="headerlink" title="2.2 架构演进二: 数据库开发（LAMP特长）"></a>2.2 架构演进二: 数据库开发（LAMP特长）</h3><p><img src="https://tva1.sinaimg.cn/large/007S8ZIlly1gf26x1ep9fj31ge0jiq5i.jpg"></p>
+<p>特征：应用程序主要主要读取数据表值，填充html模块。业务逻辑简单，写sql处理。</p>
+<h3 id="2-3-架构演进三-javaweb的雏形"><a href="#2-3-架构演进三-javaweb的雏形" class="headerlink" title="2.3 架构演进三:  javaweb的雏形"></a>2.3 架构演进三:  javaweb的雏形</h3><p><img src="https://tva1.sinaimg.cn/large/007S8ZIlly1gf26xw3andj30sy0l4dhq.jpg"></p>
+<p>特征：tomcat + servlet + jsp + mysql。一个war包打天下</p>
+<p>项目结构：ssh/ssm三层结构。</p>
+<h3 id="2-4-架构演进四-javaweb的集群发展"><a href="#2-4-架构演进四-javaweb的集群发展" class="headerlink" title="2.4 架构演进四:  javaweb的集群发展"></a>2.4 架构演进四:  javaweb的集群发展</h3><p><img src="https://tva1.sinaimg.cn/large/007S8ZIlly1gf26yyr73tj31860jodjn.jpg"></p>
+<p>特征：硬件机器的横向复制，对整个项目结构无影响。</p>
+<h3 id="2-5-架构演进五-javaweb的分布式发展"><a href="#2-5-架构演进五-javaweb的分布式发展" class="headerlink" title="2.5 架构演进五:  javaweb的分布式发展"></a>2.5 架构演进五:  javaweb的分布式发展</h3><p><img src="https://tva1.sinaimg.cn/large/007S8ZIlly1gf270omxqoj31a80l4aeu.jpg"></p>
+<p>特征：将Service层单独分离出去，成为一个单独的项目jar。单独运行。<br>Web服务器通过rpc框架，对分离出去的service进行调用。</p>
+<h3 id="2-6-架构演进六-javaweb的微服务发展"><a href="#2-6-架构演进六-javaweb的微服务发展" class="headerlink" title="2.6 架构演进六:  javaweb的微服务发展"></a>2.6 架构演进六:  javaweb的微服务发展</h3><p><img src="https://tva1.sinaimg.cn/large/007S8ZIlly1gf271uni3kj319y0q4dl3.jpg"></p>
+<p>特征：从业务角度，细分业务为微服务，每一个微服务是一个完整的服务（从http请求到返回）。<br>    在微服务内部，将需要对外提供的接口，包装成rpc接口，对外部开放。</p>
+<h4 id="2-6-1-SOA与微服务"><a href="#2-6-1-SOA与微服务" class="headerlink" title="2.6.1 SOA与微服务"></a>2.6.1 SOA与微服务</h4><p>微服务：把Control和service和dao全拆出来，独立为一个完整的服务，包括数据库。<br>SOA：将Service层单独分离出去，成为一个单独的项目jar，单独运行，其并不是一个完整的服务。</p>
+<h4 id="2-6-2-微服务优缺点"><a href="#2-6-2-微服务优缺点" class="headerlink" title="2.6.2 微服务优缺点"></a>2.6.2 微服务优缺点</h4><p>优点：</p>
+<ol>
+<li>逻辑清晰 </li>
+</ol>
+<p>这个特点是由微服务的单一职责的要求所带来的。一个仅负责一项很明确业务的微服务，在逻辑上肯定比一个复杂的系统更容易让人理解。 </p>
+<p>逻辑清晰带来的是微服务的可维护性，在我们对一个微服务进行修改时，能够更容易分析到这个修改到底会产生什么影响，从而通过完备的测试保证修改质量。 </p>
+<ol start="2">
+<li>简化部署 </li>
+</ol>
+<p>在一个单块系统中，只要修改了一行代码，就需要对整个系统进行重新的构建、测试，然后将整个系统进行部署。而微服务则可以对一个微服务进行部署。 </p>
+<p>这样带来的一个好处是，我们可以更频繁的去更改我们的软件，通过很低的集成成本，快速的发布新的功能。 </p>
+<ol start="3">
+<li>可扩展 </li>
+</ol>
+<p>应对系统业务增长的方法通常采用横向（Scale out）或纵向（Scale up）的方向进行扩展。分布式系统中通常要采用Scale out的方式进行扩展。因为不同的功能会面对不同的负荷变化，因此采用微服务的系统相对单块系统具备更好的可扩展性。 </p>
+<ol start="4">
+<li>灵活组合 </li>
+</ol>
+<p>在微服务架构中，可以通过组合已有的微服务以达到功能重用的目的。 比如在示例中，如果我们要新增一个Booking Service，在预订时可以直接重用Account Service和Inventory Service检查用户权限和库存情况。 </p>
+<ol start="5">
+<li>技术异构 </li>
+</ol>
+<p>在一个大型系统中，不同的功能具有不同的特点，并且不同的团队可能具备不同的技术能力。因为微服务间松耦合，不同的微服务可以选择不同的技术栈进行开发。同时，在应用新技术时，可以仅针对一个微服务进行快速改造，而不会影响系统中的其它微服务，有利于系统的演进。比如在示例中，如果因为库存系统数据量变大，我们需要数据由当前的sqlite数据库修改为MySQL，可以仅修改Inventory Service，而不需要要求整个系统的数据库全部替换。 </p>
+<ol start="6">
+<li>高可靠 </li>
+</ol>
+<p>微服务间独立部署，一个微服务的异常不会导致其它微服务同时异常。通过隔离、融断等技术可以避免极大的提升微服务的可靠性。</p>
+<p>缺点：</p>
+<ol>
+<li>复杂度高 </li>
+</ol>
+<p>微服务间通过REST、RPC等形式交互，相对于Monolithic模式下的API形式，需要考虑被调用方故障、过载、消息丢失等各种异常情况，代码逻辑更加复杂。 </p>
+<p>对于微服务间的事务性操作，因为不同的微服务采用了不同的数据库，将无法利用数据库本身的事务机制保证一致性，需要引入二阶段提交等技术。 </p>
+<p>同时，在微服务间存在少部分共用功能但又无法提取成微服务时，各个微服务对于这部分功能通常需要重复开发，或至少要做代码复制，以避免微服务间的耦合，增加了开发成本。</p>
+<ol start="2">
+<li>运维复杂</li>
+</ol>
+<p>在采用微服务架构时，系统由多个独立运行的微服务构成，需要一个设计良好的监控系统对各个微服务的运行状态进行监控。运维人员需要对系统有细致的了解才对够更好的运维系统。</p>
+<ol start="3">
+<li>影响性能 </li>
+</ol>
+<p>相对于Monolithic架构，微服务的间通过REST、RPC等形式进行交互，通信的时延会受到较大的影响。</p>
+<h3 id="2-7-架构改进中常见解决方案"><a href="#2-7-架构改进中常见解决方案" class="headerlink" title="2.7 架构改进中常见解决方案"></a>2.7 架构改进中常见解决方案</h3><p>架构改进的依据，主要是并发数和数量级，通常来讲有如下几种手段：</p>
+<p>1、缓存（list/redis/memached）<br>2、横向拓展（集群负载）<br>3、拆分高负载服务，独立为一模块<br>4、大表数据切片（ mysql分库分区分表）<br>5、使用搜索中间件： solr/elasticsearch</p>
+<p><img src="https://tva1.sinaimg.cn/large/007S8ZIlly1gf27im18vxj30os0voad0.jpg"></p>
+<h4 id="2-7-1-架构解决-session跨域共享"><a href="#2-7-1-架构解决-session跨域共享" class="headerlink" title="2.7.1 架构解决: session跨域共享"></a>2.7.1 架构解决: session跨域共享</h4><p>方案1：负载使用 hash（ip），根据ip将用户导入相同的服务器，避免session失效的问题。</p>
+<p>方案2：使用redis共享session，专门用redis来存放所有的session。</p>
+<p><img src="https://tva1.sinaimg.cn/large/007S8ZIlly1gf27l2t7ktj314s0jc0w5.jpg"></p>
+<h4 id="2-7-2-架构解决-缓存方案"><a href="#2-7-2-架构解决-缓存方案" class="headerlink" title="2.7.2 架构解决: 缓存方案"></a>2.7.2 架构解决: 缓存方案</h4><p><img src="https://tva1.sinaimg.cn/large/007S8ZIlly1gf27o8dpk8j30qq0ikmy4.jpg"></p>
+<p><strong>一般缓存方案</strong></p>
+<p>1、先到缓存中查，有值直接返回<br>2、无值（缓存穿透、击穿）则调用接口或者查库，并将值补入缓存区<br>3、缓存区数据与db中可能不一致，使用过期时间调节<br>4、若缓存区数据集中在某一短时刻失效，将导致大量的缓存击穿（雪崩）</p>
+<p><strong>永不过期方案</strong></p>
+<p>1、不设置过期时间，数据永久有效，避免雪崩<br>2、需要额外机制来实现数据的同步更新（参照数据同步</p>
+<h4 id="2-7-3-架构解决-mq方案"><a href="#2-7-3-架构解决-mq方案" class="headerlink" title="2.7.3 架构解决: mq方案"></a>2.7.3 架构解决: mq方案</h4><p>消息中间件可以用于服务解耦。</p>
+<p><img src="https://tva1.sinaimg.cn/large/007S8ZIlly1gf2izcqg2cj314a0puwi1.jpg"></p>
+<p>1、每个应用启动时，主动注册队列<br>2、后续收/发信息，只管收/发队列中数据<br>3、队列中数据的路由策略，由mq管理者来配置，跟应用程序无关</p>
+<h4 id="2-7-4-同步、异步"><a href="#2-7-4-同步、异步" class="headerlink" title="2.7.4 同步、异步"></a>2.7.4 同步、异步</h4><p>同步调度：<br>1、调度期间，主调和被调线程被同时占用。<br>2、被调执行完成前，主调等待。<br>3、程序内部的调度，则为一单线程。</p>
+<p>异步调度：<br>1、主调与被调只是一次消息发送，信息到达即返回。<br>2、被调执行完成后，回调一次主调方，发送结果回来。<br>3、程序内部的调度，则回调函数是由被调线程执行。</p>
+<p><img src="https://tva1.sinaimg.cn/large/007S8ZIlly1gf2j6j1oc2j30z20ostbg.jpg"></p>
+<h4 id="2-7-5-架构解决：数据分片"><a href="#2-7-5-架构解决：数据分片" class="headerlink" title="2.7.5 架构解决：数据分片"></a>2.7.5 架构解决：数据分片</h4><p><img src="https://tva1.sinaimg.cn/large/007S8ZIlly1gf2ndy1kaaj30xe0mq41c.jpg"></p>
+<p>Redis/es/fastdfs，将数据按片切分：</p>
+<p>1、切成6个片，每个片存储总量1/6数据<br>2、则两个库每个库分担三个片<br>3、若三个库，则每个库只需要承担两个片<br>4、路由管理，只记录数据与片柱的关系</p>
+<p>此模式下，进行集群的动态扩容时，可以采用多种扩容的方法。</p>
+<ol>
+<li>hash方式，根据记录（或者对象）的关键值将记录映射到表中的一个槽。</li>
+</ol>
+<p>缺点：当加入或者删除一个节点的时候，大量的数据需要移动。当原始数据的特征值分布不均匀时，会导致大量的数据集中到一个物理节点上。</p>
+<ol start="2">
+<li>一致性Hash，将数据按照特征值映射到一个首尾相接的hash环上，同时也将节点（按照IP地址或者机器名hash）映射到这个环上。对于数据，从数据在环上的位置开始，顺时针找到的第一个节点即为数据的存储节点。通过引入虚拟节点，达到负载均衡的效果。</li>
+</ol>
+<p>Dynamo、Cassandra都使用了一致性hash算法，且在比较高的版本中都使用了虚拟节点的概念。</p>
+<ol start="3">
+<li>range based，就是按照关键值划分成不同的区间，每个物理节点负责一个或者多个区间。其实这种方式跟一致性hash有点像，可以理解为物理节点在hash环上的位置是动态变化的。</li>
+</ol>
+<p>注意，区间的大小不是固定的，每个数据区间的数据量与区间的大小也是没有关系的。比如说，一部分数据非常集中，那么区间大小应该是比较小的，即以数据量的大小为片段标准。在实际工程中，一个节点往往负责多个区间，每个区间成为一个块（chunk、block），每个块有一个阈值，当达到这个阈值之后就会分裂成两个块。这样做的目的在于当有节点加入的时候，可以快速达到均衡的目的。</p>
+<hr>
+<p>本文由『后端精进之路』原创，首发于博客 <a target="_blank" rel="noopener" href="http://teckee.github.io/">http://teckee.github.io/</a> , 转载请注明出处</p>
+<p>搜索『后端精进之路』关注公众号，立刻获取最新文章和<strong>价值2000元的BATJ精品面试课程</strong>。</p>
+<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1g9v9luujswj21n10l9jux.jpg" alt="后端精进之路.png"></p>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Vincent
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://lfeng.tech/2020/04/29/Distributed_System_2_framework_evolution/" title="分布式思维-(2) 分布式架构演进">https://lfeng.tech/2020/04/29/Distributed_System_2_framework_evolution/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Java/" rel="tag"># Java</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/04/21/Distributed_System_1_overview/" rel="prev" title="分布式思维-(1) 集群与分布式">
+      <i class="fa fa-chevron-left"></i> 分布式思维-(1) 集群与分布式
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/12/19/interview_offer_share/" rel="next" title="Offer经验分享 - 蚂蚁金服、字节跳动、PDD、百度、华为、Paypal - Java社招面经">
+      Offer经验分享 - 蚂蚁金服、字节跳动、PDD、百度、华为、Paypal - Java社招面经 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E5%88%86%E5%B8%83%E5%BC%8F%E6%9E%B6%E6%9E%84%E6%BC%94%E8%BF%9B"><span class="nav-number">1.</span> <span class="nav-text">2. 分布式架构演进</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-%E6%9E%B6%E6%9E%84%E6%BC%94%E8%BF%9B%E4%B8%80-%E6%97%A9%E6%9C%9F%E9%9B%8F%E5%BD%A2"><span class="nav-number">1.1.</span> <span class="nav-text">2.1 架构演进一: 早期雏形</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-%E6%9E%B6%E6%9E%84%E6%BC%94%E8%BF%9B%E4%BA%8C-%E6%95%B0%E6%8D%AE%E5%BA%93%E5%BC%80%E5%8F%91%EF%BC%88LAMP%E7%89%B9%E9%95%BF%EF%BC%89"><span class="nav-number">1.2.</span> <span class="nav-text">2.2 架构演进二: 数据库开发（LAMP特长）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-%E6%9E%B6%E6%9E%84%E6%BC%94%E8%BF%9B%E4%B8%89-javaweb%E7%9A%84%E9%9B%8F%E5%BD%A2"><span class="nav-number">1.3.</span> <span class="nav-text">2.3 架构演进三:  javaweb的雏形</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4-%E6%9E%B6%E6%9E%84%E6%BC%94%E8%BF%9B%E5%9B%9B-javaweb%E7%9A%84%E9%9B%86%E7%BE%A4%E5%8F%91%E5%B1%95"><span class="nav-number">1.4.</span> <span class="nav-text">2.4 架构演进四:  javaweb的集群发展</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-5-%E6%9E%B6%E6%9E%84%E6%BC%94%E8%BF%9B%E4%BA%94-javaweb%E7%9A%84%E5%88%86%E5%B8%83%E5%BC%8F%E5%8F%91%E5%B1%95"><span class="nav-number">1.5.</span> <span class="nav-text">2.5 架构演进五:  javaweb的分布式发展</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-6-%E6%9E%B6%E6%9E%84%E6%BC%94%E8%BF%9B%E5%85%AD-javaweb%E7%9A%84%E5%BE%AE%E6%9C%8D%E5%8A%A1%E5%8F%91%E5%B1%95"><span class="nav-number">1.6.</span> <span class="nav-text">2.6 架构演进六:  javaweb的微服务发展</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-6-1-SOA%E4%B8%8E%E5%BE%AE%E6%9C%8D%E5%8A%A1"><span class="nav-number">1.6.1.</span> <span class="nav-text">2.6.1 SOA与微服务</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-6-2-%E5%BE%AE%E6%9C%8D%E5%8A%A1%E4%BC%98%E7%BC%BA%E7%82%B9"><span class="nav-number">1.6.2.</span> <span class="nav-text">2.6.2 微服务优缺点</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-7-%E6%9E%B6%E6%9E%84%E6%94%B9%E8%BF%9B%E4%B8%AD%E5%B8%B8%E8%A7%81%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="nav-number">1.7.</span> <span class="nav-text">2.7 架构改进中常见解决方案</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-7-1-%E6%9E%B6%E6%9E%84%E8%A7%A3%E5%86%B3-session%E8%B7%A8%E5%9F%9F%E5%85%B1%E4%BA%AB"><span class="nav-number">1.7.1.</span> <span class="nav-text">2.7.1 架构解决: session跨域共享</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-7-2-%E6%9E%B6%E6%9E%84%E8%A7%A3%E5%86%B3-%E7%BC%93%E5%AD%98%E6%96%B9%E6%A1%88"><span class="nav-number">1.7.2.</span> <span class="nav-text">2.7.2 架构解决: 缓存方案</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-7-3-%E6%9E%B6%E6%9E%84%E8%A7%A3%E5%86%B3-mq%E6%96%B9%E6%A1%88"><span class="nav-number">1.7.3.</span> <span class="nav-text">2.7.3 架构解决: mq方案</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-7-4-%E5%90%8C%E6%AD%A5%E3%80%81%E5%BC%82%E6%AD%A5"><span class="nav-number">1.7.4.</span> <span class="nav-text">2.7.4 同步、异步</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-7-5-%E6%9E%B6%E6%9E%84%E8%A7%A3%E5%86%B3%EF%BC%9A%E6%95%B0%E6%8D%AE%E5%88%86%E7%89%87"><span class="nav-number">1.7.5.</span> <span class="nav-text">2.7.5 架构解决：数据分片</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Vincent"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Vincent</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">56</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/teckee" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;teckee" rel="noopener" target="_blank"><i class="github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:h0ck@foxmail.com" title="E-Mail → mailto:h0ck@foxmail.com" rel="noopener" target="_blank"><i class="envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+  <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">沪ICP备19042895号-2 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Vincent</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'cgQ905Fj6xbazWtyi9b1hafr-gzGzoHsz',
+      appKey     : '68EFTwnd9XYY352gRUJlJyMu',
+      placeholder: "Just go go",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

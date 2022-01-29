@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
@@ -13,23 +13,23 @@
 
 <link rel="stylesheet" href="/css/main.css">
 
-
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
 <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+    var CONFIG = {"hostname":"lfeng.tech","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
   <meta property="og:type" content="website">
 <meta property="og:title" content="Vincent&#39;s Notes">
-<meta property="og:url" content="http://yoursite.com/page/4/index.html">
+<meta property="og:url" content="https://lfeng.tech/page/4/index.html">
 <meta property="og:site_name" content="Vincent&#39;s Notes">
-<meta property="og:locale" content="en_US">
+<meta property="og:locale" content="zh_CN">
 <meta property="article:author" content="Vincent">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://yoursite.com/page/4/">
+<link rel="canonical" href="https://lfeng.tech/page/4/">
 
 
 <script id="page-configurations">
@@ -38,7 +38,7 @@
     sidebar: "",
     isHome : true,
     isPost : false,
-    lang   : 'en'
+    lang   : 'zh-CN'
   };
 </script>
 
@@ -82,7 +82,7 @@
     <header class="header" itemscope itemtype="http://schema.org/WPHeader">
       <div class="header-inner"><div class="site-brand-container">
   <div class="site-nav-toggle">
-    <div class="toggle" aria-label="Toggle navigation bar">
+    <div class="toggle" aria-label="切换导航栏">
       <span class="toggle-line toggle-line-first"></span>
       <span class="toggle-line toggle-line-middle"></span>
       <span class="toggle-line toggle-line-last"></span>
@@ -111,12 +111,17 @@
   <ul id="menu" class="main-menu menu">
         <li class="menu-item menu-item-home">
 
-    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
 
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
 
   </li>
   </ul>
@@ -145,8 +150,8 @@
       
   
   
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/09/19/Linux-VPS-configure/">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://lfeng.tech/2019/09/20/Linux-VPS-configure/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -160,7 +165,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2019/09/19/Linux-VPS-configure/" class="post-title-link" itemprop="url">Linux VPS配置</a>
+            <a href="/2019/09/20/Linux-VPS-configure/" class="post-title-link" itemprop="url">Linux VPS配置</a>
         </h2>
 
         <div class="post-meta">
@@ -168,28 +173,42 @@
               <span class="post-meta-item-icon">
                 <i class="far fa-calendar"></i>
               </span>
-              <span class="post-meta-item-text">Posted on</span>
+              <span class="post-meta-item-text">发表于</span>
 
-              <time title="Created: 2019-09-19 21:23:15" itemprop="dateCreated datePublished" datetime="2019-09-19T21:23:15+08:00">2019-09-19</time>
+              <time title="创建时间：2019-09-19 21:23:15" itemprop="dateCreated datePublished" datetime="2019-09-19T21:23:15Z">2019-09-19</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2019-11-27 22:17:56" itemprop="dateModified" datetime="2019-11-27T22:17:56+08:00">2019-11-27</time>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-11-27 14:17:56" itemprop="dateModified" datetime="2019-11-27T14:17:56Z">2019-11-27</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
               </span>
-              <span class="post-meta-item-text">In</span>
+              <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
                   <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
                 </span>
             </span>
 
           
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2019/09/20/Linux-VPS-configure/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2019/09/20/Linux-VPS-configure/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
 
         </div>
       </header>
@@ -217,8 +236,8 @@
 </blockquote>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2019/09/19/Linux-VPS-configure/#more" rel="contents">
-                Read more &raquo;
+              <a class="btn" href="/2019/09/20/Linux-VPS-configure/#more" rel="contents">
+                阅读全文 &raquo;
               </a>
             </div>
           <!--/noindex-->
@@ -240,8 +259,8 @@
       
   
   
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/08/28/Linux_5_boot_process/">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://lfeng.tech/2019/08/29/Linux_5_boot_process/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -255,7 +274,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2019/08/28/Linux_5_boot_process/" class="post-title-link" itemprop="url">Linux操作系统-(5) Linux启动流程</a>
+            <a href="/2019/08/29/Linux_5_boot_process/" class="post-title-link" itemprop="url">Linux操作系统-(5) Linux启动流程</a>
         </h2>
 
         <div class="post-meta">
@@ -263,28 +282,42 @@
               <span class="post-meta-item-icon">
                 <i class="far fa-calendar"></i>
               </span>
-              <span class="post-meta-item-text">Posted on</span>
+              <span class="post-meta-item-text">发表于</span>
 
-              <time title="Created: 2019-08-28 21:43:49" itemprop="dateCreated datePublished" datetime="2019-08-28T21:43:49+08:00">2019-08-28</time>
+              <time title="创建时间：2019-08-28 21:43:49" itemprop="dateCreated datePublished" datetime="2019-08-28T21:43:49Z">2019-08-28</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-05-28 14:04:38" itemprop="dateModified" datetime="2020-05-28T14:04:38+08:00">2020-05-28</time>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-05-28 06:04:38" itemprop="dateModified" datetime="2020-05-28T06:04:38Z">2020-05-28</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
               </span>
-              <span class="post-meta-item-text">In</span>
+              <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
                   <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
                 </span>
             </span>
 
           
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2019/08/29/Linux_5_boot_process/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2019/08/29/Linux_5_boot_process/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
 
         </div>
       </header>
@@ -306,8 +339,8 @@
 <p>7.启动mingetty进入系统登录界面</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2019/08/28/Linux_5_boot_process/#more" rel="contents">
-                Read more &raquo;
+              <a class="btn" href="/2019/08/29/Linux_5_boot_process/#more" rel="contents">
+                阅读全文 &raquo;
               </a>
             </div>
           <!--/noindex-->
@@ -329,8 +362,8 @@
       
   
   
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/08/20/Linux_4_IO/">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://lfeng.tech/2019/08/21/Linux_4_IO/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -344,7 +377,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2019/08/20/Linux_4_IO/" class="post-title-link" itemprop="url">Linux操作系统-(4) IO</a>
+            <a href="/2019/08/21/Linux_4_IO/" class="post-title-link" itemprop="url">Linux操作系统-(4) IO</a>
         </h2>
 
         <div class="post-meta">
@@ -352,28 +385,42 @@
               <span class="post-meta-item-icon">
                 <i class="far fa-calendar"></i>
               </span>
-              <span class="post-meta-item-text">Posted on</span>
+              <span class="post-meta-item-text">发表于</span>
 
-              <time title="Created: 2019-08-20 21:43:49" itemprop="dateCreated datePublished" datetime="2019-08-20T21:43:49+08:00">2019-08-20</time>
+              <time title="创建时间：2019-08-20 21:43:49" itemprop="dateCreated datePublished" datetime="2019-08-20T21:43:49Z">2019-08-20</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-05-28 13:42:41" itemprop="dateModified" datetime="2020-05-28T13:42:41+08:00">2020-05-28</time>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-05-28 05:42:41" itemprop="dateModified" datetime="2020-05-28T05:42:41Z">2020-05-28</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
               </span>
-              <span class="post-meta-item-text">In</span>
+              <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
                   <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
                 </span>
             </span>
 
           
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2019/08/21/Linux_4_IO/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2019/08/21/Linux_4_IO/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
 
         </div>
       </header>
@@ -388,8 +435,8 @@
 <h2 id="4-I-O"><a href="#4-I-O" class="headerlink" title="4. I/O"></a>4. I/O</h2><h3 id="4-1-相关概念说明"><a href="#4-1-相关概念说明" class="headerlink" title="4.1 相关概念说明"></a>4.1 相关概念说明</h3><h4 id="4-1-1-用户空间与内核空间"><a href="#4-1-1-用户空间与内核空间" class="headerlink" title="4.1.1 用户空间与内核空间"></a>4.1.1 用户空间与内核空间</h4><p>现在操作系统都是采用虚拟存储器，那么对32位操作系统而言，它的寻址空间（虚拟存储空间）为4G（2的32次方）。<strong>操作系统的核心是内核，独立于普通的应用程序，可以访问受保护的内存空间，也有访问底层硬件设备的所有权限。</strong>为了保证用户进程不能直接操作内核（kernel），保证内核的安全，操心系统将虚拟空间划分为两部分，一部分为内核空间，一部分为用户空间。针对linux操作系统而言，将最高的1G字节（从虚拟地址0xC0000000到0xFFFFFFFF），供内核使用，称为内核空间，而将较低的3G字节（从虚拟地址0x00000000到0xBFFFFFFF），供各个进程使用，称为用户空间。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2019/08/20/Linux_4_IO/#more" rel="contents">
-                Read more &raquo;
+              <a class="btn" href="/2019/08/21/Linux_4_IO/#more" rel="contents">
+                阅读全文 &raquo;
               </a>
             </div>
           <!--/noindex-->
@@ -411,8 +458,8 @@
       
   
   
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/08/15/Linux_3_Thread/">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://lfeng.tech/2019/08/16/Linux_3_Thread/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -426,7 +473,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2019/08/15/Linux_3_Thread/" class="post-title-link" itemprop="url">Linux操作系统-(3) 线程</a>
+            <a href="/2019/08/16/Linux_3_Thread/" class="post-title-link" itemprop="url">Linux操作系统-(3) 线程</a>
         </h2>
 
         <div class="post-meta">
@@ -434,28 +481,42 @@
               <span class="post-meta-item-icon">
                 <i class="far fa-calendar"></i>
               </span>
-              <span class="post-meta-item-text">Posted on</span>
+              <span class="post-meta-item-text">发表于</span>
 
-              <time title="Created: 2019-08-15 21:43:49" itemprop="dateCreated datePublished" datetime="2019-08-15T21:43:49+08:00">2019-08-15</time>
+              <time title="创建时间：2019-08-15 21:43:49" itemprop="dateCreated datePublished" datetime="2019-08-15T21:43:49Z">2019-08-15</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-05-28 13:41:16" itemprop="dateModified" datetime="2020-05-28T13:41:16+08:00">2020-05-28</time>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-05-28 05:41:16" itemprop="dateModified" datetime="2020-05-28T05:41:16Z">2020-05-28</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
               </span>
-              <span class="post-meta-item-text">In</span>
+              <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
                   <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
                 </span>
             </span>
 
           
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2019/08/16/Linux_3_Thread/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2019/08/16/Linux_3_Thread/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
 
         </div>
       </header>
@@ -474,8 +535,8 @@
 </blockquote>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2019/08/15/Linux_3_Thread/#more" rel="contents">
-                Read more &raquo;
+              <a class="btn" href="/2019/08/16/Linux_3_Thread/#more" rel="contents">
+                阅读全文 &raquo;
               </a>
             </div>
           <!--/noindex-->
@@ -497,8 +558,8 @@
       
   
   
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/08/10/Linux_2_process/">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://lfeng.tech/2019/08/11/Linux_2_process/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -512,7 +573,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2019/08/10/Linux_2_process/" class="post-title-link" itemprop="url">Linux操作系统-(2) 进程</a>
+            <a href="/2019/08/11/Linux_2_process/" class="post-title-link" itemprop="url">Linux操作系统-(2) 进程</a>
         </h2>
 
         <div class="post-meta">
@@ -520,28 +581,42 @@
               <span class="post-meta-item-icon">
                 <i class="far fa-calendar"></i>
               </span>
-              <span class="post-meta-item-text">Posted on</span>
+              <span class="post-meta-item-text">发表于</span>
 
-              <time title="Created: 2019-08-10 21:43:49" itemprop="dateCreated datePublished" datetime="2019-08-10T21:43:49+08:00">2019-08-10</time>
+              <time title="创建时间：2019-08-10 21:43:49" itemprop="dateCreated datePublished" datetime="2019-08-10T21:43:49Z">2019-08-10</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-05-28 13:39:17" itemprop="dateModified" datetime="2020-05-28T13:39:17+08:00">2020-05-28</time>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-05-28 05:39:17" itemprop="dateModified" datetime="2020-05-28T05:39:17Z">2020-05-28</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
               </span>
-              <span class="post-meta-item-text">In</span>
+              <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
                   <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
                 </span>
             </span>
 
           
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2019/08/11/Linux_2_process/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2019/08/11/Linux_2_process/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
 
         </div>
       </header>
@@ -556,8 +631,8 @@
 <h2 id="2-进程"><a href="#2-进程" class="headerlink" title="2. 进程"></a>2. 进程</h2><h3 id="2-1-进程概念"><a href="#2-1-进程概念" class="headerlink" title="2.1 进程概念"></a>2.1 进程概念</h3><p><strong>进程是具有一定独立功能的程序关于某个数据集合上的一次运行活动，它是系统进行资源分配的一个独立单位。</strong>例如，用户运行自己的程序，系统就创建一个进程，并为它分配资源，包括各种表格、内存空间、磁盘空间、I/O设备等，然后该进程被放入到进程的就绪队列，进程调度程序选中它，为它分配CPU及其他相关资源，该进程就被运行起来。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2019/08/10/Linux_2_process/#more" rel="contents">
-                Read more &raquo;
+              <a class="btn" href="/2019/08/11/Linux_2_process/#more" rel="contents">
+                阅读全文 &raquo;
               </a>
             </div>
           <!--/noindex-->
@@ -579,8 +654,8 @@
       
   
   
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/08/01/Linux_1_memory_management/">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://lfeng.tech/2019/08/02/Linux_1_memory_management/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -594,7 +669,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2019/08/01/Linux_1_memory_management/" class="post-title-link" itemprop="url">Linux操作系统-(1) 内存管理</a>
+            <a href="/2019/08/02/Linux_1_memory_management/" class="post-title-link" itemprop="url">Linux操作系统-(1) 内存管理</a>
         </h2>
 
         <div class="post-meta">
@@ -602,28 +677,42 @@
               <span class="post-meta-item-icon">
                 <i class="far fa-calendar"></i>
               </span>
-              <span class="post-meta-item-text">Posted on</span>
+              <span class="post-meta-item-text">发表于</span>
 
-              <time title="Created: 2019-08-01 21:43:49" itemprop="dateCreated datePublished" datetime="2019-08-01T21:43:49+08:00">2019-08-01</time>
+              <time title="创建时间：2019-08-01 21:43:49" itemprop="dateCreated datePublished" datetime="2019-08-01T21:43:49Z">2019-08-01</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-05-28 13:36:58" itemprop="dateModified" datetime="2020-05-28T13:36:58+08:00">2020-05-28</time>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-05-28 05:36:58" itemprop="dateModified" datetime="2020-05-28T05:36:58Z">2020-05-28</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
               </span>
-              <span class="post-meta-item-text">In</span>
+              <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
                   <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
                 </span>
             </span>
 
           
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2019/08/02/Linux_1_memory_management/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2019/08/02/Linux_1_memory_management/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
 
         </div>
       </header>
@@ -642,8 +731,8 @@
 <p><strong>虚拟</strong>：虚拟性是一种管理技术，把物理上的一个实体变成逻辑上的一个或多个对应物。采用虚拟技术的目的是为用户提供易于使用、方便高效的操作环境。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2019/08/01/Linux_1_memory_management/#more" rel="contents">
-                Read more &raquo;
+              <a class="btn" href="/2019/08/02/Linux_1_memory_management/#more" rel="contents">
+                阅读全文 &raquo;
               </a>
             </div>
           <!--/noindex-->
@@ -665,8 +754,8 @@
       
   
   
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/22/Crontab-usage/">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://lfeng.tech/2019/07/23/Crontab-usage/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -680,7 +769,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2019/07/22/Crontab-usage/" class="post-title-link" itemprop="url">Linux基础 - Crontab定时任务</a>
+            <a href="/2019/07/23/Crontab-usage/" class="post-title-link" itemprop="url">Linux基础 - Crontab定时任务</a>
         </h2>
 
         <div class="post-meta">
@@ -688,28 +777,42 @@
               <span class="post-meta-item-icon">
                 <i class="far fa-calendar"></i>
               </span>
-              <span class="post-meta-item-text">Posted on</span>
+              <span class="post-meta-item-text">发表于</span>
 
-              <time title="Created: 2019-07-22 21:34:49" itemprop="dateCreated datePublished" datetime="2019-07-22T21:34:49+08:00">2019-07-22</time>
+              <time title="创建时间：2019-07-22 21:34:49" itemprop="dateCreated datePublished" datetime="2019-07-22T21:34:49Z">2019-07-22</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-05-28 13:34:47" itemprop="dateModified" datetime="2020-05-28T13:34:47+08:00">2020-05-28</time>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-05-28 05:34:47" itemprop="dateModified" datetime="2020-05-28T05:34:47Z">2020-05-28</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
               </span>
-              <span class="post-meta-item-text">In</span>
+              <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
                   <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
                 </span>
             </span>
 
           
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2019/07/23/Crontab-usage/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2019/07/23/Crontab-usage/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
 
         </div>
       </header>
@@ -732,8 +835,8 @@
 <p><img src="http://ww1.sinaimg.cn/mw690/a18449c6gy1g976jrfi0rj21fw10k0x2.jpg" alt="Screen Shot 2019-11-22 at 10.20.04 PM.png"></p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2019/07/22/Crontab-usage/#more" rel="contents">
-                Read more &raquo;
+              <a class="btn" href="/2019/07/23/Crontab-usage/#more" rel="contents">
+                阅读全文 &raquo;
               </a>
             </div>
           <!--/noindex-->
@@ -755,8 +858,8 @@
       
   
   
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/27/hexo-blog-domain/">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://lfeng.tech/2019/01/28/hexo-blog-domain/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -770,7 +873,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2019/01/27/hexo-blog-domain/" class="post-title-link" itemprop="url">域名购买与配置</a>
+            <a href="/2019/01/28/hexo-blog-domain/" class="post-title-link" itemprop="url">域名购买与配置</a>
         </h2>
 
         <div class="post-meta">
@@ -778,28 +881,42 @@
               <span class="post-meta-item-icon">
                 <i class="far fa-calendar"></i>
               </span>
-              <span class="post-meta-item-text">Posted on</span>
+              <span class="post-meta-item-text">发表于</span>
 
-              <time title="Created: 2019-01-27 16:17:44" itemprop="dateCreated datePublished" datetime="2019-01-27T16:17:44+08:00">2019-01-27</time>
+              <time title="创建时间：2019-01-27 16:17:44" itemprop="dateCreated datePublished" datetime="2019-01-27T16:17:44Z">2019-01-27</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-12-13 18:37:15" itemprop="dateModified" datetime="2020-12-13T18:37:15+08:00">2020-12-13</time>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-12-13 10:37:15" itemprop="dateModified" datetime="2020-12-13T10:37:15Z">2020-12-13</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
               </span>
-              <span class="post-meta-item-text">In</span>
+              <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
                   <a href="/categories/hexo/" itemprop="url" rel="index"><span itemprop="name">hexo</span></a>
                 </span>
             </span>
 
           
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2019/01/28/hexo-blog-domain/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2019/01/28/hexo-blog-domain/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
 
         </div>
       </header>
@@ -817,8 +934,8 @@
 <p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1g9p5v2hrbsj21li0de41k.jpg" alt="Screen Shot 2019-12-08 at 11.36.16 AM.png"></p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2019/01/27/hexo-blog-domain/#more" rel="contents">
-                Read more &raquo;
+              <a class="btn" href="/2019/01/28/hexo-blog-domain/#more" rel="contents">
+                阅读全文 &raquo;
               </a>
             </div>
           <!--/noindex-->
@@ -840,8 +957,8 @@
       
   
   
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/02/Zookeeper%20Introduction/">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://lfeng.tech/2018/12/03/Zookeeper%20Introduction/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -855,7 +972,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2018/12/02/Zookeeper%20Introduction/" class="post-title-link" itemprop="url">Zookeeper介绍</a>
+            <a href="/2018/12/03/Zookeeper%20Introduction/" class="post-title-link" itemprop="url">Zookeeper介绍</a>
         </h2>
 
         <div class="post-meta">
@@ -863,22 +980,36 @@
               <span class="post-meta-item-icon">
                 <i class="far fa-calendar"></i>
               </span>
-              <span class="post-meta-item-text">Posted on</span>
+              <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="Created: 2018-12-02 21:02:49 / Modified: 21:32:45" itemprop="dateCreated datePublished" datetime="2018-12-02T21:02:49+08:00">2018-12-02</time>
+              <time title="创建时间：2018-12-02 21:02:49 / 修改时间：13:32:45" itemprop="dateCreated datePublished" datetime="2018-12-02T21:02:49Z">2018-12-02</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
               </span>
-              <span class="post-meta-item-text">In</span>
+              <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
                   <a href="/categories/%E5%88%86%E5%B8%83%E5%BC%8F/" itemprop="url" rel="index"><span itemprop="name">分布式</span></a>
                 </span>
             </span>
 
           
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2018/12/03/Zookeeper%20Introduction/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2018/12/03/Zookeeper%20Introduction/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
 
         </div>
       </header>
@@ -895,8 +1026,8 @@
 <p>在分布式应用中，由于工程师不能很好地使用锁机制，以及基于消息的协调机制不适合在某些应用中使用，因此需要有一种可靠的、可扩展的、分布式的、可配置的协调机制来统一系统的状态。Zookeeper的目的就在于此。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2018/12/02/Zookeeper%20Introduction/#more" rel="contents">
-                Read more &raquo;
+              <a class="btn" href="/2018/12/03/Zookeeper%20Introduction/#more" rel="contents">
+                阅读全文 &raquo;
               </a>
             </div>
           <!--/noindex-->
@@ -918,8 +1049,8 @@
       
   
   
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/11/29/Clean%20Code/">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://lfeng.tech/2018/11/30/Clean%20Code/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -933,7 +1064,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2018/11/29/Clean%20Code/" class="post-title-link" itemprop="url">代码整洁之道</a>
+            <a href="/2018/11/30/Clean%20Code/" class="post-title-link" itemprop="url">代码整洁之道</a>
         </h2>
 
         <div class="post-meta">
@@ -941,28 +1072,42 @@
               <span class="post-meta-item-icon">
                 <i class="far fa-calendar"></i>
               </span>
-              <span class="post-meta-item-text">Posted on</span>
+              <span class="post-meta-item-text">发表于</span>
 
-              <time title="Created: 2018-11-29 23:53:49" itemprop="dateCreated datePublished" datetime="2018-11-29T23:53:49+08:00">2018-11-29</time>
+              <time title="创建时间：2018-11-29 23:53:49" itemprop="dateCreated datePublished" datetime="2018-11-29T23:53:49Z">2018-11-29</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2018-12-03 21:56:28" itemprop="dateModified" datetime="2018-12-03T21:56:28+08:00">2018-12-03</time>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2018-12-03 13:56:28" itemprop="dateModified" datetime="2018-12-03T13:56:28Z">2018-12-03</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
               </span>
-              <span class="post-meta-item-text">In</span>
+              <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
                   <a href="/categories/Code/" itemprop="url" rel="index"><span itemprop="name">Code</span></a>
                 </span>
             </span>
 
           
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2018/11/30/Clean%20Code/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2018/11/30/Clean%20Code/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
 
         </div>
       </header>
@@ -978,8 +1123,8 @@
 </blockquote>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2018/11/29/Clean%20Code/#more" rel="contents">
-                Read more &raquo;
+              <a class="btn" href="/2018/11/30/Clean%20Code/#more" rel="contents">
+                阅读全文 &raquo;
               </a>
             </div>
           <!--/noindex-->
@@ -1001,7 +1146,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/5/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+    <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/5/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1045,10 +1190,10 @@
 
       <ul class="sidebar-nav motion-element">
         <li class="sidebar-nav-toc">
-          Table of Contents
+          文章目录
         </li>
         <li class="sidebar-nav-overview">
-          Overview
+          站点概览
         </li>
       </ul>
 
@@ -1070,19 +1215,27 @@
           <a href="/archives/">
         
           <span class="site-state-item-count">56</span>
-          <span class="site-state-item-name">posts</span>
+          <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
         <span class="site-state-item-count">12</span>
-        <span class="site-state-item-name">categories</span>
+        <span class="site-state-item-name">分类</span>
       </div>
       <div class="site-state-item site-state-tags">
         <span class="site-state-item-count">22</span>
-        <span class="site-state-item-name">tags</span>
+        <span class="site-state-item-name">标签</span>
       </div>
   </nav>
 </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/teckee" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;teckee" rel="noopener" target="_blank"><i class="github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:h0ck@foxmail.com" title="E-Mail → mailto:h0ck@foxmail.com" rel="noopener" target="_blank"><i class="envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
 
 
 
@@ -1113,7 +1266,7 @@
   </span>
   <span class="author" itemprop="copyrightHolder">Vincent</span>
 </div>
-  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
   </div>
 
         
@@ -1139,7 +1292,7 @@
 <script src="/js/motion.js"></script>
 
 
-<script src="/js/schemes/muse.js"></script>
+<script src="/js/schemes/pisces.js"></script>
 
 
 <script src="/js/next-boot.js"></script>
@@ -1166,6 +1319,35 @@
   
 
   
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'cgQ905Fj6xbazWtyi9b1hafr-gzGzoHsz',
+      appKey     : '68EFTwnd9XYY352gRUJlJyMu',
+      placeholder: "Just go go",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
 
 </body>
 </html>
