@@ -146,6 +146,99 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://lfeng.tech/2020/01/06/JVM_1_memory/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Vincent">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Vincent's Notes">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/01/06/JVM_1_memory/" class="post-title-link" itemprop="url">JVM性能优化系列-(1) Java内存区域</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-01-05 21:43:49 / 修改时间：13:39:14" itemprop="dateCreated datePublished" datetime="2020-01-05T21:43:49Z">2020-01-05</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2020/01/06/JVM_1_memory/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/01/06/JVM_1_memory/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1gam0dn947ej20zk0k0wfo.jpg" alt="JVM.jpg"></p>
+<h2 id="1-Java内存区域"><a href="#1-Java内存区域" class="headerlink" title="1. Java内存区域"></a>1. Java内存区域</h2><h3 id="1-1-运行时数据区"><a href="#1-1-运行时数据区" class="headerlink" title="1.1 运行时数据区"></a>1.1 运行时数据区</h3><p>Java虚拟机在执行Java程序的过程中会把它所管理的内存划分为若干个不同的数据区域。主要包括：程序计数器、虚拟机栈、本地方法栈、Java堆、方法区（运 行时常量池）、直接内存。</p>
+<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1ga01wmudsfj20rc0km7cv.jpg" alt="Screen Shot 2019-12-17 at 9.40.27 PM.png"></p>
+<h4 id="程序计数器"><a href="#程序计数器" class="headerlink" title="程序计数器"></a>程序计数器</h4><p>程序计数器（Program Counter Register）是一块较小的内存空间，可以看作是当前线程所执行的字节码的行号指示器。在虚拟机概念模型中，字节码解释器工作时就是通过改变计数器的值来选取下一条需要执行的字节码指令，分支、循环、跳转、异常处理、线程恢复等基础功能都需要依赖这个计数器来完成。</p>
+<p>程序计数器是一块“线程私有”的内存，各个线程相互独立存储，互不影响。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/01/06/JVM_1_memory/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://lfeng.tech/2020/01/03/Java_concurrent_9_jdk_8_9_10_concurrent/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1005,104 +1098,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://lfeng.tech/2019/11/27/docker_3_docker_compose/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="Vincent">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Vincent's Notes">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/11/27/docker_3_docker_compose/" class="post-title-link" itemprop="url">Docker系列-(3) Docker-compose使用与负载均衡</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-11-26 23:34:49" itemprop="dateCreated datePublished" datetime="2019-11-26T23:34:49Z">2019-11-26</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-11-27 14:28:22" itemprop="dateModified" datetime="2019-11-27T14:28:22Z">2019-11-27</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2019/11/27/docker_3_docker_compose/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2019/11/27/docker_3_docker_compose/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1g987v09aygj20p00e2dhd.jpg" alt="docker.png"></p>
-<p>上一篇文章介绍了docker镜像的制作与发布，本文主要介绍实际docker工程部署中经常用到的docker-compose工具,以及docker的网络配置和负载均衡。</p>
-<h2 id="Docker-compose介绍"><a href="#Docker-compose介绍" class="headerlink" title="Docker-compose介绍"></a>Docker-compose介绍</h2><p>实际开发过程中，在一个项目中，我们常将不同的模块放在单独的docker中，方便维护和扩展。比如我们一个项目可能有MySQL镜像、Nginx镜像、Spring Boot后端镜像，我们在实际部署中可以采用上篇文章介绍的方法，分别打包，分别启动；但是这样太费精力，而且还容易出错。<br>因此Docker-compose工具应运而生，就是为了解决工程部署中的多个Docker镜像的管理问题。</p>
-<h3 id="docker-compose-yaml-文件"><a href="#docker-compose-yaml-文件" class="headerlink" title="docker-compose.yaml 文件"></a>docker-compose.yaml 文件</h3><p>类似于build镜像需要Dockerfile一样，使用docker-compose时也需要类似的配置文件，叫做docker-compose.yaml。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2019/11/27/docker_3_docker_compose/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1174,7 +1169,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">58</span>
+          <span class="site-state-item-count">59</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

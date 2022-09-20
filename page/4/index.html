@@ -146,6 +146,104 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://lfeng.tech/2019/11/27/docker_3_docker_compose/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Vincent">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Vincent's Notes">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/11/27/docker_3_docker_compose/" class="post-title-link" itemprop="url">Docker系列-(3) Docker-compose使用与负载均衡</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-11-26 23:34:49" itemprop="dateCreated datePublished" datetime="2019-11-26T23:34:49Z">2019-11-26</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-11-27 14:28:22" itemprop="dateModified" datetime="2019-11-27T14:28:22Z">2019-11-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2019/11/27/docker_3_docker_compose/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2019/11/27/docker_3_docker_compose/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1g987v09aygj20p00e2dhd.jpg" alt="docker.png"></p>
+<p>上一篇文章介绍了docker镜像的制作与发布，本文主要介绍实际docker工程部署中经常用到的docker-compose工具,以及docker的网络配置和负载均衡。</p>
+<h2 id="Docker-compose介绍"><a href="#Docker-compose介绍" class="headerlink" title="Docker-compose介绍"></a>Docker-compose介绍</h2><p>实际开发过程中，在一个项目中，我们常将不同的模块放在单独的docker中，方便维护和扩展。比如我们一个项目可能有MySQL镜像、Nginx镜像、Spring Boot后端镜像，我们在实际部署中可以采用上篇文章介绍的方法，分别打包，分别启动；但是这样太费精力，而且还容易出错。<br>因此Docker-compose工具应运而生，就是为了解决工程部署中的多个Docker镜像的管理问题。</p>
+<h3 id="docker-compose-yaml-文件"><a href="#docker-compose-yaml-文件" class="headerlink" title="docker-compose.yaml 文件"></a>docker-compose.yaml 文件</h3><p>类似于build镜像需要Dockerfile一样，使用docker-compose时也需要类似的配置文件，叫做docker-compose.yaml。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2019/11/27/docker_3_docker_compose/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://lfeng.tech/2019/11/25/docker_2_create_image/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1049,105 +1147,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://lfeng.tech/2019/01/28/hexo-blog-domain/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="Vincent">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Vincent's Notes">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/01/28/hexo-blog-domain/" class="post-title-link" itemprop="url">域名购买与配置</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-01-27 16:17:44" itemprop="dateCreated datePublished" datetime="2019-01-27T16:17:44Z">2019-01-27</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-12-13 10:37:15" itemprop="dateModified" datetime="2020-12-13T10:37:15Z">2020-12-13</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/hexo/" itemprop="url" rel="index"><span itemprop="name">hexo</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2019/01/28/hexo-blog-domain/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2019/01/28/hexo-blog-domain/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <blockquote>
-<p>Github绑定域名需要完成以下两步</p>
-</blockquote>
-<h2 id="1-域名解析"><a href="#1-域名解析" class="headerlink" title="1. 域名解析"></a>1. 域名解析</h2><p>购买域名之后，设置CNAME记录指向github博客。比如在阿里云购买域名之后，直接增加一条CNAME记录指向 teckee.github.io即可</p>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1g9p5v2hrbsj21li0de41k.jpg" alt="Screen Shot 2019-12-08 at 11.36.16 AM.png"></p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2019/01/28/hexo-blog-domain/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1219,7 +1218,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">58</span>
+          <span class="site-state-item-count">59</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
