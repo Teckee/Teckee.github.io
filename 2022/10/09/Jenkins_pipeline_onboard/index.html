@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+<meta name="referrer" content="no-referrer" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"lfeng.tech","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="Jenkins 是一款开源的持续集成（DI）工具，广泛用于项目开发，能提供自动构建，测试，部署等功能。作为领先的开源自动化服务器，Jenkins 提供了数百个插件来支持构建、部署和自动化任何项目。 这里主要介绍如何使用docker安装Jenkins，以及如何通过Jenkins pipeline实现自动化部署。 1. 安装Jenkins直接下载最新的docker镜像安装即可， 1docker run">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Docker 安装 Jenkins 并实现项目自动化部署">
+<meta property="og:url" content="https://lfeng.tech/2022/10/09/Jenkins_pipeline_onboard/index.html">
+<meta property="og:site_name" content="Vincent&#39;s Notes">
+<meta property="og:description" content="Jenkins 是一款开源的持续集成（DI）工具，广泛用于项目开发，能提供自动构建，测试，部署等功能。作为领先的开源自动化服务器，Jenkins 提供了数百个插件来支持构建、部署和自动化任何项目。 这里主要介绍如何使用docker安装Jenkins，以及如何通过Jenkins pipeline实现自动化部署。 1. 安装Jenkins直接下载最新的docker镜像安装即可， 1docker run">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://tvax1.sinaimg.cn/large/a18449c6gy1h6zc0kqvywj211w0hwq3a.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008vxvgGgy1h6zdgh41tzj317k0d0myp.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/e6c9d24egy1h6kf05j4u4j21e80bmdi9.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008vxvgGgy1h6zdu4n960j31i20823yt.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/006y8mN6gy1h6y7f82ky0j313u0sc7ai.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g9v9luujswj21n10l9jux.jpg">
+<meta property="article:published_time" content="2022-10-08T21:43:49.000Z">
+<meta property="article:modified_time" content="2022-10-09T14:14:18.063Z">
+<meta property="article:author" content="Vincent">
+<meta property="article:tag" content="Linux">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://tvax1.sinaimg.cn/large/a18449c6gy1h6zc0kqvywj211w0hwq3a.jpg">
+
+<link rel="canonical" href="https://lfeng.tech/2022/10/09/Jenkins_pipeline_onboard/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Docker 安装 Jenkins 并实现项目自动化部署 | Vincent's Notes</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Vincent's Notes</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://lfeng.tech/2022/10/09/Jenkins_pipeline_onboard/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Vincent">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Vincent's Notes">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Docker 安装 Jenkins 并实现项目自动化部署
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-10-08 21:43:49" itemprop="dateCreated datePublished" datetime="2022-10-08T21:43:49Z">2022-10-08</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-10-09 14:14:18" itemprop="dateModified" datetime="2022-10-09T14:14:18Z">2022-10-09</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2022/10/09/Jenkins_pipeline_onboard/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2022/10/09/Jenkins_pipeline_onboard/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>Jenkins 是一款开源的持续集成（DI）工具，广泛用于项目开发，能提供自动构建，测试，部署等功能。作为领先的开源自动化服务器，Jenkins 提供了数百个插件来支持构建、部署和自动化任何项目。</p>
+<p>这里主要介绍如何使用docker安装Jenkins，以及如何通过Jenkins pipeline实现自动化部署。</p>
+<h2 id="1-安装Jenkins"><a href="#1-安装Jenkins" class="headerlink" title="1. 安装Jenkins"></a>1. 安装Jenkins</h2><p>直接下载最新的docker镜像安装即可，</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -p 8080:8080 -p 50000:50000 -d -v /var/run/docker.sock:/var/run/docker.sock -v jenkins_home:/var/jenkins_home my-jenkins-jdk11</span><br></pre></td></tr></table></figure>
+
+<p>这里需要注意几点：</p>
+<ul>
+<li><p>需要将宿主机的/var/run/docker.sock映射到容器中，这样在容器内只要向/var/run/docker.sock发送http请求就能和Docker Daemon通信了，如果容器内有docker文件，那么在容器内执行docker ps、docker port这些命令，和在宿主机上执行的效果是一样的，因为容器内和宿主机上的docker文件虽然不同，但是他们的请求发往的是同一个Docker Daemon；可以参考<a target="_blank" rel="noopener" href="https://blog.csdn.net/boling_cavalry/article/details/92846483">https://blog.csdn.net/boling_cavalry/article/details/92846483</a> </p>
+</li>
+<li><p>将容器内目录挂载到宿主机的目录，这样我们可以在宿主机上对文件的修改同步到容器内。</p>
+</li>
+</ul>
+<span id="more"></span>
+
+<h3 id="基本操作"><a href="#基本操作" class="headerlink" title="基本操作"></a>基本操作</h3><p>查看Jenkins的日志：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker logs myjenkins</span><br></pre></td></tr></table></figure>
+
+<p>重启容器可以使用：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker stop 容器ID</span><br><span class="line">docker start 容器ID</span><br></pre></td></tr></table></figure>
+
+<h3 id="登录初始化Jenkins"><a href="#登录初始化Jenkins" class="headerlink" title="登录初始化Jenkins"></a>登录初始化Jenkins</h3><p>在浏览器访问<a href="http://jenkins所在主机ip:8080，等待后出现如下界面，需要输入密码。">http://jenkins所在主机ip:8080，等待后出现如下界面，需要输入密码。</a></p>
+<p><img src="https://tvax1.sinaimg.cn/large/a18449c6gy1h6zc0kqvywj211w0hwq3a.jpg" alt="Xnip2022-10-09_20-57-01"></p>
+<p>可以查看宿主机<code>/usr/local/jenkins/secrets/initialAdminPassword</code>文件获取密码。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat /usr/local/jenkins/secrets/initialAdminPassword</span><br></pre></td></tr></table></figure>
+
+<p>或者进入容器，查看<code>/var/jenkins_home/secrets/initialAdminPassword</code>文件获取密码。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># 进入容器</span><br><span class="line">docker exec -it 容器ID /bin/bash</span><br><span class="line"># 查看密码</span><br><span class="line">cat /var/jenkins_home/secrets/initialAdminPassword</span><br></pre></td></tr></table></figure>
+
+<p>输入密码后，出现如下界面，任选一种方式均可。</p>
+<h3 id="配置镜像加速"><a href="#配置镜像加速" class="headerlink" title="配置镜像加速"></a>配置镜像加速</h3><p>打开宿主机 Jenkins 工作目录下的hudson.model.UpdateCenter.xml文件。</p>
+<p>原始内容如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=&#x27;1.1&#x27; encoding=&#x27;UTF-8&#x27;?&gt;</span><br><span class="line">&lt;sites&gt;</span><br><span class="line">  &lt;site&gt;</span><br><span class="line">    &lt;id&gt;default&lt;/id&gt;</span><br><span class="line">    &lt;url&gt;https://updates.jenkins.io/update-center.json&lt;/url&gt;</span><br><span class="line">  &lt;/site&gt;</span><br><span class="line">&lt;/sites&gt;</span><br></pre></td></tr></table></figure>
+
+<p>url 修改为国内的清华大学官方镜像地址，最终内容如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=&#x27;1.1&#x27; encoding=&#x27;UTF-8&#x27;?&gt;</span><br><span class="line">&lt;sites&gt;</span><br><span class="line">  &lt;site&gt;</span><br><span class="line">    &lt;id&gt;default&lt;/id&gt;</span><br><span class="line">    &lt;url&gt;https://mirrors.tuna.tsinghua.edu.cn/jenkins/updates/update-center.json&lt;/url&gt;</span><br><span class="line">  &lt;/site&gt;</span><br><span class="line">&lt;/sites&gt;</span><br></pre></td></tr></table></figure>
+
+<p>重启 Jenkins 服务。</p>
+<h3 id="配置JDK-Maven"><a href="#配置JDK-Maven" class="headerlink" title="配置JDK Maven"></a>配置JDK Maven</h3><p>可以参考博客：<a target="_blank" rel="noopener" href="https://developer.aliyun.com/article/892646">https://developer.aliyun.com/article/892646</a></p>
+<h2 id="2-使用Jenkins-Pipeline部署Docker程序"><a href="#2-使用Jenkins-Pipeline部署Docker程序" class="headerlink" title="2. 使用Jenkins Pipeline部署Docker程序"></a>2. 使用Jenkins Pipeline部署Docker程序</h2><h3 id="密钥配置"><a href="#密钥配置" class="headerlink" title="密钥配置"></a>密钥配置</h3><h4 id="配置Docker-Token"><a href="#配置Docker-Token" class="headerlink" title="配置Docker Token"></a>配置Docker Token</h4><p>为了使Jenkins能够push docker image到dockerhub，必须配置对应的authentication token。可以直接在<a target="_blank" rel="noopener" href="https://hub.docker.com/settings/security">https://hub.docker.com/settings/security</a> 登录后添加token即可，然后把token配置到Jenkins中，具体路径如下，选择类型为username/password。</p>
+<p><img src="https://tva1.sinaimg.cn/large/008vxvgGgy1h6zdgh41tzj317k0d0myp.jpg" alt="image-20221009214701395"></p>
+<h4 id="配置Github-SSH-key"><a href="#配置Github-SSH-key" class="headerlink" title="配置Github SSH key"></a>配置Github SSH key</h4><p>在Jenkins用户下，生成一对ssh key，将公钥放到github，私钥配置到上面docker token同样的位置即可。这样在job中可以使用ssh从github clone code。注意如果首次连接提示</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">No ECDSA host key is known for github.houston.softwaregrp.net and you have requested strict checking.</span><br></pre></td></tr></table></figure>
+
+<p>可以采用下面的方法解决：</p>
+<p><img src="https://tva1.sinaimg.cn/large/e6c9d24egy1h6kf05j4u4j21e80bmdi9.jpg"></p>
+<h4 id="配置SSH登录"><a href="#配置SSH登录" class="headerlink" title="配置SSH登录"></a>配置SSH登录</h4><p>如果在Jenkins Pipeline中需要ssh到远程server，需要配置下ssh key，把生成好的public key放到远端server的authorized keys里面就行了。</p>
+<h3 id="Jenkins-Pipeline"><a href="#Jenkins-Pipeline" class="headerlink" title="Jenkins Pipeline"></a>Jenkins Pipeline</h3><h4 id="安装插件"><a href="#安装插件" class="headerlink" title="安装插件"></a>安装插件</h4><p>安装Pipeline（<a target="_blank" rel="noopener" href="https://plugins.jenkins.io/workflow-aggregator/%EF%BC%89%E5%92%8Cstage">https://plugins.jenkins.io/workflow-aggregator/）和stage</a> view（<a target="_blank" rel="noopener" href="https://plugins.jenkins.io/pipeline-stage-view/%EF%BC%89%E6%8F%92%E4%BB%B6%E3%80%82">https://plugins.jenkins.io/pipeline-stage-view/）插件。</a></p>
+<h4 id="新建Pipeline-Job"><a href="#新建Pipeline-Job" class="headerlink" title="新建Pipeline Job"></a>新建Pipeline Job</h4><p>安装好上述插件之后，新建一个Jenkins的pipeline Job，可以把所需要的Jenkinsfile放在项目的根目录下，这样就可以通过下面的选项来新建Pipeline Job了。关于Pipeline的更多内容，参考<a target="_blank" rel="noopener" href="https://www.jenkins.io/zh/doc/book/pipeline/%E3%80%82">https://www.jenkins.io/zh/doc/book/pipeline/。</a></p>
+<p><img src="https://tva1.sinaimg.cn/large/008vxvgGgy1h6zdu4n960j31i20823yt.jpg" alt="image-20221009220008817"></p>
+<h4 id="定义好Pipeline并上传至Github"><a href="#定义好Pipeline并上传至Github" class="headerlink" title="定义好Pipeline并上传至Github"></a>定义好Pipeline并上传至Github</h4><p>下面是一个pipeline的sample，里面包含4个步骤：</p>
+<ul>
+<li>Maven Build：下载并且build整个maven project。</li>
+<li>Docker Build：根据指定的Dockerfile build docker image。</li>
+<li>Push Docker images：上传docker images。DOCKER_CREDENTIAL是前面指定的docker token的ID。</li>
+<li>Deploy：这一步ssh到server上进行部署。</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">pipeline &#123;</span><br><span class="line">    agent any</span><br><span class="line">    tools &#123;</span><br><span class="line">        maven &#x27;maven-3.6.3&#x27;</span><br><span class="line">    &#125;</span><br><span class="line">    environment &#123;</span><br><span class="line">        DATE = new Date().format(&#x27;yy.M&#x27;)</span><br><span class="line">        TAG = &quot;$&#123;DATE&#125;.$&#123;BUILD_NUMBER&#125;&quot;</span><br><span class="line">    &#125;</span><br><span class="line">    stages &#123;</span><br><span class="line">        stage (&#x27;Maven Build&#x27;) &#123;</span><br><span class="line">            steps &#123;</span><br><span class="line">                sh &#x27;mvn clean package -DskipTests&#x27;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        stage(&#x27;Docker Build&#x27;) &#123;</span><br><span class="line">            steps &#123;</span><br><span class="line">                script &#123;</span><br><span class="line">                    docker.build(&quot;king/my-work:$&#123;TAG&#125;&quot;, &quot;-f ./some/path/to/Dockerfile .&quot;)</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">	    stage(&#x27;Pushing Docker Image to Dockerhub&#x27;) &#123;</span><br><span class="line">            steps &#123;</span><br><span class="line">                script &#123;</span><br><span class="line">                    docker.withRegistry(&#x27;https://registry.hub.docker.com&#x27;, &#x27;DOCKER_CREDENTIAL&#x27;) &#123;</span><br><span class="line">                        docker.image(&quot;king/my-work:$&#123;TAG&#125;:$&#123;TAG&#125;&quot;).push()</span><br><span class="line">                        docker.image(&quot;king/my-work:$&#123;TAG&#125;:$&#123;TAG&#125;&quot;).push(&quot;latest&quot;)</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        stage(&#x27;Deploy&#x27;)&#123;</span><br><span class="line">            steps &#123;</span><br><span class="line">                sh &#x27;scp -P some_port -r my_deploy user@111.111.111.111:test&#x27;</span><br><span class="line">                sh &#x27;ssh user@222.222.222.222 &quot;cd my_deploy &amp;&amp; docker-compose up -d&quot;&#x27;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="可能碰到的问题"><a href="#可能碰到的问题" class="headerlink" title="可能碰到的问题"></a>可能碰到的问题</h4><ul>
+<li>dockerbuild的权限问题：因为容器内外共享的同一套docker socket，就算在容器内部将Jenkins用户加到docker的group，还是会有权限问题。因为内部的jenkins用户并不在外部的docker group里面，因此需要手动将内外的docker group id进行同步。具体做法参考下面的stackoverflow回答：<a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/47854463/docker-got-permission-denied-while-trying-to-connect-to-the-docker-daemon-socke">https://stackoverflow.com/questions/47854463/docker-got-permission-denied-while-trying-to-connect-to-the-docker-daemon-socke</a></li>
+</ul>
+<p><img src="https://tva1.sinaimg.cn/large/006y8mN6gy1h6y7f82ky0j313u0sc7ai.jpg"></p>
+<ul>
+<li>在docker容器中安装程序的问题：因为默认的jenkins用户没有权限安装程序， 可以使用root用户进入到docker container中进行安装。<code>docker exec --user root -it jenkins bash</code></li>
+</ul>
+<hr>
+<p>搜索『后端精进之路』关注公众号，立刻获取最新文章和<strong>价值2000元的BATJ精品面试课程</strong>。</p>
+<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1g9v9luujswj21n10l9jux.jpg" alt="后端精进之路.png"></p>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Vincent
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://lfeng.tech/2022/10/09/Jenkins_pipeline_onboard/" title="Docker 安装 Jenkins 并实现项目自动化部署">https://lfeng.tech/2022/10/09/Jenkins_pipeline_onboard/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Linux/" rel="tag"># Linux</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/09/21/openwrt_configuration/" rel="prev" title="R2s折腾OpenWRT">
+      <i class="fa fa-chevron-left"></i> R2s折腾OpenWRT
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E5%AE%89%E8%A3%85Jenkins"><span class="nav-number">1.</span> <span class="nav-text">1. 安装Jenkins</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C"><span class="nav-number">1.1.</span> <span class="nav-text">基本操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%99%BB%E5%BD%95%E5%88%9D%E5%A7%8B%E5%8C%96Jenkins"><span class="nav-number">1.2.</span> <span class="nav-text">登录初始化Jenkins</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E9%95%9C%E5%83%8F%E5%8A%A0%E9%80%9F"><span class="nav-number">1.3.</span> <span class="nav-text">配置镜像加速</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%85%8D%E7%BD%AEJDK-Maven"><span class="nav-number">1.4.</span> <span class="nav-text">配置JDK Maven</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E4%BD%BF%E7%94%A8Jenkins-Pipeline%E9%83%A8%E7%BD%B2Docker%E7%A8%8B%E5%BA%8F"><span class="nav-number">2.</span> <span class="nav-text">2. 使用Jenkins Pipeline部署Docker程序</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%86%E9%92%A5%E9%85%8D%E7%BD%AE"><span class="nav-number">2.1.</span> <span class="nav-text">密钥配置</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%85%8D%E7%BD%AEDocker-Token"><span class="nav-number">2.1.1.</span> <span class="nav-text">配置Docker Token</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%85%8D%E7%BD%AEGithub-SSH-key"><span class="nav-number">2.1.2.</span> <span class="nav-text">配置Github SSH key</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%85%8D%E7%BD%AESSH%E7%99%BB%E5%BD%95"><span class="nav-number">2.1.3.</span> <span class="nav-text">配置SSH登录</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Jenkins-Pipeline"><span class="nav-number">2.2.</span> <span class="nav-text">Jenkins Pipeline</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%89%E8%A3%85%E6%8F%92%E4%BB%B6"><span class="nav-number">2.2.1.</span> <span class="nav-text">安装插件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%96%B0%E5%BB%BAPipeline-Job"><span class="nav-number">2.2.2.</span> <span class="nav-text">新建Pipeline Job</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%9A%E4%B9%89%E5%A5%BDPipeline%E5%B9%B6%E4%B8%8A%E4%BC%A0%E8%87%B3Github"><span class="nav-number">2.2.3.</span> <span class="nav-text">定义好Pipeline并上传至Github</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%AF%E8%83%BD%E7%A2%B0%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98"><span class="nav-number">2.2.4.</span> <span class="nav-text">可能碰到的问题</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Vincent"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Vincent</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">60</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">23</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/teckee" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;teckee" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:h0ck@foxmail.com" title="E-Mail → mailto:h0ck@foxmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+  <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">沪ICP备19042895号-2 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Vincent</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'cgQ905Fj6xbazWtyi9b1hafr-gzGzoHsz',
+      appKey     : '68EFTwnd9XYY352gRUJlJyMu',
+      placeholder: "Just go go",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>
