@@ -28,33 +28,33 @@
 <meta property="og:site_name" content="Vincent&#39;s Notes">
 <meta property="og:description" content="7. IOC初始化流程IoC容器的初始化就是含有BeanDefinition信息的Resource的定位、载入、解析、注册四个过程，最终我们配置的bean，以beanDefinition的数据结构存在于IoC容器即内存中。这里并不涉及bean的依赖注入，只是bean定义的载入。但有例外，在使用Ioc容器时有一个预实例化的配置，即bean定义中的设置了lazyinit属性，那么这个bean在Ioc">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1gco2xb0bj9j20nn0cet8m.jpg">
-<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlgy1getgegks97j30s209y0y6.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1gc0mvmz6w1j20v404w3zh.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1gc0nnoqvh8j20it0j9q8d.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1gc0o3mjvr0j20zg0iwn3i.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1gc0o9bbr0qj210m07mmzg.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1gc0oae9odmj21f40h6wk3.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1gc0oeduyexj21cs0z0ww0.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1gc0r7dq9q8j213m0f643y.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1gc0syqjc6aj21bi0h8thn.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1gc0w0uts1dj21300i87b1.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1gc1ukpz9xoj20lr17xn1w.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1gc1rh053uvj20e80c6jti.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1gc1u49qgquj21bk0u6e3u.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1gc1u8d8vr3j20jy0du7be.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1gc21seb6tgj21bq0jyncg.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1gc21vmmbioj21ca0j27ab.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1gc220rpw4bj20ib087aan.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1gc21xlw0nzj21dq0dwaef.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1gc21yks34ij21b00den2j.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g9v9luujswj21n10l9jux.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223352_85f3e.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223352_35474.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223352_11747.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223352_1c030.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223352_86404.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223353_042ab.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223353_d0994.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223353_9b18e.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223353_2f7a0.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223354_78fd6.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223354_11ca9.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223354_006a4.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223354_d26fb.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223355_df43d.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223355_a6c41.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223355_08fcc.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223355_0dd3f.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223355_9f9b4.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223356_1ecb0.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223356_d9e92.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223356_732c0.jpg">
 <meta property="article:published_time" content="2020-04-10T21:43:49.000Z">
-<meta property="article:modified_time" content="2020-05-28T04:10:31.771Z">
+<meta property="article:modified_time" content="2022-12-11T14:33:56.582Z">
 <meta property="article:author" content="Vincent">
 <meta property="article:tag" content="Spring">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1gco2xb0bj9j20nn0cet8m.jpg">
+<meta name="twitter:image" content="https://imgs.lfeng.tech/images/blog/20221211223352_85f3e.jpg">
 
 <link rel="canonical" href="https://lfeng.tech/2020/04/11/Spring_7_IOC/">
 
@@ -204,7 +204,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-05-28 04:10:31" itemprop="dateModified" datetime="2020-05-28T04:10:31Z">2020-05-28</time>
+                <time title="修改时间：2022-12-11 14:33:56" itemprop="dateModified" datetime="2022-12-11T14:33:56Z">2022-12-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -241,9 +241,9 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1gco2xb0bj9j20nn0cet8m.jpg" alt="Spring.png"></p>
+        <p><img src="https://imgs.lfeng.tech/images/blog/20221211223352_85f3e.jpg" alt="Spring.png"></p>
 <h2 id="7-IOC初始化流程"><a href="#7-IOC初始化流程" class="headerlink" title="7. IOC初始化流程"></a>7. IOC初始化流程</h2><p>IoC容器的初始化就是含有BeanDefinition信息的Resource的定位、载入、解析、注册四个过程，最终我们配置的bean，以beanDefinition的数据结构存在于IoC容器即内存中。这里并不涉及bean的依赖注入，只是bean定义的载入。但有例外，在使用Ioc容器时有一个预实例化的配置，即bean定义中的设置了lazyinit属性，那么这个bean在Ioc容器初始化时就预先加载，不需要等到Ioc整个初始化后，第一次getBean时才会触发。其中refresh()启动对Ioc容器的初始化。</p>
-<p><img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1getgegks97j30s209y0y6.jpg"></p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223352_35474.jpg"></p>
 <span id="more"></span>
 
 <p>主要分为如下三个步骤：</p>
@@ -261,24 +261,24 @@
 <p>这个过程是通过调用BeanDefinitionRegistry接口的实现来完成的，这个注册过程把载入过程中解析得到的BeanDefinition向IoC容器进行注册。可以看到，在IoC容器内部将BeanDefinition注入到一个HashMap中去，Ioc容器是通过这个HashMap来持有这些BeanDefinition数据的。整个过程可以理解为容器的初始化过程。</p>
 <p>容器的初始化是通过AbstractApplicationContext的refresh()实现的，下面将会对这个函数进行详细介绍。</p>
 <h3 id="7-1-refresh函数"><a href="#7-1-refresh函数" class="headerlink" title="7.1 refresh函数"></a>7.1 refresh函数</h3><p>Spring中会经常使用到<code>AnnotationConfigApplicationContext</code>作为IOC容器的操作入口，可以利用该context进行Bean的管理，从下面的构造函数可以看到，refresh函数中完成了IOC容器的初始化，因此弄清楚refresh函数就理解了IOC的初始化流程。</p>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1gc0mvmz6w1j20v404w3zh.jpg" alt="Screen Shot 2020-02-18 at 4.27.54 PM.png"></p>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1gc0nnoqvh8j20it0j9q8d.jpg" alt="11111111.png"></p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223352_11747.jpg" alt="Screen Shot 2020-02-18 at 4.27.54 PM.png"></p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223352_1c030.jpg" alt="11111111.png"></p>
 <p>下面对每个函数仔细分析。</p>
-<h4 id="1-prepareRefresh-预处理"><a href="#1-prepareRefresh-预处理" class="headerlink" title="1. prepareRefresh() 预处理"></a>1. prepareRefresh() 预处理</h4><p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1gc0o3mjvr0j20zg0iwn3i.jpg" alt="Screen Shot 2020-02-18 at 5.10.12 PM.png"></p>
+<h4 id="1-prepareRefresh-预处理"><a href="#1-prepareRefresh-预处理" class="headerlink" title="1. prepareRefresh() 预处理"></a>1. prepareRefresh() 预处理</h4><p><img src="https://imgs.lfeng.tech/images/blog/20221211223352_86404.jpg" alt="Screen Shot 2020-02-18 at 5.10.12 PM.png"></p>
 <ol>
 <li>initPropertySources()初始化一些属性设置；子类自定义个性化的属性设置方法</li>
 <li>getEnvironment().validateRequiredProperties()；校验属性的合法等</li>
 <li>earlyApplicationEvents = new LinkedHashSet<ApplicationEvent>() 保存容器中一些早期的事件</li>
 </ol>
 <h4 id="2-obtainFreshBeanFactory-获取BeanFactory"><a href="#2-obtainFreshBeanFactory-获取BeanFactory" class="headerlink" title="2. obtainFreshBeanFactory() 获取BeanFactory"></a>2. obtainFreshBeanFactory() 获取BeanFactory</h4><p>这一步重点是refreshBeanFactory(),</p>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1gc0o9bbr0qj210m07mmzg.jpg" alt="Screen Shot 2020-02-18 at 5.15.34 PM.png"></p>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1gc0oae9odmj21f40h6wk3.jpg" alt="Screen Shot 2020-02-18 at 5.16.50 PM.png"></p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223353_042ab.jpg" alt="Screen Shot 2020-02-18 at 5.15.34 PM.png"></p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223353_d0994.jpg" alt="Screen Shot 2020-02-18 at 5.16.50 PM.png"></p>
 <ol>
 <li>refreshBeanFactory()<br>刷新【创建】容器,创建了一个this.beanFactory = new DefaultListableBeanFactory();并设置序列化id。</li>
 <li>getBeanFactory()；<br>返回上一步创建的beanFactory对象</li>
 <li>将创建BeanFactory【DefaultListableBeanFactory】返回</li>
 </ol>
-<h4 id="3-prepareBeanFactory-beanFactory-BeanFactory的预准备工作"><a href="#3-prepareBeanFactory-beanFactory-BeanFactory的预准备工作" class="headerlink" title="3. prepareBeanFactory(beanFactory) BeanFactory的预准备工作"></a>3. prepareBeanFactory(beanFactory) BeanFactory的预准备工作</h4><p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1gc0oeduyexj21cs0z0ww0.jpg" alt="Screen Shot 2020-02-18 at 5.20.33 PM.png"></p>
+<h4 id="3-prepareBeanFactory-beanFactory-BeanFactory的预准备工作"><a href="#3-prepareBeanFactory-beanFactory-BeanFactory的预准备工作" class="headerlink" title="3. prepareBeanFactory(beanFactory) BeanFactory的预准备工作"></a>3. prepareBeanFactory(beanFactory) BeanFactory的预准备工作</h4><p><img src="https://imgs.lfeng.tech/images/blog/20221211223353_9b18e.jpg" alt="Screen Shot 2020-02-18 at 5.20.33 PM.png"></p>
 <ol>
 <li>设置beanFactory的类加载器、支持表达式解析器</li>
 <li>添加部分ApplicationContextAwareProcessor</li>
@@ -298,13 +298,13 @@
 
 <p>3)在执行实现了Ordered顺序接口的BeanDefinitionRegistryPostProcessor</p>
 <p>4)最后执行没有任何优先级或者是顺序接口的BeanDefinitionRegistryPostProcessor</p>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1gc0r7dq9q8j213m0f643y.jpg" alt="Screen Shot 2020-02-18 at 6.57.34 PM.png"></p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223353_2f7a0.jpg" alt="Screen Shot 2020-02-18 at 6.57.34 PM.png"></p>
 <p><strong>2. 在执行BeanFactoryPostProcessor的方法</strong></p>
 <p>1)获取所有的BeanFactoryPostProcessor</p>
 <p>2)看先执行实现了PriorityOrdered接口的获取所有的BeanFactoryPostProcessor</p>
 <p>3)在执行实现了Ordered顺序接口的BeanFactoryPostProcessor</p>
 <p>4)最后执行没有任何优先级或者是顺序接口的BeanFactoryPostProcessor</p>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1gc0syqjc6aj21bi0h8thn.jpg" alt="Screen Shot 2020-02-18 at 7.58.17 PM.png"></p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223354_78fd6.jpg" alt="Screen Shot 2020-02-18 at 7.58.17 PM.png"></p>
 <h4 id="6-registerBeanPostProcessors-beanFactory-注册BeanPostProcessor-bean的后置处理器"><a href="#6-registerBeanPostProcessors-beanFactory-注册BeanPostProcessor-bean的后置处理器" class="headerlink" title="6. registerBeanPostProcessors(beanFactory);注册BeanPostProcessor(bean的后置处理器)"></a>6. registerBeanPostProcessors(beanFactory);注册BeanPostProcessor(bean的后置处理器)</h4><p>将不同类型的BeanPostProcessor加入到BeanFactory中，注意到这里是依据优先级依次注册。</p>
 <p>1)获取所有的BeanPostProcessor；后置处理器都默认可以通过PriorityOrdered、Ordered接口执行优先级。</p>
 <p>2)先注册PriorityOrdered优先级的BeanPostProcessor；把每一个BeanPostProcessor添加到BeanFactory中。</p>
@@ -314,7 +314,7 @@
 <blockquote>
 <p>这个步骤中的所有后置处理器，都是通过下面的getBean方法来进行实例化的，具体流程在之前AOP中有介绍。实例化之后，在后续注册Bean的时候，就可以对Bean的生成进行定制化。</p>
 </blockquote>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1gc0w0uts1dj21300i87b1.jpg" alt="Screen Shot 2020-02-18 at 9.43.12 PM.png"></p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223354_11ca9.jpg" alt="Screen Shot 2020-02-18 at 9.43.12 PM.png"></p>
 <h4 id="7-initMessageSource-初始化messageSource组件"><a href="#7-initMessageSource-初始化messageSource组件" class="headerlink" title="7. initMessageSource() 初始化messageSource组件"></a>7. initMessageSource() 初始化messageSource组件</h4><p>1)获取BeanFactory</p>
 <p>2)看容器中是否有id为messageSource的，类型是MessageSource的组件<br>如果有复制给messageSource，如果没有创建一个DelegatingMessageSource</p>
 <p>3)把创建好的MessageSource注册到容器中，以后获取国际化配置文件的值的时候可以自动注入MessageSource<br>beanFactory.registerSingleton(MESSAGE_SOURCE_BEAN_NAME, this.messageSource);</p>
@@ -327,7 +327,7 @@
 <p>2)将每个监听器添加到时间派发器中<br> getApplicationEventMulticaster().addApplicationListenerBean(listenerBeanName);</p>
 <p>3)派发之前步骤产生的事件</p>
 <h4 id="11-finishBeanFactoryInitialization-beanFactory-初始化所有剩下的单实例bean"><a href="#11-finishBeanFactoryInitialization-beanFactory-初始化所有剩下的单实例bean" class="headerlink" title="11. finishBeanFactoryInitialization(beanFactory);初始化所有剩下的单实例bean"></a>11. finishBeanFactoryInitialization(beanFactory);初始化所有剩下的单实例bean</h4><p>这是所有步骤中，最重要，最复杂的一步，之前AOP中对这部分有过仔细介绍，这里重点梳理正常Bean的初始化流程。</p>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1gc1ukpz9xoj20lr17xn1w.jpg" alt="未命名文件 (1).png"></p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223354_006a4.jpg" alt="未命名文件 (1).png"></p>
 <h4 id="12-finishRefresh-完成BeanFactory的初始化创建工作，IOC容器就创建完成"><a href="#12-finishRefresh-完成BeanFactory的初始化创建工作，IOC容器就创建完成" class="headerlink" title="12. finishRefresh() 完成BeanFactory的初始化创建工作，IOC容器就创建完成"></a>12. finishRefresh() 完成BeanFactory的初始化创建工作，IOC容器就创建完成</h4><p>1.initLifecycleProcessor()初始化和生命周期有关的后置处理器；</p>
 <p>LifecycleProcessor默认从容器中找是否有LifecycleProcessor的组件</p>
 <p>2.getLifecycleProcessor().onRefresh();</p>
@@ -335,7 +335,7 @@
 <p>3.publishEvent(new ContextRefreshedEvent(this));发布容器刷新完成事件</p>
 <p>4.LiveBeansView.registerApplicationContext(this);</p>
 <h3 id="7-2-Spring-bean的循环依赖以及解决方式"><a href="#7-2-Spring-bean的循环依赖以及解决方式" class="headerlink" title="7.2 Spring-bean的循环依赖以及解决方式"></a>7.2 Spring-bean的循环依赖以及解决方式</h3><h4 id="什么是循环依赖？"><a href="#什么是循环依赖？" class="headerlink" title="什么是循环依赖？"></a>什么是循环依赖？</h4><p>循环依赖其实就是循环引用，也就是两个或则两个以上的bean互相持有对方，最终形成闭环。比如A依赖于B，B依赖于C，C又依赖于A。如下图：</p>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1gc1rh053uvj20e80c6jti.jpg" alt="Screen Shot 2020-02-19 at 3.43.36 PM.png">@w=250</p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223354_d26fb.jpg" alt="Screen Shot 2020-02-19 at 3.43.36 PM.png">@w=250</p>
 <p>注意，这里不是函数的循环调用，是对象的相互依赖关系。循环调用其实就是一个死循环，除非有终结条件。</p>
 <p>Spring中循环依赖场景有：</p>
 <p>（1）构造器的循环依赖<br>（2）field属性或者setter的循环依赖。</p>
@@ -374,7 +374,7 @@
 
 <p>这里就是解决循环依赖的关键，这段代码发生在createBeanInstance之后，也就是说单例对象此时已经被创建出来(调用了构造器)。这个对象已经被生产出来了，虽然还不完美（还没有进行初始化的第二步和第三步），但是已经能被人认出来了（根据对象引用能定位到堆中的对象），所以Spring此时将这个对象提前曝光出来让大家认识，让大家使用。</p>
 <p>下面是整段代码：</p>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1gc1u49qgquj21bk0u6e3u.jpg" alt="Screen Shot 2020-02-19 at 5.23.30 PM.png"></p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223355_df43d.jpg" alt="Screen Shot 2020-02-19 at 5.23.30 PM.png"></p>
 <p>这样做有什么好处呢？让我们来分析一下“A的某个field或者setter依赖了B的实例对象，同时B的某个field或者setter依赖了A的实例对象”这种循环依赖的情况。A首先完成了初始化的第一步，并且将自己提前曝光到singletonFactories中，此时进行初始化的第二步，发现自己依赖对象B，此时就尝试去get(B)，发现B还没有被create，所以走create流程，B在初始化第一步的时候发现自己依赖了对象A，于是尝试get(A)，尝试一级缓存singletonObjects(肯定没有，因为A还没初始化完全)，尝试二级缓存earlySingletonObjects（也没有），尝试三级缓存singletonFactories，由于A通过ObjectFactory将自己提前曝光了，所以B能够通过ObjectFactory.getObject拿到A对象(虽然A还没有初始化完全，但是总比没有好呀)，B拿到A对象后顺利完成了初始化阶段1、2、3，完全初始化之后将自己放入到一级缓存singletonObjects中。此时返回A中，A此时能拿到B的对象顺利完成自己的初始化阶段2、3，最终A也完成了初始化，进去了一级缓存singletonObjects中，而且更加幸运的是，由于B拿到了A的对象引用，所以B现在hold住的A对象完成了初始化。</p>
 <p><strong>总结来讲，Spring不能解决“A的构造方法中依赖了B的实例对象，同时B的构造方法中依赖了A的实例对象”这类问题了！因为加入singletonFactories三级缓存的前提是执行了构造器，所以构造器的循环依赖没法解决。</strong></p>
 <h4 id="如何解决构造器中的循环依赖？"><a href="#如何解决构造器中的循环依赖？" class="headerlink" title="如何解决构造器中的循环依赖？"></a>如何解决构造器中的循环依赖？</h4><p><strong>1. 使用@Lazy注解</strong></p>
@@ -388,7 +388,7 @@
 <p><strong>3. 实现ApplicationContextAware和InitializingBean</strong></p>
 <p>让其中的一个类实现ApplicationContextAware和InitializingBean，来手动设置依赖的Bean。</p>
 <p><code>ApplicationContextAware</code>发生在调用初始化方法之前，也就是下面的第二步，因此可以获取到ApplicationContext。</p>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1gc1u8d8vr3j20jy0du7be.jpg" alt="Screen Shot 2020-02-19 at 5.27.51 PM.png"></p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223355_a6c41.jpg" alt="Screen Shot 2020-02-19 at 5.27.51 PM.png"></p>
 <p>实现<code>InitializingBean</code>需要重写其的<code>afterPropertiesSet</code>方法，这发生在第3步，此时类中已经有了ApplicationContext，所以直接拿到对应的Bean实例即可。</p>
 <p>因为这两个方法都发生在createBeanInstance之后，所以在缓存singletonFactories中拿到对应的Bean。</p>
 <p>具体例子如下：</p>
@@ -408,15 +408,15 @@
 
 <p><code>@Autowired</code>发生在refresh方法的<code>finishBeanFactoryInitialization</code>(beanFactory)阶段，在此之前，在registerBeanPostProcessors(beanFactory)已经完成了对AutowiredAnnotationBeanPostProcessor的注册。</p>
 <p>在doCreateBean方法，首先会调用applyMergedBeanDefinitionPostProcessors(mbd, beanType, beanName)，实质上就是调用AutowiredAnnotationBeanPostProcessor类的postProcessMergedBeanDefinition方法，也就是开头介绍的在这个方法中完成了对注入元素注解的预解析。接着，在doCreateBean方法中执行populateBean方法实现对属性的注入。</p>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1gc21seb6tgj21bq0jyncg.jpg" alt="Screen Shot 2020-02-19 at 9.49.12 PM.png"></p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223355_08fcc.jpg" alt="Screen Shot 2020-02-19 at 9.49.12 PM.png"></p>
 <p>深入分析populateBean方法，下面是关键部分，这段代码中会遍历所有注册过的BeanPostProcessor接口实现类的实例，如果实例属于InstantiationAwareBeanPostProcessor类型的，则执行实例类的postProcessPropertyValues方法。</p>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1gc21vmmbioj21ca0j27ab.jpg" alt="Screen Shot 2020-02-19 at 9.52.29 PM.png"></p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223355_0dd3f.jpg" alt="Screen Shot 2020-02-19 at 9.52.29 PM.png"></p>
 <p>从下面的类继承关系可以看到，这里会执行AutowiredAnnotationBeanPostProcessor类的postProcessPropertyValues方法，</p>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1gc220rpw4bj20ib087aan.jpg" alt="spring-annotation-value.png"></p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223355_9f9b4.jpg" alt="spring-annotation-value.png"></p>
 <p>具体代码如下：</p>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1gc21xlw0nzj21dq0dwaef.jpg" alt="Screen Shot 2020-02-19 at 9.54.30 PM.png"></p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223356_1ecb0.jpg" alt="Screen Shot 2020-02-19 at 9.54.30 PM.png"></p>
 <p>metadata.inject(bean, beanName, pvs)代码的执行会进入如下inject方法中，在这里完成依赖的注入。</p>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1gc21yks34ij21b00den2j.jpg" alt="Screen Shot 2020-02-19 at 9.55.23 PM.png"></p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223356_d9e92.jpg" alt="Screen Shot 2020-02-19 at 9.55.23 PM.png"></p>
 <p>上面的InjectedElement有两个子类，分别是AutowiredFieldElement和AutowiredMethodElement，AutowiredFieldElement用于对标注在属性上的注入，AutowiredMethodElement用于对标注在方法上的注入。</p>
 <p>两种方式的注入过程都差不多，根据需要注入的元素的描述信息，按类型或名称查找需要的依赖值，如果依赖没有实例化先实例化依赖，然后使用反射进行赋值。</p>
 <h4 id="7-3-2-Resource和-Inject的工作原理"><a href="#7-3-2-Resource和-Inject的工作原理" class="headerlink" title="7.3.2 @Resource和@Inject的工作原理"></a>7.3.2 @Resource和@Inject的工作原理</h4><p>两者的实现原理与@Autowired类似，不过这两者是JDK中提供的annotation，是通过BeanPostProcessor接口的实现类CommonAnnotationBeanPostProcessor来实现的，其中如名字所述，即公共注解CommonAnotation，CommonAnnotationBeanPostProcessor是spring中统一处理JDK中定义的注解的一个BeanPostProcessor。该类会处理的注解还包括@PostConstruct，@PreDestroy等。</p>
@@ -453,7 +453,7 @@
 <hr>
 <p>本文由『后端精进之路』原创，首发于博客 <a target="_blank" rel="noopener" href="http://teckee.github.io/">http://teckee.github.io/</a> , 转载请注明出处</p>
 <p>搜索『后端精进之路』关注公众号，立刻获取最新文章和<strong>价值2000元的BATJ精品面试课程</strong>。</p>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1g9v9luujswj21n10l9jux.jpg" alt="后端精进之路.png"></p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223356_732c0.jpg" alt="后端精进之路.png"></p>
 
     </div>
 

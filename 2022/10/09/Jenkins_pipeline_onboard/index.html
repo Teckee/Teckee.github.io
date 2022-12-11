@@ -28,18 +28,18 @@
 <meta property="og:site_name" content="Vincent&#39;s Notes">
 <meta property="og:description" content="Jenkins 是一款开源的持续集成（DI）工具，广泛用于项目开发，能提供自动构建，测试，部署等功能。作为领先的开源自动化服务器，Jenkins 提供了数百个插件来支持构建、部署和自动化任何项目。 这里主要介绍如何使用docker安装Jenkins，以及如何通过Jenkins pipeline实现自动化部署。 1. 安装Jenkins直接下载最新的docker镜像安装即可， 1docker run">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://tvax1.sinaimg.cn/large/a18449c6gy1h6zc0kqvywj211w0hwq3a.jpg">
-<meta property="og:image" content="https://tva1.sinaimg.cn/large/008vxvgGgy1h6zdgh41tzj317k0d0myp.jpg">
-<meta property="og:image" content="https://tva1.sinaimg.cn/large/e6c9d24egy1h6kf05j4u4j21e80bmdi9.jpg">
-<meta property="og:image" content="https://tva1.sinaimg.cn/large/008vxvgGgy1h6zdu4n960j31i20823yt.jpg">
-<meta property="og:image" content="https://tva1.sinaimg.cn/large/006y8mN6gy1h6y7f82ky0j313u0sc7ai.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g9v9luujswj21n10l9jux.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223349_9b238.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223350_7a3f6.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223350_264bb.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223351_7a589.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223351_10206.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223351_46e88.jpg">
 <meta property="article:published_time" content="2022-10-08T21:43:49.000Z">
-<meta property="article:modified_time" content="2022-10-10T00:46:13.768Z">
+<meta property="article:modified_time" content="2022-12-11T14:33:51.873Z">
 <meta property="article:author" content="Vincent">
 <meta property="article:tag" content="Linux">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://tvax1.sinaimg.cn/large/a18449c6gy1h6zc0kqvywj211w0hwq3a.jpg">
+<meta name="twitter:image" content="https://imgs.lfeng.tech/images/blog/20221211223349_9b238.jpg">
 
 <link rel="canonical" href="https://lfeng.tech/2022/10/09/Jenkins_pipeline_onboard/">
 
@@ -189,7 +189,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-10-10 00:46:13" itemprop="dateModified" datetime="2022-10-10T00:46:13Z">2022-10-10</time>
+                <time title="修改时间：2022-12-11 14:33:51" itemprop="dateModified" datetime="2022-12-11T14:33:51Z">2022-12-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -247,7 +247,7 @@
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker stop 容器ID</span><br><span class="line">docker start 容器ID</span><br></pre></td></tr></table></figure>
 
 <h3 id="登录初始化Jenkins"><a href="#登录初始化Jenkins" class="headerlink" title="登录初始化Jenkins"></a>登录初始化Jenkins</h3><p>在浏览器访问<a href="http://jenkins所在主机ip:8080，等待后出现如下界面，需要输入密码。">http://jenkins所在主机ip:8080，等待后出现如下界面，需要输入密码。</a></p>
-<p><img src="https://tvax1.sinaimg.cn/large/a18449c6gy1h6zc0kqvywj211w0hwq3a.jpg" alt="Xnip2022-10-09_20-57-01"></p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223349_9b238.jpg" alt="Xnip2022-10-09_20-57-01"></p>
 <p>可以查看宿主机<code>/usr/local/jenkins/secrets/initialAdminPassword</code>文件获取密码。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat /usr/local/jenkins/secrets/initialAdminPassword</span><br></pre></td></tr></table></figure>
 
@@ -265,16 +265,16 @@
 <p>重启 Jenkins 服务。</p>
 <h3 id="配置JDK-Maven"><a href="#配置JDK-Maven" class="headerlink" title="配置JDK Maven"></a>配置JDK Maven</h3><p>可以参考博客：<a target="_blank" rel="noopener" href="https://developer.aliyun.com/article/892646">https://developer.aliyun.com/article/892646</a></p>
 <h2 id="2-使用Jenkins-Pipeline部署Docker程序"><a href="#2-使用Jenkins-Pipeline部署Docker程序" class="headerlink" title="2. 使用Jenkins Pipeline部署Docker程序"></a>2. 使用Jenkins Pipeline部署Docker程序</h2><h3 id="密钥配置"><a href="#密钥配置" class="headerlink" title="密钥配置"></a>密钥配置</h3><h4 id="配置Docker-Token"><a href="#配置Docker-Token" class="headerlink" title="配置Docker Token"></a>配置Docker Token</h4><p>为了使Jenkins能够push docker image到dockerhub，必须配置对应的authentication token。可以直接在<a target="_blank" rel="noopener" href="https://hub.docker.com/settings/security">https://hub.docker.com/settings/security</a> 登录后添加token即可，然后把token配置到Jenkins中，具体路径如下，选择类型为username/password。</p>
-<p><img src="https://tva1.sinaimg.cn/large/008vxvgGgy1h6zdgh41tzj317k0d0myp.jpg" alt="image-20221009214701395"></p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223350_7a3f6.jpg" alt="image-20221009214701395"></p>
 <h4 id="配置Github-SSH-key"><a href="#配置Github-SSH-key" class="headerlink" title="配置Github SSH key"></a>配置Github SSH key</h4><p>在Jenkins用户下，生成一对ssh key，将公钥放到github，私钥配置到上面docker token同样的位置即可。这样在job中可以使用ssh从github clone code。注意如果首次连接提示</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">No ECDSA host key is known for github.houston.softwaregrp.net and you have requested strict checking.</span><br></pre></td></tr></table></figure>
 
 <p>可以采用下面的方法解决：</p>
-<p><img src="https://tva1.sinaimg.cn/large/e6c9d24egy1h6kf05j4u4j21e80bmdi9.jpg"></p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223350_264bb.jpg"></p>
 <h4 id="配置SSH登录"><a href="#配置SSH登录" class="headerlink" title="配置SSH登录"></a>配置SSH登录</h4><p>如果在Jenkins Pipeline中需要ssh到远程server，需要配置下ssh key，把生成好的public key放到远端server的authorized keys里面就行了。</p>
 <h3 id="Jenkins-Pipeline"><a href="#Jenkins-Pipeline" class="headerlink" title="Jenkins Pipeline"></a>Jenkins Pipeline</h3><h4 id="安装插件"><a href="#安装插件" class="headerlink" title="安装插件"></a>安装插件</h4><p>安装Pipeline（<a target="_blank" rel="noopener" href="https://plugins.jenkins.io/workflow-aggregator/%EF%BC%89%E5%92%8Cstage">https://plugins.jenkins.io/workflow-aggregator/）和stage</a> view（<a target="_blank" rel="noopener" href="https://plugins.jenkins.io/pipeline-stage-view/%EF%BC%89%E6%8F%92%E4%BB%B6%E3%80%82">https://plugins.jenkins.io/pipeline-stage-view/）插件。</a></p>
 <h4 id="新建Pipeline-Job"><a href="#新建Pipeline-Job" class="headerlink" title="新建Pipeline Job"></a>新建Pipeline Job</h4><p>安装好上述插件之后，新建一个Jenkins的pipeline Job，可以把所需要的Jenkinsfile放在项目的根目录下，这样就可以通过下面的选项来新建Pipeline Job了。关于Pipeline的更多内容，参考<a target="_blank" rel="noopener" href="https://www.jenkins.io/zh/doc/book/pipeline/%E3%80%82">https://www.jenkins.io/zh/doc/book/pipeline/。</a></p>
-<p><img src="https://tva1.sinaimg.cn/large/008vxvgGgy1h6zdu4n960j31i20823yt.jpg" alt="image-20221009220008817"></p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223351_7a589.jpg" alt="image-20221009220008817"></p>
 <h4 id="定义好Pipeline并上传至Github"><a href="#定义好Pipeline并上传至Github" class="headerlink" title="定义好Pipeline并上传至Github"></a>定义好Pipeline并上传至Github</h4><p>下面是一个pipeline的sample，里面包含4个步骤：</p>
 <ul>
 <li>Maven Build：下载并且build整个maven project。</li>
@@ -287,7 +287,7 @@
 <h4 id="可能碰到的问题"><a href="#可能碰到的问题" class="headerlink" title="可能碰到的问题"></a>可能碰到的问题</h4><ul>
 <li>dockerbuild的权限问题：因为容器内外共享的同一套docker socket，就算在容器内部将Jenkins用户加到docker的group，还是会有权限问题。因为内部的jenkins用户并不在外部的docker group里面，因此需要手动将内外的docker group id进行同步。具体做法参考下面的stackoverflow回答：<a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/47854463/docker-got-permission-denied-while-trying-to-connect-to-the-docker-daemon-socke">https://stackoverflow.com/questions/47854463/docker-got-permission-denied-while-trying-to-connect-to-the-docker-daemon-socke</a></li>
 </ul>
-<p><img src="https://tva1.sinaimg.cn/large/006y8mN6gy1h6y7f82ky0j313u0sc7ai.jpg"></p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223351_10206.jpg"></p>
 <ul>
 <li>在docker容器中安装程序的问题：因为默认的jenkins用户没有权限安装程序， 可以使用root用户进入到docker container中进行安装。<code>docker exec --user root -it jenkins bash</code></li>
 </ul>
@@ -299,7 +299,7 @@
 </ul>
 <hr>
 <p>搜索『后端精进之路』关注公众号，立刻获取最新文章和<strong>价值2000元的BATJ精品面试课程</strong>。</p>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1g9v9luujswj21n10l9jux.jpg" alt="后端精进之路.png"></p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223351_46e88.jpg" alt="后端精进之路.png"></p>
 
     </div>
 

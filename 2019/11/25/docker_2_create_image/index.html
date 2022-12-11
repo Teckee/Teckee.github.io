@@ -28,23 +28,23 @@
 <meta property="og:site_name" content="Vincent&#39;s Notes">
 <meta property="og:description" content="上篇文章引入了Docker的基本原理和操作，本节文章主要介绍如何制作Docker镜像和发布。 镜像文件结构Docker镜像的本质是一系列文件的集合，这些文件依次叠加，形成了最后的镜像文件,类似于下图所示的结构，  从底层往上，依次是文件系统层，操作系统层，专有镜像层，读写层。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g987v09aygj20p00e2dhd.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g98zc9uvhrj20cs0a4ac6.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g99575ewb4j219e03sdgu.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g995kj2kjnj21p60yyx6q.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g995o06hqaj20ke05s0xt.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g995zoml0ij211s04un4m.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/mw690/a18449c6gy1g99762aq2ij20me0kj1as.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/mw690/a18449c6gy1g998h1kh8wj20o0051gmt.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/mw690/a18449c6gy1g998mjysd8j20o001ygm5.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/mw690/a18449c6gy1g998njvs4nj20o001qgm1.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g9ap1mf8aoj21n10l9jux.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223333_50aa4.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223333_b8b5a.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223334_88861.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223334_00464.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223335_fe556.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223335_7d6b2.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223336_efbd6.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223336_185e7.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223337_4d0d2.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223337_3f8b1.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223337_60411.jpg">
 <meta property="article:published_time" content="2019-11-24T21:34:49.000Z">
-<meta property="article:modified_time" content="2019-11-26T13:07:10.555Z">
+<meta property="article:modified_time" content="2022-12-11T14:33:37.610Z">
 <meta property="article:author" content="Vincent">
 <meta property="article:tag" content="Docker">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g987v09aygj20p00e2dhd.jpg">
+<meta name="twitter:image" content="https://imgs.lfeng.tech/images/blog/20221211223333_50aa4.jpg">
 
 <link rel="canonical" href="https://lfeng.tech/2019/11/25/docker_2_create_image/">
 
@@ -194,7 +194,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-11-26 13:07:10" itemprop="dateModified" datetime="2019-11-26T13:07:10Z">2019-11-26</time>
+                <time title="修改时间：2022-12-11 14:33:37" itemprop="dateModified" datetime="2022-12-11T14:33:37Z">2022-12-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -231,10 +231,10 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1g987v09aygj20p00e2dhd.jpg" alt="docker.png"></p>
+        <p><img src="https://imgs.lfeng.tech/images/blog/20221211223333_50aa4.jpg" alt="docker.png"></p>
 <p>上篇文章引入了Docker的基本原理和操作，本节文章主要介绍如何制作Docker镜像和发布。</p>
 <h2 id="镜像文件结构"><a href="#镜像文件结构" class="headerlink" title="镜像文件结构"></a>镜像文件结构</h2><p>Docker镜像的本质是一系列文件的集合，这些文件依次叠加，形成了最后的镜像文件,类似于下图所示的结构，</p>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1g98zc9uvhrj20cs0a4ac6.jpg" alt="Screen Shot 2019-11-24 at 11.42.39 AM.png"></p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223333_b8b5a.jpg" alt="Screen Shot 2019-11-24 at 11.42.39 AM.png"></p>
 <p>从底层往上，依次是文件系统层，操作系统层，专有镜像层，读写层。</p>
 <span id="more"></span>
 
@@ -252,15 +252,15 @@
 <p>制作镜像的实质就是修改读写层。当需要修改镜像内的某个文件时，只对处于最上方的读写层进行了变动，不复写下层已有文件系统的内容，已有文件在只读层中的原始版本仍然存在，但会被读写层中的新版本文件所隐藏，当 docker commit 这个修改过的容器文件系统为一个新的镜像时，保存的内容仅为最上层读写文件系统中被更新过的文件。</p>
 </blockquote>
 <p>可以通过history命令查看镜像层，</p>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1g99575ewb4j219e03sdgu.jpg" alt="Screen Shot 2019-11-24 at 3.05.19 PM.png"></p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223334_88861.jpg" alt="Screen Shot 2019-11-24 at 3.05.19 PM.png"></p>
 <h2 id="制作镜像"><a href="#制作镜像" class="headerlink" title="制作镜像"></a>制作镜像</h2><p>制作镜像有两种通用的方法，第一种是直接通过配置好的Container来生成镜像；另外一种是通过Dockerfile的方式，基于已有的镜像来生成新的镜像，这种方法更为常用。</p>
 <h3 id="配置Container制作镜像"><a href="#配置Container制作镜像" class="headerlink" title="配置Container制作镜像"></a>配置Container制作镜像</h3><p>这里以制作nginx的镜像为例，介绍整个制作流程。</p>
 <p>1）下载基础镜像，这里以Ubuntu作为基础镜像。由于本地没有镜像可以先利用<code>docker search</code>获取官方镜像的名称，然后<code>docker pull</code>将镜像下载到本地。</p>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1g995kj2kjnj21p60yyx6q.jpg" alt="Screen Shot 2019-11-24 at 3.18.12 PM.png"></p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223334_00464.jpg" alt="Screen Shot 2019-11-24 at 3.18.12 PM.png"></p>
 <p>2）以交互方式启动镜像，方便在容器中安装软件。<code>-it</code>表示交互方式，<code>/bin/bash</code>为指定启动的终端。下图可以看到已经成功进入到容器内部了。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -it ubuntu:latest /bin/bash</span><br></pre></td></tr></table></figure>
 
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1g995o06hqaj20ke05s0xt.jpg" alt="Screen Shot 2019-11-24 at 3.21.23 PM.png"></p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223335_fe556.jpg" alt="Screen Shot 2019-11-24 at 3.21.23 PM.png"></p>
 <p>3）现在按照Nginx正常的安装流程安装即可，由于Ubuntu镜像只是一个最小化的系统，可能你需要通过<code>apt-get install</code>来安装一些需要的软件。</p>
 <p>4）退出容器，使用commit指令生成新的镜像。</p>
 <blockquote>
@@ -269,7 +269,7 @@
 <p>直接运行<code>docker commit</code>同时指定容器id或者name，以及镜像名就可以了，新的镜像制作完成了。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker commit e0c618df0979 ubuntu-nginx</span><br></pre></td></tr></table></figure>
 
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1g995zoml0ij211s04un4m.jpg" alt="Screen Shot 2019-11-24 at 3.32.46 PM.png"></p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223335_7d6b2.jpg" alt="Screen Shot 2019-11-24 at 3.32.46 PM.png"></p>
 <p>接下来可以通过正常的方式启动镜像了。</p>
 <h3 id="使用Dockerfile制作"><a href="#使用Dockerfile制作" class="headerlink" title="使用Dockerfile制作"></a>使用Dockerfile制作</h3><p>上面介绍了手动进入容器内部，制作Docker镜像的方式，一般比较繁琐。通常我们会使用Dockerfile的方式制作镜像，这种方式下我们需要编写Dockerfile文件。</p>
 <h4 id="Dockerfile文件"><a href="#Dockerfile文件" class="headerlink" title="Dockerfile文件"></a>Dockerfile文件</h4><p>Dockerfile是一个文本格式的配置文件，用户可以使用Dockerfile快速创建自定义镜像。</p>
@@ -277,7 +277,7 @@
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">FROM openjdk:8</span><br><span class="line">ADD [&quot;target/bazaar-1.0.0.jar&quot;, &quot;bazaar.jar&quot;]</span><br><span class="line">EXPOSE 1234</span><br><span class="line">ENTRYPOINT [&quot;java&quot;, &quot;-jar&quot;, &quot;/bazaar.jar&quot;]</span><br></pre></td></tr></table></figure>
 
 <p>Dockerfile中常用的指令集有：</p>
-<p><img src="http://ww1.sinaimg.cn/mw690/a18449c6gy1g99762aq2ij20me0kj1as.jpg" alt="Picture1.png"></p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223336_efbd6.jpg" alt="Picture1.png"></p>
 <ul>
 <li>FROM: 第一条指令必须为FROM指令，用于指定基础镜像。</li>
 <li>MAINTAINER: 指定维护者信息。</li>
@@ -329,7 +329,7 @@
 <p>(2) 接着在5000端口启动，docker run -d –name reg -p 5000:5000 registry.</p>
 <p>(3) 配置http传输，私服默认只能使用https，需要配置开放http.</p>
 <p>以centos上的配置为例，</p>
-<p><img src="http://ww1.sinaimg.cn/mw690/a18449c6gy1g998h1kh8wj20o0051gmt.jpg" alt="Picture1.png"></p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223336_185e7.jpg" alt="Picture1.png"></p>
 <p>注意图中的ip根据实际registry的ip来进行设置，可以通过docker inspect reg来找到。</p>
 <p>配置完毕重启下docker服务</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">systemctl daemon-reload </span><br><span class="line">systemctl restart docker</span><br></pre></td></tr></table></figure>
@@ -343,9 +343,9 @@
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker push 192.168.244.7:5000/hello-world</span><br></pre></td></tr></table></figure>
 
 <p>（3）查询镜像：</p>
-<p><img src="http://ww1.sinaimg.cn/mw690/a18449c6gy1g998mjysd8j20o001ygm5.jpg" alt="Picture1.png"></p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223337_4d0d2.jpg" alt="Picture1.png"></p>
 <p>（4）查询镜像版本：</p>
-<p><img src="http://ww1.sinaimg.cn/mw690/a18449c6gy1g998njvs4nj20o001qgm1.jpg" alt="Picture1.png"></p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223337_3f8b1.jpg" alt="Picture1.png"></p>
 <p>以上就是镜像制作和发布的全部内容，下节会介绍实际部署中，docker-compose的使用以及docker的网络通信。</p>
 <p>参考链接：</p>
 <ul>
@@ -353,7 +353,7 @@
 </ul>
 <hr>
 <p>搜索『后端精进之路』，关注公众号，立刻获取最新文章和<strong>价值2000元的BATJ精品面试课程</strong>。</p>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1g9ap1mf8aoj21n10l9jux.jpg" alt="后端精进之路.png"></p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223337_60411.jpg" alt="后端精进之路.png"></p>
 
     </div>
 

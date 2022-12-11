@@ -28,24 +28,24 @@
 <meta property="og:site_name" content="Vincent&#39;s Notes">
 <meta property="og:description" content="本文基于Mac平台和Parallels软件，在其中创建三个Ubuntu系统，搭建了一个3个节点（1个master和2个Node）的K8s集群。下面的步骤没有特殊说明，都是需要在所有节点上分别执行的。也可以在一个虚拟机上执行完之后，复制当前虚拟机作为其他节点。 1. 虚拟机基础配置基于Parallels虚拟机软件，在其中安装三个ubuntu系统，后续用于创建K8s集群的master节点和两个Node">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://tva1.sinaimg.cn/large/008vxvgGgy1h8xtx8sdx3j31a40u0wh5.jpg">
-<meta property="og:image" content="https://tva1.sinaimg.cn/large/008vxvgGgy1h8xumjf4s4j31co0ektbb.jpg">
-<meta property="og:image" content="https://tva1.sinaimg.cn/large/a18449c6gy1h8xxifnnx9j20qu1asdqq.jpg">
-<meta property="og:image" content="https://tva1.sinaimg.cn/large/a18449c6gy1h8xxuw1oyhj20zc0jah34.jpg">
-<meta property="og:image" content="https://tva1.sinaimg.cn/large/a18449c6gy1h8xxx0o3spj20z605iaew.jpg">
-<meta property="og:image" content="https://tva1.sinaimg.cn/large/a18449c6gy1h8xxzi60idj20yw0500xf.jpg">
-<meta property="og:image" content="https://tva1.sinaimg.cn/large/a18449c6gy1h8xy2f99tpj20zc0m41kx.jpg">
-<meta property="og:image" content="https://tva1.sinaimg.cn/large/a18449c6gy1h8xy4fv4jmj20ui0e6k4i.jpg">
-<meta property="og:image" content="https://tva1.sinaimg.cn/large/a18449c6gy1h8xy5cd3whj20iy04m419.jpg">
-<meta property="og:image" content="https://tva1.sinaimg.cn/large/a18449c6gy1h8xy8rg9a6j20xm0juds3.jpg">
-<meta property="og:image" content="https://tva1.sinaimg.cn/large/a18449c6gy1h8xygah5vqj20te0msncj.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g9v9luujswj21n10l9jux.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223350_4d426.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223351_776ab.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223351_45230.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223351_443a3.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223352_05198.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223352_23b6e.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223352_52ad9.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223352_cc71e.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223353_b15b5.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223353_fc58b.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223353_2ee40.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223354_c9e28.jpg">
 <meta property="article:published_time" content="2022-12-09T21:34:49.000Z">
-<meta property="article:modified_time" content="2022-12-09T15:28:01.084Z">
+<meta property="article:modified_time" content="2022-12-11T14:33:54.549Z">
 <meta property="article:author" content="Vincent">
 <meta property="article:tag" content="Linux">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://tva1.sinaimg.cn/large/008vxvgGgy1h8xtx8sdx3j31a40u0wh5.jpg">
+<meta name="twitter:image" content="https://imgs.lfeng.tech/images/blog/20221211223350_4d426.jpg">
 
 <link rel="canonical" href="https://lfeng.tech/2022/12/10/ubuntu_2204_install_k8s/">
 
@@ -187,10 +187,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2022-12-09 21:34:49 / 修改时间：15:28:01" itemprop="dateCreated datePublished" datetime="2022-12-09T21:34:49Z">2022-12-09</time>
+              <time title="创建时间：2022-12-09 21:34:49" itemprop="dateCreated datePublished" datetime="2022-12-09T21:34:49Z">2022-12-09</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-12-11 14:33:54" itemprop="dateModified" datetime="2022-12-11T14:33:54Z">2022-12-11</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -239,9 +245,9 @@
 <span id="more"></span>
 
 <h3 id="配置静态ip"><a href="#配置静态ip" class="headerlink" title="配置静态ip"></a>配置静态ip</h3><p>需要在三个节点上分别配置，下面以master为例：</p>
-<p><img src="https://tva1.sinaimg.cn/large/008vxvgGgy1h8xtx8sdx3j31a40u0wh5.jpg"></p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223350_4d426.jpg"></p>
 <p>修改虚拟机网络为桥接模式：</p>
-<p><img src="https://tva1.sinaimg.cn/large/008vxvgGgy1h8xumjf4s4j31co0ektbb.jpg"></p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223351_776ab.jpg"></p>
 <h3 id="设置主机名"><a href="#设置主机名" class="headerlink" title="设置主机名"></a>设置主机名</h3><p>在Master节点运行</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo hostnamectl set-hostname master</span><br></pre></td></tr></table></figure>
 
@@ -279,7 +285,7 @@
 
 <h2 id="3-安装containerd"><a href="#3-安装containerd" class="headerlink" title="3. 安装containerd"></a>3. 安装containerd</h2><p>Docker，Kubernetes 等工具来运行一个容器时会调用组件（CRI）比如 containerd，CRI-O来来完成容器的创建、运行、销毁等实际工作。Docker 使用的是 containerd 作为其运行时；Kubernetes 支持 containerd，CRI-O等，这些组件都遵循了 OCI 规范，并通过 runc 来实现与操作系统内核交互来完成容器的创建和运行。</p>
 <p>他们之间的相互关系如下：</p>
-<p><img src="https://tva1.sinaimg.cn/large/a18449c6gy1h8xxifnnx9j20qu1asdqq.jpg" alt="image-20221209223024990"></p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223351_45230.jpg" alt="image-20221209223024990"></p>
 <p>具体安装步骤如下：</p>
 <ul>
 <li>安装dependencies：</li>
@@ -317,7 +323,7 @@
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo kubeadm init --control-plane-endpoint=192.168.31.200</span><br></pre></td></tr></table></figure>
 
 <p>当看到如下的输出时，说明系统master节点初始化完成。</p>
-<p><img src="https://tva1.sinaimg.cn/large/a18449c6gy1h8xxuw1oyhj20zc0jah34.jpg" alt="image-20221209224223297"></p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223351_443a3.jpg" alt="image-20221209224223297"></p>
 <p>接着按照提示信息，进行后续的初始化工作：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mkdir -p $HOME/.kube</span><br><span class="line">sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config</span><br><span class="line">sudo chown $(id -u):$(id -g) $HOME/.kube/config</span><br></pre></td></tr></table></figure>
 
@@ -325,27 +331,27 @@
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">kubectl cluster-info</span><br><span class="line">kubectl get nodes</span><br></pre></td></tr></table></figure>
 
 <p>输入类似如下</p>
-<p><img src="https://tva1.sinaimg.cn/large/a18449c6gy1h8xxx0o3spj20z605iaew.jpg" alt="image-20221209224426382"></p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223352_05198.jpg" alt="image-20221209224426382"></p>
 <h2 id="6-加入Node节点"><a href="#6-加入Node节点" class="headerlink" title="6. 加入Node节点"></a>6. 加入Node节点</h2><p>在master节点的初始化输出的最下面，会列出node节点加入的command，直接copy然后到每个node节点运行即可。下面是个例子，得换成实际的command，</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo kubeadm join 192.168.31.200:6443 --token mjy0xx.95lsse7r7fw5sb00 </span><br><span class="line">--discovery-token-ca-cert-hash sha256:73b92db9baf19a3e14d679e6d44b5c7a804902d6ffa3d170858d2ccfd5e0c93f</span><br></pre></td></tr></table></figure>
 
 <p>加入成功之后，可以查看当前集群的node状态，此时由于没有安装网络相关插件，所有节点出于NotReady的状态。下一步会进行安装。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl get nodes</span><br></pre></td></tr></table></figure>
 
-<p><img src="https://tva1.sinaimg.cn/large/a18449c6gy1h8xxzi60idj20yw0500xf.jpg" alt="image-20221209224649419"></p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223352_23b6e.jpg" alt="image-20221209224649419"></p>
 <h2 id="7-配置集群网络"><a href="#7-配置集群网络" class="headerlink" title="7. 配置集群网络"></a>7. 配置集群网络</h2><p>一般可以安装Calico、Flannel和Weave-net等插件，下面以Calico为例进行操作。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">curl https://projectcalico.docs.tigera.io/manifests/calico.yaml -O</span><br><span class="line">kubectl apply -f calico.yaml</span><br></pre></td></tr></table></figure>
 
 <p>输出结果大概如下：</p>
-<p><img src="https://tva1.sinaimg.cn/large/a18449c6gy1h8xy2f99tpj20zc0m41kx.jpg" alt="image-20221209224937176"></p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223352_52ad9.jpg" alt="image-20221209224937176"></p>
 <p>此时可以查看系统namespace下的所有基础组件的运行情况，</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl get pods -n kube-system</span><br></pre></td></tr></table></figure>
 
-<p><img src="https://tva1.sinaimg.cn/large/a18449c6gy1h8xy4fv4jmj20ui0e6k4i.jpg" alt="image-20221209225133515"></p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223352_cc71e.jpg" alt="image-20221209225133515"></p>
 <p>接下来检查节点状态：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl get nodes</span><br></pre></td></tr></table></figure>
 
-<p><img src="https://tva1.sinaimg.cn/large/a18449c6gy1h8xy5cd3whj20iy04m419.jpg" alt="image-20221209225224831"></p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223353_b15b5.jpg" alt="image-20221209225224831"></p>
 <p>至此，整个k8s集群搭建完毕， 下面可以进行一些基本测试。</p>
 <h2 id="8-测试K8s集群"><a href="#8-测试K8s集群" class="headerlink" title="8. 测试K8s集群"></a>8. 测试K8s集群</h2><p>这里部署了一个nginx的app来进行测试，</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl create deployment nginx-app --image=nginx --replicas=2</span><br></pre></td></tr></table></figure>
@@ -359,9 +365,9 @@
 <p>可以检查service的状态，</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">kubectl get svc nginx-app</span><br><span class="line">kubectl describe svc nginx-app</span><br></pre></td></tr></table></figure>
 
-<p><img src="https://tva1.sinaimg.cn/large/a18449c6gy1h8xy8rg9a6j20xm0juds3.jpg" alt="image-20221209225542880"></p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223353_fc58b.jpg" alt="image-20221209225542880"></p>
 <p>下面是测试结果：</p>
-<p><img src="https://tva1.sinaimg.cn/large/a18449c6gy1h8xygah5vqj20te0msncj.jpg" alt="image-20221209230257244"></p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223353_2ee40.jpg" alt="image-20221209230257244"></p>
 <p>说明Nginx运行正常，整个k8s节点部署成功。</p>
 <hr>
 <p>参考：</p>
@@ -369,7 +375,7 @@
 <li><a target="_blank" rel="noopener" href="https://www.linuxtechi.com/install-kubernetes-on-ubuntu-22-04/">https://www.linuxtechi.com/install-kubernetes-on-ubuntu-22-04/</a></li>
 </ul>
 <p>本文由『后端精进之路』原创，首发于博客 <a target="_blank" rel="noopener" href="http://teckee.github.io/">http://teckee.github.io/</a> , 转载请注明出处</p>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1g9v9luujswj21n10l9jux.jpg" alt="后端精进之路.png"></p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223354_c9e28.jpg" alt="后端精进之路.png"></p>
 
     </div>
 

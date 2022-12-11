@@ -28,16 +28,16 @@
 <meta property="og:site_name" content="Vincent&#39;s Notes">
 <meta property="og:description" content="1.并发编程基础1.1 基本概念CPU核心与线程数关系 Java中通过多线程的手段来实现并发，对于单处理器机器上来讲，宏观上的多线程并行执行是通过CPU的调度来实现的，微观上CPU在某个时刻只会运行一个线程。事实上，如果这些任务不存在阻塞，也就是程序中的某个任务因为该程序控制范围之外的某些条件（通常是I&#x2F;O）而导致不能继续执行，由于在任务之间切换会产生开销，因此并行的效率可能没有顺序执行的效率高">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g9m74n4c2sj21ts0usnpd.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g9e34unddkj20lu0ryqos.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g9eueky4wlj20tu0mmn50.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223356_59925.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223357_32026.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223357_8ba8b.jpg">
 <meta property="og:image" content="https://user-gold-cdn.xitu.io/2019/11/25/16ea178d8af3d60a?w=2125&h=765&f=jpeg&s=353670">
 <meta property="article:published_time" content="2019-12-05T21:34:49.000Z">
-<meta property="article:modified_time" content="2019-12-05T14:07:07.523Z">
+<meta property="article:modified_time" content="2022-12-11T14:33:57.515Z">
 <meta property="article:author" content="Vincent">
 <meta property="article:tag" content="Java">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g9m74n4c2sj21ts0usnpd.jpg">
+<meta name="twitter:image" content="https://imgs.lfeng.tech/images/blog/20221211223356_59925.jpg">
 
 <link rel="canonical" href="https://lfeng.tech/2019/12/06/Java_concurrent_1_basic_knowledge/">
 
@@ -179,10 +179,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2019-12-05 21:34:49 / 修改时间：14:07:07" itemprop="dateCreated datePublished" datetime="2019-12-05T21:34:49Z">2019-12-05</time>
+              <time title="创建时间：2019-12-05 21:34:49" itemprop="dateCreated datePublished" datetime="2019-12-05T21:34:49Z">2019-12-05</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-12-11 14:33:57" itemprop="dateModified" datetime="2022-12-11T14:33:57Z">2022-12-11</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -218,7 +224,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1g9m74n4c2sj21ts0usnpd.jpg"></p>
+        <p><img src="https://imgs.lfeng.tech/images/blog/20221211223356_59925.jpg"></p>
 <h2 id="1-并发编程基础"><a href="#1-并发编程基础" class="headerlink" title="1.并发编程基础"></a>1.并发编程基础</h2><h3 id="1-1-基本概念"><a href="#1-1-基本概念" class="headerlink" title="1.1 基本概念"></a>1.1 基本概念</h3><h4 id="CPU核心与线程数关系"><a href="#CPU核心与线程数关系" class="headerlink" title="CPU核心与线程数关系"></a>CPU核心与线程数关系</h4><blockquote>
 <p>Java中通过多线程的手段来实现并发，对于单处理器机器上来讲，宏观上的多线程并行执行是通过CPU的调度来实现的，微观上CPU在某个时刻只会运行一个线程。事实上，如果这些任务不存在阻塞，也就是程序中的某个任务因为该程序控制范围之外的某些条件（通常是I/O）而导致不能继续执行，由于在任务之间切换会产生开销，因此并行的效率可能没有顺序执行的效率高，并行也就没有意义。</p>
 </blockquote>
@@ -312,7 +318,7 @@
 <p>可以调用线程的stop方法杀死一个线程,该方法抛出ThreadDeath错误对象,由此杀死线程。</p>
 </blockquote>
 <p>线程状态之间的切换如下图：</p>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1g9e34unddkj20lu0ryqos.jpg" alt="Screen Shot 2019-11-28 at 9.41.23 PM.png"></p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223357_32026.jpg" alt="Screen Shot 2019-11-28 at 9.41.23 PM.png"></p>
 <h3 id="1-4-线程属性"><a href="#1-4-线程属性" class="headerlink" title="1.4 线程属性"></a>1.4 线程属性</h3><h4 id="线程优先级"><a href="#线程优先级" class="headerlink" title="线程优先级"></a>线程优先级</h4><p>Java中每个线程有一个优先级，默认情况下会继承父线程的优先级。可以用setPriority方法来设定线程的优先级，优先级在MIN_PRIORITY（1）和MAX_PRIORITY（10）之间。</p>
 <blockquote>
 <p>注意：优先级的实现高度依赖系统，Java的优先级会被映射到宿主机平台的优先级上，因此有可能优先级变多或者变少，极端情况下，可能所有优先级映射到了宿主机的同一个优先级，因此不要过度依赖优先级。</p>
@@ -373,7 +379,7 @@
 <p>注意：一般wait和notifyAll配合使用，因为当有多个线程调用wait后，会进入到该对象的等待队列，如果调用notify，则只会从等待列表中随机唤醒一个线程。可能并不是我们想要的结果。</p>
 </blockquote>
 <p>以下是wait和notify、notifyAll方法的工作流程：</p>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1g9eueky4wlj20tu0mmn50.jpg" alt="Screen Shot 2019-11-29 at 12.45.25 PM.png"></p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223357_8ba8b.jpg" alt="Screen Shot 2019-11-29 at 12.45.25 PM.png"></p>
 <p>以下是notify和wait的使用范例，</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line">public class Express &#123;</span><br><span class="line">    public final static String CITY = &quot;ShangHai&quot;;</span><br><span class="line">    private int km;/*快递运输里程数*/</span><br><span class="line">    private String site;/*快递到达地点*/</span><br><span class="line"></span><br><span class="line">    public Express() &#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public Express(int km, String site) &#123;</span><br><span class="line">        this.km = km;</span><br><span class="line">        this.site = site;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /* 变化公里数，然后通知处于wait状态并需要处理公里数的线程进行业务处理*/</span><br><span class="line">    public synchronized void changeKm()&#123;</span><br><span class="line">    	this.km = 101;</span><br><span class="line">    	notifyAll();</span><br><span class="line">//    	notify();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /* 变化地点，然后通知处于wait状态并需要处理地点的线程进行业务处理*/</span><br><span class="line">    public synchronized void changeSite()&#123;</span><br><span class="line">    	this.site = &quot;BeiJing&quot;;</span><br><span class="line">    	notify();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public synchronized void waitKm()&#123;</span><br><span class="line">    	while(this.km&lt;=100) &#123;</span><br><span class="line">    		try &#123;</span><br><span class="line">				System.out.println(&quot;check km thread[&quot;+Thread.currentThread().getId()</span><br><span class="line">						+&quot;] is still waiting.&quot;);</span><br><span class="line">				wait();</span><br><span class="line">				System.out.println(&quot;check km thread[&quot;+Thread.currentThread().getId()</span><br><span class="line">						+&quot;] is notified.&quot;);</span><br><span class="line">			&#125; catch (InterruptedException e) &#123;</span><br><span class="line">				e.printStackTrace();</span><br><span class="line">			&#125;</span><br><span class="line">    	&#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public synchronized void waitSite()&#123;</span><br><span class="line">    	while(CITY.equals(this.site)) &#123;</span><br><span class="line">    		try &#123;</span><br><span class="line">				System.out.println(&quot;check site thread[&quot;+Thread.currentThread().getId()</span><br><span class="line">						+&quot;] is still waiting.&quot;);</span><br><span class="line">				wait();</span><br><span class="line">				System.out.println(&quot;check site thread[&quot;+Thread.currentThread().getId()</span><br><span class="line">						+&quot;] is notified.&quot;);</span><br><span class="line">			&#125; catch (InterruptedException e) &#123;</span><br><span class="line">				e.printStackTrace();</span><br><span class="line">			&#125;</span><br><span class="line">    	&#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 

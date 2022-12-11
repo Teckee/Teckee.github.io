@@ -28,52 +28,52 @@
 <meta property="og:site_name" content="Vincent&#39;s Notes">
 <meta property="og:description" content="5 并发容器5.1 Hashtable、HashMap、TreeMap、HashSet、LinkedHashMap在介绍并发容器之前，先分析下普通的容器，以及相应的实现，方便后续的对比。 Hashtable、HashMap、TreeMap 都是最常见的一些 Map 实现，是以键值对的形式存储和操作数据的容器类型。  Hashtable 是早期 Java 类库提供的一个哈希表实现，本身是同步的，不">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g9m74n4c2sj21ts0usnpd.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g9ney1ulgpj20ei0crdfz.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g9ohuukeqcj20ki0mcq76.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g9oi03q5gxj20xa0j0jt9.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g9oi38ah7hj21bo11sgqk.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g9ojj4z33ij21120pqtae.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g9ojmlefbdj20tk05mwf7.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g9ojzecr9vj20z80ka784.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g9oka78o0zj20p20ekabq.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g9okahnseij20r40ccta7.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g9pddn1dkwj20qe0fagr6.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g9pg6f0acxj20xc0t6dip.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g9pp6ur35oj20lw066q87.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g9pp7s6588j20gg0eytd1.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g9pp8rwgxrj20is0cojvl.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g9pp9dejq4j20l20fiafo.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g9ppb5j5d2j20lw05ster.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g9ppby3h0rj20k80c8gzc.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g9ppec9xi2j20gi0eegpw.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g9ppev5lthj20ja0c84b6.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g9ppfpnhcvj20lo0akwpj.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g9pqp9mwh3j20s419d7fi.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g9qu0dfg90j20lz07tta3.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g9qv5898xhj20x00tcqe6.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g9qvnfqgtoj20vu050wg3.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g9qvo3lvtxj20rk0h2juh.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g9qw0srab7j20m3032js9.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g9qw2fq3gmj20i809n40r.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g9qw5kz7a8j20k708mtbf.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g9qwbvp33rj20fk03nq3y.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g9rhi4nftoj20qg1167ba.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g9rxz6nrkcj20o00bvn0n.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g9rq4n799cj20m809f0wl.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g9rq5e5hntj20mo04sabg.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g9rqgxxffpj20o00baq6g.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g9rxws79v7j20yq19oak5.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g9rxxg2phyj20l009sjt1.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g9ry2bdofrj20za0aiads.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g9ryuudocyj20ki068mz1.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g9v9luujswj21n10l9jux.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223352_c10ca.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223353_a1e8a.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223353_76c6a.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223353_9e584.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223353_1f323.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223354_d125c.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223354_ecbcc.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223354_a9ae8.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223354_5fffc.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223354_8aab8.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223355_5e37c.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223355_e0aa1.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223355_3f0bd.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223355_ee16f.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223355_a5646.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223356_85127.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223356_97868.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223356_5ac7d.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223356_15008.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223356_650b7.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223356_da6de.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223357_504e8.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223357_4c9c6.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223357_b5741.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223357_cb16c.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223357_db693.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223358_6bc27.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223358_eb8e0.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223358_856a1.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223358_78aa3.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223358_77f92.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223358_b213d.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223359_f7e66.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223359_5da17.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223359_6fcdc.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223359_fc3e9.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223359_ca624.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223359_dc1e0.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223359_fd97a.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223400_09c9a.jpg">
 <meta property="article:published_time" content="2019-12-15T20:43:49.000Z">
-<meta property="article:modified_time" content="2019-12-15T09:41:00.620Z">
+<meta property="article:modified_time" content="2022-12-11T14:34:00.401Z">
 <meta property="article:author" content="Vincent">
 <meta property="article:tag" content="Java">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g9m74n4c2sj21ts0usnpd.jpg">
+<meta name="twitter:image" content="https://imgs.lfeng.tech/images/blog/20221211223352_c10ca.jpg">
 
 <link rel="canonical" href="https://lfeng.tech/2019/12/16/Java_concurrent_5_concurrent_collection/">
 
@@ -215,10 +215,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2019-12-15 20:43:49 / 修改时间：09:41:00" itemprop="dateCreated datePublished" datetime="2019-12-15T20:43:49Z">2019-12-15</time>
+              <time title="创建时间：2019-12-15 20:43:49" itemprop="dateCreated datePublished" datetime="2019-12-15T20:43:49Z">2019-12-15</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-12-11 14:34:00" itemprop="dateModified" datetime="2022-12-11T14:34:00Z">2022-12-11</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -254,7 +260,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1g9m74n4c2sj21ts0usnpd.jpg"></p>
+        <p><img src="https://imgs.lfeng.tech/images/blog/20221211223352_c10ca.jpg"></p>
 <h2 id="5-并发容器"><a href="#5-并发容器" class="headerlink" title="5 并发容器"></a>5 并发容器</h2><h3 id="5-1-Hashtable、HashMap、TreeMap、HashSet、LinkedHashMap"><a href="#5-1-Hashtable、HashMap、TreeMap、HashSet、LinkedHashMap" class="headerlink" title="5.1 Hashtable、HashMap、TreeMap、HashSet、LinkedHashMap"></a>5.1 Hashtable、HashMap、TreeMap、HashSet、LinkedHashMap</h3><p>在介绍并发容器之前，先分析下普通的容器，以及相应的实现，方便后续的对比。</p>
 <p>Hashtable、HashMap、TreeMap 都是最常见的一些 Map 实现，是以<strong>键值对</strong>的形式存储和操作数据的容器类型。 </p>
 <p><strong>Hashtable</strong> 是早期 Java 类库提供的一个哈希表实现，本身是同步的，不支持 null 键和值，由于同步导致的性能开销，所以已经很少被推荐使用。 </p>
@@ -266,7 +272,7 @@
 <span id="more"></span>
 
 <h4 id="Hashtable"><a href="#Hashtable" class="headerlink" title="Hashtable"></a>Hashtable</h4><p>Hashtable是通过”拉链法”实现的哈希表,结构如下图所示：</p>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1g9ney1ulgpj20ei0crdfz.jpg" alt="5a688b8c0001129805220459.jpg"></p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223353_a1e8a.jpg" alt="5a688b8c0001129805220459.jpg"></p>
 <p><strong>1. 定义</strong></p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">public class Hashtable&lt;K,V&gt;  </span><br><span class="line">    extends Dictionary&lt;K,V&gt;  </span><br><span class="line">    implements Map&lt;K,V&gt;, Cloneable, java.io.Serializable&#123;&#125;</span><br></pre></td></tr></table></figure>
 
@@ -348,7 +354,7 @@
 </ul>
 <h4 id="HashMap"><a href="#HashMap" class="headerlink" title="HashMap"></a>HashMap</h4><p>HashMap是java中使用最为频繁的map类型，其读写效率较高，但是因为其是非同步的，即读写等操作都是没有锁保护的，所以在多线程场景下是不安全的，容易出现数据不一致的问题。</p>
 <p>HashMap的结构和HashTable一致，都是使用是由数组和链表两种数据结构组合而成的,不同的是在JDK8里面引入了红黑树，当链表长度大于8时，会将链表转换为红黑树。</p>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1g9ohuukeqcj20ki0mcq76.jpg" alt="Screen Shot 2019-12-07 at 9.46.25 PM.png"></p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223353_76c6a.jpg" alt="Screen Shot 2019-12-07 at 9.46.25 PM.png"></p>
 <p>HashMap的成员变量和HashTable一样，在进行初始化的时候，都会设置一个容量值（capacity）和加载因子（loadFactor）。</p>
 <ul>
 <li><strong>容量值指的并不是表的真实长度，而是用户预估的一个值，真实的表长度，是不小于capacity的2的整数次幂。</strong> </li>
@@ -363,7 +369,7 @@
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">static final int hash(Object key) &#123;   //jdk1.8 &amp; jdk1.7</span><br><span class="line">     int h;</span><br><span class="line">     // h = key.hashCode() 为第一步 取hashCode值</span><br><span class="line">     // h ^ (h &gt;&gt;&gt; 16)  为第二步 高位参与运算</span><br><span class="line">     return (key == null) ? 0 : (h = key.hashCode()) ^ (h &gt;&gt;&gt; 16);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>然后利用得到的hash值与数组长度取模，得到相应的index。</p>
 <p>以下图示实例，给出了计算过程，</p>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1g9oi03q5gxj20xa0j0jt9.jpg" alt="45205ec2.png"></p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223353_9e584.jpg" alt="45205ec2.png"></p>
 <p><strong>Get操作</strong></p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">public V get(Object key) &#123;</span><br><span class="line">    Node&lt;K,V&gt; e;</span><br><span class="line">    return (e = getNode(hash(key), key)) == null ? null : e.value;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * Implements Map.get and related methods</span><br><span class="line"> *</span><br><span class="line"> * @param hash hash for key</span><br><span class="line"> * @param key the key</span><br><span class="line"> * @return the node, or null if none</span><br><span class="line"> */</span><br><span class="line">final Node&lt;K,V&gt; getNode(int hash, Object key) &#123;</span><br><span class="line">    Node&lt;K,V&gt;[] tab; Node&lt;K,V&gt; first, e; int n; K k;</span><br><span class="line">    if ((tab = table) != null &amp;&amp; (n = tab.length) &gt; 0 &amp;&amp;</span><br><span class="line">        (first = tab[(n - 1) &amp; hash]) != null) &#123;</span><br><span class="line">        if (first.hash == hash &amp;&amp; // always check first node</span><br><span class="line">            ((k = first.key) == key || (key != null &amp;&amp; key.equals(k))))</span><br><span class="line">            return first;</span><br><span class="line">        if ((e = first.next) != null) &#123;</span><br><span class="line">            if (first instanceof TreeNode)</span><br><span class="line">                return ((TreeNode&lt;K,V&gt;)first).getTreeNode(hash, key);</span><br><span class="line">            do &#123;</span><br><span class="line">                if (e.hash == hash &amp;&amp;</span><br><span class="line">                    ((k = e.key) == key || (key != null &amp;&amp; key.equals(k))))</span><br><span class="line">                    return e;</span><br><span class="line">            &#125; while ((e = e.next) != null);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return null;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
@@ -374,7 +380,7 @@
 </ul>
 <p><strong>PUT操作</strong></p>
 <p>PUT操作的执行过程如下：</p>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1g9oi38ah7hj21bo11sgqk.jpg" alt="d669d29c.png"></p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223353_1f323.jpg" alt="d669d29c.png"></p>
 <p>①.判断键值对数组table[i]是否为空或为null，否则执行resize()进行扩容；</p>
 <p>②.根据键值key计算hash值得到插入的数组索引i，如果table[i]==null，直接新建节点添加，转向⑥，如果table[i]不为空，转向③；</p>
 <p>③.判断table[i]的首个元素是否和key一样，如果相同直接覆盖value，否则转向④，这里的相同指的是hashCode以及equals；</p>
@@ -392,29 +398,29 @@
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"> 1 void transfer(Entry[] newTable) &#123;</span><br><span class="line"> 2     Entry[] src = table;                   //src引用了旧的Entry数组</span><br><span class="line"> 3     int newCapacity = newTable.length;</span><br><span class="line"> 4     for (int j = 0; j &lt; src.length; j++) &#123; //遍历旧的Entry数组</span><br><span class="line"> 5         Entry&lt;K,V&gt; e = src[j];             //取得旧Entry数组的每个元素</span><br><span class="line"> 6         if (e != null) &#123;</span><br><span class="line"> 7             src[j] = null;//释放旧Entry数组的对象引用（for循环后，旧的Entry数组不再引用任何对象）</span><br><span class="line"> 8             do &#123;</span><br><span class="line"> 9                 Entry&lt;K,V&gt; next = e.next;</span><br><span class="line">10                 int i = indexFor(e.hash, newCapacity); //！！重新计算每个元素在数组中的位置</span><br><span class="line">11                 e.next = newTable[i]; //标记[1]</span><br><span class="line">12                 newTable[i] = e;      //将元素放在数组上</span><br><span class="line">13                 e = next;             //访问下一个Entry链上的元素</span><br><span class="line">14             &#125; while (e != null);</span><br><span class="line">15         &#125;</span><br><span class="line">16     &#125;</span><br><span class="line">17 &#125; </span><br></pre></td></tr></table></figure>
 <p>newTable[i]的引用赋给了e.next，也就是使用了单链表的头插入方式，同一位置上新元素总会被放在链表的头部位置；这样先放在一个索引上的元素终会被放到Entry链的尾部(如果发生了hash冲突的话），这一点和Jdk1.8有区别。</p>
 <p>具体举例如下图所示：</p>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1g9ojj4z33ij21120pqtae.jpg" alt="b2330062.png"></p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223354_d125c.jpg" alt="b2330062.png"></p>
 <p>接下来是JDK8中的实现，</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * Initializes or doubles table size.  If null, allocates in</span><br><span class="line"> * accord with initial capacity target held in field threshold.</span><br><span class="line"> * Otherwise, because we are using power-of-two expansion, the</span><br><span class="line"> * elements from each bin must either stay at same index, or move</span><br><span class="line"> * with a power of two offset in the new table.</span><br><span class="line"> *</span><br><span class="line"> * @return the table</span><br><span class="line"> */</span><br><span class="line">final Node&lt;K,V&gt;[] resize() &#123;</span><br><span class="line">    Node&lt;K,V&gt;[] oldTab = table;</span><br><span class="line">    int oldCap = (oldTab == null) ? 0 : oldTab.length;</span><br><span class="line">    int oldThr = threshold;</span><br><span class="line">    int newCap, newThr = 0;</span><br><span class="line">    if (oldCap &gt; 0) &#123;</span><br><span class="line">        if (oldCap &gt;= MAXIMUM_CAPACITY) &#123;</span><br><span class="line">            threshold = Integer.MAX_VALUE;</span><br><span class="line">            return oldTab;</span><br><span class="line">        &#125;</span><br><span class="line">        else if ((newCap = oldCap &lt;&lt; 1) &lt; MAXIMUM_CAPACITY &amp;&amp;</span><br><span class="line">                 oldCap &gt;= DEFAULT_INITIAL_CAPACITY)</span><br><span class="line">            newThr = oldThr &lt;&lt; 1; // double threshold</span><br><span class="line">    &#125;</span><br><span class="line">    else if (oldThr &gt; 0) // initial capacity was placed in threshold</span><br><span class="line">        newCap = oldThr;</span><br><span class="line">    else &#123;               // zero initial threshold signifies using defaults</span><br><span class="line">        newCap = DEFAULT_INITIAL_CAPACITY;</span><br><span class="line">        newThr = (int)(DEFAULT_LOAD_FACTOR * DEFAULT_INITIAL_CAPACITY);</span><br><span class="line">    &#125;</span><br><span class="line">    if (newThr == 0) &#123;</span><br><span class="line">        float ft = (float)newCap * loadFactor;</span><br><span class="line">        newThr = (newCap &lt; MAXIMUM_CAPACITY &amp;&amp; ft &lt; (float)MAXIMUM_CAPACITY ?</span><br><span class="line">                  (int)ft : Integer.MAX_VALUE);</span><br><span class="line">    &#125;</span><br><span class="line">    threshold = newThr;</span><br><span class="line">    @SuppressWarnings(&#123;&quot;rawtypes&quot;,&quot;unchecked&quot;&#125;)</span><br><span class="line">        Node&lt;K,V&gt;[] newTab = (Node&lt;K,V&gt;[])new Node[newCap];</span><br><span class="line">    table = newTab;</span><br><span class="line">    if (oldTab != null) &#123;</span><br><span class="line">        for (int j = 0; j &lt; oldCap; ++j) &#123;</span><br><span class="line">            Node&lt;K,V&gt; e;</span><br><span class="line">            if ((e = oldTab[j]) != null) &#123;</span><br><span class="line">                oldTab[j] = null;</span><br><span class="line">                if (e.next == null)</span><br><span class="line">                    newTab[e.hash &amp; (newCap - 1)] = e;</span><br><span class="line">                else if (e instanceof TreeNode)</span><br><span class="line">                    ((TreeNode&lt;K,V&gt;)e).split(this, newTab, j, oldCap);</span><br><span class="line">                else &#123; // preserve order</span><br><span class="line">                    Node&lt;K,V&gt; loHead = null, loTail = null;</span><br><span class="line">                    Node&lt;K,V&gt; hiHead = null, hiTail = null;</span><br><span class="line">                    Node&lt;K,V&gt; next;</span><br><span class="line">                    do &#123;</span><br><span class="line">                        next = e.next;</span><br><span class="line">                        if ((e.hash &amp; oldCap) == 0) &#123;</span><br><span class="line">                            if (loTail == null)</span><br><span class="line">                                loHead = e;</span><br><span class="line">                            else</span><br><span class="line">                                loTail.next = e;</span><br><span class="line">                            loTail = e;</span><br><span class="line">                        &#125;</span><br><span class="line">                        else &#123;</span><br><span class="line">                            if (hiTail == null)</span><br><span class="line">                                hiHead = e;</span><br><span class="line">                            else</span><br><span class="line">                                hiTail.next = e;</span><br><span class="line">                            hiTail = e;</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125; while ((e = next) != null);</span><br><span class="line">                    if (loTail != null) &#123;</span><br><span class="line">                        loTail.next = null;</span><br><span class="line">                        newTab[j] = loHead;</span><br><span class="line">                    &#125;</span><br><span class="line">                    if (hiTail != null) &#123;</span><br><span class="line">                        hiTail.next = null;</span><br><span class="line">                        newTab[j + oldCap] = hiHead;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return newTab;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>由于Size会进行2次幂的扩展(指长度扩为原来2倍)，所以，元素的位置要么是在原位置，要么是在原位置再移动2次幂的位置。通过下面的例子，可以清楚的看到，21和5在原来的数组中都处于相同的位置，但是在新的数组中，21到了新的位置，位置为原来的位置加上16，也就是旧的Capacity；但是5还在原来的位置。</p>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1g9ojmlefbdj20tk05mwf7.jpg" alt="d773f86e.png"></p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223354_ecbcc.jpg" alt="d773f86e.png"></p>
 <p>假定我们在Size变为2倍以后，重新计算hash，因为n变为2倍，相应的n-1的mask范围在高位多1bit(红色)，也就是与上面示意图中红色部分对应的那一位，如果那位是1，则需要移动到新的位置，否则不变。</p>
 <p>回到代码实现中，直接用旧的hash值与上oldCapacity，因为旧的capacity是2的倍数（二进制为00000…1000），而且获取旧index的时候采用hash&amp;(oldCap-1)，所以直接<code>e.hash &amp; oldCap</code>就是判断新增加的高位是否为1，为1则需要移动，否则保持不变。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">if ((e.hash &amp; oldCap) == 0)</span><br></pre></td></tr></table></figure>
 <p>这种巧妙的方法，同时由于高位的1和0随机出现，保证了resize之后元素分布的离散性。</p>
 <p>下图是这一过程的模拟，</p>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1g9ojzecr9vj20z80ka784.jpg" alt="3cc9813a.png"></p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223354_a9ae8.jpg" alt="3cc9813a.png"></p>
 <p><strong>JDK8中的红黑树</strong></p>
 <p>引入红黑树主要是为了保证在hash分布极不均匀的情况下的性能，当一个链表太长（大于8）的时候，通过动态的将它替换成一个红黑树，这话的话会将时间复杂度从O(n)降为O(logn)。</p>
 <p><strong>为什么HashMap的数组长度一定保持2的次幂？</strong></p>
 <ol>
 <li>从上面的分析JDK8 resize的过程可以可能到，数组长度保持2的次幂，当resize的时候，为了通过h&amp;(length-1)计算新的元素位置，可以看到当扩容后只有一位差异，也就是多出了最左位的1，这样计算 h&amp;(length-1)的时候，只要h对应的最左边的那一个差异位为0，就能保证得到的新的数组索引和老数组索引一致，否则index+OldCap。</li>
 </ol>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1g9oka78o0zj20p20ekabq.jpg" alt="1024555-20161115215812138-679881037.png"></p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223354_5fffc.jpg" alt="1024555-20161115215812138-679881037.png"></p>
 <ol start="2">
 <li>数组长度保持2的次幂，length-1的低位都为1，会使得获得的数组索引index更加均匀。hash函数采用各种位运算也是为了使得低位更加散列，如果低位全部为1，那么对于h低位部分来说，任何一位的变化都会对结果产生影响，可以尽可能的使元素分布比较均匀。</li>
 </ol>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1g9okahnseij20r40ccta7.jpg" alt="1024555-20161116001404732-625340289.png"></p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223354_8aab8.jpg" alt="1024555-20161116001404732-625340289.png"></p>
 <p><strong>HashMap Vs HashTable</strong></p>
 <ul>
 <li>HashMap允许将 null 作为一个 entry 的 key 或者 value，而 Hashtable 不允许。</li>
@@ -431,7 +437,7 @@
 <li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/chengxiao/p/6059914.html">https://www.cnblogs.com/chengxiao/p/6059914.html</a></li>
 </ul>
 <h4 id="TreeMap"><a href="#TreeMap" class="headerlink" title="TreeMap"></a>TreeMap</h4><p>TreeMap继承于AbstractMap，实现了Map, Cloneable, NavigableMap, Serializable接口。</p>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1g9pddn1dkwj20qe0fagr6.jpg" alt="Screen Shot 2019-12-08 at 3.56.55 PM.png"></p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223355_5e37c.jpg" alt="Screen Shot 2019-12-08 at 3.56.55 PM.png"></p>
 <p>TreeMap 是一个有序的key-value集合，它是通过红黑树实现的。该映射根据其键的自然顺序进行排序，或者根据创建映射时提供的Comparator进行排序，具体取决于使用的构造方法。<br>TreeMap的基本操作 containsKey、get、put 和 remove 的时间复杂度是 log(n) 。</p>
 <p>对于SortedMap来说，该类是TreeMap体系中的父接口，也是区别于HashMap体系最关键的一个接口。SortedMap接口中定义的第一个方法<code>Comparator&lt;? super K&gt; comparator()；</code>该方法决定了TreeMap体系的走向，有了比较器，就可以对插入的元素进行排序了。</p>
 <p>TreeMap的查找、插入、更新元素等操作，主要是对红黑树的节点进行相应的更新，和数据结构中类似。</p>
@@ -452,7 +458,7 @@
 
 <p>1-4是从HashMap.Entry中继承过来的；5-6是LinkedHashMap独有的。注意next是用于维护HashMap指定table位置上连接的Entry的顺序的，before、After是用于维护Entry插入的先后顺序的。</p>
 <p>可以把LinkedHashMap的结构看成如下图所示：</p>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1g9pg6f0acxj20xc0t6dip.jpg" alt="test.png"></p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223355_e0aa1.jpg" alt="test.png"></p>
 <p>接下来主要介绍LinkedHashMap的排序操作，</p>
 <p>在构造函数中，需要指定accessOrder，有两种情况：</p>
 <ul>
@@ -485,40 +491,40 @@
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">1:  // Transfer method in java.util.HashMap -</span><br><span class="line">2:  // called to resize the hashmap</span><br><span class="line">3:  // 依次移动每个bucket中的元素到新的buckets中</span><br><span class="line">4:  for (int j = 0; j &lt; src.length; j++) &#123;</span><br><span class="line">5:    Entry e = src[j];</span><br><span class="line">6:    if (e != null) &#123;</span><br><span class="line">7:      src[j] = null;</span><br><span class="line">8:      do &#123;</span><br><span class="line">            // Next指向下一个需要移动的元素</span><br><span class="line">9:          Entry next = e.next; </span><br><span class="line">            // 计算新Map中的位置</span><br><span class="line">10:         int i = indexFor(e.hash, newCapacity);</span><br><span class="line">            // 插入到bucket中第一个位置</span><br><span class="line">11:         e.next = newTable[i];</span><br><span class="line">12:         newTable[i] = e;</span><br><span class="line">            // 指向原bucket中下一个位置的元素</span><br><span class="line">13:         e = next;</span><br><span class="line">14:     &#125; while (e != null);</span><br><span class="line">15:   &#125;</span><br><span class="line">16: &#125; </span><br></pre></td></tr></table></figure>
 
 <p>在正常单线程的情况下，如果有如下的HashMap的结构，为了方便这里只有2个bucket（java.util.HashMap中默认是 16）。</p>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1g9pp6ur35oj20lw066q87.jpg" alt="Screen Shot 2019-12-08 at 10.45.35 PM.png"></p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223355_3f0bd.jpg" alt="Screen Shot 2019-12-08 at 10.45.35 PM.png"></p>
 <p>按照上面的resize流程，e和next分别指向A和B，A是第一次迭代将会被移动的元素，B是下一个。</p>
 <ul>
 <li>第一次迭代后，A被移动到新的Map中，Map的容量已经增大了一倍。A的位置如下图所示</li>
 </ul>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1g9pp7s6588j20gg0eytd1.jpg" alt="Screen Shot 2019-12-08 at 10.46.40 PM.png"></p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223355_ee16f.jpg" alt="Screen Shot 2019-12-08 at 10.46.40 PM.png"></p>
 <ul>
 <li>第二次迭代后，B被移动到了新的位置，如下图所示，C为下一个待移动的元素。</li>
 </ul>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1g9pp8rwgxrj20is0cojvl.jpg" alt="Screen Shot 2019-12-08 at 10.47.42 PM.png"></p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223355_a5646.jpg" alt="Screen Shot 2019-12-08 at 10.47.42 PM.png"></p>
 <ul>
 <li>第三次迭代之后，C被移动到了新的位置，由于C之后没有其他元素，因此整个resize过程完成，最后新的Map如下：</li>
 </ul>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1g9pp9dejq4j20l20fiafo.jpg" alt="Screen Shot 2019-12-08 at 10.48.16 PM.png"></p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223356_85127.jpg" alt="Screen Shot 2019-12-08 at 10.48.16 PM.png"></p>
 <p>在resize完成之后，每个bucket的深度变小了，达到了resize的目的。整个过程在单线程下没有任何问题，但是考虑到多线程的情况，就会可能会出现竞争。</p>
 <p>现在有两个线程Thread1，Thread2同时进行resize的操作，假设Thread1在运行到第9行后，Thread2获取了CPU并且也开始执行resize的操作。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">1:  // Transfer method in java.util.HashMap -</span><br><span class="line">2:  // called to resize the hashmap</span><br><span class="line">3:  </span><br><span class="line">4:  for (int j = 0; j &lt; src.length; j++) &#123;</span><br><span class="line">5:    Entry e = src[j];</span><br><span class="line">6:    if (e != null) &#123;</span><br><span class="line">7:      src[j] = null;</span><br><span class="line">8:      do &#123;</span><br><span class="line">9:      Entry next = e.next; </span><br><span class="line">     // Thread1 STOPS RIGHT HERE</span><br><span class="line">10:     int i = indexFor(e.hash, newCapacity);</span><br><span class="line">11:     e.next = newTable[i];</span><br><span class="line">12:     newTable[i] = e;</span><br><span class="line">13:     e = next;</span><br><span class="line">14:   &#125; while (e != null);</span><br><span class="line">15:   &#125;</span><br><span class="line">16: &#125; </span><br></pre></td></tr></table></figure>
 
 <p>Thread1运行后，对应的e1和next1别指向A和B，但是Thread1并没有移动元素。</p>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1g9ppb5j5d2j20lw05ster.jpg" alt="Screen Shot 2019-12-08 at 10.49.53 PM.png"></p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223356_97868.jpg" alt="Screen Shot 2019-12-08 at 10.49.53 PM.png"></p>
 <p>假设Thread2在获取CPU后完整的运行了整个resize，新的Map结构将会如下图所示：</p>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1g9ppby3h0rj20k80c8gzc.jpg" alt="Screen Shot 2019-12-08 at 10.50.42 PM.png"></p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223356_5ac7d.jpg" alt="Screen Shot 2019-12-08 at 10.50.42 PM.png"></p>
 <p>注意到<code>e1</code>和<code>next1</code>还是指向A和B，但是A和B的位置关系已经变了，按照resize的算法进行两轮迭代之后，变成如下的结构，</p>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1g9ppec9xi2j20gi0eegpw.jpg" alt="Screen Shot 2019-12-08 at 10.53.01 PM.png"></p>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1g9ppev5lthj20ja0c84b6.jpg" alt="Screen Shot 2019-12-08 at 10.53.29 PM.png"></p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223356_15008.jpg" alt="Screen Shot 2019-12-08 at 10.53.01 PM.png"></p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223356_650b7.jpg" alt="Screen Shot 2019-12-08 at 10.53.29 PM.png"></p>
 <p>注意此时<code>e</code>和<code>next</code>的指向，在下一次的迭代中，将把A放在第3个bucket的一个位置，但是B仍然是指向A的，所以出现了下面的类似于双向链表的结构，</p>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1g9ppfpnhcvj20lo0akwpj.jpg" alt="Screen Shot 2019-12-08 at 10.54.19 PM.png"></p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223356_da6de.jpg" alt="Screen Shot 2019-12-08 at 10.54.19 PM.png"></p>
 <p>接着Thread1就会进入到无限循环中，此时如果有get操作的话，也会出现无限循环的情况。这就是HashMap在多线程情况下容易出现的问题。</p>
 <p><strong>接着针对JDK8进行分析：</strong></p>
 <p>前面已经提到，JDK8和7在Resize的不同之处就是8保留了链表中元素的先后位置，这样基本可以确保在resize过程中不出现循环的问题，但是还是可能出现数据丢失的问题。以下是resize的核心实现，</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">    Node&lt;K,V&gt; loHead = null, loTail = null;</span><br><span class="line">    Node&lt;K,V&gt; hiHead = null, hiTail = null;</span><br><span class="line">    Node&lt;K,V&gt; next;</span><br><span class="line">    do &#123;</span><br><span class="line">        next = e.next;</span><br><span class="line">        if ((e.hash &amp; oldCap) == 0) &#123;</span><br><span class="line">            if (loTail == null)</span><br><span class="line">                loHead = e;</span><br><span class="line">            else</span><br><span class="line">                loTail.next = e;</span><br><span class="line">            loTail = e;</span><br><span class="line">        &#125;</span><br><span class="line">        else &#123;</span><br><span class="line">            if (hiTail == null)</span><br><span class="line">                hiHead = e;</span><br><span class="line">            else</span><br><span class="line">                hiTail.next = e;</span><br><span class="line">            hiTail = e;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; while ((e = next) != null);</span><br><span class="line">    if (loTail != null) &#123;</span><br><span class="line">        loTail.next = null;</span><br><span class="line">        newTab[j] = loHead;</span><br><span class="line">    &#125;</span><br><span class="line">    if (hiTail != null) &#123;</span><br><span class="line">        hiTail.next = null;</span><br><span class="line">        newTab[j + oldCap] = hiHead;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>在实现中会使用两个临时链表，分别存储新地址和旧地址的链表，最后将这两个链表放到对应的位置。</p>
 <p>假定出现如下的情况，有ABC三个元素需要移动，首先线程1指向A，next即为B，此后线程2同样进行resize，并把high/low两个链表的更新完成，这时返回线程1继续运行。</p>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1g9pqp9mwh3j20s419d7fi.jpg" alt="Image 3.jpeg"></p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223357_504e8.jpg" alt="Image 3.jpeg"></p>
 <p>但是线程1仍然按照正常的流程继续，A会被放到High链表，B会被放到Low链表，这之后由于B后面没有元素，更新完成，因此C就漏掉了。</p>
 <p>其实不管是JDK7还是8，由于链表的很多操作都没有加锁，每个操作也不是原子操作，导致可能出现很多意想不到的结果，也是为什么需要引入专门的ConcurrentHashMap。</p>
 <h4 id="ConcurrentHashMap介绍"><a href="#ConcurrentHashMap介绍" class="headerlink" title="ConcurrentHashMap介绍"></a>ConcurrentHashMap介绍</h4><p><strong>为什么不使用HashTable？</strong></p>
@@ -528,7 +534,7 @@
 <blockquote>
 <p>Segment实际继承自可重入锁（ReentrantLock），这是与普通HashMap的最大区别。</p>
 </blockquote>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1g9qu0dfg90j20lz07tta3.jpg" alt="Picture1.png"></p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223357_4c9c6.jpg" alt="Picture1.png"></p>
 <p><strong>面试点</strong>：ConcurrentHashMap实现原理是怎么样的或者ConcurrentHashMap如何在保证高并发下线程安全的同时实现了性能提升？</p>
 <p>ConcurrentHashMap允许多个修改操作并发进行，其关键在于使用了<strong>锁分离技术</strong>。它使用了多个锁来控制对hash表的不同部分进行的修改。内部使用段(Segment)来表示这些不同的部分，每个段其实就是一个小的hash table，只要多个修改操作发生在不同的段上，它们就可以并发进行。</p>
 <p><strong>1.1 初始化过程</strong></p>
@@ -539,12 +545,12 @@
 <li><strong>concurrencyLevel 并发度</strong>：默认16。并发度可以理解为程序运行时能够同时操作ConccurentHashMap且不产生锁竞争的最大线程数，实际上就是ConcurrentHashMap中的分段锁个数，即Segment[]的数组长度。如果并发度设置的过小，会带来严重的锁竞争问题；如果并发度设置的过大，原本位于同一个Segment内的访问会扩散到不同的Segment中，CPU cache命中率会下降，从而引起程序性能下降。</li>
 </ul>
 <p>以下是对初始化函数的分析：</p>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1g9qv5898xhj20x00tcqe6.jpg" alt="Screen Shot 2019-12-09 at 10.47.06 PM.png"></p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223357_b5741.jpg" alt="Screen Shot 2019-12-09 at 10.47.06 PM.png"></p>
 <p><strong>1.2 Hash值计算</strong></p>
 <p>对某个元素进行Put/Get操作之前，都需要定位该元素在哪个segment元素的某个table元素中的，定位的过程，取得key的hashcode值进行一次再散列（通过Wang/Jenkins算法），拿到再散列值后，以再散列值的高位进行取模得到当前元素在哪个segment上。</p>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1g9qvnfqgtoj20vu050wg3.jpg" alt="Screen Shot 2019-12-09 at 11.10.10 PM.png"></p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223357_cb16c.jpg" alt="Screen Shot 2019-12-09 at 11.10.10 PM.png"></p>
 <p>具体的Hash实现如下：</p>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1g9qvo3lvtxj20rk0h2juh.jpg" alt="Screen Shot 2019-12-09 at 11.12.01 PM.png"></p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223357_db693.jpg" alt="Screen Shot 2019-12-09 at 11.12.01 PM.png"></p>
 <p><strong>1.3 Get方法</strong></p>
 <p>定位segment和定位table后，依次扫描这个table元素下的的链表，要么找到元素，要么返回null。</p>
 <p><strong>在高并发下的情况下如何保证取得的元素是最新的？</strong></p>
@@ -554,19 +560,19 @@
 <p><strong>1.4 Put方法</strong></p>
 <p>1、首先定位segment，当这个segment在map初始化后，还为null，由ensureSegment方法负责填充这个segment。</p>
 <p>2、对Segment加锁,虽然value是volatile的，只能保证可见性，不能保证原子性。这里put操作不是原子操作，因此需要加锁。</p>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1g9qw0srab7j20m3032js9.jpg" alt="Picture1.png"></p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223358_6bc27.jpg" alt="Picture1.png"></p>
 <p>3、定位所在的table元素，并扫描table下的链表，找到时：</p>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1g9qw2fq3gmj20i809n40r.jpg" alt="Picture1.png"></p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223358_eb8e0.jpg" alt="Picture1.png"></p>
 <p>注意到默认onlyIfAbsent为false，也就是如果有相同key的元素，会覆盖旧的值。无论是否覆盖，都是返回旧值。</p>
 <p>没有找到时：</p>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1g9qw5kz7a8j20k708mtbf.jpg" alt="Picture1.png"></p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223358_856a1.jpg" alt="Picture1.png"></p>
 <p><strong>1.5 扩容操作</strong></p>
 <p>扩容操作不会扩容Segment，只会扩容对应的table数组，每次都是将数组翻倍。</p>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1g9qwbvp33rj20fk03nq3y.jpg" alt="Picture1.png"></p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223358_78aa3.jpg" alt="Picture1.png"></p>
 <p>之前也提到过，由于数组长度为2次幂，所以每次扩容之后，元素要么在原处，要么在原处加上偏移量为旧的size的新位置。</p>
 <p><strong>1.6 Size方法</strong></p>
 <p>size的时候进行两次不加锁的统计，两次一致直接返回结果，不一致，重新加锁再次统计，</p>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1g9rhi4nftoj20qg1167ba.jpg" alt="Screen Shot 2019-12-10 at 11.49.53 AM.png"></p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223358_77f92.jpg" alt="Screen Shot 2019-12-10 at 11.49.53 AM.png"></p>
 <p><strong>ConcurrentHashMap的弱一致性</strong></p>
 <p>get方法和containsKey方法都是通过对链表遍历判断是否存在key相同的节点以及获得该节点的value。但由于遍历过程中其他线程可能对链表结构做了调整，因此get和containsKey返回的可能是过时的数据，这一点是ConcurrentHashMap在弱一致性上的体现。</p>
 <h4 id="JDK1-8中的实现"><a href="#JDK1-8中的实现" class="headerlink" title="JDK1.8中的实现"></a>JDK1.8中的实现</h4><p>相比JDK1.7的重要变化：</p>
@@ -577,12 +583,12 @@
 <li>sizeCtl：负数：表示进行初始化或者扩容,-1表示正在初始化，-N，表示有N-1个线程正在进行扩容<br>正数：0 表示还没有被初始化，&gt;0的数，初始化或者是下一次进行扩容的阈值。</li>
 <li>TreeNode：用在红黑树，表示树的节点, TreeBin是实际放在table数组中的，代表了这个红黑树的根。</li>
 </ul>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1g9rxz6nrkcj20o00bvn0n.jpg" alt="Picture1.png"></p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223358_b213d.jpg" alt="Picture1.png"></p>
 <p>ConcurrentHashMap在初始化时，只是给成员变量赋值，put时进行实际数组的填充。</p>
 <p><strong>2.2 Hash计算</strong></p>
 <p>先计算key的hash值，然后将高位加入计算来进行再散列。</p>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1g9rq4n799cj20m809f0wl.jpg" alt="Picture1.png"></p>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1g9rq5e5hntj20mo04sabg.jpg" alt="Picture1.png"></p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223359_f7e66.jpg" alt="Picture1.png"></p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223359_5da17.jpg" alt="Picture1.png"></p>
 <p><strong>2.3 Get方法</strong></p>
 <p>首先计算hash值，确定在table中的位置。</p>
 <ul>
@@ -590,16 +596,16 @@
 <li>在树中查找</li>
 <li>在链表中查找</li>
 </ul>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1g9rqgxxffpj20o00baq6g.jpg" alt="Picture1.png"></p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223359_6fcdc.jpg" alt="Picture1.png"></p>
 <p>注意到在初始化TreeBin，也就是设置红黑树所在的Node的第一个节点时，会设置对应的hash值，这些hash值定义如下。所以上面的代码中，可以通过判断首节点的hash值&lt;0来确定该节点为树。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">static final int MOVED     = -1; // hash for forwarding nodes</span><br><span class="line">static final int TREEBIN   = -2; // hash for roots of trees</span><br><span class="line">static final int RESERVED  = -3; // hash for transient reservations</span><br></pre></td></tr></table></figure>
 
 <p><strong>2.4 Put方法</strong></p>
 <p>PUT方法中会实际初始化数组，</p>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1g9rxws79v7j20yq19oak5.jpg" alt="Screen Shot 2019-12-10 at 8.56.23 PM.png"><br><img src="http://ww1.sinaimg.cn/large/a18449c6gy1g9rxxg2phyj20l009sjt1.jpg" alt="Screen Shot 2019-12-10 at 9.17.20 PM.png"></p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223359_fc3e9.jpg" alt="Screen Shot 2019-12-10 at 8.56.23 PM.png"><br><img src="https://imgs.lfeng.tech/images/blog/20221211223359_ca624.jpg" alt="Screen Shot 2019-12-10 at 9.17.20 PM.png"></p>
 <p><strong>2.5 扩容操作</strong></p>
 <p>线程执行put操作，发现容量已经达到扩容阈值，需要进行扩容操作。ConcurrentHashMap支持并发扩容，实现方式是，将表拆分，让每个线程处理自己的区间。如下图：</p>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1g9ry2bdofrj20za0aiads.jpg" alt="Screen Shot 2019-12-10 at 9.23.42 PM.png"></p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223359_dc1e0.jpg" alt="Screen Shot 2019-12-10 at 9.23.42 PM.png"></p>
 <p>迁移完毕的hash桶,会被设置成ForwardingNode节点，以此告知访问此桶的其他线程，此节点已经迁移完毕。此时线程2访问到了ForwardingNode节点，如果线程2执行的put或remove等写操作，那么就会先帮其扩容。如果线程2执行的是get等读方法，则会调用ForwardingNode的find方法，去nextTable里面查找相关元素。</p>
 <p><strong>2.6 Size</strong></p>
 <p>Put操作时，addCount 方法用于 CAS 更新 baseCount，但很有可能在高并发的情况下，更新失败，那么这些节点虽然已经被添加到哈希表中了，但是数量却没有被统计。</p>
@@ -613,7 +619,7 @@
 <h3 id="5-3-ConcurrentSkipListMap"><a href="#5-3-ConcurrentSkipListMap" class="headerlink" title="5.3 ConcurrentSkipListMap"></a>5.3 ConcurrentSkipListMap</h3><p>ConcurrentSkipListMap是一个并发安全, 基于skiplist实现有序存储的Map。可以看成是TreeMap的并发版本。</p>
 <p>ConcurrentHashMap采用空间换取时间, 但它有着ConcurrentHashMap不能比拟的优点: 有序数据存储.</p>
 <p>SkipList的结构如下图所示：</p>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1g9ryuudocyj20ki068mz1.jpg" alt="30222128-045c88b7e992443395a540ba2eb740f3.jpg"></p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223359_fd97a.jpg" alt="30222128-045c88b7e992443395a540ba2eb740f3.jpg"></p>
 <p>从图中可以得出ConcurrentSkipListMap的几个特点:</p>
 <ol>
 <li>ConcurrentSkipListMap 的节点主要由 Node, Index, HeadIndex 构成;</li>
@@ -748,7 +754,7 @@
 <hr>
 <p>本文由『后端精进之路』原创，首发于博客 <a target="_blank" rel="noopener" href="http://teckee.github.io/">http://teckee.github.io/</a> , 转载请注明出处</p>
 <p>搜索『后端精进之路』关注公众号，立刻获取最新文章和<strong>价值2000元的BATJ精品面试课程</strong>。</p>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1g9v9luujswj21n10l9jux.jpg" alt="后端精进之路.png"></p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223400_09c9a.jpg" alt="后端精进之路.png"></p>
 
     </div>
 

@@ -28,23 +28,23 @@
 <meta property="og:site_name" content="Vincent&#39;s Notes">
 <meta property="og:description" content="4 显示锁和AQS4.1 Lock接口核心方法Java在java.util.concurrent.locks包中提供了一系列的显示锁类，其中最基础的就是Lock接口，该接口提供了几个常见的锁相关的操作。 12345678public interface Lock &amp;#123;    void lock();    void lockInterruptibly() throws Interrupt">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g9m74n4c2sj21ts0usnpd.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g9kiy6y1dsj20wr08cjvf.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g9kjmnj4uuj20wc097wid.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g9kk3lzgyfj20vt07atc0.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g9kz8ygcuzj20mk0ox459.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g9lvmz5wcnj20zr0600vg.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g9lvxci9l5j210k09j0y5.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g9lvy81r69j210q0a40y1.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g9lw1j268aj20pn08caaj.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g9ly0z93urj21uo0u018i.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g9v9luujswj21n10l9jux.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223343_2d1f4.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223344_045e6.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223344_aa828.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223344_3ac47.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223345_19197.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223345_f65fd.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223346_afc00.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223347_e7a17.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223347_ed59d.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223347_94bc2.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223348_b6bbc.jpg">
 <meta property="article:published_time" content="2019-12-13T18:43:49.000Z">
-<meta property="article:modified_time" content="2019-12-14T07:05:10.130Z">
+<meta property="article:modified_time" content="2022-12-11T14:33:48.494Z">
 <meta property="article:author" content="Vincent">
 <meta property="article:tag" content="Java">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g9m74n4c2sj21ts0usnpd.jpg">
+<meta name="twitter:image" content="https://imgs.lfeng.tech/images/blog/20221211223343_2d1f4.jpg">
 
 <link rel="canonical" href="https://lfeng.tech/2019/12/14/Java_concurrent_4_AQS/">
 
@@ -194,7 +194,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-12-14 07:05:10" itemprop="dateModified" datetime="2019-12-14T07:05:10Z">2019-12-14</time>
+                <time title="修改时间：2022-12-11 14:33:48" itemprop="dateModified" datetime="2022-12-11T14:33:48Z">2022-12-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -231,7 +231,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1g9m74n4c2sj21ts0usnpd.jpg"></p>
+        <p><img src="https://imgs.lfeng.tech/images/blog/20221211223343_2d1f4.jpg"></p>
 <h2 id="4-显示锁和AQS"><a href="#4-显示锁和AQS" class="headerlink" title="4 显示锁和AQS"></a>4 显示锁和AQS</h2><h3 id="4-1-Lock接口"><a href="#4-1-Lock接口" class="headerlink" title="4.1 Lock接口"></a>4.1 Lock接口</h3><h4 id="核心方法"><a href="#核心方法" class="headerlink" title="核心方法"></a>核心方法</h4><p>Java在java.util.concurrent.locks包中提供了一系列的显示锁类，其中最基础的就是Lock接口，该接口提供了几个常见的锁相关的操作。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">public interface Lock &#123;</span><br><span class="line">    void lock();</span><br><span class="line">    void lockInterruptibly() throws InterruptedException;</span><br><span class="line">    boolean tryLock();</span><br><span class="line">    boolean tryLock(long time, TimeUnit unit) throws InterruptedException;</span><br><span class="line">    void unlock();</span><br><span class="line">    Condition newCondition();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
@@ -383,7 +383,7 @@
 <p>当在实现自己的lock类时，需要子类覆盖如下方法，<br>独占式获取  tryAcquire<br>独占式释放  tryRelease<br>共享式获取 tryAcquireShared<br>共享式释放  tryReleaseShared<br>这个同步器是否处于独占模式  isHeldExclusively</p>
 </blockquote>
 <h4 id="CLH同步队列"><a href="#CLH同步队列" class="headerlink" title="CLH同步队列"></a>CLH同步队列</h4><p>CLH同步队列是一个FIFO双向队列，AQS依赖它来完成同步状态的管理，当前线程如果获取同步状态失败时，AQS则会将当前线程以及等待状态等信息打包成一个节点（Node），并将其加入到CLH同步队列，同时会阻塞当前线程。当同步状态释放时，会把首节点唤醒（公平锁），使其再次尝试获取同步状态。</p>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1g9kiy6y1dsj20wr08cjvf.jpg" alt="Picture1.png"></p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223344_045e6.jpg" alt="Picture1.png"></p>
 <p>在CLH同步队列中，一个节点表示一个线程，它保存着线程的引用（thread）、状态（waitStatus）、前驱节点（prev）、后继节点（next），</p>
 <ul>
 <li>CANCELLED，值为1 。场景：当该线程等待超时或者被中断，需要从同步队列中取消等待，则该线程被置1，即被取消（这里该线程在取消之前是等待状态）。节点进入了取消状态则不再变化；</li>
@@ -399,7 +399,7 @@
 <p><strong>1. 节点加入到同步队列</strong></p>
 <p>队列的主要变化是tail指向新节点、新节点的prev指向当前最后的节点，当前最后一个节点的next指向当前节点。</p>
 <p>整个流程图如下：</p>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1g9kjmnj4uuj20wc097wid.jpg" alt="Picture1.png"></p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223344_aa828.jpg" alt="Picture1.png"></p>
 <p>具体实现可以查看addWaiter(Node node)方法：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">private Node addWaiter(Node mode) &#123;</span><br><span class="line">    //新建Node</span><br><span class="line">    Node node = new Node(Thread.currentThread(), mode);</span><br><span class="line">    //快速尝试添加尾节点</span><br><span class="line">    Node pred = tail;</span><br><span class="line">    if (pred != null) &#123;</span><br><span class="line">        node.prev = pred;</span><br><span class="line">        //CAS设置尾节点</span><br><span class="line">        if (compareAndSetTail(pred, node)) &#123;</span><br><span class="line">            pred.next = node;</span><br><span class="line">            return node;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    //多次尝试</span><br><span class="line">    enq(node);</span><br><span class="line">    return node;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
@@ -410,7 +410,7 @@
 <p><strong>2. 首节点移出同步队列</strong></p>
 <p>首节点的线程释放同步状态后，将会唤醒它的后继节点（next），而后继节点将会在获取同步状态成功时将自己设置为首节点，这个过程非常简单，head执行该节点并断开原首节点的next和当前节点的prev即可，注意在这个过程是不需要使用CAS来保证的，因为只有一个线程能够成功获取到同步状态。</p>
 <p>流程图如下：</p>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1g9kk3lzgyfj20vt07atc0.jpg" alt="Picture1.png"></p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223344_3ac47.jpg" alt="Picture1.png"></p>
 <h4 id="独占式同步状态获取与释放"><a href="#独占式同步状态获取与释放" class="headerlink" title="独占式同步状态获取与释放"></a>独占式同步状态获取与释放</h4><p>AQS提供了acquire(int arg)方法来进行独占式同步状态获取，实现如下：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">public final void acquire(int arg) &#123;</span><br><span class="line">    if (!tryAcquire(arg) &amp;&amp;</span><br><span class="line">        acquireQueued(addWaiter(Node.EXCLUSIVE), arg))</span><br><span class="line">        selfInterrupt();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
@@ -451,7 +451,7 @@
 
 <p>可能会存在当前线程的后继节点为null，超时、被中断的情况，如果遇到这种情况了，则需要跳过该节点，但是为何是从tail尾节点开始，而不是从node.next开始呢？原因在于node.next仍然可能会存在null或者取消了，所以采用tail回溯办法找第一个可用的线程。最后调用LockSupport的unpark(Thread thread)方法唤醒该线程。</p>
 <p>以上就是整个独占式获取和释放的过程，流程图如下：</p>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1g9kz8ygcuzj20mk0ox459.jpg" alt="Picture1.png"></p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223345_19197.jpg" alt="Picture1.png"></p>
 <p><strong>独占式获取响应中断</strong></p>
 <p>AQS提供了acquire(int arg)方法以供独占式获取同步状态，但是该方法对中断不响应，对线程进行中断操作后，该线程会依然位于CLH同步队列中等待着获取同步状态。为了响应中断，AQS提供了acquireInterruptibly(int arg)方法，该方法在等待获取同步状态时，如果当前线程被中断了，会立刻响应中断抛出异常InterruptedException。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">public final void acquireInterruptibly(int arg)</span><br><span class="line">        throws InterruptedException &#123;</span><br><span class="line">    if (Thread.interrupted())</span><br><span class="line">        throw new InterruptedException();</span><br><span class="line">    if (!tryAcquire(arg))</span><br><span class="line">        doAcquireInterruptibly(arg);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -507,15 +507,15 @@
 </ul>
 </blockquote>
 <p>在AQS的Condition实现中，和独占锁的争夺类似的是，每创建一个Condtion对象就会对应一个Condtion队列，每一个调用了Condtion对象的await方法的线程都会被包装成Node扔进一个条件队列中，就像这样：</p>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1g9lvmz5wcnj20zr0600vg.jpg" alt="Picture2.png"></p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223345_f65fd.jpg" alt="Picture2.png"></p>
 <p>同样的，在Condition中也会用到之前介绍的同步队列，当等待队列中的节点获得信号通知时，会将等待队列的节点移到同步队列。</p>
 <p>以下是await时节点的变化，</p>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1g9lvxci9l5j210k09j0y5.jpg" alt="await.png"></p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223346_afc00.jpg" alt="await.png"></p>
 <p>以下是signal信号发出时节点的变化，</p>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1g9lvy81r69j210q0a40y1.jpg" alt="signal.png"></p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223347_e7a17.jpg" alt="signal.png"></p>
 <p>Condition的整个await/signal流程如下：</p>
 <p>1、Condition提供了await()方法将当前线程阻塞，并提供signal()方法支持另外一个线程将已经阻塞的线程唤醒。<br>2、Condition需要结合Lock使用<br>3、线程调用await()方法前必须获取锁，调用await()方法时，将线程构造成节点加入等待队列，同时释放锁，并挂起当前线程<br>4、其他线程调用signal()方法前也必须获取锁，当执行signal()方法时将等待队列的节点移入到同步队列，当线程退出临界区释放锁的时候，唤醒同步队列的首个节点</p>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1g9lw1j268aj20pn08caaj.jpg" alt="5507455-37635d0723174712.png"></p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223347_ed59d.jpg" alt="5507455-37635d0723174712.png"></p>
 <p>下面结合源代码进行分析：</p>
 <p><strong>await实现</strong></p>
 <p>调用await阻塞当前线程</p>
@@ -535,7 +535,7 @@
 <p>为了同时保存读锁和写锁的状态，在内部用一个int保存读和写的状态。读状态从高16位读出，写状态从低16位读出，在保证读写锁互斥的前提下，直接利用了AQS现有的数据结构。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">static final int SHARED_SHIFT   = 16;</span><br><span class="line">//实际是65536</span><br><span class="line">static final int SHARED_UNIT    = (1 &lt;&lt; SHARED_SHIFT);</span><br><span class="line">//最大值 65535</span><br><span class="line">static final int MAX_COUNT      = (1 &lt;&lt; SHARED_SHIFT) - 1;</span><br><span class="line">// 同样是65535</span><br><span class="line">static final int EXCLUSIVE_MASK = (1 &lt;&lt; SHARED_SHIFT) - 1;</span><br><span class="line"></span><br><span class="line">/** 获取读的状态  */</span><br><span class="line">static int sharedCount(int c)    &#123; return c &gt;&gt;&gt; SHARED_SHIFT; &#125;</span><br><span class="line">/** 获取写锁的获取状态 */</span><br><span class="line">static int exclusiveCount(int c) &#123; return c &amp; EXCLUSIVE_MASK; &#125;</span><br></pre></td></tr></table></figure>
 
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1g9ly0z93urj21uo0u018i.jpg"></p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223347_94bc2.jpg"></p>
 <p>写锁为独占式的，因此读锁的获取和释放和AQS原生的实现一致。<br>读锁是共享式的，获取读锁的状态，并且加1.</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">final boolean tryReadLock() &#123;</span><br><span class="line">           Thread current = Thread.currentThread();</span><br><span class="line">           for (;;) &#123;</span><br><span class="line">               int c = getState();</span><br><span class="line">               if (exclusiveCount(c) != 0 &amp;&amp;</span><br><span class="line">                   getExclusiveOwnerThread() != current)</span><br><span class="line">                   return false; //写锁被其他线程获取了，直接返回false</span><br><span class="line">               int r = sharedCount(c); //获取读锁的状态</span><br><span class="line">               if (r == MAX_COUNT)</span><br><span class="line">                   throw new Error(&quot;Maximum lock count exceeded&quot;);</span><br><span class="line">               if (compareAndSetState(c, c + SHARED_UNIT)) &#123; //尝试获取读锁</span><br><span class="line">                   if (r == 0) &#123; //说明第一个获取到了读锁</span><br><span class="line">                       firstReader = current; //标记下当前线程是第一个获取的</span><br><span class="line">                       firstReaderHoldCount = 1; //重入次数</span><br><span class="line">                   &#125; else if (firstReader == current) &#123;</span><br><span class="line">                       firstReaderHoldCount++; //次数+1</span><br><span class="line">                   &#125; else &#123;</span><br><span class="line">                       //cachedHoldCounter 为缓存最后一个获取锁的线程</span><br><span class="line">                       HoldCounter rh = cachedHoldCounter;</span><br><span class="line">                       if (rh == null || rh.tid != getThreadId(current))</span><br><span class="line">                           cachedHoldCounter = rh = readHolds.get(); //缓存最后一个获取锁的线程</span><br><span class="line">                       else if (rh.count == 0)// 当前线程获取到了锁，但是重入次数为0，那么把当前线程存入进去</span><br><span class="line">                           readHolds.set(rh);</span><br><span class="line">                       rh.count++;</span><br><span class="line">                   &#125;</span><br><span class="line">                   return true;</span><br><span class="line">               &#125;</span><br><span class="line">           &#125;</span><br><span class="line">       &#125;</span><br></pre></td></tr></table></figure>
 <p>读锁的释放：</p>
@@ -552,7 +552,7 @@
 <hr>
 <p>本文由『后端精进之路』原创，首发于博客 <a target="_blank" rel="noopener" href="http://teckee.github.io/">http://teckee.github.io/</a> , 转载请注明出处</p>
 <p>搜索『后端精进之路』关注公众号，立刻获取最新文章和<strong>价值2000元的BATJ精品面试课程</strong>。</p>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1g9v9luujswj21n10l9jux.jpg" alt="后端精进之路.png"></p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223348_b6bbc.jpg" alt="后端精进之路.png"></p>
 
     </div>
 

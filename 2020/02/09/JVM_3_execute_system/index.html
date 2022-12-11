@@ -28,23 +28,23 @@
 <meta property="og:site_name" content="Vincent&#39;s Notes">
 <meta property="og:description" content="3. 虚拟机执行子系统3.1 Java跨平台的基础Java刚诞生的宣传口号：一次编写，到处运行（Write Once, Run Anywhere），其中字节码是构成平台无关的基石，也是语言无关性的基础。 Java虚拟机不和包括Java在内的任何语言绑定，它只与Class文件这种特定的二进制文件格式所关联，这使得任何语言的都可以使用特定的编译器将其源码编译成Class文件，从而在虚拟机上运行。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1gam0dn947ej20zk0k0wfo.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1ga5lbyhpfqj20wm0hg0yp.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1ga5tgvosk4j20r80bnjs5.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1ga5vypztacj215c0iqq7k.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1ga6e534965j20qy0igtft.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1ga6hoxhz5wj20o6100gqa.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1ga6hwg43vlj21040s6qhu.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1ga6iirpn08j20pi0qe466.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1ga6jh205cej20jd0d9n1o.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1ga6jmoexhdj211o0q0dud.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1g9v9luujswj21n10l9jux.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223340_22027.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223341_baeb4.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223341_bb767.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223341_8caf4.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223342_7f104.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223342_cd336.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223343_83c6e.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223343_5f59b.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223343_becfe.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223344_8fc22.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223344_a61f9.jpg">
 <meta property="article:published_time" content="2020-02-08T23:43:49.000Z">
-<meta property="article:modified_time" content="2020-02-08T15:22:44.334Z">
+<meta property="article:modified_time" content="2022-12-11T14:33:44.480Z">
 <meta property="article:author" content="Vincent">
 <meta property="article:tag" content="Java">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://ww1.sinaimg.cn/large/a18449c6gy1gam0dn947ej20zk0k0wfo.jpg">
+<meta name="twitter:image" content="https://imgs.lfeng.tech/images/blog/20221211223340_22027.jpg">
 
 <link rel="canonical" href="https://lfeng.tech/2020/02/09/JVM_3_execute_system/">
 
@@ -186,10 +186,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2020-02-08 23:43:49 / 修改时间：15:22:44" itemprop="dateCreated datePublished" datetime="2020-02-08T23:43:49Z">2020-02-08</time>
+              <time title="创建时间：2020-02-08 23:43:49" itemprop="dateCreated datePublished" datetime="2020-02-08T23:43:49Z">2020-02-08</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-12-11 14:33:44" itemprop="dateModified" datetime="2022-12-11T14:33:44Z">2022-12-11</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -225,10 +231,10 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1gam0dn947ej20zk0k0wfo.jpg" alt="JVM.jpg"></p>
+        <p><img src="https://imgs.lfeng.tech/images/blog/20221211223340_22027.jpg" alt="JVM.jpg"></p>
 <h2 id="3-虚拟机执行子系统"><a href="#3-虚拟机执行子系统" class="headerlink" title="3. 虚拟机执行子系统"></a>3. 虚拟机执行子系统</h2><h3 id="3-1-Java跨平台的基础"><a href="#3-1-Java跨平台的基础" class="headerlink" title="3.1 Java跨平台的基础"></a>3.1 Java跨平台的基础</h3><p>Java刚诞生的宣传口号：一次编写，到处运行（Write Once, Run Anywhere），其中字节码是构成平台无关的基石，也是语言无关性的基础。</p>
 <p>Java虚拟机不和包括Java在内的任何语言绑定，它只与Class文件这种特定的二进制文件格式所关联，这使得任何语言的都可以使用特定的编译器将其源码编译成Class文件，从而在虚拟机上运行。</p>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1ga5lbyhpfqj20wm0hg0yp.jpg" alt="Screen Shot 2019-12-22 at 4.41.27 PM.png"></p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223341_baeb4.jpg" alt="Screen Shot 2019-12-22 at 4.41.27 PM.png"></p>
 <span id="more"></span>
 
 <h3 id="3-2-Class类的文件结构"><a href="#3-2-Class类的文件结构" class="headerlink" title="3.2 Class类的文件结构"></a>3.2 Class类的文件结构</h3><p>任何一个Class文件都对应着唯一一个类或接口的定义信息，但反过来说，Class文件实际上它并不一定以磁盘文件的形式存在。</p>
@@ -460,7 +466,7 @@
 <p><strong>双亲委派模型：</strong></p>
 <p>简单说就是当类加载器（Class-Loader）试图加载某个类型的时候，除非父加载器找不到相应类型，否则尽量将这个任务代理给当前加载器的父加载器去做。使用委派模型的目的是避免重复加载 Java 类型。</p>
 <h4 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h4><p>类从被加载到虚拟机内存中开始，到卸载出内存为止，它的整个生命周期包括：<strong>加载</strong>（Loading）、<strong>验证</strong>（Verificatio）、<strong>准备</strong>（Preparation）、<strong>解析</strong>（Resolution）、<strong>初始化</strong>（Initialization）、<strong>使用</strong>（Using）和<strong>卸载</strong>（Unloading）7个阶段。其中验证、准备、解析3个部分统称为连接（Linking）。</p>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1ga5tgvosk4j20r80bnjs5.jpg" alt="class lifeCycle.png"></p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223341_bb767.jpg" alt="class lifeCycle.png"></p>
 <p>于初始化阶段，虚拟机规范则是严格规定了有且只有5种情况必须立即对类进行“初始化”（而加载、验证、准备自然需要在此之前开始）：</p>
 <ol>
 <li>遇到<strong>new、getstatic、putstatic或invokestatic</strong>这4条字节码指令时，如果类没有进行过初始化，则需要先触发其初始化。生成这4条指令的最常见的Java代码场景是：使用new关键字实例化对象的时候、读取或设置一个类的静态字段（被final修饰、已在编译期把结果放入常量池的静态字段除外）的时候，以及调用一个类的静态方法的时候。</li>
@@ -499,7 +505,7 @@
 <p>public static int value=123；</p>
 <p>那变量value在准备阶段过后的初始值为0而不是123，因为这时候尚未开始执行任何Java方法，而把value赋值为123的putstatic指令是程序被编译后，存放于类构造器＜clinit＞（）方法之中，所以把value赋值为123的动作将在初始化阶段才会执行。</p>
 <p>表7-1列出了Java中所有基本数据类型的零值：</p>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1ga5vypztacj215c0iqq7k.jpg" alt="Java的数据类型.png"></p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223341_8caf4.jpg" alt="Java的数据类型.png"></p>
 <p>假设上面类变量value的定义变为：public static final int value=123；<br>编译时Javac将会为value生成ConstantValue属性，在准备阶段虚拟机就会根据ConstantValue的设置将value赋值为123。</p>
 <h4 id="解析阶段"><a href="#解析阶段" class="headerlink" title="解析阶段"></a>解析阶段</h4><p>是虚拟机将常量池内的符号引用替换为直接引用的过程。</p>
 <ul>
@@ -524,7 +530,7 @@
 <li><strong>扩展类加载器</strong>（Extension ClassLoader）：这个加载器由sun.misc.Launcher$ExtClassLoader实现，它负责加载<JAVA_HOME>\lib\ext目录中或者被java.ext.dirs系统变量所指定的路径中的所有类库，开发者可以直接使用扩展类加载器。</li>
 <li><strong>应用程序类加载器</strong>（Application ClassLoader）：这个类加载器由sun.misc.Launcher$AppClassLoader实现。由于这个类加载器是ClassLoader中的getSystemClassLoader()方法的返回值，所以一般也称为系统类加载器，负责加载用户类路径（ClassPath）上所指定的类库，开发者可以直接使用这个类加载器。</li>
 </ul>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1ga6e534965j20qy0igtft.jpg" alt="Screen Shot 2019-12-23 at 9.18.17 AM.png"></p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223342_7f104.jpg" alt="Screen Shot 2019-12-23 at 9.18.17 AM.png"></p>
 <p>双亲委派模型的工作过程是：如果一个类加载器收到了类加载的请求，它首先不会自己去尝试加载这个类，而是<strong>把这个请求委派给父类加载器去完成</strong>，每一个层次的类加载器都是如此，因此<strong>所有的加载请求最终都应该传送到顶层的启动类加载器中</strong>，只有当<strong>父加载器反馈自己无法完成这个加载请求（它的搜索范围中没有找到所需的类）时，子加载器才会尝试自己去加载</strong>。</p>
 <blockquote>
 <p>使用双亲委派模型来组织类加载器之间的关系，有一个显而易见的好处就是Java类随着它的类加载器一起具备了一种带有优先级的层次关系。例如类java.lang.Object，它存放在rt.jar之中，无论哪一个类加载器要加载这个类，最终都是委派给处于模型最顶端的启动类加载器进行加载，因此Object类在程序的各种类加载器环境中都是同一个类。相反，如果没有使用双亲委派模型，由各个类加载器自行去加载的话，如果用户自己编写了一个称为java.lang.Object的类，并放在程序的ClassPath中，那系统中将会出现多个不同的Object类，Java类型体系中最基础的行为也就无法保证，应用程序也将会变得一片混乱。</p>
@@ -573,7 +579,7 @@
 <p>答案是不行的。为什么？</p>
 <p>第一个问题，如果使用默认的类加载器机制，那么是无法加载两个相同类库的不同版本的，默认的累加器是不管你是什么版本的，只在乎你的全限定类名，并且只有一份。<br>第二个问题，默认的类加载器是能够实现的，因为他的职责就是保证唯一性。<br>第三个问题和第一个问题一样。<br>第四个问题，我们要怎么实现jsp文件的热修改（楼主起的名字），jsp 文件其实也就是class文件，那么如果修改了，但类名还是一样，类加载器会直接取方法区中已经存在的，修改后的jsp是不会重新加载的。那么怎么办呢？我们可以直接卸载掉这jsp文件的类加载器，所以你应该想到了，每个jsp文件对应一个唯一的类加载器，当一个jsp文件修改了，就直接卸载这个jsp类加载器。重新创建类加载器，重新加载jsp文件。</p>
 <p><strong>Tomcat 如何实现自己独特的类加载机制？</strong></p>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1ga6hoxhz5wj20o6100gqa.jpg" alt="Screen Shot 2019-12-23 at 11.21.18 AM.png"></p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223342_cd336.jpg" alt="Screen Shot 2019-12-23 at 11.21.18 AM.png"></p>
 <p>前面3个类加载和默认的一致，<strong>CommonClassLoader</strong>、<strong>CatalinaClassLoader</strong>、<strong>SharedClassLoader</strong>和<strong>WebappClassLoader</strong>则是Tomcat自己定义的类加载器，它们分别加载<code>/common/*</code>、<code>/server/*</code>、<code>/shared/*</code>（在tomcat 6之后已经合并到根目录下的lib目录下）和<code>/WebApp/WEB-INF/*</code>中的Java类库。其中WebApp类加载器和Jsp类加载器通常会存在多个实例，每一个Web应用程序对应一个WebApp类加载器，每一个JSP文件对应一个Jsp类加载器。</p>
 <ul>
 <li>commonLoader：Tomcat最基本的类加载器，加载路径中的class可以被Tomcat容器本身以及各个Webapp访问；</li>
@@ -588,7 +594,7 @@
 <p>而JasperLoader的加载范围仅仅是这个JSP文件所编译出来的那一个.Class文件，它出现的目的就是为了被丢弃：当Web容器检测到JSP文件被修改时，会替换掉目前的JasperLoader的实例，并通过再建立一个新的Jsp类加载器来实现JSP文件的HotSwap功能。</p>
 </blockquote>
 <p>下图展示了Tomcat的类加载流程：</p>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1ga6hwg43vlj21040s6qhu.jpg" alt="Screen Shot 2019-12-23 at 11.28.25 AM.png"></p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223343_83c6e.jpg" alt="Screen Shot 2019-12-23 at 11.28.25 AM.png"></p>
 <p>当tomcat启动时，会创建几种类加载器：</p>
 <p><strong>1. Bootstrap 引导类加载器</strong></p>
 <p>加载JVM启动所需的类，以及标准扩展类（位于jre/lib/ext下）</p>
@@ -616,7 +622,7 @@
 <li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/aedee0e14319">https://www.jianshu.com/p/aedee0e14319</a></li>
 </ul>
 <h3 id="3-6-运行时栈帧结构"><a href="#3-6-运行时栈帧结构" class="headerlink" title="3.6 运行时栈帧结构"></a>3.6 运行时栈帧结构</h3><p><strong>栈帧</strong>（Stack Frame）是用于支持虚拟机进行方法调用和方法执行的数据结构，它是虚拟机运行时数据区中的虚拟机栈的栈元素。典型栈帧结构：</p>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1ga6iirpn08j20pi0qe466.jpg" alt="Screen Shot 2019-12-23 at 11.49.57 AM.png"></p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223343_5f59b.jpg" alt="Screen Shot 2019-12-23 at 11.49.57 AM.png"></p>
 <p>下面对各个部分进行仔细介绍：</p>
 <h4 id="局部变量表"><a href="#局部变量表" class="headerlink" title="局部变量表"></a>局部变量表</h4><p><strong>局部变量表</strong>（Local Variable Table）是一组变量值存储空间，用于存放方法参数和方法内部定义的局部变量。局部变量表的容量以<strong>变量槽</strong>（Variable Slot）为最小单位，虚拟机规范中并没有明确指定一个Slot应占用的内存空间大小，只是规定每个Slot都应该能存放一个boolean、byte、char、short、int、float、reference或returnAddress类型的数据，这样可以屏蔽32位跟64位虚拟机在内存空间上的差异。</p>
 <p>虚拟机通过索引定位的方式使用局部变量表，索引值的范围从0到最大Slot数量，索引n对应第n个Slot。局部变量表中第0位索引的Slot默认是用于传递方法所属对象实例的引用，即this。</p>
@@ -668,10 +674,10 @@
 <p>下面的例子中，输出结果均为<code>hello guy</code>。</p>
 <p>“Human”称为变量的静态类型（Static Type），或者叫做的外观类型（Apparent Type），后面的“Man”则称为变量的实际类型（Actual Type），静态类型和实际类型在程序中都可以发生一些变化，区别是静态类型的变化仅仅在使用时发生，变量本身的静态类型不会被改变，并且最终的静态类型是在编译期可知的；而实际类型变化的结果在运行期才可确定，编译器在编译程序的时候并不知道一个对象的实际类型是什么。</p>
 <p>代码中定义了两个静态类型相同但实际类型不同的变量，但<strong>虚拟机（准确地说是编译器）在重载时是通过参数的静态类型而不是实际类型作为判定依据的。并且静态类型是编译期可知的</strong>，因此，在编译阶段，Javac编译器会根据参数的静态类型决定使用哪个重载版本，所以选择了sayHello（Human）作为调用目标。所有依赖静态类型来定位方法执行版本的分派动作称为静态分派。静态分派的典型应用是方法重载。<strong>静态分派发生在编译阶段，因此确定静态分派的动作实际上不是由虚拟机来执行的。</strong></p>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1ga6jh205cej20jd0d9n1o.jpg" alt="Picture1.png"></p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223343_becfe.jpg" alt="Picture1.png"></p>
 <h4 id="动态分派"><a href="#动态分派" class="headerlink" title="动态分派"></a>动态分派</h4><p>指对于相同方法签名的方法根据实际执行对象来确定执行版本的分派。编译器是根据引用类型来判断方法是否可执行，真正执行的是实际对象方法。<strong>多见于类多态的实现。</strong></p>
 <p>动态分配的实现，最常用的手段就是为类在方法区中建立一个虚方法表。虚方法表中存放着各个方法的实际入口地址。<strong>如果某个方法在子类中没有被重写，那子类的虚方法表里面的地址入口和父类相同方法的地址入口是一致的，都指向父类的实现入口。如果子类中重写了这个方法，子类方法表中的地址将会替换为指向子类实现版本的入口地址</strong>。PPT图中，Son重写了来自Father的全部方法，因此Son的方法表没有指向Father类型数据的箭头。但是Son和Father都没有重写来自Object的方法，所以它们的方法表中所有从Object继承来的方法都指向了Object的数据类型。</p>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1ga6jmoexhdj211o0q0dud.jpg" alt="Screen Shot 2019-12-23 at 12.28.21 PM.png"></p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223344_8fc22.jpg" alt="Screen Shot 2019-12-23 at 12.28.21 PM.png"></p>
 <h3 id="3-9-基于栈的字节码解释执行引擎"><a href="#3-9-基于栈的字节码解释执行引擎" class="headerlink" title="3.9 基于栈的字节码解释执行引擎"></a>3.9 基于栈的字节码解释执行引擎</h3><p>Java语言经常被人们定位为“解释执行”语言，在Java初生的JDK1.0时代，这种定义还比较准确的，但当主流的虚拟机中都包含了即时编译后，Class文件中的代码到底会被解释执行还是编译执行，就成了只有虚拟机自己才能准确判断的事情。再后来，Java也发展出来了直接生成本地代码的编译器[如何GCJ（GNU Compiler for the Java）]，而C/C++也出现了通过解释器执行的版本（如CINT），这时候再笼统的说“解释执行”，对于整个Java语言来说就成了几乎没有任何意义的概念。</p>
 <h4 id="基于栈的指令集与基于寄存器的指令集"><a href="#基于栈的指令集与基于寄存器的指令集" class="headerlink" title="基于栈的指令集与基于寄存器的指令集"></a>基于栈的指令集与基于寄存器的指令集</h4><p><strong>基于栈的指令集</strong>：指令流中的指令大部分都是零地址指令，它们依赖操作数栈进行工作。</p>
 <p><strong>基于寄存器的指令集</strong>：最典型的就是X86的地址指令集，通俗一点，就是现在我们主流的PC机中直接支持的指令集架构，这些指令集依赖寄存器工作。</p>
@@ -697,7 +703,7 @@
 <hr>
 <p>本文由『后端精进之路』原创，首发于博客 <a target="_blank" rel="noopener" href="http://teckee.github.io/">http://teckee.github.io/</a> , 转载请注明出处</p>
 <p>搜索『后端精进之路』关注公众号，立刻获取最新文章和<strong>价值2000元的BATJ精品面试课程</strong>。</p>
-<p><img src="http://ww1.sinaimg.cn/large/a18449c6gy1g9v9luujswj21n10l9jux.jpg" alt="后端精进之路.png"></p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223344_a61f9.jpg" alt="后端精进之路.png"></p>
 
     </div>
 
