@@ -146,6 +146,103 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://lfeng.tech/2020/02/22/JVM_4_write_high_performance_code/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Vincent">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Vincent's Notes">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/02/22/JVM_4_write_high_performance_code/" class="post-title-link" itemprop="url">JVM性能优化系列-(4) 编写高效Java程序</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-02-21 23:43:49" itemprop="dateCreated datePublished" datetime="2020-02-21T23:43:49Z">2020-02-21</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-12-11 14:33:37" itemprop="dateModified" datetime="2022-12-11T14:33:37Z">2022-12-11</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2020/02/22/JVM_4_write_high_performance_code/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/02/22/JVM_4_write_high_performance_code/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p><img src="https://imgs.lfeng.tech/images/blog/20221211223336_46298.jpg" alt="JVM.jpg"></p>
+<h2 id="4-编写高效Java程序"><a href="#4-编写高效Java程序" class="headerlink" title="4. 编写高效Java程序"></a>4. 编写高效Java程序</h2><h3 id="4-1-面向对象"><a href="#4-1-面向对象" class="headerlink" title="4.1 面向对象"></a>4.1 面向对象</h3><h4 id="构造器参数太多怎么办？"><a href="#构造器参数太多怎么办？" class="headerlink" title="构造器参数太多怎么办？"></a>构造器参数太多怎么办？</h4><p>正常情况下，如果构造器参数过多，可能会考虑重写多个不同参数的构造函数，如下面的例子所示：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">public class FoodNormal &#123;</span><br><span class="line"></span><br><span class="line">    //required</span><br><span class="line">    private final String foodName;//名称</span><br><span class="line">    private final int reilang;//热量</span><br><span class="line"></span><br><span class="line">    //optional</span><br><span class="line">    private final int danbz;//蛋白质</span><br><span class="line">    private final int dianfen;//淀粉</span><br><span class="line">    private final int zf;//脂肪</span><br><span class="line">    </span><br><span class="line">    //全参数</span><br><span class="line">	public FoodNormal(String foodName, int reilang, int danbz, </span><br><span class="line">			int dianfen, int zf, int tang, int wss) &#123;</span><br><span class="line">		super();</span><br><span class="line">		this.foodName = foodName;</span><br><span class="line">		this.reilang = reilang;</span><br><span class="line">		this.danbz = danbz;</span><br><span class="line">		this.dianfen = dianfen;</span><br><span class="line">		this.zf = zf;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	//2个参数</span><br><span class="line">	public FoodNormal(String foodName, int reilang) &#123;</span><br><span class="line">		this(foodName,reilang,0,0,0,0,0);</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	//3....6个参数</span><br><span class="line">	//</span><br><span class="line">	</span><br><span class="line">	public static void main(String[] args) &#123;</span><br><span class="line">		FoodNormal fn = new FoodNormal(&quot;food1&quot;,1200,200,0,0,300,100);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/02/22/JVM_4_write_high_performance_code/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://lfeng.tech/2020/02/09/JVM_3_execute_system/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1051,103 +1148,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://lfeng.tech/2019/12/11/Java_concurrent_3_atomic_CAS/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="Vincent">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Vincent's Notes">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/12/11/Java_concurrent_3_atomic_CAS/" class="post-title-link" itemprop="url">Java并发编程系列-(3) 原子操作与CAS</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-12-10 23:43:49" itemprop="dateCreated datePublished" datetime="2019-12-10T23:43:49Z">2019-12-10</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-12-11 14:33:39" itemprop="dateModified" datetime="2022-12-11T14:33:39Z">2022-12-11</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2019/12/11/Java_concurrent_3_atomic_CAS/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2019/12/11/Java_concurrent_3_atomic_CAS/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p><img src="https://imgs.lfeng.tech/images/blog/20221211223338_ed22b.jpg"></p>
-<h2 id="3-原子操作与CAS"><a href="#3-原子操作与CAS" class="headerlink" title="3. 原子操作与CAS"></a>3. 原子操作与CAS</h2><h3 id="3-1-原子操作"><a href="#3-1-原子操作" class="headerlink" title="3.1 原子操作"></a>3.1 原子操作</h3><p>所谓原子操作是指不会被线程调度机制打断的操作；这种操作一旦开始，就一直运行到结束，中间不会有任何context switch，也就是切换到另一个线程。</p>
-<p>为了实现原子操作，Java中可以通过synchronized关键字将函数或者代码块包围，以实现操作的原子性。但是synchronized关键字有一些很显著的问题：</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2019/12/11/Java_concurrent_3_atomic_CAS/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1219,12 +1219,12 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">61</span>
+          <span class="site-state-item-count">62</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
-        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-count">15</span>
         <span class="site-state-item-name">分类</span>
       </div>
       <div class="site-state-item site-state-tags">
