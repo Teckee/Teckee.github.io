@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"lfeng.tech","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="本文主要介绍Spark的核心知识点， 2. Spark 核心概念主要介绍Spark核心概念RDD以及相应的API。 2.1 RDD介绍RDD（Resilient Distributed Dataset）叫做弹性分布式数据集，是Spark中最基本的数据抽象。代码中是一个抽象类，它代表一个弹性的、只读的、可分区的、支持并行计算的分布式数据集合，这个数据集的全部或部分可以缓存在内存中，在多次计算间重用">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spark系列 - (2) Spark核心概念">
+<meta property="og:url" content="https://lfeng.tech/2023/02/23/Spark_2_core_knowledge/index.html">
+<meta property="og:site_name" content="Vincent&#39;s Notes">
+<meta property="og:description" content="本文主要介绍Spark的核心知识点， 2. Spark 核心概念主要介绍Spark核心概念RDD以及相应的API。 2.1 RDD介绍RDD（Resilient Distributed Dataset）叫做弹性分布式数据集，是Spark中最基本的数据抽象。代码中是一个抽象类，它代表一个弹性的、只读的、可分区的、支持并行计算的分布式数据集合，这个数据集的全部或部分可以缓存在内存中，在多次计算间重用">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223354_025af.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221212215756_98dd3.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221212215756_4ff8d.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221212215756_2b3b6.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221212215756_7a403.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221212215756_096b3.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221212215757_cc710.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221212215757_92b3c.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221212215757_03ad6.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221212215757_df3a0.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221212215757_06761.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221212215757_8efd2.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221212215758_3a4c4.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221212215758_e36cb.jpg">
+<meta property="article:published_time" content="2023-02-22T21:43:49.000Z">
+<meta property="article:modified_time" content="2023-02-22T13:33:15.484Z">
+<meta property="article:author" content="Vincent">
+<meta property="article:tag" content="Spark">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://imgs.lfeng.tech/images/blog/20221211223354_025af.jpg">
+
+<link rel="canonical" href="https://lfeng.tech/2023/02/23/Spark_2_core_knowledge/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Spark系列 - (2) Spark核心概念 | Vincent's Notes</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Vincent's Notes</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://lfeng.tech/2023/02/23/Spark_2_core_knowledge/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Vincent">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Vincent's Notes">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Spark系列 - (2) Spark核心概念
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2023-02-22 21:43:49 / 修改时间：13:33:15" itemprop="dateCreated datePublished" datetime="2023-02-22T21:43:49Z">2023-02-22</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Spark/" itemprop="url" rel="index"><span itemprop="name">Spark</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2023/02/23/Spark_2_core_knowledge/" class="post-meta-item leancloud_visitors" data-flag-title="Spark系列 - (2) Spark核心概念" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2023/02/23/Spark_2_core_knowledge/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2023/02/23/Spark_2_core_knowledge/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><img src="https://imgs.lfeng.tech/images/blog/20221211223354_025af.jpg" alt="Spark"></p>
+<p>本文主要介绍Spark的核心知识点，</p>
+<h2 id="2-Spark-核心概念"><a href="#2-Spark-核心概念" class="headerlink" title="2. Spark 核心概念"></a>2. Spark 核心概念</h2><p>主要介绍Spark核心概念RDD以及相应的API。</p>
+<h3 id="2-1-RDD介绍"><a href="#2-1-RDD介绍" class="headerlink" title="2.1 RDD介绍"></a>2.1 RDD介绍</h3><p>RDD（Resilient Distributed Dataset）叫做弹性分布式数据集，是Spark中最基本的数据抽象。代码中是一个抽象类，它代表一个弹性的、只读的、可分区的、支持并行计算的分布式数据集合，这个数据集的全部或部分可以缓存在内存中，在多次计算间重用。</p>
+<ul>
+<li><p>数据集：RDD 是数据集合的抽象，是复杂物理介质上存在数据的一种逻辑视图。从外 部来看，RDD 的确可以被看待成经过封装，带扩展特性（如容错性）的数据集合。</p>
+</li>
+<li><p>分布式：RDD的数据可能在物理上存储在多个节点的磁盘或内存中，也就是所谓的多级存储。 </p>
+</li>
+<li><p>弹性：如果数据集的一部分数据丢失，则可以对它进行重建；具有自动容错，位置感知调度和可伸缩性，而容错性是最难实现的。 </p>
+</li>
+<li><p>大部分分布式数据集的容错性有两种：数据检查点（成本高）和记录数据的更新（依赖关系）。</p>
+</li>
+</ul>
+<span id="more"></span>
+
+<h3 id="2-2-RDD特点"><a href="#2-2-RDD特点" class="headerlink" title="2.2 RDD特点"></a>2.2 RDD特点</h3><p>RDD 表示只读的分区的数据集，对RDD进行改动，只能通过RDD的转换操作，由一个RDD得到一个新的RDD，新的RDD包含了从其他RDD衍生所必需的信息。RDDs之间存在依赖，RDD的执行是按照血缘关系延时计算的。如果血缘关系较长，可以通过持久化RDD来切断血缘关系。</p>
+<h4 id="2-2-1-弹性"><a href="#2-2-1-弹性" class="headerlink" title="2.2.1 弹性"></a>2.2.1 弹性</h4><ul>
+<li>存储的弹性：内存与磁盘的自动切换；</li>
+<li>容错的弹性：数据丢失可以自动恢复；</li>
+<li>计算的弹性：计算出错重试机制；</li>
+<li>分片的弹性：可根据需要重新分片。</li>
+</ul>
+<h4 id="2-2-2-分区"><a href="#2-2-2-分区" class="headerlink" title="2.2.2 分区"></a>2.2.2 分区</h4><p>RDD对象实质上是一个元数据结构，存储着Block、Node等映射关系，以及其他元数据信息。一个RDD就是一组分区（Partition），RDD的每个分区Partition对应一个Block， Block可以存储在内存，当内存不够时可以存储到磁盘上。</p>
+<p>RDD的数据源也可以存储在HDFS上，数据按 照HDFS分布策略进行分区，HDFS中的一个 Block对应Spark RDD的一个Partition。</p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221212215756_98dd3.jpg"></p>
+<h4 id="2-2-3-只读"><a href="#2-2-3-只读" class="headerlink" title="2.2.3 只读"></a>2.2.3 只读</h4><p>RDD是只读的，要想改变RDD中的数据，只能在现有的RDD基础上创建新的RDD。由一个RDD转换到另一个RDD，可以通过丰富的操作算子实现，不再像MapReduce那样只能写map和reduce了。</p>
+<p>RDD的操作算子包括两类，一类叫做transformations，它是用来将RDD进行转化，构建RDD的血缘关系；另一类叫做actions，它是用来触发RDD的计算，得到RDD的相关计算结果或者将RDD保存到文件系统中。</p>
+<h4 id="2-2-4-依赖"><a href="#2-2-4-依赖" class="headerlink" title="2.2.4 依赖"></a>2.2.4 依赖</h4><p>RDDs 通过操作算子进行转换，转换得到的新 RDD 包含了从其他 RDDs 衍生所必需的 信息，RDDs 之间维护着这种血缘关系，也称之为依赖。如下图所示，依赖包括两种，一种 是窄依赖，RDDs 之间分区是一一对应的，另一种是宽依赖，下游 RDD 的每个分区与上游 RDD(也称之为父 RDD)的每个分区都有关，是多对多的关系。</p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221212215756_4ff8d.jpg"></p>
+<h4 id="2-2-5-缓存"><a href="#2-2-5-缓存" class="headerlink" title="2.2.5 缓存"></a>2.2.5 缓存</h4><p>如果在应用程序中多次使用同一个RDD，可以将该RDD缓存起来，该RDD只有在第一次计算的时候会根据血缘关系得到分区的数据，在后续其他地方用到该RDD的时候，会直接从缓存处取而不用再根据血缘关系计算，这样就加速后期的重用。如下图所示，RDD1经过一系列的转换后得到RDD-n并保存到 HDFS，RDD-1 在这一过程中会有个中间结果， 如果将其缓存到内存，那么在随后的 RDD-1 转换到 RDD-m 这一过程中，就不会计算其之 前的 RDD-0 了。</p>
+<h3 id="2-3-RDD编程及其基本操作"><a href="#2-3-RDD编程及其基本操作" class="headerlink" title="2.3 RDD编程及其基本操作"></a>2.3 RDD编程及其基本操作</h3><p>在Spark中，RDD被表示为对象，通过对象上的方法调用来对 RDD 进行转换。经过 一系列的 transformations 定义 RDD 之后，就可以调用 actions 触发 RDD 的计算，action 可以是向应用程序返回结果(count, collect 等)，或者是向存储系统保存数据(saveAsTextFile 等)。在 Spark 中，只有遇到 action，才会执行 RDD 的计算(即延迟计算)，这样在运行时可 以通过管道的方式传输多个转换。</p>
+<h4 id="2-3-1-RDD创建"><a href="#2-3-1-RDD创建" class="headerlink" title="2.3.1 RDD创建"></a>2.3.1 RDD创建</h4><p>在Spark中创建 RDD 的创建方式可以分为三种：从集合中创建 RDD；从外部存储创建RDD；从其他RDD创建。</p>
+<ol>
+<li>从集合中创建</li>
+</ol>
+<p>从集合中创建 RDD，Spark主要提供了两种函数：parallelize 和 makeRDD。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">val rdd = sc.parallelize(Array(1,2,3,4,5,6,7,8))</span><br><span class="line">val rdd1 = sc.makeRDD(Array(1,2,3,4,5,6,7,8))</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li><p>从外部存储系统的数据集创建：包括本地的文件系统，还有所有 Hadoop 支持的数据集，比如 HDFS、Cassandra、HBase 等。</p>
+</li>
+<li><p>从其他RDD创建：一般通过各种transformation操作，来实现不同RDD之间的转换。</p>
+</li>
+</ol>
+<h4 id="2-3-2-RDD的转换（transformations）"><a href="#2-3-2-RDD的转换（transformations）" class="headerlink" title="2.3.2 RDD的转换（transformations）"></a>2.3.2 RDD的转换（transformations）</h4><p>RDD整体上分为Value类型和Key-Value类型。</p>
+<p>首先介绍Value类型的操作：</p>
+<ul>
+<li>map(func)：返回一个新的RDD，该RDD由每一个输入元素经过func函数转换后组成。</li>
+<li>mapPartitions(func)：类似于map，但独立地在RDD的每一个分片上运行，因此在类型为T的RDD上运行时，func的函数类型必须是Iterator[T]=&gt;Iterator[U]。假设有N个元素，有M个分区，那么map函数将被调用N次，而mapPartitions被调用M次，一个函数一次处理所有分区。</li>
+<li>mapPartitionsWithIndex(func)：类似于 mapPartitions，但func带有一个整数参数表示分片的索引值，因此在类型为T的RDD上运行时，func的函数类型必须是(Int, Interator[T]) =&gt; Iterator[U]；<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">val rdd = sc.parallelize(Array(1,2,3,4))</span><br><span class="line">val indexRdd = rdd.mapPartitionsWithIndex((index,items)=&gt;(items.map((index,_))))</span><br><span class="line">indexRdd.collect</span><br><span class="line"># res2: Array[(Int, Int)] = Array((0,1), (0,2), (1,3), (1,4))</span><br></pre></td></tr></table></figure></li>
+</ul>
+<blockquote>
+<p>map()和mapPartition()的区别:<br>map()：每次处理一条数据。<br>mapPartition()：每次处理一个分区的数据，这个分区的数据处理完后，原 RDD 中分区的 数据才能释放，可能导致 OOM。</p>
+</blockquote>
+<ul>
+<li>flatMap(func)：类似于map，但是每一个输入元素可以被映射为0或多个输出元素（所以func 应该返回一个序列，而不是单一元素）。多用来将嵌套的数据『打平』。<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">比如一个包含三行内容的数据文件“README.md”。</span><br><span class="line">a b c</span><br><span class="line"></span><br><span class="line">d</span><br><span class="line">经过以下转换过程：</span><br><span class="line">val textFile = sc.textFile(&quot;README.md&quot;)</span><br><span class="line">textFile.flatMap(_.split(&quot; &quot;)) </span><br><span class="line">其实就是经历了以下转换：</span><br><span class="line">[&quot;a b c&quot;, &quot;&quot;, &quot;d&quot;] =&gt; [[&quot;a&quot;,&quot;b&quot;,&quot;c&quot;],[],[&quot;d&quot;]] =&gt; [&quot;a&quot;,&quot;b&quot;,&quot;c&quot;,&quot;d&quot;]</span><br><span class="line"># 在这个示例中，flatMap就把包含多行数据的RDD，即[“a b c”, “”, “d”] ，转换为了一个包含多个单词的集合。实际上，flatMap相对于map多了的是[[“a”,”b”,”c”],[],[“d”]] =&gt; [“a”,”b”,”c”,”d”]这一步。</span><br></pre></td></tr></table></figure></li>
+</ul>
+<blockquote>
+<p>map(func)函数会对每一条输入进行指定的func操作，然后为每一条输入返回一个对象；而flatMap(func)也会对每一条输入进行执行的func操作，然后每一条输入返回一个相对，但是最后会将所有的对象再合成为一个对象；从返回的结果的数量上来讲，map返回的数据对象的个数和原来的输入数据是相同的，而flatMap返回的个数则是不同的。</p>
+</blockquote>
+<ul>
+<li><p>glom:将每一个分区形成一个数组，形成新的 RDD 类型时 RDD[Array[T]]。</p>
+</li>
+<li><p>groupBy(func)：分组，按照传入函数的返回值进行分组。将相同的 key 对应的值放入一个迭代 器。</p>
+</li>
+<li><p>filter(func)：过滤。返回一个新的 RDD，该 RDD 由经过 func 函数计算后返回值为 true 的输入元素组成。</p>
+</li>
+<li><p>sample(withReplacement, fraction, seed)：以指定的随机种子随机抽样出数量为 fraction 的数据，withReplacement 表示是抽 出的数据是否放回，true 为有放回的抽样，false 为无放回的抽样，seed 用于指定随机数生成器种子。</p>
+</li>
+<li><p>distinct([numTasks]))：对源RDD进行去重后返回一个新的RDD。默认情况下，只有8个并行任务来操作，但是可以传入一个可选的numTasks参数改变它。</p>
+</li>
+<li><p>coalesce(numPartitions)：缩减分区数，用于大数据集过滤后，提高小数据集的执行效率。</p>
+</li>
+<li><p>repartition(numPartitions)：根据分区数，重新通过网络随机洗牌所有数据。</p>
+<blockquote>
+<p>coalesce和repartition的区别</p>
+<ol>
+<li>coalesce 重新分区，可以选择是否进行 shuffle 过程。由参数 shuffle: Boolean = false/true决定。</li>
+<li>repartition 实际上是调用的 coalesce，进行 shuffle。源码如下：<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt;def repartition(numPartitions: Int)(implicit ord: Ordering[T] = null): RDD[T] = withScope &#123;</span><br><span class="line">   coalesce(numPartitions, shuffle = true)</span><br><span class="line">&gt;&#125;</span><br></pre></td></tr></table></figure></li>
+</ol>
+</blockquote>
+</li>
+<li><p>sortBy(func,[ascending], [numTasks])：使用 func 先对数据进行处理，按照处理后的数据比较结果排序，默认为正序。</p>
+</li>
+<li><p>pipe(command, [envVars])：管道，针对每个分区，都执行一个 shell 脚本，返回输出的 RDD。（注意：脚本需要放在 Worker 节点可以访问到的位置）</p>
+</li>
+</ul>
+<p>除了单Value的类型，还有很多情况下需要进行双Value的操作：</p>
+<ul>
+<li>union(otherDataset)：对源RDD和参数RDD求并集后返回一个新的RDD。</li>
+<li>subtract (otherDataset)：计算差的一种函数，去除两个RDD中相同的元素，不同的 RDD将保留下来。</li>
+<li>intersection(otherDataset)：对源RDD和参数RDD求交集后返回一个新的RDD。</li>
+<li>cartesian(otherDataset)：笛卡尔积（尽量避免使用），两个RDD中每个元素间相互组合，产生新的RDD。</li>
+<li>zip(otherDataset):将两个 RDD 组合成 Key/Value 形式的 RDD,这里默认两个 RDD 的 partition 数量 以及元素数量都相同，否则会抛出异常。</li>
+</ul>
+<p>接下来介绍Key-Value类型的操作：</p>
+<ul>
+<li>partitionBy：对pairRDD进行分区操作，如果原有的partionRDD和现有的partionRDD是一致 的话就不进行分区，否则会生成ShuffleRDD，即会产生shuffle过程。</li>
+<li>reduceByKey(func, [numTasks])：在一个(K,V)的 RDD 上调用，返回一个(K,V)的 RDD，使用指定的 reduce 函数，将相同 key 的值聚合到一起，reduce 任务的个数可以通过第二个可选的参数来设置。</li>
+<li>groupByKey：groupByKey也是对每个key进行操作，但只生成一个seq。</li>
+</ul>
+<blockquote>
+<p>reduceByKey、groupByKey区别：</p>
+<p>reduceByKey：按照key进行聚合，在shuffle之前有combine（预聚合）操作，返回结果是 RDD[k,v]。下图可以看到，在数据对被搬移前，同一机器上同样的key先进行预聚合，然后在每个分区上被再次调用来将所有值reduce成最终结果。因此reduceByKey函数更适合使用在大数据集上。</p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221212215756_2b3b6.jpg"></p>
+<p>groupByKey：按照key进行分组，直接进行shuffle。当调用 groupByKey时，所有的键值对(key-value pair) 都会被移动,在网络上传输这些数据非常没必要，因此避免使用 GroupByKey。</p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221212215756_7a403.jpg"></p>
+</blockquote>
+<ul>
+<li>aggregateByKey：(zeroValue:U,[partitioner: Partitioner]) (seqOp: (U, V) =&gt; U,combOp: (U, U) =&gt; U)：在kv对的RDD中，按key将value进行分组合并，合并时，将每个value和初始值作为seq函数的参数，进行计算，返回的结果作为一个新的kv对，然后再将结果按照key进行合并，最后将每个分组的value传递给combine函数进行计算（先将前两个value进行计算，将返回结果和下一个value传给combine函数，以此类推），将key与计算结果作为一个新的kv对输出。<blockquote>
+<p>（1）zeroValue：给每一个分区中的每一个 key 一个初始值；<br>（2）seqOp：函数用于在每一个分区中用初始值逐步迭代 value；<br>（3）combOp：函数用于合并每个分区中的结果。</p>
+</blockquote>
+</li>
+</ul>
+<p>下面是一个具体例子：<br><img src="https://imgs.lfeng.tech/images/blog/20221212215756_096b3.jpg"></p>
+<ul>
+<li>foldByKey，参数(zeroValue: V)(func: (V, V) =&gt; V): RDD[(K, V)]</li>
+</ul>
+<p>aggregateByKey的简化操作，seqop和combop相同。</p>
+<ul>
+<li>combineByKey，参数(createCombiner: V =&gt; C, mergeValue: (C, V) =&gt; C, mergeCombiners: (C, C) =&gt; C)，作用是针对相同K，将V合并成一个集合。</li>
+</ul>
+<blockquote>
+<p>（1）createCombiner: combineByKey() 会遍历分区中的所有元素，因此每个元素的键要么还没有遇到过， 要么就和之前的某个元素的键相同。如果这是一个新的元素,combineByKey()会使用一个叫作 createCombiner()的函数来创建那个键对应的累加器的初始值。</p>
+<p>（2）mergeValue: 如果这是一个在处理当前分区之前已经遇到的键，它会使用 mergeValue()方法将该键的 累加器对应的当前值与这个新的值进行合并。</p>
+<p>（3）mergeCombiners: 由于每个分区都是独立处理的， 因此对于同一个键可以有多个累加器。如果有两 个或者更多的分区都有对应同一个键的累加器， 就需要使用用户提供的 mergeCombiners() 方法将各个分 区的结果进行合并。</p>
+</blockquote>
+<p>具体例子如下：</p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221212215757_cc710.jpg"></p>
+<ul>
+<li><p>sortByKey([ascending], [numTasks])：在一个(K,V)的 RDD 上调用，K 必须实现 Ordered接口，返回一个按照key进行排序的(K,V)的RDD。</p>
+</li>
+<li><p>mapValues：针对于(K,V)形式的类型只对V进行操作。</p>
+</li>
+<li><p>join(otherDataset, [numTasks])：在类型为(K,V)和(K,W)的 RDD 上调用，返回一个相同 key 对应的所有元素对在 一起的(K,(V,W))的 RDD。</p>
+</li>
+<li><p>cogroup(otherDataset, [numTasks])：在类型为(K,V)和(K,W)的 RDD 上调用，返回一个(K,(Iterable<V>,Iterable<W>))类 型的 RDD。和join的不同点在于返回的是迭代器。</p>
+</li>
+</ul>
+<h4 id="2-3-3-RDD的Action操作"><a href="#2-3-3-RDD的Action操作" class="headerlink" title="2.3.3 RDD的Action操作"></a>2.3.3 RDD的Action操作</h4><ul>
+<li><p>reduce(func)：通过 func 函数聚集 RDD 中的所有元素，先聚合分区内数据，再聚合分区间数据。</p>
+</li>
+<li><p>collect（）：在驱动程序中，以数组的形式返回数据集的所有元素。</p>
+</li>
+<li><p>count()：返回RDD中元素的个数。</p>
+</li>
+<li><p>first（）返回RDD中的第一个元素。</p>
+</li>
+<li><p>take（n）：返回一个由 RDD 的前 n 个元素组成的数组。</p>
+</li>
+<li><p>takeOrdered(n)：返回该 RDD 排序后的前 n 个元素组成的数组。</p>
+</li>
+<li><p>aggregate，参数：(zeroValue: U)(seqOp: (U, T) ⇒ U, combOp: (U, U) ⇒ U)，aggregate 函数将每个分区里面的元素通过 seqOp 和初始值进行聚合，然后用 combine 函数将每个分区的结果和初始值(zeroValue)进行 combine 操作。这个函数最终返回 的类型不需要和 RDD 中元素类型一致。</p>
+</li>
+<li><p>fold(num)(func)：折叠操作，aggregate的简化操作，seqop和combop一样。</p>
+</li>
+<li><p>saveAsTextFile(path)：将数据集的元素以 textfile 的形式保存到 HDFS 文件系统或者其他支持的文件系统， 对于每个元素，Spark 将会调用 toString 方法，将它装换为文件中的文本。</p>
+</li>
+<li><p>saveAsSequenceFile(path):将数据集中的元素以 Hadoop sequencefile 的格式保存到指定的目录下，可以使 HDFS 或者其他 Hadoop 支持的文件系统。</p>
+</li>
+<li><p>saveAsObjectFile(path)：用于将 RDD 中的元素序列化成对象，存储到文件中。</p>
+</li>
+<li><p>countByKey():针对(K,V)类型的 RDD，返回一个(K,Int)的 map，表示每一个 key 对应的元素个数。</p>
+</li>
+<li><p>foreach(func):在数据集的每一个元素上，运行函数 func 进行更新。</p>
+</li>
+</ul>
+<h3 id="2-4-RDD依赖关系"><a href="#2-4-RDD依赖关系" class="headerlink" title="2.4 RDD依赖关系"></a>2.4 RDD依赖关系</h3><h4 id="2-4-1-宽窄依赖"><a href="#2-4-1-宽窄依赖" class="headerlink" title="2.4.1 宽窄依赖"></a>2.4.1 宽窄依赖</h4><p>RDD只支持粗粒度转换，即在大量记录上执行的单个操作。将创建 RDD 的一系列 Lineage（血统）记录下来，以便恢复丢失的分区。RDD 的 Lineage 会记录 RDD 的元数据 信息和转换行为，当该 RDD 的部分分区数据丢失时，它可以根据这些信息来重新运算和 恢复丢失的数据分区。</p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221212215757_92b3c.jpg"></p>
+<p>RDD 和它依赖的父 RDD（s）的关系有两种不同的类型，即窄依赖（narrow dependency）和宽依赖（wide dependency）。</p>
+<ul>
+<li>窄依赖指的是每一个父 RDD 的 Partition 最多被子 RDD 的一个 Partition 使用,窄依赖 我们形象的比喻为独生子女：</li>
+</ul>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221212215757_03ad6.jpg"></p>
+<ul>
+<li>宽依赖指的是多个子 RDD 的 Partition 会依赖同一个父 RDD 的 Partition，会引起 shuffle,总结：宽依赖我们形象的比喻为超生：</li>
+</ul>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221212215757_df3a0.jpg"></p>
+<h4 id="2-4-2-DAG以及任务划分"><a href="#2-4-2-DAG以及任务划分" class="headerlink" title="2.4.2 DAG以及任务划分"></a>2.4.2 DAG以及任务划分</h4><p>DAG(Directed Acyclic Graph)叫做有向无环图，原始的 RDD 通过一系列的转换就就 形成了 DAG，根据 RDD 之间的依赖关系的不同将 DAG 划分成不同的 Stage，对于窄依 赖，partition 的转换处理在 Stage 中完成计算。对于宽依赖，由于有 Shuffle 的存在，只能 在 parent RDD 处理完成后，才能开始接下来的计算，因此宽依赖是划分 Stage 的依据。</p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221212215757_06761.jpg"></p>
+<h5 id="任务划分"><a href="#任务划分" class="headerlink" title="任务划分"></a>任务划分</h5><p>RDD 任务切分中间分为：Application、Job、Stage 和 Task</p>
+<p>1）Application：初始化一个 SparkContext 即生成一个 Application</p>
+<p>2）Job：一个 Action 算子就会生成一个 Job</p>
+<p>3）Stage：根据 RDD 之间的依赖关系的不同将 Job 划分成不同的 Stage，遇到一个宽依赖 则划分一个 Stage。</p>
+<p>4）Task：Stage 是一个 TaskSet，将 Stage 划分的结果发送到不同的 Executor 执行即为一个 Task。</p>
+<blockquote>
+<p>注意：Application-&gt;Job-&gt;Stage-&gt;Task 每一层都是1对n的关系。</p>
+</blockquote>
+<h4 id="2-4-3-缓存"><a href="#2-4-3-缓存" class="headerlink" title="2.4.3 缓存"></a>2.4.3 缓存</h4><p>RDD 通过 persist 方法或 cache 方法可以将前面的计算结果缓存，默认情况下 persist() 会把数据以序列化的形式缓存在 JVM 的堆空间中。但是并不是这两个方法被调用时立即缓存，而是触发后面的 action 时，该 RDD 将会 被缓存在计算节点的内存中，并供后面重用。</p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221212215757_8efd2.jpg"></p>
+<p>通过查看源码发现cache最终也是调用了persist方法，默认的存储级别都是仅在内存 存储一份，Spark 的存储级别还有好多种，存储级别在object StorageLevel中定义的。</p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221212215758_3a4c4.jpg"></p>
+<p>在存储级别的末尾加上“_2”来把持久化数据存为两份</p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221212215758_e36cb.jpg"></p>
+<p>缓存有可能丢失，或者存储存储于内存的数据由于内存不足而被删除，RDD 的缓存容 错机制保证了即使缓存丢失也能保证计算的正确执行。通过基于 RDD 的一系列转换，丢 失的数据会被重算，由于 RDD 的各个 Partition 是相对独立的，因此只需要计算丢失的部 分即可，并不需要重算全部 Partition。</p>
+<h4 id="2-4-4-RDD-CheckPoint"><a href="#2-4-4-RDD-CheckPoint" class="headerlink" title="2.4.4 RDD CheckPoint"></a>2.4.4 RDD CheckPoint</h4><p>Spark 中对于数据的保存除了持久化操作之外，还提供了一种检查点的机制，检查点 （本质是通过将 RDD 写入 Disk 做检查点）是为了通过 lineage 做容错的辅助，lineage 过长 会造成容错成本过高，这样就不如在中间阶段做检查点容错，如果之后有节点出现问题而 丢失分区，从做检查点的 RDD 开始重做 Lineage，就会减少开销。检查点通过将数据写入 到 HDFS 文件系统实现了 RDD 的检查点功能。</p>
+<p>为当前RDD设置检查点。该函数将会创建一个二进制的文件，并存储到checkpoint目录中，该目录是用Context.setCheckpointDir()设置的。在 checkpoint的过程中，该RDD的所有依赖于父RDD中的信息将全部被移除。对RDD进行checkpoint操作并不会马上被执行，必须执行Action操作才能触发。</p>
+<h3 id="2-5-键值对的RDD分区"><a href="#2-5-键值对的RDD分区" class="headerlink" title="2.5 键值对的RDD分区"></a>2.5 键值对的RDD分区</h3><p>Spark 目前支持 Hash 分区和 Range 分区，用户也可以自定义分区，Hash 分区为当前 的默认分区，Spark 中分区器直接决定了 RDD 中分区的个数、RDD 中每条数据经过 Shuffle 过程属于哪个分区和 Reduce 的个数</p>
+<blockquote>
+<p>注意：<br>(1)只有 Key-Value 类型的 RDD 才有分区的，非 Key-Value 类型的 RDD 分区的值是 None<br>(2)每个 RDD 的分区 ID 范围：0~numPartitions-1，决定这个值是属于那个分区的。</p>
+</blockquote>
+<p>可以通过使用 RDD 的 partitioner 属性来获取 RDD 的分区方式。它会返回一个 scala.Option 对象， 通过 get 方法获取其中的值。</p>
+<h4 id="2-5-1-Hash分区"><a href="#2-5-1-Hash分区" class="headerlink" title="2.5.1 Hash分区"></a>2.5.1 Hash分区</h4><p>HashPartitioner 分区的原理：对于给定的key，计算其hashCode，并除以分区的个数取余，如果余数小于0，则用余数+分区的个数（否则加 0），最后返回的值就是这个key所属的分区ID。</p>
+<h4 id="2-5-2-Ranger分区"><a href="#2-5-2-Ranger分区" class="headerlink" title="2.5.2 Ranger分区"></a>2.5.2 Ranger分区</h4><p>HashPartitioner 分区弊端：可能导致每个分区中数据量的不均匀，极端情况下会导致 某些分区拥有 RDD 的全部数据。</p>
+<p>RangePartitioner 作用：将一定范围内的数映射到某一个分区内，尽量保证每个分区 中数据量的均匀，而且分区与分区之间是有序的，一个分区中的元素肯定都是比另一个分 区内的元素小或者大，但是分区内的元素是不能保证顺序的。简单的说就是将一定范围内 的数映射到某一个分区内。实现过程为：</p>
+<p>第一步：先重整个 RDD 中抽取出样本数据，将样本数据排序，计算出每个分区的最 大 key 值，形成一个 Array[KEY]类型的数组变量 rangeBounds；</p>
+<p>第二步：判断 key 在 rangeBounds 中所处的范围，给出该 key 值在下一个 RDD 中的 分区 id 下标；该分区器要求 RDD 中的 KEY 类型必须是可以排序的。</p>
+<h4 id="2-5-3-自定义分区"><a href="#2-5-3-自定义分区" class="headerlink" title="2.5.3 自定义分区"></a>2.5.3 自定义分区</h4><p>要实现自定义的分区器，你需要继承 org.apache.spark.Partitioner 类并实现下面三个方法。</p>
+<p>（1）numPartitions: Int:返回创建出来的分区数。</p>
+<p>（2）getPartition(key: Any): Int:返回给定键的分区编号(0 到 numPartitions-1)。</p>
+<p>（3）equals():Java 判断相等性的标准方法。这个方法的实现非常重要，Spark 需要用这个 方法来检查你的分区器对象是否和其他分区器实例相同，这样 Spark 才可以判断两个 RDD 的分区方式是否相同。</p>
+<h3 id="2-6-文件数据读取与保存"><a href="#2-6-文件数据读取与保存" class="headerlink" title="2.6 文件数据读取与保存"></a>2.6 文件数据读取与保存</h3><h4 id="2-6-1-Text文件"><a href="#2-6-1-Text文件" class="headerlink" title="2.6.1 Text文件"></a>2.6.1 Text文件</h4><p>数据读取: textFile(String)<br>数据保存：saveAsTextFile(String)</p>
+<h4 id="2-6-2-Json文件"><a href="#2-6-2-Json文件" class="headerlink" title="2.6.2 Json文件"></a>2.6.2 Json文件</h4><p>如果 JSON 文件中每一行就是一个 JSON 记录，那么可以通过将 JSON 文件当做文本 文件来读取，然后利用相关的 JSON 库对每一条数据进行 JSON 解析。</p>
+<p>注意：使用 RDD 读取 JSON 文件处理很复杂，同时 SparkSQL 集成了很好的处理 JSON 文件的方式，所以应用中多是采用 SparkSQL 处理 JSON 文件。</p>
+<h4 id="2-6-3-Sequence文件"><a href="#2-6-3-Sequence文件" class="headerlink" title="2.6.3 Sequence文件"></a>2.6.3 Sequence文件</h4><p>SequenceFile 文件是 用来存储二进制形式的 key-value 对而设计的一种平面 文件(Flat File)。Spark 有专门用来读取 SequenceFile 的接口。在 SparkContext 中，可以 调用 sequenceFile [ keyClass, valueClass] (path)。</p>
+<p>注意：SequenceFile 文件只针对 PairRDD</p>
+<h4 id="2-6-4-对象文件"><a href="#2-6-4-对象文件" class="headerlink" title="2.6.4 对象文件"></a>2.6.4 对象文件</h4><p>对象文件是将对象序列化后保存的文件，采用 Java 的序列化机制。可以通过 objectFile<a href="path">k,v</a> 函数接收一个路径，读取对象文件，返回对应的 RDD，也可以通过调 用 saveAsObjectFile() 实现对对象文件的输出。因为是序列化所以要指定类型。</p>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Vincent
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://lfeng.tech/2023/02/23/Spark_2_core_knowledge/" title="Spark系列 - (2) Spark核心概念">https://lfeng.tech/2023/02/23/Spark_2_core_knowledge/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Spark/" rel="tag"># Spark</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/12/15/transfer_imgs_to_alioss/" rel="prev" title="Python迁移图床到阿里OSS">
+      <i class="fa fa-chevron-left"></i> Python迁移图床到阿里OSS
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-Spark-%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5"><span class="nav-number">1.</span> <span class="nav-text">2. Spark 核心概念</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-RDD%E4%BB%8B%E7%BB%8D"><span class="nav-number">1.1.</span> <span class="nav-text">2.1 RDD介绍</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-RDD%E7%89%B9%E7%82%B9"><span class="nav-number">1.2.</span> <span class="nav-text">2.2 RDD特点</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-1-%E5%BC%B9%E6%80%A7"><span class="nav-number">1.2.1.</span> <span class="nav-text">2.2.1 弹性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-2-%E5%88%86%E5%8C%BA"><span class="nav-number">1.2.2.</span> <span class="nav-text">2.2.2 分区</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-3-%E5%8F%AA%E8%AF%BB"><span class="nav-number">1.2.3.</span> <span class="nav-text">2.2.3 只读</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-4-%E4%BE%9D%E8%B5%96"><span class="nav-number">1.2.4.</span> <span class="nav-text">2.2.4 依赖</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-5-%E7%BC%93%E5%AD%98"><span class="nav-number">1.2.5.</span> <span class="nav-text">2.2.5 缓存</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-RDD%E7%BC%96%E7%A8%8B%E5%8F%8A%E5%85%B6%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C"><span class="nav-number">1.3.</span> <span class="nav-text">2.3 RDD编程及其基本操作</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-1-RDD%E5%88%9B%E5%BB%BA"><span class="nav-number">1.3.1.</span> <span class="nav-text">2.3.1 RDD创建</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-2-RDD%E7%9A%84%E8%BD%AC%E6%8D%A2%EF%BC%88transformations%EF%BC%89"><span class="nav-number">1.3.2.</span> <span class="nav-text">2.3.2 RDD的转换（transformations）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-3-RDD%E7%9A%84Action%E6%93%8D%E4%BD%9C"><span class="nav-number">1.3.3.</span> <span class="nav-text">2.3.3 RDD的Action操作</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4-RDD%E4%BE%9D%E8%B5%96%E5%85%B3%E7%B3%BB"><span class="nav-number">1.4.</span> <span class="nav-text">2.4 RDD依赖关系</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-4-1-%E5%AE%BD%E7%AA%84%E4%BE%9D%E8%B5%96"><span class="nav-number">1.4.1.</span> <span class="nav-text">2.4.1 宽窄依赖</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-4-2-DAG%E4%BB%A5%E5%8F%8A%E4%BB%BB%E5%8A%A1%E5%88%92%E5%88%86"><span class="nav-number">1.4.2.</span> <span class="nav-text">2.4.2 DAG以及任务划分</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%BB%BB%E5%8A%A1%E5%88%92%E5%88%86"><span class="nav-number">1.4.2.1.</span> <span class="nav-text">任务划分</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-4-3-%E7%BC%93%E5%AD%98"><span class="nav-number">1.4.3.</span> <span class="nav-text">2.4.3 缓存</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-4-4-RDD-CheckPoint"><span class="nav-number">1.4.4.</span> <span class="nav-text">2.4.4 RDD CheckPoint</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-5-%E9%94%AE%E5%80%BC%E5%AF%B9%E7%9A%84RDD%E5%88%86%E5%8C%BA"><span class="nav-number">1.5.</span> <span class="nav-text">2.5 键值对的RDD分区</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-5-1-Hash%E5%88%86%E5%8C%BA"><span class="nav-number">1.5.1.</span> <span class="nav-text">2.5.1 Hash分区</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-5-2-Ranger%E5%88%86%E5%8C%BA"><span class="nav-number">1.5.2.</span> <span class="nav-text">2.5.2 Ranger分区</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-5-3-%E8%87%AA%E5%AE%9A%E4%B9%89%E5%88%86%E5%8C%BA"><span class="nav-number">1.5.3.</span> <span class="nav-text">2.5.3 自定义分区</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-6-%E6%96%87%E4%BB%B6%E6%95%B0%E6%8D%AE%E8%AF%BB%E5%8F%96%E4%B8%8E%E4%BF%9D%E5%AD%98"><span class="nav-number">1.6.</span> <span class="nav-text">2.6 文件数据读取与保存</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-6-1-Text%E6%96%87%E4%BB%B6"><span class="nav-number">1.6.1.</span> <span class="nav-text">2.6.1 Text文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-6-2-Json%E6%96%87%E4%BB%B6"><span class="nav-number">1.6.2.</span> <span class="nav-text">2.6.2 Json文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-6-3-Sequence%E6%96%87%E4%BB%B6"><span class="nav-number">1.6.3.</span> <span class="nav-text">2.6.3 Sequence文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-6-4-%E5%AF%B9%E8%B1%A1%E6%96%87%E4%BB%B6"><span class="nav-number">1.6.4.</span> <span class="nav-text">2.6.4 对象文件</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Vincent"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Vincent</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">63</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">23</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/teckee" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;teckee" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:h0ck@foxmail.com" title="E-Mail → mailto:h0ck@foxmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+  <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">沪ICP备19042895号-2 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Vincent</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'cgQ905Fj6xbazWtyi9b1hafr-gzGzoHsz',
+      appKey     : '68EFTwnd9XYY352gRUJlJyMu',
+      placeholder: "Just go go",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

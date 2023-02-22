@@ -155,6 +155,115 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://lfeng.tech/2023/02/23/Spark_2_core_knowledge/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Vincent">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Vincent's Notes">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/02/23/Spark_2_core_knowledge/" class="post-title-link" itemprop="url">Spark系列 - (2) Spark核心概念</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2023-02-22 21:43:49 / 修改时间：13:33:15" itemprop="dateCreated datePublished" datetime="2023-02-22T21:43:49Z">2023-02-22</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Spark/" itemprop="url" rel="index"><span itemprop="name">Spark</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2023/02/23/Spark_2_core_knowledge/" class="post-meta-item leancloud_visitors" data-flag-title="Spark系列 - (2) Spark核心概念" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2023/02/23/Spark_2_core_knowledge/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2023/02/23/Spark_2_core_knowledge/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p><img src="https://imgs.lfeng.tech/images/blog/20221211223354_025af.jpg" alt="Spark"></p>
+<p>本文主要介绍Spark的核心知识点，</p>
+<h2 id="2-Spark-核心概念"><a href="#2-Spark-核心概念" class="headerlink" title="2. Spark 核心概念"></a>2. Spark 核心概念</h2><p>主要介绍Spark核心概念RDD以及相应的API。</p>
+<h3 id="2-1-RDD介绍"><a href="#2-1-RDD介绍" class="headerlink" title="2.1 RDD介绍"></a>2.1 RDD介绍</h3><p>RDD（Resilient Distributed Dataset）叫做弹性分布式数据集，是Spark中最基本的数据抽象。代码中是一个抽象类，它代表一个弹性的、只读的、可分区的、支持并行计算的分布式数据集合，这个数据集的全部或部分可以缓存在内存中，在多次计算间重用。</p>
+<ul>
+<li><p>数据集：RDD 是数据集合的抽象，是复杂物理介质上存在数据的一种逻辑视图。从外 部来看，RDD 的确可以被看待成经过封装，带扩展特性（如容错性）的数据集合。</p>
+</li>
+<li><p>分布式：RDD的数据可能在物理上存储在多个节点的磁盘或内存中，也就是所谓的多级存储。 </p>
+</li>
+<li><p>弹性：如果数据集的一部分数据丢失，则可以对它进行重建；具有自动容错，位置感知调度和可伸缩性，而容错性是最难实现的。 </p>
+</li>
+<li><p>大部分分布式数据集的容错性有两种：数据检查点（成本高）和记录数据的更新（依赖关系）。</p>
+</li>
+</ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2023/02/23/Spark_2_core_knowledge/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://lfeng.tech/2022/12/15/transfer_imgs_to_alioss/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1102,115 +1211,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://lfeng.tech/2020/04/16/Spring_8_MVC/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="Vincent">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Vincent's Notes">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/04/16/Spring_8_MVC/" class="post-title-link" itemprop="url">Spring MVC系列-(8) Spring MVC 流程</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-04-15 21:43:49" itemprop="dateCreated datePublished" datetime="2020-04-15T21:43:49Z">2020-04-15</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-12-11 14:33:46" itemprop="dateModified" datetime="2022-12-11T14:33:46Z">2022-12-11</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Spring/" itemprop="url" rel="index"><span itemprop="name">Spring</span></a>
-                </span>
-            </span>
-
-          
-            <span id="/2020/04/16/Spring_8_MVC/" class="post-meta-item leancloud_visitors" data-flag-title="Spring MVC系列-(8) Spring MVC 流程" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2020/04/16/Spring_8_MVC/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2020/04/16/Spring_8_MVC/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p><img src="https://imgs.lfeng.tech/images/blog/20221211223344_3424f.jpg" alt="Spring.png"></p>
-<h2 id="8-Spring-MVC-流程"><a href="#8-Spring-MVC-流程" class="headerlink" title="8. Spring MVC 流程"></a>8. Spring MVC 流程</h2><h4 id="8-1-Spring-MVC-介绍"><a href="#8-1-Spring-MVC-介绍" class="headerlink" title="8.1 Spring MVC 介绍"></a>8.1 Spring MVC 介绍</h4><p>Spring MVC 是目前主流的MVC框架之一。两个核心点：</p>
-<ul>
-<li>处理器映射：选择使用哪个控制器来处理请求</li>
-<li>视图解析器：选择结果应该如何渲染</li>
-</ul>
-<p>运行原理可以用下图表示：</p>
-<p><img src="https://imgs.lfeng.tech/images/blog/20221211223344_92b58.jpg" alt="160870009-5aae79b0723bb_articlex.png"></p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/04/16/Spring_8_MVC/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1282,7 +1282,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">62</span>
+          <span class="site-state-item-count">63</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1332,7 +1332,7 @@
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2023</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
