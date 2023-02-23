@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"lfeng.tech","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="3. Spark SQL3.1 Hive、Shark和SparksqlHive：Hadoop刚开始出来的时候，使用的是hadoop自带的分布式计算系统 MapReduce，但是MapReduce的使用难度较大，所以就开发了Hive。Hive的出现解决了MapReduce的使用难度较大的问题，Hive的运行原理是将HQL语句经过语法解析、逻辑计划、物理计划转化成MapReduce程序执行。 Sha">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Vincent&#39;s Notes">
+<meta property="og:url" content="https://lfeng.tech/2023/02/24/Spark_3_/index.html">
+<meta property="og:site_name" content="Vincent&#39;s Notes">
+<meta property="og:description" content="3. Spark SQL3.1 Hive、Shark和SparksqlHive：Hadoop刚开始出来的时候，使用的是hadoop自带的分布式计算系统 MapReduce，但是MapReduce的使用难度较大，所以就开发了Hive。Hive的出现解决了MapReduce的使用难度较大的问题，Hive的运行原理是将HQL语句经过语法解析、逻辑计划、物理计划转化成MapReduce程序执行。 Sha">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223354_025af.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221212215758_a13cc.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221212215758_97d5c.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221212215758_b7b0b.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221212215759_07041.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221212215759_12ef3.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221212215759_afdf8.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221212215759_ecf6a.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221212215759_d3d00.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223355_580fc.jpg">
+<meta property="article:published_time" content="2023-02-23T22:54:22.000Z">
+<meta property="article:modified_time" content="2023-02-23T15:00:56.758Z">
+<meta property="article:author" content="Vincent">
+<meta property="article:tag" content="Spark">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://imgs.lfeng.tech/images/blog/20221211223354_025af.jpg">
+
+<link rel="canonical" href="https://lfeng.tech/2023/02/24/Spark_3_/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title> | Vincent's Notes</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Vincent's Notes</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://lfeng.tech/2023/02/24/Spark_3_/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Vincent">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Vincent's Notes">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2023-02-23 22:54:22 / 修改时间：15:00:56" itemprop="dateCreated datePublished" datetime="2023-02-23T22:54:22Z">2023-02-23</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Spark/" itemprop="url" rel="index"><span itemprop="name">Spark</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2023/02/24/Spark_3_/" class="post-meta-item leancloud_visitors" data-flag-title="" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2023/02/24/Spark_3_/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2023/02/24/Spark_3_/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><img src="https://imgs.lfeng.tech/images/blog/20221211223354_025af.jpg" alt="Spark"></p>
+<h2 id="3-Spark-SQL"><a href="#3-Spark-SQL" class="headerlink" title="3. Spark SQL"></a>3. Spark SQL</h2><h3 id="3-1-Hive、Shark和Sparksql"><a href="#3-1-Hive、Shark和Sparksql" class="headerlink" title="3.1 Hive、Shark和Sparksql"></a>3.1 Hive、Shark和Sparksql</h3><p><strong>Hive</strong>：Hadoop刚开始出来的时候，使用的是hadoop自带的分布式计算系统 MapReduce，但是MapReduce的使用难度较大，所以就开发了Hive。Hive的出现解决了MapReduce的使用难度较大的问题，Hive的运行原理是将HQL语句经过语法解析、逻辑计划、物理计划转化成MapReduce程序执行。</p>
+<p><strong>Shark</strong>：2011年Shark诞生，即Hive on Spark。为了实现与Hive兼容，Shark在HiveQL方面重用了Hive中HiveQL的解析、逻辑执行计划、执行计划优化等逻辑；可以近似认为仅将物理执行计划从MapReduce作业替换成了Spark作业，通过Hive 的HiveQL解析，把HiveQL翻译成Spark上的RDD操作；Shark的出现，使得SQL-on-Hadoop的性能比Hive有了10-100倍的提高。</p>
+<span id="more"></span>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221212215758_a13cc.jpg"></p>
+<p><strong>Shark的缺陷</strong>：</p>
+<ol>
+<li><p>执行计划优化完全依赖于Hive，不方便添加新的优化策略</p>
+</li>
+<li><p>因为Spark是线程级并行，而MapReduce是进程级并行，因此，Spark在兼容 Hive的实现上存在线程安全问题，导致Shark不得不使用另外一套独立维护的打了补丁的Hive源码分支。</p>
+</li>
+</ol>
+<p>2014年7月，spark团队将Shark转给Hive进行管理，Hive on Spark是一个Hive的也就是说，Hive将不再受限于一个引擎，可以采用Map-Reduce、Tez、Spark等引擎；</p>
+<p>Spark SQL作为Spark生态的一员诞生，不再受限于Hive，只是兼容Hive。</p>
+<h3 id="3-2-RDD和DataFrame、DataSet"><a href="#3-2-RDD和DataFrame、DataSet" class="headerlink" title="3.2 RDD和DataFrame、DataSet"></a>3.2 RDD和DataFrame、DataSet</h3><p><strong>RDD</strong>：弹性（Resilient）、分布式（Distributed）、数据集（Datasets），具有只读、Lazy、类型安全等特点，具有比较好用的API。RDD的劣势体现在性能限制上，它是一个JVM驻内存对象，这也就决定了存在GC的限制和数据增加时Java序列化成本的升高。</p>
+<p><strong>DataFrame</strong>：与RDD类似，DataFRame也是一个不可变的弹性分布式数据集。除了数据以外，还记录着数据的结构信息，即Schema。另外DataFrame API提供的是一套高层的关系操作，比函数式的RDD API要更加友好。DataFrame的查询计划可以通过Spark catalyst optimiser进行优化，即使 Spark经验并不丰富，用dataframe写得程序也可以尽量被转化为高效的形式予以执行。</p>
+<blockquote>
+<p>DataFrame只是知道字段，但是不知道字段的类型，所以在执行这些操作的时候是 没办法在编译的时候检查是否类型失败的。</p>
+</blockquote>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221212215758_97d5c.jpg"></p>
+<p>上图直观地体现了 DataFrame 和 RDD 的区别。左侧的 RDD[Person]虽然以Person为类型参 数，但 Spark 框架本身不了解Person 类的内部结构。而右侧的DataFrame却提供了详细的结构信息，使得Spark SQL 可以清楚地知道该数据集中包含哪些列，每列的名称和类型各是什么。 DataFrame是为数据提供了Schema的视图。可以把它当做数据库中的一张表来对待，DataFrame也是懒执行的。性能上比 RDD 要高，主要原因：优化的执行计划：查询计划通过 Spark catalyst optimiser 进行优化。</p>
+<p><strong>DataSet</strong>：DataSet是DataFrame的扩展，是Spark最新的数据抽象。Dataframe 是 Dataset 的特列，DataFrame=Dataset[Row] ，所以可以通过 as 方法将 Dataframe 转换为 Dataset。Row 是一个类型，跟Car、Person 这些的类型一样，所有的表结构信息我都用 Row 来表示。DataSet 是强类型的。比如可以有 Dataset[Car]，Dataset[Person]。DataFrame只是知道字段，但是不知道字段的类型，所以在执行这些操作的时候是没办法在编译的时候检查是否类型失败的，比如你可以对一个String进行减法操作，在执行的时候才报错，而DataSet不仅仅知道字段，而且知道字段类型，所以有更严格的错误检查。就跟JSON对象和类对象之间的类比。</p>
+<h4 id="3-2-1-三者的共性"><a href="#3-2-1-三者的共性" class="headerlink" title="3.2.1 三者的共性"></a>3.2.1 三者的共性</h4><ul>
+<li>都是分布式弹性数据集，为处理超大型数据提供便利；</li>
+<li>都是Lasy的，在进行创建、转换，如map方法时，不会立即执行，只有在遇到Action如foreach时，三者才会开始遍历运算，极端情况下，如果代码里面有创建、 转换，但是后面没有在Action中使用对应的结果，在执行时会被直接跳过；</li>
+<li>都有partition的概念；</li>
+<li>三者有许多共同的函数，如filter，排序等；</li>
+<li>DataFrame和Dataset均可使用模式匹配获取各个字段的值和类型；</li>
+<li>三者可以相互转化</li>
+</ul>
+<h4 id="3-2-2-区别"><a href="#3-2-2-区别" class="headerlink" title="3.2.2 区别"></a>3.2.2 区别</h4><p><strong>RDD与DataFrame/DataSet的区别</strong></p>
+<p>RDD：</p>
+<ul>
+<li>用于Spark1.X各模块的API（SparkContext、MLLib，Dstream等）</li>
+<li>不支持sparksql操作</li>
+<li>不支持代码自动优化</li>
+</ul>
+<p>DataFrame与DataSet：</p>
+<ul>
+<li>用于Spark2.X各模块的API（SparkSession、ML、StructuredStreaming等等）</li>
+<li>支持SparkSql操作，比如select，groupby之类，还能注册临时表/视窗，进行 sql语句操作</li>
+<li>支持一些方便的保存方式，比如保存成csv、json等格式</li>
+<li>基于sparksql引擎构建，支持代码自动优化</li>
+</ul>
+<p><strong>DataFrame与DataSet的区别</strong></p>
+<p>DataFrame：</p>
+<ul>
+<li>DataFrame每一行的类型固定为Row，只有通过解析才能获取各个字段的值， 每一列的值没法直接访问。</li>
+<li>DataFrame编译器缺少类型安全检查。<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">testDF.foreach&#123; </span><br><span class="line">   line =&gt; val col1=line.getAs[String](&quot;col1&quot;) </span><br><span class="line">   println(col1) </span><br><span class="line">   val col2=line.getAs[String](&quot;col2&quot;) </span><br><span class="line">   println(col2) </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p>DataSet：</p>
+<ul>
+<li>DataFrame和DataSet之间，可以看成JSON对象和类对象之间的类比。</li>
+<li>DataSet是类型安全的。</li>
+</ul>
+<h4 id="3-2-3-Sql、dataframe、DataSet的类型安全"><a href="#3-2-3-Sql、dataframe、DataSet的类型安全" class="headerlink" title="3.2.3 Sql、dataframe、DataSet的类型安全"></a>3.2.3 Sql、dataframe、DataSet的类型安全</h4><ul>
+<li>如果使用Spark SQL的查询语句，要直到运行时你才会发现有语法错误（这样做代价很大）。</li>
+<li>如果使用DataFrame，你在也就是说，当你在 DataFrame 中调用了 API 之外的函数时，编译器就可以发现这个错。但如果此时，使用了一个不存在字段的名字，则只能到运行时才能发现错误；</li>
+<li>如果用的是DataSet[Person]，所有不匹配的类型参数都可以在编译时发现；</li>
+</ul>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221212215758_b7b0b.jpg"></p>
+<h4 id="3-2-4-什么时候使用DataFrame或DataSet"><a href="#3-2-4-什么时候使用DataFrame或DataSet" class="headerlink" title="3.2.4 什么时候使用DataFrame或DataSet"></a>3.2.4 什么时候使用DataFrame或DataSet</h4><p>下面的情况可以考虑使用DataFrame或Dataset，</p>
+<ul>
+<li>如果你需要丰富的语义、高级抽象和特定领域专用的 API，那就使用 DataFrame 或 Dataset；</li>
+<li>如果你的处理需要对半结构化数据进行高级处理，如 filter、map、aggregation、 average、sum、SQL 查询、列式访问或使用 lambda 函数，那就使用 DataFrame 或 Dataset；</li>
+<li>如果你想在编译时就有高度的类型安全，想要有类型的 JVM 对象，用上 Catalyst 优化，并得益于 Tungsten 生成的高效代码，那就使用 Dataset；</li>
+<li>如果你想在不同的 Spark 库之间使用一致和简化的 API，那就使用 DataFrame 或 Dataset；</li>
+<li>如果你是R或者Python使用者，就用DataFrame；</li>
+</ul>
+<p>除此之外，在需要更细致的控制时就退回去使用RDD；</p>
+<h4 id="3-2-5-RDD、DataFrame、DataSet之间的转换"><a href="#3-2-5-RDD、DataFrame、DataSet之间的转换" class="headerlink" title="3.2.5 RDD、DataFrame、DataSet之间的转换"></a>3.2.5 RDD、DataFrame、DataSet之间的转换</h4><p><strong>1. RDD转DataFrame、Dataset</strong></p>
+<ul>
+<li>RDD转DataFrame：一般用元组把一行的数据写在一起，然后在toDF中指定字段名。</li>
+</ul>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221212215759_07041.jpg"></p>
+<ul>
+<li>RDD转Dataset：需要提前定义字段名和类型。</li>
+</ul>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221212215759_12ef3.jpg"></p>
+<p><strong>2. DataFrame转RDD、Dataset</strong></p>
+<ul>
+<li>DataFrame转RDD：直接转 <code>val rdd = testDF.rdd</code></li>
+<li>DataFrame转Dataset：需要提前定义case class，然后使用as方法。</li>
+</ul>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221212215759_afdf8.jpg"></p>
+<p><strong>3. Dataset转RDD、DataFrame</strong></p>
+<ul>
+<li>DataSet转RDD：直接转 <code>val rdd = testDS.rdd</code></li>
+<li>DataSet转DataFrame：直接转即可，spark会把case class封装成Row。</li>
+</ul>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221212215759_ecf6a.jpg"></p>
+<h3 id="3-3-Spark-SQL优化"><a href="#3-3-Spark-SQL优化" class="headerlink" title="3.3 Spark SQL优化"></a>3.3 Spark SQL优化</h3><p>Catalyst是spark sql的核心，是一套针对spark sql 语句执行过程中的查询优化框架。因此要理解spark sql的执行流程，理解Catalyst的工作流程是理解spark sql的关键。而说到Catalyst，就必须提到下面这张图了，这张图描述了spark sql执行的全流程。其中，中间四步为catalyst的工作流程。</p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221212215759_d3d00.jpg"></p>
+<blockquote>
+<p>参考：<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/0aa4b1caac2e">https://www.jianshu.com/p/0aa4b1caac2e</a></p>
+</blockquote>
+<p>SQL语句首先通过Parser模块被解析为语法树，此棵树称为Unresolved Logical Plan；Unresolved Logical Plan通过Analyzer模块借助于Catalog中的表信息解析为Logical Plan；此时，Optimizer再通过各种基于规则的优化策略进行深入优化，得到Optimized Logical Plan；优化后的逻辑执行计划依然是逻辑的，并不能被Spark系统理解，此时需要将此逻辑执行计划转换为Physical Plan。</p>
+<p>Spark常见的优化策略有下面几类：</p>
+<ol>
+<li>Combine Limits：合并Limit，就是将两个相邻的limit合为一个。</li>
+<li>Constant Folding：常量叠加</li>
+</ol>
+<ul>
+<li>NullPropagation：空格处理</li>
+<li>BooleanSimplification：布尔表达式简化</li>
+<li>ConstantFolding：常量叠加</li>
+<li>SimplifyFilters：Filter简化</li>
+<li>LikeSimplification：like表达式简化。</li>
+<li>SimplifyCasts：Cast简化</li>
+<li>SimplifyCaseConversionExpressions：CASE大小写转化表达式简化</li>
+</ul>
+<ol start="3">
+<li>Filter Pushdown Filter下推</li>
+</ol>
+<ul>
+<li>CombineFilters Filter合并</li>
+<li>PushPredicateThroughProject：通过Project下推</li>
+<li>PushPredicateThroughJoin：通过Join下推</li>
+<li>ColumnPruning：列剪枝</li>
+</ul>
+<blockquote>
+<p>搜索『后端精进之路』并关注，立刻获取文章合集和面试攻略，还有价值数千元的面试大礼包等你拿。</p>
+</blockquote>
+<blockquote>
+<p>本文由『后端精进之路』原创，首发于博客 <a target="_blank" rel="noopener" href="http://teckee.github.io/">http://teckee.github.io/</a> , 转载请注明出处<br><img src="https://imgs.lfeng.tech/images/blog/20221211223355_580fc.jpg"></p>
+</blockquote>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Vincent
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://lfeng.tech/2023/02/24/Spark_3_/" title="">https://lfeng.tech/2023/02/24/Spark_3_/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Spark/" rel="tag"># Spark</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/02/23/Spark_2_core_knowledge/" rel="prev" title="Spark系列 - (2) Spark核心概念">
+      <i class="fa fa-chevron-left"></i> Spark系列 - (2) Spark核心概念
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-Spark-SQL"><span class="nav-number">1.</span> <span class="nav-text">3. Spark SQL</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-Hive%E3%80%81Shark%E5%92%8CSparksql"><span class="nav-number">1.1.</span> <span class="nav-text">3.1 Hive、Shark和Sparksql</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-RDD%E5%92%8CDataFrame%E3%80%81DataSet"><span class="nav-number">1.2.</span> <span class="nav-text">3.2 RDD和DataFrame、DataSet</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-1-%E4%B8%89%E8%80%85%E7%9A%84%E5%85%B1%E6%80%A7"><span class="nav-number">1.2.1.</span> <span class="nav-text">3.2.1 三者的共性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-2-%E5%8C%BA%E5%88%AB"><span class="nav-number">1.2.2.</span> <span class="nav-text">3.2.2 区别</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-3-Sql%E3%80%81dataframe%E3%80%81DataSet%E7%9A%84%E7%B1%BB%E5%9E%8B%E5%AE%89%E5%85%A8"><span class="nav-number">1.2.3.</span> <span class="nav-text">3.2.3 Sql、dataframe、DataSet的类型安全</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-4-%E4%BB%80%E4%B9%88%E6%97%B6%E5%80%99%E4%BD%BF%E7%94%A8DataFrame%E6%88%96DataSet"><span class="nav-number">1.2.4.</span> <span class="nav-text">3.2.4 什么时候使用DataFrame或DataSet</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-5-RDD%E3%80%81DataFrame%E3%80%81DataSet%E4%B9%8B%E9%97%B4%E7%9A%84%E8%BD%AC%E6%8D%A2"><span class="nav-number">1.2.5.</span> <span class="nav-text">3.2.5 RDD、DataFrame、DataSet之间的转换</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-Spark-SQL%E4%BC%98%E5%8C%96"><span class="nav-number">1.3.</span> <span class="nav-text">3.3 Spark SQL优化</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Vincent"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Vincent</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">64</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">23</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/teckee" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;teckee" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:h0ck@foxmail.com" title="E-Mail → mailto:h0ck@foxmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+  <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">沪ICP备19042895号-2 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Vincent</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'cgQ905Fj6xbazWtyi9b1hafr-gzGzoHsz',
+      appKey     : '68EFTwnd9XYY352gRUJlJyMu',
+      placeholder: "Just go go",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

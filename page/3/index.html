@@ -155,6 +155,111 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://lfeng.tech/2020/02/27/JVM_6_late_compile_optimization/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Vincent">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Vincent's Notes">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/02/27/JVM_6_late_compile_optimization/" class="post-title-link" itemprop="url">JVM性能优化系列-(6) 晚期编译优化</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-02-26 23:43:49" itemprop="dateCreated datePublished" datetime="2020-02-26T23:43:49Z">2020-02-26</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-12-11 14:33:38" itemprop="dateModified" datetime="2022-12-11T14:33:38Z">2022-12-11</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2020/02/27/JVM_6_late_compile_optimization/" class="post-meta-item leancloud_visitors" data-flag-title="JVM性能优化系列-(6) 晚期编译优化" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2020/02/27/JVM_6_late_compile_optimization/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/02/27/JVM_6_late_compile_optimization/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p><img src="https://imgs.lfeng.tech/images/blog/20221211223337_14f3b.jpg" alt="JVM.jpg"></p>
+<h2 id="6-晚期编译优化"><a href="#6-晚期编译优化" class="headerlink" title="6. 晚期编译优化"></a>6. 晚期编译优化</h2><p>晚期编译优化主要是在运行时做的一些优化手段。</p>
+<h3 id="6-1-JIT编译器"><a href="#6-1-JIT编译器" class="headerlink" title="6.1 JIT编译器"></a>6.1 JIT编译器</h3><p>在部分的商用虚拟机中，java程序最初是通过<strong>解释器(Interpreter)</strong> 进行解释执行的，当虚拟机发现某个方法或代码块的运行特别频繁时，就会把这些代码认定为“<strong>热点代码</strong>”（Hot Spot Code）。为了提高热点代码的执行效率，在运行时，虚拟机将会把这些代码编译成与本地平台相关的机器码，并进行各种层次的优化，完成这个过程的编译器称为<strong>即时编译器</strong>（Just In Time Compiler）</p>
+<p>java虚拟机规范中没有规定即时编译器应该如何实现，也没有规定虚拟机必需拥有即时编译器，这部分功能完全是虚拟机具体实现相关的内容。本文中提及的编译器、即时编译器都是指HotSpot虚拟机内的即时编译器。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/02/27/JVM_6_late_compile_optimization/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://lfeng.tech/2020/02/25/JVM_5_early_compile_optimization/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1114,116 +1219,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://lfeng.tech/2019/12/16/Java_concurrent_5_concurrent_collection/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="Vincent">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Vincent's Notes">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/12/16/Java_concurrent_5_concurrent_collection/" class="post-title-link" itemprop="url">Java并发编程系列-(5) Java并发容器</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-12-15 20:43:49" itemprop="dateCreated datePublished" datetime="2019-12-15T20:43:49Z">2019-12-15</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-12-11 14:34:00" itemprop="dateModified" datetime="2022-12-11T14:34:00Z">2022-12-11</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a>
-                </span>
-            </span>
-
-          
-            <span id="/2019/12/16/Java_concurrent_5_concurrent_collection/" class="post-meta-item leancloud_visitors" data-flag-title="Java并发编程系列-(5) Java并发容器" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2019/12/16/Java_concurrent_5_concurrent_collection/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2019/12/16/Java_concurrent_5_concurrent_collection/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p><img src="https://imgs.lfeng.tech/images/blog/20221211223352_c10ca.jpg"></p>
-<h2 id="5-并发容器"><a href="#5-并发容器" class="headerlink" title="5 并发容器"></a>5 并发容器</h2><h3 id="5-1-Hashtable、HashMap、TreeMap、HashSet、LinkedHashMap"><a href="#5-1-Hashtable、HashMap、TreeMap、HashSet、LinkedHashMap" class="headerlink" title="5.1 Hashtable、HashMap、TreeMap、HashSet、LinkedHashMap"></a>5.1 Hashtable、HashMap、TreeMap、HashSet、LinkedHashMap</h3><p>在介绍并发容器之前，先分析下普通的容器，以及相应的实现，方便后续的对比。</p>
-<p>Hashtable、HashMap、TreeMap 都是最常见的一些 Map 实现，是以<strong>键值对</strong>的形式存储和操作数据的容器类型。 </p>
-<p><strong>Hashtable</strong> 是早期 Java 类库提供的一个哈希表实现，本身是同步的，不支持 null 键和值，由于同步导致的性能开销，所以已经很少被推荐使用。 </p>
-<p><strong>HashMap</strong> 是应用更加广泛的哈希表实现，行为上大致上与 HashTable 一致，主要区别在于 HashMap 不是同步的，支持 null 键和值等。通常情况下，HashMap 进行 put 或者 get 操作，可以达到常数时间的性能，所以它是绝大部分利用键值对存取场景的首选，比如，实现一个用户 ID 和用户信息对应的运行时存储结构。 </p>
-<blockquote>
-<p>HashMap 明确声明不是线程安全的数据结构，如果忽略这一点，简单用在多线程场景里，难免会出现问题，如 HashMap 在并发环境可能出现无限循环占用 CPU、size 不准确等诡异的问题。</p>
-</blockquote>
-<p><strong>TreeMap</strong> 则是基于红黑树的一种提供顺序访问的 Map，和 HashMap 不同，它的 get、put、remove 之类操作都是 O（log(n)）的时间复杂度，具体顺序可以由指定的 Comparator 来决定，或者根据键的自然顺序来判断。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2019/12/16/Java_concurrent_5_concurrent_collection/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1295,7 +1290,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">63</span>
+          <span class="site-state-item-count">64</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
