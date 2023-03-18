@@ -15,7 +15,7 @@ https://lfeng.tech/2020/04/11/Spring_7_IOC/
 https://lfeng.tech/2020/03/10/Spring_1_introduction/
 https://lfeng.tech/2022/09/21/openwrt_configuration/
 https://lfeng.tech/2022/12/10/ubuntu_2204_install_k8s/
-https://lfeng.tech/2016/05/18/Android-JNI-C&&C++/
+https://lfeng.tech/2016/05/18/Android-JNI-C_C++/
 https://lfeng.tech/2020/01/18/JVM_2_GC/
 https://lfeng.tech/2019/08/16/Linux_3_Thread/
 https://lfeng.tech/2015/12/21/Check-Series-Update-by-Python/
