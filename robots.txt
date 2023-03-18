@@ -10,3 +10,6 @@ Disallow: /css/
 Disallow: /fonts/
 Disallow: /vendors/
 Disallow: /fancybox/
+
+Sitemap: https://lfeng.tech/sitemap.xml
+Sitemap: https://lfeng.tech/baidusitemap.xml
