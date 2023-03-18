@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>https://lfeng.tech/2023/02/24/Spark_3_sql/</loc>
+    <loc>https://lfeng.tech/Spark_3_sql.html</loc>
     
     <lastmod>2023-02-24</lastmod>
     
@@ -11,7 +11,7 @@
   </url>
   
   <url>
-    <loc>https://lfeng.tech/2023/02/23/Spark_2_core_knowledge/</loc>
+    <loc>https://lfeng.tech/Spark_2_core_knowledge.html</loc>
     
     <lastmod>2023-02-22</lastmod>
     
@@ -20,7 +20,7 @@
   </url>
   
   <url>
-    <loc>https://lfeng.tech/2015/01/23/git-hexo-blog/</loc>
+    <loc>https://lfeng.tech/git-hexo-blog.html</loc>
     
     <lastmod>2022-12-17</lastmod>
     
@@ -47,7 +47,7 @@
   </url>
   
   <url>
-    <loc>https://lfeng.tech/2022/12/15/transfer_imgs_to_alioss/</loc>
+    <loc>https://lfeng.tech/transfer_imgs_to_alioss.html</loc>
     
     <lastmod>2022-12-14</lastmod>
     
@@ -56,7 +56,7 @@
   </url>
   
   <url>
-    <loc>https://lfeng.tech/2019/12/16/Java_concurrent_5_concurrent_collection/</loc>
+    <loc>https://lfeng.tech/Java_concurrent_5_concurrent_collection.html</loc>
     
     <lastmod>2022-12-11</lastmod>
     
@@ -65,7 +65,7 @@
   </url>
   
   <url>
-    <loc>https://lfeng.tech/2020/03/29/Spring_4_Bean_lifecycle/</loc>
+    <loc>https://lfeng.tech/Spring_4_Bean_lifecycle.html</loc>
     
     <lastmod>2022-12-11</lastmod>
     
@@ -74,7 +74,7 @@
   </url>
   
   <url>
-    <loc>https://lfeng.tech/2019/08/02/Linux_1_memory_management/</loc>
+    <loc>https://lfeng.tech/Linux_1_memory_management.html</loc>
     
     <lastmod>2022-12-11</lastmod>
     
@@ -83,7 +83,7 @@
   </url>
   
   <url>
-    <loc>https://lfeng.tech/2022/04/25/Spark_1_Basic_knowledge/</loc>
+    <loc>https://lfeng.tech/Spark_1_Basic_knowledge.html</loc>
     
     <lastmod>2022-12-11</lastmod>
     
@@ -92,7 +92,7 @@
   </url>
   
   <url>
-    <loc>https://lfeng.tech/2019/12/06/Java_concurrent_1_basic_knowledge/</loc>
+    <loc>https://lfeng.tech/Java_concurrent_1_basic_knowledge.html</loc>
     
     <lastmod>2022-12-11</lastmod>
     
@@ -101,7 +101,7 @@
   </url>
   
   <url>
-    <loc>https://lfeng.tech/2020/03/01/JVM_7_deep_into_performance_optimization/</loc>
+    <loc>https://lfeng.tech/JVM_7_deep_into_performance_optimization.html</loc>
     
     <lastmod>2022-12-11</lastmod>
     
@@ -110,7 +110,7 @@
   </url>
   
   <url>
-    <loc>https://lfeng.tech/2019/11/24/docker_1_introduction/</loc>
+    <loc>https://lfeng.tech/docker_1_introduction.html</loc>
     
     <lastmod>2022-12-11</lastmod>
     
@@ -119,7 +119,7 @@
   </url>
   
   <url>
-    <loc>https://lfeng.tech/2020/04/11/Spring_7_IOC/</loc>
+    <loc>https://lfeng.tech/Spring_7_IOC.html</loc>
     
     <lastmod>2022-12-11</lastmod>
     
@@ -128,7 +128,7 @@
   </url>
   
   <url>
-    <loc>https://lfeng.tech/2020/03/10/Spring_1_introduction/</loc>
+    <loc>https://lfeng.tech/Spring_1_introduction.html</loc>
     
     <lastmod>2022-12-11</lastmod>
     
@@ -137,7 +137,7 @@
   </url>
   
   <url>
-    <loc>https://lfeng.tech/2022/09/21/openwrt_configuration/</loc>
+    <loc>https://lfeng.tech/openwrt_configuration.html</loc>
     
     <lastmod>2022-12-11</lastmod>
     
@@ -146,7 +146,7 @@
   </url>
   
   <url>
-    <loc>https://lfeng.tech/2022/12/10/ubuntu_2204_install_k8s/</loc>
+    <loc>https://lfeng.tech/ubuntu_2204_install_k8s.html</loc>
     
     <lastmod>2022-12-11</lastmod>
     
@@ -155,7 +155,7 @@
   </url>
   
   <url>
-    <loc>https://lfeng.tech/2016/05/18/Android-JNI-C_C++/</loc>
+    <loc>https://lfeng.tech/Android-JNI-C_C++.html</loc>
     
     <lastmod>2022-12-11</lastmod>
     
@@ -164,7 +164,7 @@
   </url>
   
   <url>
-    <loc>https://lfeng.tech/2020/01/18/JVM_2_GC/</loc>
+    <loc>https://lfeng.tech/JVM_2_GC.html</loc>
     
     <lastmod>2022-12-11</lastmod>
     
@@ -173,7 +173,7 @@
   </url>
   
   <url>
-    <loc>https://lfeng.tech/2019/08/16/Linux_3_Thread/</loc>
+    <loc>https://lfeng.tech/Linux_3_Thread.html</loc>
     
     <lastmod>2022-12-11</lastmod>
     
@@ -182,7 +182,7 @@
   </url>
   
   <url>
-    <loc>https://lfeng.tech/2015/12/21/Check-Series-Update-by-Python/</loc>
+    <loc>https://lfeng.tech/Check-Series-Update-by-Python.html</loc>
     
     <lastmod>2022-12-11</lastmod>
     
@@ -191,7 +191,7 @@
   </url>
   
   <url>
-    <loc>https://lfeng.tech/2020/01/03/Java_concurrent_9_jdk_8_9_10_concurrent/</loc>
+    <loc>https://lfeng.tech/Java_concurrent_9_jdk_8_9_10_concurrent.html</loc>
     
     <lastmod>2022-12-11</lastmod>
     
@@ -200,7 +200,7 @@
   </url>
   
   <url>
-    <loc>https://lfeng.tech/2022/10/09/Jenkins_pipeline_onboard/</loc>
+    <loc>https://lfeng.tech/Jenkins_pipeline_onboard.html</loc>
     
     <lastmod>2022-12-11</lastmod>
     
@@ -209,7 +209,7 @@
   </url>
   
   <url>
-    <loc>https://lfeng.tech/2020/03/19/Spring_2_Bean_Configuration/</loc>
+    <loc>https://lfeng.tech/Spring_2_Bean_Configuration.html</loc>
     
     <lastmod>2022-12-11</lastmod>
     
@@ -218,7 +218,7 @@
   </url>
   
   <url>
-    <loc>https://lfeng.tech/2020/04/01/Spring_5_AOP/</loc>
+    <loc>https://lfeng.tech/Spring_5_AOP.html</loc>
     
     <lastmod>2022-12-11</lastmod>
     
@@ -227,7 +227,7 @@
   </url>
   
   <url>
-    <loc>https://lfeng.tech/2019/12/08/Java_concurrent_2_concurrent_tools/</loc>
+    <loc>https://lfeng.tech/Java_concurrent_2_concurrent_tools.html</loc>
     
     <lastmod>2022-12-11</lastmod>
     
@@ -236,7 +236,7 @@
   </url>
   
   <url>
-    <loc>https://lfeng.tech/2019/09/20/Linux-VPS-configure/</loc>
+    <loc>https://lfeng.tech/Linux-VPS-configure.html</loc>
     
     <lastmod>2022-12-11</lastmod>
     
@@ -245,7 +245,7 @@
   </url>
   
   <url>
-    <loc>https://lfeng.tech/2016/02/06/VPS-PPTP-VPN/</loc>
+    <loc>https://lfeng.tech/VPS-PPTP-VPN.html</loc>
     
     <lastmod>2022-12-11</lastmod>
     
@@ -254,7 +254,7 @@
   </url>
   
   <url>
-    <loc>https://lfeng.tech/2019/12/19/Java_concurrent_6_thread_pool/</loc>
+    <loc>https://lfeng.tech/Java_concurrent_6_thread_pool.html</loc>
     
     <lastmod>2022-12-11</lastmod>
     
@@ -263,7 +263,7 @@
   </url>
   
   <url>
-    <loc>https://lfeng.tech/2019/12/14/Java_concurrent_4_AQS/</loc>
+    <loc>https://lfeng.tech/Java_concurrent_4_AQS.html</loc>
     
     <lastmod>2022-12-11</lastmod>
     
@@ -272,7 +272,7 @@
   </url>
   
   <url>
-    <loc>https://lfeng.tech/2019/12/30/Java_concurrent_8_JMM/</loc>
+    <loc>https://lfeng.tech/Java_concurrent_8_JMM.html</loc>
     
     <lastmod>2022-12-11</lastmod>
     
@@ -281,7 +281,7 @@
   </url>
   
   <url>
-    <loc>https://lfeng.tech/2020/04/16/Spring_8_MVC/</loc>
+    <loc>https://lfeng.tech/Spring_8_MVC.html</loc>
     
     <lastmod>2022-12-11</lastmod>
     
@@ -290,7 +290,7 @@
   </url>
   
   <url>
-    <loc>https://lfeng.tech/2020/02/09/JVM_3_execute_system/</loc>
+    <loc>https://lfeng.tech/JVM_3_execute_system.html</loc>
     
     <lastmod>2022-12-11</lastmod>
     
@@ -299,7 +299,7 @@
   </url>
   
   <url>
-    <loc>https://lfeng.tech/2019/08/21/Linux_4_IO/</loc>
+    <loc>https://lfeng.tech/Linux_4_IO.html</loc>
     
     <lastmod>2022-12-11</lastmod>
     
@@ -308,7 +308,7 @@
   </url>
   
   <url>
-    <loc>https://lfeng.tech/2018/12/03/Zookeeper%20Introduction/</loc>
+    <loc>https://lfeng.tech/Zookeeper%20Introduction.html</loc>
     
     <lastmod>2022-12-11</lastmod>
     
@@ -317,7 +317,7 @@
   </url>
   
   <url>
-    <loc>https://lfeng.tech/2019/11/27/docker_3_docker_compose/</loc>
+    <loc>https://lfeng.tech/docker_3_docker_compose.html</loc>
     
     <lastmod>2022-12-11</lastmod>
     
@@ -326,7 +326,7 @@
   </url>
   
   <url>
-    <loc>https://lfeng.tech/2020/04/06/Spring_6_Transaction/</loc>
+    <loc>https://lfeng.tech/Spring_6_Transaction.html</loc>
     
     <lastmod>2022-12-11</lastmod>
     
@@ -335,7 +335,7 @@
   </url>
   
   <url>
-    <loc>https://lfeng.tech/2019/08/11/Linux_2_process/</loc>
+    <loc>https://lfeng.tech/Linux_2_process.html</loc>
     
     <lastmod>2022-12-11</lastmod>
     
@@ -344,7 +344,7 @@
   </url>
   
   <url>
-    <loc>https://lfeng.tech/2016/02/18/Proxy-Web-Apps-using-Nginx/</loc>
+    <loc>https://lfeng.tech/Proxy-Web-Apps-using-Nginx.html</loc>
     
     <lastmod>2022-12-11</lastmod>
     
@@ -353,7 +353,7 @@
   </url>
   
   <url>
-    <loc>https://lfeng.tech/2020/02/25/JVM_5_early_compile_optimization/</loc>
+    <loc>https://lfeng.tech/JVM_5_early_compile_optimization.html</loc>
     
     <lastmod>2022-12-11</lastmod>
     
@@ -362,7 +362,7 @@
   </url>
   
   <url>
-    <loc>https://lfeng.tech/2019/07/23/Crontab-usage/</loc>
+    <loc>https://lfeng.tech/Crontab-usage.html</loc>
     
     <lastmod>2022-12-11</lastmod>
     
@@ -371,7 +371,7 @@
   </url>
   
   <url>
-    <loc>https://lfeng.tech/2019/12/11/Java_concurrent_3_atomic_CAS/</loc>
+    <loc>https://lfeng.tech/Java_concurrent_3_atomic_CAS.html</loc>
     
     <lastmod>2022-12-11</lastmod>
     
@@ -380,7 +380,7 @@
   </url>
   
   <url>
-    <loc>https://lfeng.tech/2019/08/29/Linux_5_boot_process/</loc>
+    <loc>https://lfeng.tech/Linux_5_boot_process.html</loc>
     
     <lastmod>2022-12-11</lastmod>
     
@@ -389,7 +389,7 @@
   </url>
   
   <url>
-    <loc>https://lfeng.tech/2019/01/28/hexo-blog-domain/</loc>
+    <loc>https://lfeng.tech/hexo-blog-domain.html</loc>
     
     <lastmod>2022-12-11</lastmod>
     
@@ -398,7 +398,7 @@
   </url>
   
   <url>
-    <loc>https://lfeng.tech/2020/02/27/JVM_6_late_compile_optimization/</loc>
+    <loc>https://lfeng.tech/JVM_6_late_compile_optimization.html</loc>
     
     <lastmod>2022-12-11</lastmod>
     
@@ -407,7 +407,7 @@
   </url>
   
   <url>
-    <loc>https://lfeng.tech/2020/04/29/Distributed_System_2_framework_evolution/</loc>
+    <loc>https://lfeng.tech/Distributed_System_2_framework_evolution.html</loc>
     
     <lastmod>2022-12-11</lastmod>
     
@@ -416,7 +416,7 @@
   </url>
   
   <url>
-    <loc>https://lfeng.tech/2022/01/30/home-server-configuration/</loc>
+    <loc>https://lfeng.tech/home-server-configuration.html</loc>
     
     <lastmod>2022-12-11</lastmod>
     
@@ -425,7 +425,7 @@
   </url>
   
   <url>
-    <loc>https://lfeng.tech/2019/12/24/Java_concurrent_7_thread_safety/</loc>
+    <loc>https://lfeng.tech/Java_concurrent_7_thread_safety.html</loc>
     
     <lastmod>2022-12-11</lastmod>
     
@@ -434,7 +434,7 @@
   </url>
   
   <url>
-    <loc>https://lfeng.tech/2020/01/06/JVM_1_memory/</loc>
+    <loc>https://lfeng.tech/JVM_1_memory.html</loc>
     
     <lastmod>2022-12-11</lastmod>
     
@@ -443,7 +443,7 @@
   </url>
   
   <url>
-    <loc>https://lfeng.tech/2019/11/25/docker_2_create_image/</loc>
+    <loc>https://lfeng.tech/docker_2_create_image.html</loc>
     
     <lastmod>2022-12-11</lastmod>
     
@@ -452,7 +452,7 @@
   </url>
   
   <url>
-    <loc>https://lfeng.tech/2020/02/22/JVM_4_write_high_performance_code/</loc>
+    <loc>https://lfeng.tech/JVM_4_write_high_performance_code.html</loc>
     
     <lastmod>2022-12-11</lastmod>
     
@@ -461,7 +461,7 @@
   </url>
   
   <url>
-    <loc>https://lfeng.tech/2020/03/27/Spring_3_Advanced_Bean_Configuration/</loc>
+    <loc>https://lfeng.tech/Spring_3_Advanced_Bean_Configuration.html</loc>
     
     <lastmod>2022-12-11</lastmod>
     
@@ -470,7 +470,7 @@
   </url>
   
   <url>
-    <loc>https://lfeng.tech/2020/04/21/Distributed_System_1_overview/</loc>
+    <loc>https://lfeng.tech/Distributed_System_1_overview.html</loc>
     
     <lastmod>2022-12-11</lastmod>
     
@@ -479,7 +479,7 @@
   </url>
   
   <url>
-    <loc>https://lfeng.tech/2017/08/12/Python-Multiple-Threads/</loc>
+    <loc>https://lfeng.tech/Python-Multiple-Threads.html</loc>
     
     <lastmod>2022-12-11</lastmod>
     
@@ -488,7 +488,7 @@
   </url>
   
   <url>
-    <loc>https://lfeng.tech/2020/12/19/interview_offer_share/</loc>
+    <loc>https://lfeng.tech/interview_offer_share.html</loc>
     
     <lastmod>2020-12-19</lastmod>
     
@@ -497,7 +497,7 @@
   </url>
   
   <url>
-    <loc>https://lfeng.tech/2018/11/30/Clean%20Code/</loc>
+    <loc>https://lfeng.tech/Clean%20Code.html</loc>
     
     <lastmod>2018-12-03</lastmod>
     
@@ -506,7 +506,7 @@
   </url>
   
   <url>
-    <loc>https://lfeng.tech/2018/08/10/Elasticsearch%20Basic%20Knowledge/</loc>
+    <loc>https://lfeng.tech/Elasticsearch%20Basic%20Knowledge.html</loc>
     
     <lastmod>2018-08-09</lastmod>
     
@@ -515,7 +515,7 @@
   </url>
   
   <url>
-    <loc>https://lfeng.tech/2018/07/09/SQL%20optimazation/</loc>
+    <loc>https://lfeng.tech/SQL%20optimazation.html</loc>
     
     <lastmod>2018-07-08</lastmod>
     
@@ -524,7 +524,7 @@
   </url>
   
   <url>
-    <loc>https://lfeng.tech/2015/07/22/extern-c/</loc>
+    <loc>https://lfeng.tech/extern-c.html</loc>
     
     <lastmod>2015-11-15</lastmod>
     
@@ -533,7 +533,7 @@
   </url>
   
   <url>
-    <loc>https://lfeng.tech/2015/07/02/heap-and-stack/</loc>
+    <loc>https://lfeng.tech/heap-and-stack.html</loc>
     
     <lastmod>2015-11-15</lastmod>
     
@@ -542,7 +542,7 @@
   </url>
   
   <url>
-    <loc>https://lfeng.tech/2015/06/23/bit-manipulation/</loc>
+    <loc>https://lfeng.tech/bit-manipulation.html</loc>
     
     <lastmod>2015-11-15</lastmod>
     
@@ -551,7 +551,7 @@
   </url>
   
   <url>
-    <loc>https://lfeng.tech/2015/05/03/convert-between-int-and-string/</loc>
+    <loc>https://lfeng.tech/convert-between-int-and-string.html</loc>
     
     <lastmod>2015-11-15</lastmod>
     
@@ -560,7 +560,7 @@
   </url>
   
   <url>
-    <loc>https://lfeng.tech/2015/03/26/binary-search/</loc>
+    <loc>https://lfeng.tech/binary-search.html</loc>
     
     <lastmod>2015-11-15</lastmod>
     
@@ -569,7 +569,7 @@
   </url>
   
   <url>
-    <loc>https://lfeng.tech/2015/03/02/algorithm-complexity/</loc>
+    <loc>https://lfeng.tech/algorithm-complexity.html</loc>
     
     <lastmod>2015-11-15</lastmod>
     
@@ -578,7 +578,7 @@
   </url>
   
   <url>
-    <loc>https://lfeng.tech/2015/01/24/markdown-sytanx/</loc>
+    <loc>https://lfeng.tech/markdown-sytanx.html</loc>
     
     <lastmod>2015-11-15</lastmod>
     
@@ -587,7 +587,7 @@
   </url>
   
   <url>
-    <loc>https://lfeng.tech/2015/01/25/MySQL-for-Python/</loc>
+    <loc>https://lfeng.tech/MySQL-for-Python.html</loc>
     
     <lastmod>2015-11-15</lastmod>
     

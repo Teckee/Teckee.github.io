@@ -1,0 +1,1051 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"lfeng.tech","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="5 并发容器5.1 Hashtable、HashMap、TreeMap、HashSet、LinkedHashMap在介绍并发容器之前，先分析下普通的容器，以及相应的实现，方便后续的对比。 Hashtable、HashMap、TreeMap 都是最常见的一些 Map 实现，是以键值对的形式存储和操作数据的容器类型。  Hashtable 是早期 Java 类库提供的一个哈希表实现，本身是同步的，不">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java并发编程系列-(5) Java并发容器">
+<meta property="og:url" content="https://lfeng.tech/Java_concurrent_5_concurrent_collection.html">
+<meta property="og:site_name" content="Vincent&#39;s Notes">
+<meta property="og:description" content="5 并发容器5.1 Hashtable、HashMap、TreeMap、HashSet、LinkedHashMap在介绍并发容器之前，先分析下普通的容器，以及相应的实现，方便后续的对比。 Hashtable、HashMap、TreeMap 都是最常见的一些 Map 实现，是以键值对的形式存储和操作数据的容器类型。  Hashtable 是早期 Java 类库提供的一个哈希表实现，本身是同步的，不">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223352_c10ca.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223353_a1e8a.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223353_76c6a.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223353_9e584.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223353_1f323.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223354_d125c.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223354_ecbcc.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223354_a9ae8.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223354_5fffc.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223354_8aab8.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223355_5e37c.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223355_e0aa1.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223355_3f0bd.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223355_ee16f.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223355_a5646.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223356_85127.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223356_97868.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223356_5ac7d.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223356_15008.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223356_650b7.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223356_da6de.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223357_504e8.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223357_4c9c6.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223357_b5741.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223357_cb16c.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223357_db693.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223358_6bc27.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223358_eb8e0.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223358_856a1.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223358_78aa3.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223358_77f92.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223358_b213d.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223359_f7e66.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223359_5da17.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223359_6fcdc.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223359_fc3e9.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223359_ca624.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223359_dc1e0.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223359_fd97a.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223400_09c9a.jpg">
+<meta property="article:published_time" content="2019-12-15T20:43:49.000Z">
+<meta property="article:modified_time" content="2022-12-11T14:34:00.401Z">
+<meta property="article:author" content="Vincent">
+<meta property="article:tag" content="Java">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://imgs.lfeng.tech/images/blog/20221211223352_c10ca.jpg">
+
+<link rel="canonical" href="https://lfeng.tech/Java_concurrent_5_concurrent_collection.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Java并发编程系列-(5) Java并发容器 | Vincent's Notes</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Vincent's Notes</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://lfeng.tech/Java_concurrent_5_concurrent_collection.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Vincent">
+      <meta itemprop="description" content="Vincent's tech blog">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Vincent's Notes">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Java并发编程系列-(5) Java并发容器
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-12-15 20:43:49" itemprop="dateCreated datePublished" datetime="2019-12-15T20:43:49Z">2019-12-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-12-11 14:34:00" itemprop="dateModified" datetime="2022-12-11T14:34:00Z">2022-12-11</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/Java_concurrent_5_concurrent_collection.html" class="post-meta-item leancloud_visitors" data-flag-title="Java并发编程系列-(5) Java并发容器" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/Java_concurrent_5_concurrent_collection.html#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/Java_concurrent_5_concurrent_collection.html" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><img src="https://imgs.lfeng.tech/images/blog/20221211223352_c10ca.jpg"></p>
+<h2 id="5-并发容器"><a href="#5-并发容器" class="headerlink" title="5 并发容器"></a>5 并发容器</h2><h3 id="5-1-Hashtable、HashMap、TreeMap、HashSet、LinkedHashMap"><a href="#5-1-Hashtable、HashMap、TreeMap、HashSet、LinkedHashMap" class="headerlink" title="5.1 Hashtable、HashMap、TreeMap、HashSet、LinkedHashMap"></a>5.1 Hashtable、HashMap、TreeMap、HashSet、LinkedHashMap</h3><p>在介绍并发容器之前，先分析下普通的容器，以及相应的实现，方便后续的对比。</p>
+<p>Hashtable、HashMap、TreeMap 都是最常见的一些 Map 实现，是以<strong>键值对</strong>的形式存储和操作数据的容器类型。 </p>
+<p><strong>Hashtable</strong> 是早期 Java 类库提供的一个哈希表实现，本身是同步的，不支持 null 键和值，由于同步导致的性能开销，所以已经很少被推荐使用。 </p>
+<p><strong>HashMap</strong> 是应用更加广泛的哈希表实现，行为上大致上与 HashTable 一致，主要区别在于 HashMap 不是同步的，支持 null 键和值等。通常情况下，HashMap 进行 put 或者 get 操作，可以达到常数时间的性能，所以它是绝大部分利用键值对存取场景的首选，比如，实现一个用户 ID 和用户信息对应的运行时存储结构。 </p>
+<blockquote>
+<p>HashMap 明确声明不是线程安全的数据结构，如果忽略这一点，简单用在多线程场景里，难免会出现问题，如 HashMap 在并发环境可能出现无限循环占用 CPU、size 不准确等诡异的问题。</p>
+</blockquote>
+<p><strong>TreeMap</strong> 则是基于红黑树的一种提供顺序访问的 Map，和 HashMap 不同，它的 get、put、remove 之类操作都是 O（log(n)）的时间复杂度，具体顺序可以由指定的 Comparator 来决定，或者根据键的自然顺序来判断。</p>
+<span id="more"></span>
+
+<h4 id="Hashtable"><a href="#Hashtable" class="headerlink" title="Hashtable"></a>Hashtable</h4><p>Hashtable是通过”拉链法”实现的哈希表,结构如下图所示：</p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223353_a1e8a.jpg" alt="5a688b8c0001129805220459.jpg"></p>
+<p><strong>1. 定义</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">public class Hashtable&lt;K,V&gt;  </span><br><span class="line">    extends Dictionary&lt;K,V&gt;  </span><br><span class="line">    implements Map&lt;K,V&gt;, Cloneable, java.io.Serializable&#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Hashtable 继承于 Dictionary 类，实现了 Map, Cloneable, java.io.Serializable接口。</p>
+<p><strong>2. 构造方法</strong></p>
+<p>Hashtable 一共提供了 4 个构造方法：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">public Hashtable(int initialCapacity, float loadFactor)： 用指定初始容量和指定负载因子构造一个新的空哈希表。</span><br><span class="line">public Hashtable(int initialCapacity)：用指定初始容量和默认的负载因子 (0.75) 构造一个新的空哈希表。</span><br><span class="line">public Hashtable()：默认构造函数，容量为 11，负载因子为 0.75。</span><br><span class="line">- public Hashtable(Map&lt;? extends K, ? extends V&gt; t)：构造一个与给定的 Map 具有相同映射关系的新哈希表。</span><br></pre></td></tr></table></figure>
+
+<p>它包括几个重要的成员变量：table, count, threshold, loadFactor, modCount。</p>
+<ul>
+<li><strong>table</strong> 是一个 Entry[] 数组类型，而 Entry实际上就是如上图所示的一个单向链表。Hashtable的键值对都是存储在Entry数组中的。</li>
+<li><strong>count</strong> 是 Hashtable 的大小，它是 Hashtable 保存的键值对的数量。</li>
+<li><strong>threshold</strong> 是 Hashtable 的阈值，用于判断是否需要调整 Hashtable 的容量。threshold 的值=”容量 x 负载因子”。</li>
+<li><strong>loadFactor</strong> 就是负载因子。</li>
+<li><strong>modCount</strong> 记录hashTable被修改的次数，在对HashTable的操作中，无论add、remove、clear方法只要是涉及了改变Table数组元素的个数的方法都会导致modCount的改变。这主要用来实现“快速失败”也就是fail-fast，它是Java集合的一种错误检测机制。</li>
+</ul>
+<blockquote>
+<p><strong>fail-fast机制举例</strong>：有两个线程（线程A，线程B），其中线程A负责遍历list、线程B修改list。线程A在遍历list过程的某个时候（此时expectedModCount = modCount=N），线程启动，同时线程B增加一个元素，这是modCount的值发生改变（modCount + 1 = N + 1）。线程A继续遍历执行next方法时，通告checkForComodification方法发现expectedModCount  = N  ，而modCount = N + 1，两者不等，这时就抛出ConcurrentModificationException 异常，从而产生fail-fast机制。</p>
+</blockquote>
+<p><strong>3. PUT操作</strong></p>
+<p>put 方法的整个流程为：</p>
+<ul>
+<li>判断 value 是否为空，为空则抛出异常；</li>
+<li>计算 key 的 hash 值，并根据 hash 值获得 key 在 table 数组中的位置 index，如果 table[index] 元素不为空，则进行迭代，如果遇到相同的 key，则直接替换，并返回旧 value；</li>
+<li>否则，我们可以将其插入到 table[index] 位置。</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">public synchronized V put(K key, V value) &#123;</span><br><span class="line">        // Make sure the value is not null确保value不为null</span><br><span class="line">        if (value == null) &#123;</span><br><span class="line">            throw new NullPointerException();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        // Makes sure the key is not already in the hashtable.</span><br><span class="line">        //确保key不在hashtable中</span><br><span class="line">        //首先，通过hash方法计算key的哈希值，并计算得出index值，确定其在table[]中的位置</span><br><span class="line">        //其次，迭代index索引位置的链表，如果该位置处的链表存在相同的key，则替换value，返回旧的value</span><br><span class="line">        Entry tab[] = table;</span><br><span class="line">        int hash = hash(key);</span><br><span class="line">        int index = (hash &amp; 0x7FFFFFFF) % tab.length;</span><br><span class="line">        for (Entry&lt;K,V&gt; e = tab[index] ; e != null ; e = e.next) &#123;</span><br><span class="line">            if ((e.hash == hash) &amp;&amp; e.key.equals(key)) &#123;</span><br><span class="line">                V old = e.value;</span><br><span class="line">                e.value = value;</span><br><span class="line">                return old;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        modCount++;</span><br><span class="line">        if (count &gt;= threshold) &#123;</span><br><span class="line">            // Rehash the table if the threshold is exceeded</span><br><span class="line">            //如果超过阀值，就进行rehash操作</span><br><span class="line">            rehash();</span><br><span class="line"></span><br><span class="line">            tab = table;</span><br><span class="line">            hash = hash(key);</span><br><span class="line">            index = (hash &amp; 0x7FFFFFFF) % tab.length;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        // Creates the new entry.</span><br><span class="line">        //将值插入，返回的为null</span><br><span class="line">        Entry&lt;K,V&gt; e = tab[index];</span><br><span class="line">        // 创建新的Entry节点，并将新的Entry插入Hashtable的index位置，并设置e为新的Entry的下一个元素</span><br><span class="line">        tab[index] = new Entry&lt;&gt;(hash, key, value, e);</span><br><span class="line">        count++;</span><br><span class="line">        return null;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>4. Get操作</strong></p>
+<p>首先通过 hash()方法求得 key 的哈希值，然后根据 hash 值得到 index 索引。然后迭代链表，返回匹配的 key 的对应的 value；找不到则返回 null。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">public synchronized V get(Object key) &#123;</span><br><span class="line">        Entry tab[] = table;</span><br><span class="line">        int hash = hash(key);</span><br><span class="line">        int index = (hash &amp; 0x7FFFFFFF) % tab.length;</span><br><span class="line">        for (Entry&lt;K,V&gt; e = tab[index] ; e != null ; e = e.next) &#123;</span><br><span class="line">            if ((e.hash == hash) &amp;&amp; e.key.equals(key)) &#123;</span><br><span class="line">                return e.value;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return null;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+
+<p><strong>5. rehash扩容</strong></p>
+<ul>
+<li>数组长度增加一倍（如果超过上限，则设置成上限值）。</li>
+<li>更新哈希表的扩容门限值。</li>
+<li>遍历旧表中的节点，计算在新表中的index，插入到对应位置链表的头节点。</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">protected void rehash() &#123;</span><br><span class="line">    int oldCapacity = table.length;</span><br><span class="line">    Entry&lt;?,?&gt;[] oldMap = table;</span><br><span class="line"></span><br><span class="line">    // overflow-conscious code</span><br><span class="line">    int newCapacity = (oldCapacity &lt;&lt; 1) + 1;</span><br><span class="line">    if (newCapacity - MAX_ARRAY_SIZE &gt; 0) &#123;</span><br><span class="line">        if (oldCapacity == MAX_ARRAY_SIZE)</span><br><span class="line">            // Keep running with MAX_ARRAY_SIZE buckets</span><br><span class="line">            return;</span><br><span class="line">        newCapacity = MAX_ARRAY_SIZE;</span><br><span class="line">    &#125;</span><br><span class="line">    Entry&lt;?,?&gt;[] newMap = new Entry&lt;?,?&gt;[newCapacity];</span><br><span class="line"></span><br><span class="line">    modCount++;</span><br><span class="line">    threshold = (int)Math.min(newCapacity * loadFactor, MAX_ARRAY_SIZE + 1);</span><br><span class="line">    table = newMap;</span><br><span class="line"></span><br><span class="line">    for (int i = oldCapacity ; i-- &gt; 0 ;) &#123;</span><br><span class="line">        for (Entry&lt;K,V&gt; old = (Entry&lt;K,V&gt;)oldMap[i] ; old != null ; ) &#123;</span><br><span class="line">            Entry&lt;K,V&gt; e = old;</span><br><span class="line">            old = old.next;</span><br><span class="line"></span><br><span class="line">            int index = (e.hash &amp; 0x7FFFFFFF) % newCapacity;</span><br><span class="line">            e.next = (Entry&lt;K,V&gt;)newMap[index];</span><br><span class="line">            newMap[index] = e;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>6. Remove方法</strong></p>
+<p>remove方法主要逻辑如下：</p>
+<ul>
+<li>先获取synchronized锁。</li>
+<li>计算key的哈希值和index。</li>
+<li>遍历对应位置的链表，寻找待删除节点，如果存在，用e表示待删除节点，pre表示前驱节点。如果不存在，返回null。</li>
+<li>更新前驱节点的next，指向e的next。返回待删除节点的value值。</li>
+</ul>
+<p><strong>Hash值的不同实现：JDK7 Vs JDK8</strong></p>
+<p>以上给出的代码均为jdk7中的实现，注意到在jdk7和8里面，关于元素hash值的计算方法是不一样的。</p>
+<ul>
+<li>在JDK7中，hashtable专门实现了hash函数，在以上的例子中都有看到，具体的实现如下：</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">//利用异或，移位等运算，对key的hashcode进一步进行计算以及二进制位的调整等来保证最终获取的存储位置尽量分布均匀</span><br><span class="line">final int hash(Object k) &#123;</span><br><span class="line">        int h = hashSeed;</span><br><span class="line">        if (0 != h &amp;&amp; k instanceof String) &#123;</span><br><span class="line">            return sun.misc.Hashing.stringHash32((String) k);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        h ^= k.hashCode();</span><br><span class="line"></span><br><span class="line">        h ^= (h &gt;&gt;&gt; 20) ^ (h &gt;&gt;&gt; 12);</span><br><span class="line">        return h ^ (h &gt;&gt;&gt; 7) ^ (h &gt;&gt;&gt; 4);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>以上hash函数计算出的值，通过indexFor进一步处理来获取实际的存储位置</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">//返回数组下标</span><br><span class="line">static int indexFor(int h, int length) &#123;</span><br><span class="line">    return h &amp; (length-1);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>在jdk8里面，直接调用key.hashCode()来获取key的hash值，接着在保证hash值为正数的前提下，得到相应的下标，</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">int hash = key.hashCode();</span><br><span class="line">int index = (hash &amp; 0x7FFFFFFF) % tab.length;</span><br></pre></td></tr></table></figure>
+
+<p>注意到都使用到了hashCode，这个方法是在Object方法中定义的，</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">@HotSpotIntrinsicCandidate</span><br><span class="line">public native int hashCode();</span><br></pre></td></tr></table></figure>
+<p>可以看到是Object里没有给出hashCode的实现，只是声明为一个native方法，说明Java会去调用本地C/C++对hashcode的具体实现。</p>
+<p>在JDK8及以后，可以通过如下指令来获取到所有的hash算法，</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java -XX:+PrintFlagsFinal | grep hashCode</span><br></pre></td></tr></table></figure>
+<p>具体大概有如下几种，第5个算法是默认使用的，用到了异或操作和一些偏移算法来生成hash值。</p>
+<p>0 == Lehmer random number generator,<br>1 == “somehow” based on memory address<br>2 ==  always 1<br>3 ==  increment counter<br>4 == memory based again (“somehow”)<br>5 == Marsaglia XOR-Shift algorithm, that has nothing to do with memory.</p>
+<blockquote>
+<p>HashTable相对于HashMap的最大特点就是线程安全，所有的操作都是被synchronized锁保护的</p>
+</blockquote>
+<hr>
+<p>参考：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.imooc.com/article/23015">https://www.imooc.com/article/23015</a></li>
+<li><a target="_blank" rel="noopener" href="https://wiki.jikexueyuan.com/project/java-collection/hashtable.html">https://wiki.jikexueyuan.com/project/java-collection/hashtable.html</a></li>
+<li><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/49172698/default-hashcode-implementation-for-java-objects">https://stackoverflow.com/questions/49172698/default-hashcode-implementation-for-java-objects</a></li>
+</ul>
+<h4 id="HashMap"><a href="#HashMap" class="headerlink" title="HashMap"></a>HashMap</h4><p>HashMap是java中使用最为频繁的map类型，其读写效率较高，但是因为其是非同步的，即读写等操作都是没有锁保护的，所以在多线程场景下是不安全的，容易出现数据不一致的问题。</p>
+<p>HashMap的结构和HashTable一致，都是使用是由数组和链表两种数据结构组合而成的,不同的是在JDK8里面引入了红黑树，当链表长度大于8时，会将链表转换为红黑树。</p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223353_76c6a.jpg" alt="Screen Shot 2019-12-07 at 9.46.25 PM.png"></p>
+<p>HashMap的成员变量和HashTable一样，在进行初始化的时候，都会设置一个容量值（capacity）和加载因子（loadFactor）。</p>
+<ul>
+<li><strong>容量值指的并不是表的真实长度，而是用户预估的一个值，真实的表长度，是不小于capacity的2的整数次幂。</strong> </li>
+<li>加载因子是为了计算哈希表的扩容门限，如果哈希表保存的节点数量达到了扩容门限，哈希表就会进行扩容的操作，扩容的数量为原表数量的2倍。默认情况下，capacity的值为16，loadFactor的值为0.75（综合考虑效率与空间后的折衷）</li>
+</ul>
+<p>HashMap的核心构造函数如下，主要是设置负载因子，以及根据用户的设定容量，找到一个不小于该容量的阈值。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">public HashMap(int initialCapacity, float loadFactor) &#123;</span><br><span class="line">    if (initialCapacity &lt; 0)</span><br><span class="line">        throw new IllegalArgumentException(&quot;Illegal initial capacity: &quot; +</span><br><span class="line">                                           initialCapacity);</span><br><span class="line">    if (initialCapacity &gt; MAXIMUM_CAPACITY)</span><br><span class="line">        initialCapacity = MAXIMUM_CAPACITY;</span><br><span class="line">    if (loadFactor &lt;= 0 || Float.isNaN(loadFactor))</span><br><span class="line">        throw new IllegalArgumentException(&quot;Illegal load factor: &quot; +</span><br><span class="line">                                           loadFactor);</span><br><span class="line">    this.loadFactor = loadFactor;</span><br><span class="line">    this.threshold = tableSizeFor(initialCapacity);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>由于HashMap和HashTable有实现上有诸多相似之处，这里会重点介绍hashMap在jdk7和8中的不同实现。</p>
+<p><strong>Hash运算</strong></p>
+<p>不管增加、删除、查找键值对，定位到哈希桶数组的位置都是很关键的第一步。都需要用到hash算法，jdk7和8中的算法基本一致，具体实现如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">static final int hash(Object key) &#123;   //jdk1.8 &amp; jdk1.7</span><br><span class="line">     int h;</span><br><span class="line">     // h = key.hashCode() 为第一步 取hashCode值</span><br><span class="line">     // h ^ (h &gt;&gt;&gt; 16)  为第二步 高位参与运算</span><br><span class="line">     return (key == null) ? 0 : (h = key.hashCode()) ^ (h &gt;&gt;&gt; 16);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>然后利用得到的hash值与数组长度取模，得到相应的index。</p>
+<p>以下图示实例，给出了计算过程，</p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223353_9e584.jpg" alt="45205ec2.png"></p>
+<p><strong>Get操作</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">public V get(Object key) &#123;</span><br><span class="line">    Node&lt;K,V&gt; e;</span><br><span class="line">    return (e = getNode(hash(key), key)) == null ? null : e.value;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * Implements Map.get and related methods</span><br><span class="line"> *</span><br><span class="line"> * @param hash hash for key</span><br><span class="line"> * @param key the key</span><br><span class="line"> * @return the node, or null if none</span><br><span class="line"> */</span><br><span class="line">final Node&lt;K,V&gt; getNode(int hash, Object key) &#123;</span><br><span class="line">    Node&lt;K,V&gt;[] tab; Node&lt;K,V&gt; first, e; int n; K k;</span><br><span class="line">    if ((tab = table) != null &amp;&amp; (n = tab.length) &gt; 0 &amp;&amp;</span><br><span class="line">        (first = tab[(n - 1) &amp; hash]) != null) &#123;</span><br><span class="line">        if (first.hash == hash &amp;&amp; // always check first node</span><br><span class="line">            ((k = first.key) == key || (key != null &amp;&amp; key.equals(k))))</span><br><span class="line">            return first;</span><br><span class="line">        if ((e = first.next) != null) &#123;</span><br><span class="line">            if (first instanceof TreeNode)</span><br><span class="line">                return ((TreeNode&lt;K,V&gt;)first).getTreeNode(hash, key);</span><br><span class="line">            do &#123;</span><br><span class="line">                if (e.hash == hash &amp;&amp;</span><br><span class="line">                    ((k = e.key) == key || (key != null &amp;&amp; key.equals(k))))</span><br><span class="line">                    return e;</span><br><span class="line">            &#125; while ((e = e.next) != null);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return null;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Get操作比较简单：</p>
+<ul>
+<li>先定位到数组中index位置，检查第一个节点是否满足要求　</li>
+<li>遍历对应该位置的链表，找到满足要求节点进行return</li>
+</ul>
+<p><strong>PUT操作</strong></p>
+<p>PUT操作的执行过程如下：</p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223353_1f323.jpg" alt="d669d29c.png"></p>
+<p>①.判断键值对数组table[i]是否为空或为null，否则执行resize()进行扩容；</p>
+<p>②.根据键值key计算hash值得到插入的数组索引i，如果table[i]==null，直接新建节点添加，转向⑥，如果table[i]不为空，转向③；</p>
+<p>③.判断table[i]的首个元素是否和key一样，如果相同直接覆盖value，否则转向④，这里的相同指的是hashCode以及equals；</p>
+<p>④.判断table[i] 是否为treeNode，即table[i] 是否是红黑树，如果是红黑树，则直接在树中插入键值对，否则转向⑤；</p>
+<p>⑤.遍历table[i]，判断链表长度是否大于8，大于8的话把链表转换为红黑树，在红黑树中执行插入操作，否则进行链表的插入操作；遍历过程中若发现key已经存在直接覆盖value即可；</p>
+<p>⑥.插入成功后，判断实际存在的键值对数量size是否超多了最大容量threshold，如果超过，进行扩容。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line"> 1 public V put(K key, V value) &#123;</span><br><span class="line"> 2     // 对key的hashCode()做hash</span><br><span class="line"> 3     return putVal(hash(key), key, value, false, true);</span><br><span class="line"> 4 &#125;</span><br><span class="line"> 5 </span><br><span class="line"> 6 final V putVal(int hash, K key, V value, boolean onlyIfAbsent,</span><br><span class="line"> 7                boolean evict) &#123;</span><br><span class="line"> 8     Node&lt;K,V&gt;[] tab; Node&lt;K,V&gt; p; int n, i;</span><br><span class="line"> 9     // 步骤①：tab为空则创建</span><br><span class="line">10     if ((tab = table) == null || (n = tab.length) == 0)</span><br><span class="line">11         n = (tab = resize()).length;</span><br><span class="line">12     // 步骤②：计算index，并对null做处理 </span><br><span class="line">13     if ((p = tab[i = (n - 1) &amp; hash]) == null) </span><br><span class="line">14         tab[i] = newNode(hash, key, value, null);</span><br><span class="line">15     else &#123;</span><br><span class="line">16         Node&lt;K,V&gt; e; K k;</span><br><span class="line">17         // 步骤③：节点key存在，直接覆盖value</span><br><span class="line">18         if (p.hash == hash &amp;&amp;</span><br><span class="line">19             ((k = p.key) == key || (key != null &amp;&amp; key.equals(k))))</span><br><span class="line">20             e = p;</span><br><span class="line">21         // 步骤④：判断该链为红黑树</span><br><span class="line">22         else if (p instanceof TreeNode)</span><br><span class="line">23             e = ((TreeNode&lt;K,V&gt;)p).putTreeVal(this, tab, hash, key, value);</span><br><span class="line">24         // 步骤⑤：该链为链表</span><br><span class="line">25         else &#123;</span><br><span class="line">26             for (int binCount = 0; ; ++binCount) &#123;</span><br><span class="line">27                 if ((e = p.next) == null) &#123;</span><br><span class="line">28                     p.next = newNode(hash, key,value,null);</span><br><span class="line">                        //链表长度大于8转换为红黑树进行处理</span><br><span class="line">29                     if (binCount &gt;= TREEIFY_THRESHOLD - 1) // -1 for 1st  </span><br><span class="line">30                         treeifyBin(tab, hash);</span><br><span class="line">31                     break;</span><br><span class="line">32                 &#125;</span><br><span class="line">                    // key已经存在直接覆盖value</span><br><span class="line">33                 if (e.hash == hash &amp;&amp;</span><br><span class="line">34                     ((k = e.key) == key || (key != null &amp;&amp; key.equals(k)))) </span><br><span class="line">35							break;</span><br><span class="line">36                 p = e;</span><br><span class="line">37             &#125;</span><br><span class="line">38         &#125;</span><br><span class="line">39         </span><br><span class="line">40         if (e != null) &#123; // existing mapping for key</span><br><span class="line">41             V oldValue = e.value;</span><br><span class="line">42             if (!onlyIfAbsent || oldValue == null)</span><br><span class="line">43                 e.value = value;</span><br><span class="line">44             afterNodeAccess(e);</span><br><span class="line">45             return oldValue;</span><br><span class="line">46         &#125;</span><br><span class="line">47     &#125;</span><br><span class="line"></span><br><span class="line">48     ++modCount;</span><br><span class="line">49     // 步骤⑥：超过最大容量 就扩容</span><br><span class="line">50     if (++size &gt; threshold)</span><br><span class="line">51         resize();</span><br><span class="line">52     afterNodeInsertion(evict);</span><br><span class="line">53     return null;</span><br><span class="line">54 &#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Resize扩容操作</strong></p>
+<p>由于JDK8引入了红黑树，所以在实现上JDK7和8的resize过程不太一致。</p>
+<p>首先是JDK7的实现，</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"> 1 void resize(int newCapacity) &#123;   //传入新的容量</span><br><span class="line"> 2     Entry[] oldTable = table;    //引用扩容前的Entry数组</span><br><span class="line"> 3     int oldCapacity = oldTable.length;         </span><br><span class="line"> 4     if (oldCapacity == MAXIMUM_CAPACITY) &#123;  //扩容前的数组大小如果已经达到最大(2^30)了</span><br><span class="line"> 5         threshold = Integer.MAX_VALUE; //修改阈值为int的最大值(2^31-1)，这样以后就不会扩容了</span><br><span class="line"> 6         return;</span><br><span class="line"> 7     &#125;</span><br><span class="line"> 8  </span><br><span class="line"> 9     Entry[] newTable = new Entry[newCapacity];  //初始化一个新的Entry数组</span><br><span class="line">10     transfer(newTable);                         //！！将数据转移到新的Entry数组里</span><br><span class="line">11     table = newTable;                           //HashMap的table属性引用新的Entry数组</span><br><span class="line">12     threshold = (int)(newCapacity * loadFactor);//修改阈值</span><br><span class="line">13 &#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里就是使用一个容量更大的数组来代替已有的容量小的数组，transfer()方法将原有Entry数组的元素拷贝到新的Entry数组里。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"> 1 void transfer(Entry[] newTable) &#123;</span><br><span class="line"> 2     Entry[] src = table;                   //src引用了旧的Entry数组</span><br><span class="line"> 3     int newCapacity = newTable.length;</span><br><span class="line"> 4     for (int j = 0; j &lt; src.length; j++) &#123; //遍历旧的Entry数组</span><br><span class="line"> 5         Entry&lt;K,V&gt; e = src[j];             //取得旧Entry数组的每个元素</span><br><span class="line"> 6         if (e != null) &#123;</span><br><span class="line"> 7             src[j] = null;//释放旧Entry数组的对象引用（for循环后，旧的Entry数组不再引用任何对象）</span><br><span class="line"> 8             do &#123;</span><br><span class="line"> 9                 Entry&lt;K,V&gt; next = e.next;</span><br><span class="line">10                 int i = indexFor(e.hash, newCapacity); //！！重新计算每个元素在数组中的位置</span><br><span class="line">11                 e.next = newTable[i]; //标记[1]</span><br><span class="line">12                 newTable[i] = e;      //将元素放在数组上</span><br><span class="line">13                 e = next;             //访问下一个Entry链上的元素</span><br><span class="line">14             &#125; while (e != null);</span><br><span class="line">15         &#125;</span><br><span class="line">16     &#125;</span><br><span class="line">17 &#125; </span><br></pre></td></tr></table></figure>
+<p>newTable[i]的引用赋给了e.next，也就是使用了单链表的头插入方式，同一位置上新元素总会被放在链表的头部位置；这样先放在一个索引上的元素终会被放到Entry链的尾部(如果发生了hash冲突的话），这一点和Jdk1.8有区别。</p>
+<p>具体举例如下图所示：</p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223354_d125c.jpg" alt="b2330062.png"></p>
+<p>接下来是JDK8中的实现，</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * Initializes or doubles table size.  If null, allocates in</span><br><span class="line"> * accord with initial capacity target held in field threshold.</span><br><span class="line"> * Otherwise, because we are using power-of-two expansion, the</span><br><span class="line"> * elements from each bin must either stay at same index, or move</span><br><span class="line"> * with a power of two offset in the new table.</span><br><span class="line"> *</span><br><span class="line"> * @return the table</span><br><span class="line"> */</span><br><span class="line">final Node&lt;K,V&gt;[] resize() &#123;</span><br><span class="line">    Node&lt;K,V&gt;[] oldTab = table;</span><br><span class="line">    int oldCap = (oldTab == null) ? 0 : oldTab.length;</span><br><span class="line">    int oldThr = threshold;</span><br><span class="line">    int newCap, newThr = 0;</span><br><span class="line">    if (oldCap &gt; 0) &#123;</span><br><span class="line">        if (oldCap &gt;= MAXIMUM_CAPACITY) &#123;</span><br><span class="line">            threshold = Integer.MAX_VALUE;</span><br><span class="line">            return oldTab;</span><br><span class="line">        &#125;</span><br><span class="line">        else if ((newCap = oldCap &lt;&lt; 1) &lt; MAXIMUM_CAPACITY &amp;&amp;</span><br><span class="line">                 oldCap &gt;= DEFAULT_INITIAL_CAPACITY)</span><br><span class="line">            newThr = oldThr &lt;&lt; 1; // double threshold</span><br><span class="line">    &#125;</span><br><span class="line">    else if (oldThr &gt; 0) // initial capacity was placed in threshold</span><br><span class="line">        newCap = oldThr;</span><br><span class="line">    else &#123;               // zero initial threshold signifies using defaults</span><br><span class="line">        newCap = DEFAULT_INITIAL_CAPACITY;</span><br><span class="line">        newThr = (int)(DEFAULT_LOAD_FACTOR * DEFAULT_INITIAL_CAPACITY);</span><br><span class="line">    &#125;</span><br><span class="line">    if (newThr == 0) &#123;</span><br><span class="line">        float ft = (float)newCap * loadFactor;</span><br><span class="line">        newThr = (newCap &lt; MAXIMUM_CAPACITY &amp;&amp; ft &lt; (float)MAXIMUM_CAPACITY ?</span><br><span class="line">                  (int)ft : Integer.MAX_VALUE);</span><br><span class="line">    &#125;</span><br><span class="line">    threshold = newThr;</span><br><span class="line">    @SuppressWarnings(&#123;&quot;rawtypes&quot;,&quot;unchecked&quot;&#125;)</span><br><span class="line">        Node&lt;K,V&gt;[] newTab = (Node&lt;K,V&gt;[])new Node[newCap];</span><br><span class="line">    table = newTab;</span><br><span class="line">    if (oldTab != null) &#123;</span><br><span class="line">        for (int j = 0; j &lt; oldCap; ++j) &#123;</span><br><span class="line">            Node&lt;K,V&gt; e;</span><br><span class="line">            if ((e = oldTab[j]) != null) &#123;</span><br><span class="line">                oldTab[j] = null;</span><br><span class="line">                if (e.next == null)</span><br><span class="line">                    newTab[e.hash &amp; (newCap - 1)] = e;</span><br><span class="line">                else if (e instanceof TreeNode)</span><br><span class="line">                    ((TreeNode&lt;K,V&gt;)e).split(this, newTab, j, oldCap);</span><br><span class="line">                else &#123; // preserve order</span><br><span class="line">                    Node&lt;K,V&gt; loHead = null, loTail = null;</span><br><span class="line">                    Node&lt;K,V&gt; hiHead = null, hiTail = null;</span><br><span class="line">                    Node&lt;K,V&gt; next;</span><br><span class="line">                    do &#123;</span><br><span class="line">                        next = e.next;</span><br><span class="line">                        if ((e.hash &amp; oldCap) == 0) &#123;</span><br><span class="line">                            if (loTail == null)</span><br><span class="line">                                loHead = e;</span><br><span class="line">                            else</span><br><span class="line">                                loTail.next = e;</span><br><span class="line">                            loTail = e;</span><br><span class="line">                        &#125;</span><br><span class="line">                        else &#123;</span><br><span class="line">                            if (hiTail == null)</span><br><span class="line">                                hiHead = e;</span><br><span class="line">                            else</span><br><span class="line">                                hiTail.next = e;</span><br><span class="line">                            hiTail = e;</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125; while ((e = next) != null);</span><br><span class="line">                    if (loTail != null) &#123;</span><br><span class="line">                        loTail.next = null;</span><br><span class="line">                        newTab[j] = loHead;</span><br><span class="line">                    &#125;</span><br><span class="line">                    if (hiTail != null) &#123;</span><br><span class="line">                        hiTail.next = null;</span><br><span class="line">                        newTab[j + oldCap] = hiHead;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return newTab;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>由于Size会进行2次幂的扩展(指长度扩为原来2倍)，所以，元素的位置要么是在原位置，要么是在原位置再移动2次幂的位置。通过下面的例子，可以清楚的看到，21和5在原来的数组中都处于相同的位置，但是在新的数组中，21到了新的位置，位置为原来的位置加上16，也就是旧的Capacity；但是5还在原来的位置。</p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223354_ecbcc.jpg" alt="d773f86e.png"></p>
+<p>假定我们在Size变为2倍以后，重新计算hash，因为n变为2倍，相应的n-1的mask范围在高位多1bit(红色)，也就是与上面示意图中红色部分对应的那一位，如果那位是1，则需要移动到新的位置，否则不变。</p>
+<p>回到代码实现中，直接用旧的hash值与上oldCapacity，因为旧的capacity是2的倍数（二进制为00000…1000），而且获取旧index的时候采用hash&amp;(oldCap-1)，所以直接<code>e.hash &amp; oldCap</code>就是判断新增加的高位是否为1，为1则需要移动，否则保持不变。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">if ((e.hash &amp; oldCap) == 0)</span><br></pre></td></tr></table></figure>
+<p>这种巧妙的方法，同时由于高位的1和0随机出现，保证了resize之后元素分布的离散性。</p>
+<p>下图是这一过程的模拟，</p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223354_a9ae8.jpg" alt="3cc9813a.png"></p>
+<p><strong>JDK8中的红黑树</strong></p>
+<p>引入红黑树主要是为了保证在hash分布极不均匀的情况下的性能，当一个链表太长（大于8）的时候，通过动态的将它替换成一个红黑树，这话的话会将时间复杂度从O(n)降为O(logn)。</p>
+<p><strong>为什么HashMap的数组长度一定保持2的次幂？</strong></p>
+<ol>
+<li>从上面的分析JDK8 resize的过程可以可能到，数组长度保持2的次幂，当resize的时候，为了通过h&amp;(length-1)计算新的元素位置，可以看到当扩容后只有一位差异，也就是多出了最左位的1，这样计算 h&amp;(length-1)的时候，只要h对应的最左边的那一个差异位为0，就能保证得到的新的数组索引和老数组索引一致，否则index+OldCap。</li>
+</ol>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223354_5fffc.jpg" alt="1024555-20161115215812138-679881037.png"></p>
+<ol start="2">
+<li>数组长度保持2的次幂，length-1的低位都为1，会使得获得的数组索引index更加均匀。hash函数采用各种位运算也是为了使得低位更加散列，如果低位全部为1，那么对于h低位部分来说，任何一位的变化都会对结果产生影响，可以尽可能的使元素分布比较均匀。</li>
+</ol>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223354_8aab8.jpg" alt="1024555-20161116001404732-625340289.png"></p>
+<p><strong>HashMap Vs HashTable</strong></p>
+<ul>
+<li>HashMap允许将 null 作为一个 entry 的 key 或者 value，而 Hashtable 不允许。</li>
+<li>HashTable 继承自 Dictionary 类，而 HashMap 是 Java1.2 引进的 Map interface 的一个实现。</li>
+<li>HashTable 的方法是 Synchronized 的，而 HashMap 不是，在多个线程访问 Hashtable 时，不需要自己为它的方法实现同步，而 HashMap 就必须为之提供外同步。</li>
+</ul>
+<hr>
+<p>参考：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://tech.meituan.com/2016/06/24/java-hashmap.html">https://tech.meituan.com/2016/06/24/java-hashmap.html</a></li>
+<li><a target="_blank" rel="noopener" href="https://juejin.im/post/5aa5d8d26fb9a028d2079264">https://juejin.im/post/5aa5d8d26fb9a028d2079264</a></li>
+<li><a target="_blank" rel="noopener" href="https://my.oschina.net/hosee/blog/618953">https://my.oschina.net/hosee/blog/618953</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.imooc.com/article/22943">https://www.imooc.com/article/22943</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/chengxiao/p/6059914.html">https://www.cnblogs.com/chengxiao/p/6059914.html</a></li>
+</ul>
+<h4 id="TreeMap"><a href="#TreeMap" class="headerlink" title="TreeMap"></a>TreeMap</h4><p>TreeMap继承于AbstractMap，实现了Map, Cloneable, NavigableMap, Serializable接口。</p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223355_5e37c.jpg" alt="Screen Shot 2019-12-08 at 3.56.55 PM.png"></p>
+<p>TreeMap 是一个有序的key-value集合，它是通过红黑树实现的。该映射根据其键的自然顺序进行排序，或者根据创建映射时提供的Comparator进行排序，具体取决于使用的构造方法。<br>TreeMap的基本操作 containsKey、get、put 和 remove 的时间复杂度是 log(n) 。</p>
+<p>对于SortedMap来说，该类是TreeMap体系中的父接口，也是区别于HashMap体系最关键的一个接口。SortedMap接口中定义的第一个方法<code>Comparator&lt;? super K&gt; comparator()；</code>该方法决定了TreeMap体系的走向，有了比较器，就可以对插入的元素进行排序了。</p>
+<p>TreeMap的查找、插入、更新元素等操作，主要是对红黑树的节点进行相应的更新，和数据结构中类似。</p>
+<h4 id="TreeSet"><a href="#TreeSet" class="headerlink" title="TreeSet"></a>TreeSet</h4><p>TreeSet基于TreeMap实现，底层也是红黑树。只是每次插入元素时，value为一个默认的dummy数据。</p>
+<h4 id="HashSet"><a href="#HashSet" class="headerlink" title="HashSet"></a>HashSet</h4><p>HashSet的实现很简单，内部有一个HashMap的成员变量，所有的Set相关的操作都转换为了对HashMapde操作。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">public class HashSet&lt;E&gt;</span><br><span class="line">    extends AbstractSet&lt;E&gt;</span><br><span class="line">    implements Set&lt;E&gt;, Cloneable, java.io.Serializable</span><br><span class="line">&#123;</span><br><span class="line">    static final long serialVersionUID = -5024744406713321676L;</span><br><span class="line"></span><br><span class="line">    private transient HashMap&lt;E,Object&gt; map;</span><br><span class="line"></span><br><span class="line">    // Dummy value to associate with an Object in the backing Map</span><br><span class="line">    private static final Object PRESENT = new Object();</span><br><span class="line">    </span><br><span class="line">    //其他操作省略</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+
+<p>从上面的code可以看到，内部还定义了一个PRESENT的dummy对象，当添加元素时，直接添加一对键值对，key为元素值，value为PRESENT。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * Adds the specified element to this set if it is not already present.</span><br><span class="line"> * More formally, adds the specified element &lt;tt&gt;e&lt;/tt&gt; to this set if</span><br><span class="line"> * this set contains no element &lt;tt&gt;e2&lt;/tt&gt; such that</span><br><span class="line"> * &lt;tt&gt;(e==null&amp;nbsp;?&amp;nbsp;e2==null&amp;nbsp;:&amp;nbsp;e.equals(e2))&lt;/tt&gt;.</span><br><span class="line"> * If this set already contains the element, the call leaves the set</span><br><span class="line"> * unchanged and returns &lt;tt&gt;false&lt;/tt&gt;.</span><br><span class="line"> *</span><br><span class="line"> * @param e element to be added to this set</span><br><span class="line"> * @return &lt;tt&gt;true&lt;/tt&gt; if this set did not already contain the specified</span><br><span class="line"> * element</span><br><span class="line"> */</span><br><span class="line">public boolean add(E e) &#123;</span><br><span class="line">    return map.put(e, PRESENT)==null;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>其他的操作类似，就是把PRESENT当做value。</p>
+<h4 id="LinkedHashMap"><a href="#LinkedHashMap" class="headerlink" title="LinkedHashMap"></a>LinkedHashMap</h4><p>首先是定义，</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">public class LinkedHashMap&lt;K,V&gt;</span><br><span class="line">    extends HashMap&lt;K,V&gt;</span><br><span class="line">    implements Map&lt;K,V&gt;</span><br><span class="line">&#123;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>可以看到，LinkedHashMap是HashMap的子类，但和HashMap的无序性不一样，LinkedHashMap通过维护一个运行于所有条目的双向链表，保证了元素迭代的顺序。该迭代顺序可以是<strong>插入顺序</strong>或者是<strong>访问顺序</strong>，这个可以在初始化的时候确定，默认采用插入顺序来维持取出键值对的次序。</p>
+<p>在成员变量上，与HashMap不同的是，引入了before和after两个变量来记录前后的元素。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">1、K key</span><br><span class="line"></span><br><span class="line">2、V value</span><br><span class="line"></span><br><span class="line">3、Entry&lt;K, V&gt; next</span><br><span class="line"></span><br><span class="line">4、int hash</span><br><span class="line"></span><br><span class="line">5、Entry&lt;K, V&gt; before</span><br><span class="line"></span><br><span class="line">6、Entry&lt;K, V&gt; after</span><br></pre></td></tr></table></figure>
+
+<p>1-4是从HashMap.Entry中继承过来的；5-6是LinkedHashMap独有的。注意next是用于维护HashMap指定table位置上连接的Entry的顺序的，before、After是用于维护Entry插入的先后顺序的。</p>
+<p>可以把LinkedHashMap的结构看成如下图所示：</p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223355_e0aa1.jpg" alt="test.png"></p>
+<p>接下来主要介绍LinkedHashMap的排序操作，</p>
+<p>在构造函数中，需要指定accessOrder，有两种情况：</p>
+<ul>
+<li>false，所有的Entry按照插入的顺序排列</li>
+<li>true，所有的Entry按照访问的顺序排列</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">public LinkedHashMap(int initialCapacity,</span><br><span class="line">         float loadFactor, boolean accessOrder) &#123;</span><br><span class="line">    super(initialCapacity, loadFactor);</span><br><span class="line">    this.accessOrder = accessOrder;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>第二种情况，也就是accessOrder为true时，每次通过get/put方法访问时，都把访问的那个数据移到双向队列的尾部去，也就是说，双向队列最头的那个数据就是最不常访问的那个数据。具体实现如下，afterNodeAccess这个方法在HashMap中没有实现，LinkedHashMap进行了实现，将元素进行排序。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">void afterNodeAccess(Node&lt;K,V&gt; e) &#123; // move node to last</span><br><span class="line">    LinkedHashMap.Entry&lt;K,V&gt; last;</span><br><span class="line">    if (accessOrder &amp;&amp; (last = tail) != e) &#123;</span><br><span class="line">        LinkedHashMap.Entry&lt;K,V&gt; p =</span><br><span class="line">            (LinkedHashMap.Entry&lt;K,V&gt;)e, b = p.before, a = p.after;</span><br><span class="line">        p.after = null;</span><br><span class="line">        if (b == null)</span><br><span class="line">            head = a;</span><br><span class="line">        else</span><br><span class="line">            b.after = a;</span><br><span class="line">        if (a != null)</span><br><span class="line">            a.before = b;</span><br><span class="line">        else</span><br><span class="line">            last = b;</span><br><span class="line">        if (last == null)</span><br><span class="line">            head = p;</span><br><span class="line">        else &#123;</span><br><span class="line">            p.before = last;</span><br><span class="line">            last.after = p;</span><br><span class="line">        &#125;</span><br><span class="line">        tail = p;</span><br><span class="line">        ++modCount;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>利用LinkedHashMap实现LRU缓存</strong></p>
+<p>LRU即Least Recently Used，最近最少使用，也就是说，当缓存满了，会优先淘汰那些最近最不常访问的数据。LinkedHashMap正好满足这个特性，当我们开启accessOrder为true时，最新访问(get或者put(更新操作))的数据会被丢到队列的尾巴处，那么双向队列的头就是最不经常使用的数据了。</p>
+<p>此外，LinkedHashMap还提供了一个方法，这个方法就是为了我们实现LRU缓存而提供的，removeEldestEntry(Map.Entry&lt;K,V&gt; eldest) 方法。该方法可以提供在每次添加新条目时移除最旧条目的实现程序，默认返回 false。</p>
+<p>下面是一个最简单的LRU缓存的实现，当size超过maxElement时，每次新增一个元素时，就会移除最久远的元素。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">public class LRUCache extends LinkedHashMap</span><br><span class="line">&#123;</span><br><span class="line">    public LRUCache(int maxSize)</span><br><span class="line">    &#123;</span><br><span class="line">        super(maxSize, 0.75F, true);</span><br><span class="line">        maxElements = maxSize;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    protected boolean removeEldestEntry(java.util.Map.Entry eldest)</span><br><span class="line">    &#123;</span><br><span class="line">        //逻辑很简单，当大小超出了Map的容量，就移除掉双向队列头部的元素，给其他元素腾出点地来。</span><br><span class="line">        return size() &gt; maxElements;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    private static final long serialVersionUID = 1L;</span><br><span class="line">    protected int maxElements;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<hr>
+<p>参考：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://juejin.im/post/5a4b433b6fb9a0451705916f">https://juejin.im/post/5a4b433b6fb9a0451705916f</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/xiaoxi/p/6170590.html">https://www.cnblogs.com/xiaoxi/p/6170590.html</a></li>
+</ul>
+<h3 id="5-2-ConcurrentHashMap"><a href="#5-2-ConcurrentHashMap" class="headerlink" title="5.2 ConcurrentHashMap"></a>5.2 ConcurrentHashMap</h3><p>这节开始介绍并发容器，首先是ConcurrentHashMap，实现了线程安全的HashMap。之前也提到了HashMap在多线程环境下的问题，这小节先详细分析为什么HashMap多线程下不安全。</p>
+<h4 id="HashMap多线程环境下的问题分析"><a href="#HashMap多线程环境下的问题分析" class="headerlink" title="HashMap多线程环境下的问题分析"></a>HashMap多线程环境下的问题分析</h4><blockquote>
+<p>首先说结论，为什么HashMap不是线程安全的？在多线程下，会导致HashMap的Entry链表形成环形数据结构，一旦形成环形，Entry的next节点永远不为空，无论是进行resize还是get/size等操作时，就会产生死循环。</p>
+</blockquote>
+<p><strong>首先针对JDK7进行分析：</strong></p>
+<p>下面是resize部分的代码，这段代码将原HashMap中的元素依次移动到扩容后的HashMap中，</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">1:  // Transfer method in java.util.HashMap -</span><br><span class="line">2:  // called to resize the hashmap</span><br><span class="line">3:  // 依次移动每个bucket中的元素到新的buckets中</span><br><span class="line">4:  for (int j = 0; j &lt; src.length; j++) &#123;</span><br><span class="line">5:    Entry e = src[j];</span><br><span class="line">6:    if (e != null) &#123;</span><br><span class="line">7:      src[j] = null;</span><br><span class="line">8:      do &#123;</span><br><span class="line">            // Next指向下一个需要移动的元素</span><br><span class="line">9:          Entry next = e.next; </span><br><span class="line">            // 计算新Map中的位置</span><br><span class="line">10:         int i = indexFor(e.hash, newCapacity);</span><br><span class="line">            // 插入到bucket中第一个位置</span><br><span class="line">11:         e.next = newTable[i];</span><br><span class="line">12:         newTable[i] = e;</span><br><span class="line">            // 指向原bucket中下一个位置的元素</span><br><span class="line">13:         e = next;</span><br><span class="line">14:     &#125; while (e != null);</span><br><span class="line">15:   &#125;</span><br><span class="line">16: &#125; </span><br></pre></td></tr></table></figure>
+
+<p>在正常单线程的情况下，如果有如下的HashMap的结构，为了方便这里只有2个bucket（java.util.HashMap中默认是 16）。</p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223355_3f0bd.jpg" alt="Screen Shot 2019-12-08 at 10.45.35 PM.png"></p>
+<p>按照上面的resize流程，e和next分别指向A和B，A是第一次迭代将会被移动的元素，B是下一个。</p>
+<ul>
+<li>第一次迭代后，A被移动到新的Map中，Map的容量已经增大了一倍。A的位置如下图所示</li>
+</ul>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223355_ee16f.jpg" alt="Screen Shot 2019-12-08 at 10.46.40 PM.png"></p>
+<ul>
+<li>第二次迭代后，B被移动到了新的位置，如下图所示，C为下一个待移动的元素。</li>
+</ul>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223355_a5646.jpg" alt="Screen Shot 2019-12-08 at 10.47.42 PM.png"></p>
+<ul>
+<li>第三次迭代之后，C被移动到了新的位置，由于C之后没有其他元素，因此整个resize过程完成，最后新的Map如下：</li>
+</ul>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223356_85127.jpg" alt="Screen Shot 2019-12-08 at 10.48.16 PM.png"></p>
+<p>在resize完成之后，每个bucket的深度变小了，达到了resize的目的。整个过程在单线程下没有任何问题，但是考虑到多线程的情况，就会可能会出现竞争。</p>
+<p>现在有两个线程Thread1，Thread2同时进行resize的操作，假设Thread1在运行到第9行后，Thread2获取了CPU并且也开始执行resize的操作。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">1:  // Transfer method in java.util.HashMap -</span><br><span class="line">2:  // called to resize the hashmap</span><br><span class="line">3:  </span><br><span class="line">4:  for (int j = 0; j &lt; src.length; j++) &#123;</span><br><span class="line">5:    Entry e = src[j];</span><br><span class="line">6:    if (e != null) &#123;</span><br><span class="line">7:      src[j] = null;</span><br><span class="line">8:      do &#123;</span><br><span class="line">9:      Entry next = e.next; </span><br><span class="line">     // Thread1 STOPS RIGHT HERE</span><br><span class="line">10:     int i = indexFor(e.hash, newCapacity);</span><br><span class="line">11:     e.next = newTable[i];</span><br><span class="line">12:     newTable[i] = e;</span><br><span class="line">13:     e = next;</span><br><span class="line">14:   &#125; while (e != null);</span><br><span class="line">15:   &#125;</span><br><span class="line">16: &#125; </span><br></pre></td></tr></table></figure>
+
+<p>Thread1运行后，对应的e1和next1别指向A和B，但是Thread1并没有移动元素。</p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223356_97868.jpg" alt="Screen Shot 2019-12-08 at 10.49.53 PM.png"></p>
+<p>假设Thread2在获取CPU后完整的运行了整个resize，新的Map结构将会如下图所示：</p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223356_5ac7d.jpg" alt="Screen Shot 2019-12-08 at 10.50.42 PM.png"></p>
+<p>注意到<code>e1</code>和<code>next1</code>还是指向A和B，但是A和B的位置关系已经变了，按照resize的算法进行两轮迭代之后，变成如下的结构，</p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223356_15008.jpg" alt="Screen Shot 2019-12-08 at 10.53.01 PM.png"></p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223356_650b7.jpg" alt="Screen Shot 2019-12-08 at 10.53.29 PM.png"></p>
+<p>注意此时<code>e</code>和<code>next</code>的指向，在下一次的迭代中，将把A放在第3个bucket的一个位置，但是B仍然是指向A的，所以出现了下面的类似于双向链表的结构，</p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223356_da6de.jpg" alt="Screen Shot 2019-12-08 at 10.54.19 PM.png"></p>
+<p>接着Thread1就会进入到无限循环中，此时如果有get操作的话，也会出现无限循环的情况。这就是HashMap在多线程情况下容易出现的问题。</p>
+<p><strong>接着针对JDK8进行分析：</strong></p>
+<p>前面已经提到，JDK8和7在Resize的不同之处就是8保留了链表中元素的先后位置，这样基本可以确保在resize过程中不出现循环的问题，但是还是可能出现数据丢失的问题。以下是resize的核心实现，</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">    Node&lt;K,V&gt; loHead = null, loTail = null;</span><br><span class="line">    Node&lt;K,V&gt; hiHead = null, hiTail = null;</span><br><span class="line">    Node&lt;K,V&gt; next;</span><br><span class="line">    do &#123;</span><br><span class="line">        next = e.next;</span><br><span class="line">        if ((e.hash &amp; oldCap) == 0) &#123;</span><br><span class="line">            if (loTail == null)</span><br><span class="line">                loHead = e;</span><br><span class="line">            else</span><br><span class="line">                loTail.next = e;</span><br><span class="line">            loTail = e;</span><br><span class="line">        &#125;</span><br><span class="line">        else &#123;</span><br><span class="line">            if (hiTail == null)</span><br><span class="line">                hiHead = e;</span><br><span class="line">            else</span><br><span class="line">                hiTail.next = e;</span><br><span class="line">            hiTail = e;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; while ((e = next) != null);</span><br><span class="line">    if (loTail != null) &#123;</span><br><span class="line">        loTail.next = null;</span><br><span class="line">        newTab[j] = loHead;</span><br><span class="line">    &#125;</span><br><span class="line">    if (hiTail != null) &#123;</span><br><span class="line">        hiTail.next = null;</span><br><span class="line">        newTab[j + oldCap] = hiHead;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在实现中会使用两个临时链表，分别存储新地址和旧地址的链表，最后将这两个链表放到对应的位置。</p>
+<p>假定出现如下的情况，有ABC三个元素需要移动，首先线程1指向A，next即为B，此后线程2同样进行resize，并把high/low两个链表的更新完成，这时返回线程1继续运行。</p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223357_504e8.jpg" alt="Image 3.jpeg"></p>
+<p>但是线程1仍然按照正常的流程继续，A会被放到High链表，B会被放到Low链表，这之后由于B后面没有元素，更新完成，因此C就漏掉了。</p>
+<p>其实不管是JDK7还是8，由于链表的很多操作都没有加锁，每个操作也不是原子操作，导致可能出现很多意想不到的结果，也是为什么需要引入专门的ConcurrentHashMap。</p>
+<h4 id="ConcurrentHashMap介绍"><a href="#ConcurrentHashMap介绍" class="headerlink" title="ConcurrentHashMap介绍"></a>ConcurrentHashMap介绍</h4><p><strong>为什么不使用HashTable？</strong></p>
+<p>之前介绍的HashTable也能保证线程安全，但是HashTable使用synchronized来保证线程安全，但在线程竞争激烈的情况下HashTable的效率非常低下。因为当一个线程访问HashTable的同步方法，其他线程也访问HashTable的同步方法时，会进入阻塞或轮询状态。如线程1使用put进行元素添加，线程2不但不能使用put方法添加元素，也不能使用get方法来获取元素，所以竞争越激烈效率越低。正因为如此，需要引入更加高效的多线程解决方案。</p>
+<p>ConcurrentHashMap的结构在JDk1.7和1.8中有较大的不同，下面将会分别进行介绍。</p>
+<h4 id="JDK1-7中的实现"><a href="#JDK1-7中的实现" class="headerlink" title="JDK1.7中的实现"></a>JDK1.7中的实现</h4><p>ConcurrentHashMap是由Segment数组结构和HashEntry数组结构组成。Segment实际继承自可重入锁（ReentrantLock），在ConcurrentHashMap里扮演锁的角色；HashEntry则用于存储键值对数据。一个ConcurrentHashMap里包含一个Segment数组，每个Segment里包含一个HashEntry数组，我们称之为table，每个HashEntry是一个链表结构的元素。</p>
+<blockquote>
+<p>Segment实际继承自可重入锁（ReentrantLock），这是与普通HashMap的最大区别。</p>
+</blockquote>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223357_4c9c6.jpg" alt="Picture1.png"></p>
+<p><strong>面试点</strong>：ConcurrentHashMap实现原理是怎么样的或者ConcurrentHashMap如何在保证高并发下线程安全的同时实现了性能提升？</p>
+<p>ConcurrentHashMap允许多个修改操作并发进行，其关键在于使用了<strong>锁分离技术</strong>。它使用了多个锁来控制对hash表的不同部分进行的修改。内部使用段(Segment)来表示这些不同的部分，每个段其实就是一个小的hash table，只要多个修改操作发生在不同的段上，它们就可以并发进行。</p>
+<p><strong>1.1 初始化过程</strong></p>
+<p>初始化有三个参数：</p>
+<ul>
+<li><strong>initialCapacity</strong>：初始容量大小 ，默认16。</li>
+<li><strong>loadFactor</strong>, 扩容因子或者叫负载因子，默认0.75，当一个Segment存储的元素数量大于initialCapacity* loadFactor时，该Segment会进行一次扩容。</li>
+<li><strong>concurrencyLevel 并发度</strong>：默认16。并发度可以理解为程序运行时能够同时操作ConccurentHashMap且不产生锁竞争的最大线程数，实际上就是ConcurrentHashMap中的分段锁个数，即Segment[]的数组长度。如果并发度设置的过小，会带来严重的锁竞争问题；如果并发度设置的过大，原本位于同一个Segment内的访问会扩散到不同的Segment中，CPU cache命中率会下降，从而引起程序性能下降。</li>
+</ul>
+<p>以下是对初始化函数的分析：</p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223357_b5741.jpg" alt="Screen Shot 2019-12-09 at 10.47.06 PM.png"></p>
+<p><strong>1.2 Hash值计算</strong></p>
+<p>对某个元素进行Put/Get操作之前，都需要定位该元素在哪个segment元素的某个table元素中的，定位的过程，取得key的hashcode值进行一次再散列（通过Wang/Jenkins算法），拿到再散列值后，以再散列值的高位进行取模得到当前元素在哪个segment上。</p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223357_cb16c.jpg" alt="Screen Shot 2019-12-09 at 11.10.10 PM.png"></p>
+<p>具体的Hash实现如下：</p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223357_db693.jpg" alt="Screen Shot 2019-12-09 at 11.12.01 PM.png"></p>
+<p><strong>1.3 Get方法</strong></p>
+<p>定位segment和定位table后，依次扫描这个table元素下的的链表，要么找到元素，要么返回null。</p>
+<p><strong>在高并发下的情况下如何保证取得的元素是最新的？</strong></p>
+<p>用于存储键值对数据的HashEntry，在设计上它的成员变量value等都是<strong>volatile类型</strong>的，这样就保证别的线程对value值的修改，get方法可以马上看到。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">static final class HashEntry&lt;K,V&gt; &#123;</span><br><span class="line">    final int hash;</span><br><span class="line">    final K key;</span><br><span class="line">    volatile V value;</span><br><span class="line">    volatile HashEntry&lt;K,V&gt; next;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>1.4 Put方法</strong></p>
+<p>1、首先定位segment，当这个segment在map初始化后，还为null，由ensureSegment方法负责填充这个segment。</p>
+<p>2、对Segment加锁,虽然value是volatile的，只能保证可见性，不能保证原子性。这里put操作不是原子操作，因此需要加锁。</p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223358_6bc27.jpg" alt="Picture1.png"></p>
+<p>3、定位所在的table元素，并扫描table下的链表，找到时：</p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223358_eb8e0.jpg" alt="Picture1.png"></p>
+<p>注意到默认onlyIfAbsent为false，也就是如果有相同key的元素，会覆盖旧的值。无论是否覆盖，都是返回旧值。</p>
+<p>没有找到时：</p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223358_856a1.jpg" alt="Picture1.png"></p>
+<p><strong>1.5 扩容操作</strong></p>
+<p>扩容操作不会扩容Segment，只会扩容对应的table数组，每次都是将数组翻倍。</p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223358_78aa3.jpg" alt="Picture1.png"></p>
+<p>之前也提到过，由于数组长度为2次幂，所以每次扩容之后，元素要么在原处，要么在原处加上偏移量为旧的size的新位置。</p>
+<p><strong>1.6 Size方法</strong></p>
+<p>size的时候进行两次不加锁的统计，两次一致直接返回结果，不一致，重新加锁再次统计，</p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223358_77f92.jpg" alt="Screen Shot 2019-12-10 at 11.49.53 AM.png"></p>
+<p><strong>ConcurrentHashMap的弱一致性</strong></p>
+<p>get方法和containsKey方法都是通过对链表遍历判断是否存在key相同的节点以及获得该节点的value。但由于遍历过程中其他线程可能对链表结构做了调整，因此get和containsKey返回的可能是过时的数据，这一点是ConcurrentHashMap在弱一致性上的体现。</p>
+<h4 id="JDK1-8中的实现"><a href="#JDK1-8中的实现" class="headerlink" title="JDK1.8中的实现"></a>JDK1.8中的实现</h4><p>相比JDK1.7的重要变化：</p>
+<p>1、取消了segment数组，引入了Node结构，直接用Node数组来保存数据，锁的粒度更小，减少并发冲突的概率。<br>2、存储数据时采用了链表+红黑树的形式，纯链表的形式时间复杂度为O(n)，红黑树则为O（logn），性能提升很大。什么时候链表转红黑树？当key值相等的元素形成的链表中元素个数超过8个的时候。</p>
+<p><strong>2.1 数据结构</strong></p>
+<ul>
+<li>Node：存放实际的key和value值。</li>
+<li>sizeCtl：负数：表示进行初始化或者扩容,-1表示正在初始化，-N，表示有N-1个线程正在进行扩容<br>正数：0 表示还没有被初始化，&gt;0的数，初始化或者是下一次进行扩容的阈值。</li>
+<li>TreeNode：用在红黑树，表示树的节点, TreeBin是实际放在table数组中的，代表了这个红黑树的根。</li>
+</ul>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223358_b213d.jpg" alt="Picture1.png"></p>
+<p>ConcurrentHashMap在初始化时，只是给成员变量赋值，put时进行实际数组的填充。</p>
+<p><strong>2.2 Hash计算</strong></p>
+<p>先计算key的hash值，然后将高位加入计算来进行再散列。</p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223359_f7e66.jpg" alt="Picture1.png"></p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223359_5da17.jpg" alt="Picture1.png"></p>
+<p><strong>2.3 Get方法</strong></p>
+<p>首先计算hash值，确定在table中的位置。</p>
+<ul>
+<li>是否刚好在table中某个首元素，找到返回；</li>
+<li>在树中查找</li>
+<li>在链表中查找</li>
+</ul>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223359_6fcdc.jpg" alt="Picture1.png"></p>
+<p>注意到在初始化TreeBin，也就是设置红黑树所在的Node的第一个节点时，会设置对应的hash值，这些hash值定义如下。所以上面的代码中，可以通过判断首节点的hash值&lt;0来确定该节点为树。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">static final int MOVED     = -1; // hash for forwarding nodes</span><br><span class="line">static final int TREEBIN   = -2; // hash for roots of trees</span><br><span class="line">static final int RESERVED  = -3; // hash for transient reservations</span><br></pre></td></tr></table></figure>
+
+<p><strong>2.4 Put方法</strong></p>
+<p>PUT方法中会实际初始化数组，</p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223359_fc3e9.jpg" alt="Screen Shot 2019-12-10 at 8.56.23 PM.png"><br><img src="https://imgs.lfeng.tech/images/blog/20221211223359_ca624.jpg" alt="Screen Shot 2019-12-10 at 9.17.20 PM.png"></p>
+<p><strong>2.5 扩容操作</strong></p>
+<p>线程执行put操作，发现容量已经达到扩容阈值，需要进行扩容操作。ConcurrentHashMap支持并发扩容，实现方式是，将表拆分，让每个线程处理自己的区间。如下图：</p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223359_dc1e0.jpg" alt="Screen Shot 2019-12-10 at 9.23.42 PM.png"></p>
+<p>迁移完毕的hash桶,会被设置成ForwardingNode节点，以此告知访问此桶的其他线程，此节点已经迁移完毕。此时线程2访问到了ForwardingNode节点，如果线程2执行的put或remove等写操作，那么就会先帮其扩容。如果线程2执行的是get等读方法，则会调用ForwardingNode的find方法，去nextTable里面查找相关元素。</p>
+<p><strong>2.6 Size</strong></p>
+<p>Put操作时，addCount 方法用于 CAS 更新 baseCount，但很有可能在高并发的情况下，更新失败，那么这些节点虽然已经被添加到哈希表中了，但是数量却没有被统计。</p>
+<p>当更新 baseCount 失败的时候，会调用 fullAddCount 将这些失败的结点包装成一个 CounterCell 对象，保存在 CounterCell 数组中。</p>
+<p>整张表实际的 size 其实是 baseCount 加上 CounterCell 数组中元素的个数。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">public int size() &#123;</span><br><span class="line">    long n = sumCount();</span><br><span class="line">    return ((n &lt; 0L) ? 0 :(n &gt; (long)Integer.MAX_VALUE) ? Integer.MAX_VALUE :(int)n);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>具体的计算count方法，</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">final long sumCount() &#123;</span><br><span class="line">    CounterCell[] as = counterCells; CounterCell a;</span><br><span class="line">    long sum = baseCount;</span><br><span class="line">    if (as != null) &#123;</span><br><span class="line">        for (int i = 0; i &lt; as.length; ++i) &#123;</span><br><span class="line">            if ((a = as[i]) != null)</span><br><span class="line">                sum += a.value;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return sum;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>和JDK1.7一样，这样得到的size也只是大概数字，也具有弱一致性。</p>
+<h3 id="5-3-ConcurrentSkipListMap"><a href="#5-3-ConcurrentSkipListMap" class="headerlink" title="5.3 ConcurrentSkipListMap"></a>5.3 ConcurrentSkipListMap</h3><p>ConcurrentSkipListMap是一个并发安全, 基于skiplist实现有序存储的Map。可以看成是TreeMap的并发版本。</p>
+<p>ConcurrentHashMap采用空间换取时间, 但它有着ConcurrentHashMap不能比拟的优点: 有序数据存储.</p>
+<p>SkipList的结构如下图所示：</p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223359_fd97a.jpg" alt="30222128-045c88b7e992443395a540ba2eb740f3.jpg"></p>
+<p>从图中可以得出ConcurrentSkipListMap的几个特点:</p>
+<ol>
+<li>ConcurrentSkipListMap 的节点主要由 Node, Index, HeadIndex 构成;</li>
+<li>ConcurrentSkipListMap 的数据结构横向纵向都是链表</li>
+<li>最下面那层链表是Node层(数据节点层), 上面几层都是Index层(索引)</li>
+<li>从纵向链表来看, 最左边的是 HeadIndex 层, 右边的都是Index 层, 且每层的最底端都是对应Node, 纵向上的索引都是指向最底端的Node。</li>
+</ol>
+<h3 id="5-4-ConcurrentSkipListSet"><a href="#5-4-ConcurrentSkipListSet" class="headerlink" title="5.4 ConcurrentSkipListSet"></a>5.4 ConcurrentSkipListSet</h3><p>ConcurrentSkipListSet基于ConcurrentSkipListMap实现，类似于TreeSet基于TreeMap实现。</p>
+<h3 id="5-5-ConcurrentLinkedQueue"><a href="#5-5-ConcurrentLinkedQueue" class="headerlink" title="5.5 ConcurrentLinkedQueue"></a>5.5 ConcurrentLinkedQueue</h3><p>ConcurrentLinkedQueue实现了一个高并发的队列，底层使用链表作为其数据结构。从性能角度看，可以算是高并发环境下性能最好的队列了。</p>
+<p>ConcurrentLinkedQueue类中，核心节点Node的定义如下，item表示目标元素，next表示当前Node的下一个元素。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">private static class Node&lt;E&gt; &#123;</span><br><span class="line">    volatile E item;</span><br><span class="line">    volatile Node&lt;E&gt; next;</span><br></pre></td></tr></table></figure>
+
+<p>add,offer将元素插入到尾部，其中add实现上直接调用了offer。peek方法拿头部的数据，但是不移除和poll拿头部的数据，但是同时移除。</p>
+<h3 id="5-6-CopyOnWriteArrayList"><a href="#5-6-CopyOnWriteArrayList" class="headerlink" title="5.6 CopyOnWriteArrayList"></a>5.6 CopyOnWriteArrayList</h3><p>CopyOnWrite（写时复制）的容器。通俗的理解是当我们往一个容器添加元素的时候，不直接往当前容器添加，而是先将当前容器进行Copy，复制出一个新的容器，然后新的容器里添加元素，添加完元素之后，再用新的容器替换旧的容器。</p>
+<p>好处是我们可以<strong>对容器进行并发的读，而不需要加锁</strong>，因为当前容器不会添加任何元素。所以写时复制容器也是一种读写分离的思想，读和写不同的容器。如果读的时候有多个线程正在向容器添加数据，读还是会读到旧的数据，因为写的时候不会锁住旧的，只能保证最终一致性。</p>
+<p>下面介绍一下写的过程，</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * Appends the specified element to the end of this list.</span><br><span class="line"> *</span><br><span class="line"> * @param e element to be appended to this list</span><br><span class="line"> * @return &#123;@code true&#125; (as specified by &#123;@link Collection#add&#125;)</span><br><span class="line"> */</span><br><span class="line">public boolean add(E e) &#123;</span><br><span class="line">    final ReentrantLock lock = this.lock;</span><br><span class="line">    lock.lock();</span><br><span class="line">    try &#123;</span><br><span class="line">        Object[] elements = getArray();</span><br><span class="line">        int len = elements.length;</span><br><span class="line">        Object[] newElements = Arrays.copyOf(elements, len + 1);</span><br><span class="line">        newElements[len] = e;</span><br><span class="line">        setArray(newElements);</span><br><span class="line">        return true;</span><br><span class="line">    &#125; finally &#123;</span><br><span class="line">        lock.unlock();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>首先，写入操作使用锁，主要是为了控制写写的情况。接着进行新数组的复制，将新的元素加入newElements，最后使用新的数组替换老的数组，修改就完成了。整个过程不会影响读取，并且修改完成以后，读取线程可以“觉察”到这个修改，因为array是volatile类型，保证了可见性。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">/** The array, accessed only via getArray/setArray. */</span><br><span class="line">private transient volatile Object[] array;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>容器的适用场景：适用读多写少的并发场景，常见应用：白名单/黑名单，商品类目的访问和更新场景。但是由于会复制旧的数组，所有可能存在内存占用问题。</p>
+</blockquote>
+<h3 id="5-7-CopyOnWriteArraySet"><a href="#5-7-CopyOnWriteArraySet" class="headerlink" title="5.7 CopyOnWriteArraySet"></a>5.7 CopyOnWriteArraySet</h3><p>CopyOnWriteArraySet基于CopyOnWriteArrayList实现，为了保证数据的唯一性，在往其中加入数据时，会check当前数组中是否存在该元素，如果不存在，则加入到当前数组。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * Appends the element, if not present.</span><br><span class="line"> *</span><br><span class="line"> * @param e element to be added to this list, if absent</span><br><span class="line"> * @return &#123;@code true&#125; if the element was added</span><br><span class="line"> */</span><br><span class="line">public boolean addIfAbsent(E e) &#123;</span><br><span class="line">    Object[] snapshot = getArray();</span><br><span class="line">    return indexOf(e, snapshot, 0, snapshot.length) &gt;= 0 ? false :</span><br><span class="line">        addIfAbsent(e, snapshot);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-8-阻塞队列"><a href="#5-8-阻塞队列" class="headerlink" title="5.8 阻塞队列"></a>5.8 阻塞队列</h3><h4 id="定义与常用操作"><a href="#定义与常用操作" class="headerlink" title="定义与常用操作"></a>定义与常用操作</h4><p>阻塞队列（BlockingQueue）是一个支持两个附加操作的队列。这两个附加的操作是：</p>
+<ul>
+<li>在队列为空时，获取元素的线程会等待队列变为非空。</li>
+<li>当队列满时，存储元素的线程会等待队列可用。</li>
+</ul>
+<p>阻塞队列常用于生产者和消费者的场景，生产者是往队列里添加元素的线程，消费者是从队列里拿元素的线程。阻塞队列就是生产者存放元素的容器，而消费者也只从容器里拿元素。</p>
+<p>阻塞队列提供了四种处理方法:</p>
+<table>
+<thead>
+<tr>
+<th>方法\处理方式</th>
+<th>抛出异常</th>
+<th>返回特殊值</th>
+<th>一直阻塞</th>
+<th>超时退出</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>插入方法</td>
+<td>add(e)</td>
+<td>offer(e)</td>
+<td>put(e)</td>
+<td>offer(e,time,unit)</td>
+</tr>
+<tr>
+<td>移除方法</td>
+<td>remove()</td>
+<td>poll()</td>
+<td>take()</td>
+<td>poll(time,unit)</td>
+</tr>
+<tr>
+<td>检查方法</td>
+<td>element()</td>
+<td>peek()</td>
+<td>不可用</td>
+<td>不可用</td>
+</tr>
+</tbody></table>
+<ul>
+<li>抛出异常：是指当阻塞队列满时候，再往队列里插入元素，会抛出 IllegalStateException(“Queue full”) 异常。当队列为空时，从队列里获取元素时会抛出 NoSuchElementException 异常 。</li>
+<li>返回特殊值：插入方法会返回是否成功，成功则返回 true。移除方法，则是从队列里拿出一个元素，如果没有则返回 null</li>
+<li>一直阻塞：当阻塞队列满时，如果生产者线程往队列里 put 元素，队列会一直阻塞生产者线程，直到拿到数据，或者响应中断退出。当队列空时，消费者线程试图从队列里 take 元素，队列也会阻塞消费者线程，直到队列可用。</li>
+<li>超时退出：当阻塞队列满时，队列会阻塞生产者线程一段时间，如果超过一定的时间，生产者线程就会退出。</li>
+</ul>
+<h4 id="Java里的阻塞队列"><a href="#Java里的阻塞队列" class="headerlink" title="Java里的阻塞队列"></a>Java里的阻塞队列</h4><p>JDK7 提供了 7 个阻塞队列。分别是</p>
+<ul>
+<li>ArrayBlockingQueue ：一个由数组结构组成的有界阻塞队列。</li>
+<li>LinkedBlockingQueue ：一个由链表结构组成的有界阻塞队列。</li>
+<li>PriorityBlockingQueue ：一个支持优先级排序的无界阻塞队列。</li>
+<li>DelayQueue：一个使用优先级队列实现的无界阻塞队列。</li>
+<li>SynchronousQueue：一个不存储元素的阻塞队列。</li>
+<li>LinkedTransferQueue：一个由链表结构组成的无界阻塞队列。</li>
+<li>LinkedBlockingDeque：一个由链表结构组成的双向阻塞队列。</li>
+</ul>
+<p><strong>1. ArrayBlockingQueue</strong></p>
+<p>ArrayBlockingQueue 是一个用数组实现的有界阻塞队列。此队列按照先进先出（FIFO）的原则对元素进行排序。默认情况下不保证访问者公平的访问队列，所谓公平访问队列是指阻塞的所有生产者线程或消费者线程，当队列可用时，可以按照阻塞的先后顺序访问队列，即先阻塞的生产者线程，可以先往队列里插入元素，先阻塞的消费者线程，可以先从队列里获取元素。通常情况下为了保证公平性会降低吞吐量。我们可以使用以下代码创建一个公平的阻塞队列：</p>
+<p><strong>2. LinkedBlockingQueue</strong> </p>
+<p>一个用链表实现的有界阻塞队列。此队列的默认和最大长度为 Integer.MAX_VALUE。此队列按照先进先出的原则对元素进行排序。</p>
+<p><strong>3. PriorityBlockingQueue</strong> </p>
+<p>一个支持优先级的无界队列。默认情况下元素采取自然顺序排列，也可以通过比较器 comparator 来指定元素的排序规则。元素按照升序排列。</p>
+<p><strong>4. DelayQueue</strong> </p>
+<p>一个支持延时获取元素的无界阻塞队列。队列使用 PriorityQueue 来实现。队列中的元素必须实现 Delayed 接口，在创建元素时可以指定多久才能从队列中获取当前元素。只有在延迟期满时才能从队列中提取元素。我们可以将 DelayQueue 运用在以下应用场景：</p>
+<ul>
+<li><p>缓存系统的设计：可以用 DelayQueue 保存缓存元素的有效期，使用一个线程循环查询 DelayQueue，一旦能从 DelayQueue 中获取元素时，表示缓存有效期到了。</p>
+</li>
+<li><p>定时任务调度。使用 DelayQueue 保存当天将会执行的任务和执行时间，一旦从 DelayQueue 中获取到任务就开始执行，从比如 TimerQueue 就是使用 DelayQueue 实现的。</p>
+</li>
+</ul>
+<p>队列中的 Delayed 必须实现 compareTo 来指定元素的顺序。比如让延时时间最长的放在队列的末尾。</p>
+<p><strong>5. SynchronousQueue</strong></p>
+<p>SynchronousQueue 是一个不存储元素的阻塞队列。每一个 put 操作必须等待一个 take 操作，否则不能继续添加元素。SynchronousQueue 可以看成是一个传球手，负责把生产者线程处理的数据直接传递给消费者线程。队列本身并不存储任何元素，非常适合于传递性场景, 比如在一个线程中使用的数据，传递给另外一个线程使用，SynchronousQueue 的吞吐量高于 LinkedBlockingQueue 和 ArrayBlockingQueue。</p>
+<p><strong>6. LinkedTransferQueue</strong></p>
+<p>是一个由链表结构组成的无界阻塞 TransferQueue 队列。相对于其他阻塞队列，LinkedTransferQueue 多了 tryTransfer 和 transfer 方法。</p>
+<ul>
+<li>transfer 方法。如果当前有消费者正在等待接收元素（消费者使用 take() 方法或带时间限制的 poll() 方法时），transfer 方法可以把生产者传入的元素立刻 transfer（传输）给消费者。如果没有消费者在等待接收元素，transfer 方法会将元素存放在队列的 tail 节点，并等到该元素被消费者消费了才返回。transfer 方法的关键代码如下：</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Node pred = tryAppend(s, haveData);</span><br><span class="line">return awaitMatch(s, pred, e, (how == TIMED), nanos);</span><br></pre></td></tr></table></figure>
+
+<p>第一行代码是试图把存放当前元素的 s 节点作为 tail 节点。第二行代码是让 CPU 自旋等待消费者消费元素。因为自旋会消耗 CPU，所以自旋一定的次数后使用 Thread.yield() 方法来暂停当前正在执行的线程，并执行其他线程。</p>
+<ul>
+<li>tryTransfer 方法。则是用来试探下生产者传入的元素是否能直接传给消费者。如果没有消费者等待接收元素，则返回 false。和 transfer 方法的区别是 tryTransfer 方法无论消费者是否接收，方法立即返回。而 transfer 方法是必须等到消费者消费了才返回。</li>
+</ul>
+<blockquote>
+<p>对于带有时间限制的 tryTransfer(E e, long timeout, TimeUnit unit) 方法，则是试图把生产者传入的元素直接传给消费者，但是如果没有消费者消费该元素则等待指定的时间再返回，如果超时还没消费元素，则返回 false，如果在超时时间内消费了元素，则返回 true。</p>
+</blockquote>
+<p><strong>7. LinkedBlockingDeque</strong> </p>
+<p>一个由链表结构组成的双向阻塞队列。所谓双向队列指的你可以从队列的两端插入和移出元素。双端队列因为多了一个操作队列的入口，在多线程同时入队时，也就减少了一半的竞争。相比其他的阻塞队列，LinkedBlockingDeque 多了 addFirst，addLast，offerFirst，offerLast，peekFirst，peekLast 等方法，以 First 单词结尾的方法，表示插入，获取（peek）或移除双端队列的第一个元素。以 Last 单词结尾的方法，表示插入，获取或移除双端队列的最后一个元素。另外插入方法 add 等同于 addLast，移除方法 remove 等效于 removeFirst。但是 take 方法却等同于 takeFirst，不知道是不是 Jdk 的 bug，使用时还是用带有 First 和 Last 后缀的方法更清楚。</p>
+<p>在初始化 LinkedBlockingDeque 时可以设置容量防止其过渡膨胀。另外双向阻塞队列可以运用在“工作窃取”模式中。</p>
+<h4 id="阻塞队列的实现原理"><a href="#阻塞队列的实现原理" class="headerlink" title="阻塞队列的实现原理"></a>阻塞队列的实现原理</h4><p>在介绍阻塞队列的实现之前，先介绍一下生产者与消费者模式：</p>
+<p>生产者就是生产数据的线程，消费者就是消费数据的线程。在多线程开发中，如果生产者处理速度很快，而消费者处理速度很慢，那么生产者就必须等待消费者处理完，才能继续生产数据。同样的道理，如果消费者的处理能力大于生产者，那么消费者就必须等待生产者。为了解决这种生产消费能力不均衡的问题，便有了生产者和消费者模式。</p>
+<p>生产者和消费者模式是通过一个容器来解决生产者和消费者的强耦合问题。生产者和消费者彼此之间不直接通信，而是通过阻塞队列来进行通信，所以生产者生产完数据之后不用等待消费者处理，直接扔给阻塞队列，消费者不找生产者要数据，而是直接从阻塞队列里取，<strong>阻塞队列就相当于一个缓冲区，平衡了生产者和消费者的处理能力。</strong></p>
+<p>1)当队列满的时候，插入元素的线程被阻塞，直达队列不满。<br>2)队列为空的时候，获取元素的线程被阻塞，直到队列不空。</p>
+<p>JDK是如何让生产者和消费者能够高效率的进行通讯呢？</p>
+<p>答案是使用通知模式实现。所谓通知模式，就是当生产者往满的队列里添加元素时会阻塞住生产者，当消费者消费了一个队列中的元素后，会通知生产者当前队列可用。</p>
+<p>以ArrayBlockingQueue为例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line">private final Condition notFull;</span><br><span class="line">private final Condition notEmpty;</span><br><span class="line"></span><br><span class="line">public ArrayBlockingQueue(int capacity, boolean fair) &#123;</span><br><span class="line">        // 省略其他代码 </span><br><span class="line">        notEmpty = lock.newCondition();</span><br><span class="line">        notFull =  lock.newCondition();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">public void put(E e) throws InterruptedException &#123;</span><br><span class="line">        checkNotNull(e);</span><br><span class="line">        final ReentrantLock lock = this.lock;</span><br><span class="line">        lock.lockInterruptibly();</span><br><span class="line">        try &#123;</span><br><span class="line">            while (count == items.length)</span><br><span class="line">                notFull.await();</span><br><span class="line">            insert(e);</span><br><span class="line">        &#125; finally &#123;</span><br><span class="line">            lock.unlock();</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public E take() throws InterruptedException &#123;</span><br><span class="line">        final ReentrantLock lock = this.lock;</span><br><span class="line">        lock.lockInterruptibly();</span><br><span class="line">        try &#123;</span><br><span class="line">            while (count == 0)</span><br><span class="line">                notEmpty.await();</span><br><span class="line">            return extract();</span><br><span class="line">  &#125; finally &#123;</span><br><span class="line">            lock.unlock();</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">private void insert(E x) &#123;</span><br><span class="line">        items[putIndex] = x;</span><br><span class="line">        putIndex = inc(putIndex);</span><br><span class="line">        ++count;</span><br><span class="line">        notEmpty.signal();</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">private E dequeue() &#123;</span><br><span class="line">        // assert lock.getHoldCount() == 1;</span><br><span class="line">        // assert items[takeIndex] != null;</span><br><span class="line">        final Object[] items = this.items;</span><br><span class="line">        @SuppressWarnings(&quot;unchecked&quot;)</span><br><span class="line">        E x = (E) items[takeIndex];</span><br><span class="line">        items[takeIndex] = null;</span><br><span class="line">        if (++takeIndex == items.length)</span><br><span class="line">            takeIndex = 0;</span><br><span class="line">        count--;</span><br><span class="line">        if (itrs != null)</span><br><span class="line">            itrs.elementDequeued();</span><br><span class="line">        notFull.signal();</span><br><span class="line">        return x;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>从上述代码可以看到，当队列为空，notEmpty进行等待；插入元素后，唤醒等待的线程。当队列满时，notFull进行等待；删除元素后，唤醒等待的线程。</p>
+<hr>
+<p>参考：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.infoq.cn/article/java-blocking-queue">https://www.infoq.cn/article/java-blocking-queue</a></li>
+</ul>
+<hr>
+<p>本文由『后端精进之路』原创，首发于博客 <a target="_blank" rel="noopener" href="http://teckee.github.io/">http://teckee.github.io/</a> , 转载请注明出处</p>
+<p>搜索『后端精进之路』关注公众号，立刻获取最新文章和<strong>价值2000元的BATJ精品面试课程</strong>。</p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223400_09c9a.jpg" alt="后端精进之路.png"></p>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Vincent
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://lfeng.tech/Java_concurrent_5_concurrent_collection.html" title="Java并发编程系列-(5) Java并发容器">https://lfeng.tech/Java_concurrent_5_concurrent_collection.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Java/" rel="tag"># Java</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/Java_concurrent_4_AQS.html" rel="prev" title="Java并发编程系列-(4) 显式锁与AQS">
+      <i class="fa fa-chevron-left"></i> Java并发编程系列-(4) 显式锁与AQS
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/Java_concurrent_6_thread_pool.html" rel="next" title="Java并发编程系列-(6) Java线程池">
+      Java并发编程系列-(6) Java线程池 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#5-%E5%B9%B6%E5%8F%91%E5%AE%B9%E5%99%A8"><span class="nav-number">1.</span> <span class="nav-text">5 并发容器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#5-1-Hashtable%E3%80%81HashMap%E3%80%81TreeMap%E3%80%81HashSet%E3%80%81LinkedHashMap"><span class="nav-number">1.1.</span> <span class="nav-text">5.1 Hashtable、HashMap、TreeMap、HashSet、LinkedHashMap</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Hashtable"><span class="nav-number">1.1.1.</span> <span class="nav-text">Hashtable</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#HashMap"><span class="nav-number">1.1.2.</span> <span class="nav-text">HashMap</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#TreeMap"><span class="nav-number">1.1.3.</span> <span class="nav-text">TreeMap</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#TreeSet"><span class="nav-number">1.1.4.</span> <span class="nav-text">TreeSet</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#HashSet"><span class="nav-number">1.1.5.</span> <span class="nav-text">HashSet</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#LinkedHashMap"><span class="nav-number">1.1.6.</span> <span class="nav-text">LinkedHashMap</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-2-ConcurrentHashMap"><span class="nav-number">1.2.</span> <span class="nav-text">5.2 ConcurrentHashMap</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#HashMap%E5%A4%9A%E7%BA%BF%E7%A8%8B%E7%8E%AF%E5%A2%83%E4%B8%8B%E7%9A%84%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90"><span class="nav-number">1.2.1.</span> <span class="nav-text">HashMap多线程环境下的问题分析</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ConcurrentHashMap%E4%BB%8B%E7%BB%8D"><span class="nav-number">1.2.2.</span> <span class="nav-text">ConcurrentHashMap介绍</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#JDK1-7%E4%B8%AD%E7%9A%84%E5%AE%9E%E7%8E%B0"><span class="nav-number">1.2.3.</span> <span class="nav-text">JDK1.7中的实现</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#JDK1-8%E4%B8%AD%E7%9A%84%E5%AE%9E%E7%8E%B0"><span class="nav-number">1.2.4.</span> <span class="nav-text">JDK1.8中的实现</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-3-ConcurrentSkipListMap"><span class="nav-number">1.3.</span> <span class="nav-text">5.3 ConcurrentSkipListMap</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-4-ConcurrentSkipListSet"><span class="nav-number">1.4.</span> <span class="nav-text">5.4 ConcurrentSkipListSet</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-5-ConcurrentLinkedQueue"><span class="nav-number">1.5.</span> <span class="nav-text">5.5 ConcurrentLinkedQueue</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-6-CopyOnWriteArrayList"><span class="nav-number">1.6.</span> <span class="nav-text">5.6 CopyOnWriteArrayList</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-7-CopyOnWriteArraySet"><span class="nav-number">1.7.</span> <span class="nav-text">5.7 CopyOnWriteArraySet</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-8-%E9%98%BB%E5%A1%9E%E9%98%9F%E5%88%97"><span class="nav-number">1.8.</span> <span class="nav-text">5.8 阻塞队列</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%9A%E4%B9%89%E4%B8%8E%E5%B8%B8%E7%94%A8%E6%93%8D%E4%BD%9C"><span class="nav-number">1.8.1.</span> <span class="nav-text">定义与常用操作</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Java%E9%87%8C%E7%9A%84%E9%98%BB%E5%A1%9E%E9%98%9F%E5%88%97"><span class="nav-number">1.8.2.</span> <span class="nav-text">Java里的阻塞队列</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%98%BB%E5%A1%9E%E9%98%9F%E5%88%97%E7%9A%84%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86"><span class="nav-number">1.8.3.</span> <span class="nav-text">阻塞队列的实现原理</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Vincent"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Vincent</p>
+  <div class="site-description" itemprop="description">Vincent's tech blog</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">64</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">23</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/teckee" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;teckee" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:h0ck@foxmail.com" title="E-Mail → mailto:h0ck@foxmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+  <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">沪ICP备19042895号-2 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Vincent</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'cgQ905Fj6xbazWtyi9b1hafr-gzGzoHsz',
+      appKey     : '68EFTwnd9XYY352gRUJlJyMu',
+      placeholder: "Just go go",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"lfeng.tech","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="年中的时候因为换工作的缘故，陆续参加了华为、蚂蚁、字节跳动、PDD、百度、Paypal的社招面试，除了字节跳动流程较长，我主动结束面试以外，其他的都顺利拿到了Offer。  最近时间稍微宽裕点了，写个面经，希望对大家找工作有所帮助。 面试体验下面以时间先后顺序，分享下我在不同公司面试的体验。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Offer经验分享 - 蚂蚁金服、字节跳动、PDD、百度、华为、Paypal - Java社招面经">
+<meta property="og:url" content="https://lfeng.tech/interview_offer_share.html">
+<meta property="og:site_name" content="Vincent&#39;s Notes">
+<meta property="og:description" content="年中的时候因为换工作的缘故，陆续参加了华为、蚂蚁、字节跳动、PDD、百度、Paypal的社招面试，除了字节跳动流程较长，我主动结束面试以外，其他的都顺利拿到了Offer。  最近时间稍微宽裕点了，写个面经，希望对大家找工作有所帮助。 面试体验下面以时间先后顺序，分享下我在不同公司面试的体验。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2019/11/25/16ea178d8af3d60a?w=2125&h=765&f=jpeg&s=353670">
+<meta property="article:published_time" content="2020-12-19T15:23:15.000Z">
+<meta property="article:modified_time" content="2020-12-19T06:10:08.824Z">
+<meta property="article:author" content="Vincent">
+<meta property="article:tag" content="search">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://user-gold-cdn.xitu.io/2019/11/25/16ea178d8af3d60a?w=2125&h=765&f=jpeg&s=353670">
+
+<link rel="canonical" href="https://lfeng.tech/interview_offer_share.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Offer经验分享 - 蚂蚁金服、字节跳动、PDD、百度、华为、Paypal - Java社招面经 | Vincent's Notes</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Vincent's Notes</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://lfeng.tech/interview_offer_share.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Vincent">
+      <meta itemprop="description" content="Vincent's tech blog">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Vincent's Notes">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Offer经验分享 - 蚂蚁金服、字节跳动、PDD、百度、华为、Paypal - Java社招面经
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-12-19 15:23:15 / 修改时间：06:10:08" itemprop="dateCreated datePublished" datetime="2020-12-19T15:23:15Z">2020-12-19</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/algorithm/" itemprop="url" rel="index"><span itemprop="name">algorithm</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/interview_offer_share.html" class="post-meta-item leancloud_visitors" data-flag-title="Offer经验分享 - 蚂蚁金服、字节跳动、PDD、百度、华为、Paypal - Java社招面经" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/interview_offer_share.html#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/interview_offer_share.html" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <blockquote>
+<p>年中的时候因为换工作的缘故，陆续参加了华为、蚂蚁、字节跳动、PDD、百度、Paypal的社招面试，除了字节跳动流程较长，我主动结束面试以外，其他的都顺利拿到了Offer。</p>
+</blockquote>
+<p>最近时间稍微宽裕点了，写个面经，希望对大家找工作有所帮助。</p>
+<h2 id="面试体验"><a href="#面试体验" class="headerlink" title="面试体验"></a>面试体验</h2><p>下面以时间先后顺序，分享下我在不同公司面试的体验。</p>
+<span id="more"></span>
+
+<h3 id="华为"><a href="#华为" class="headerlink" title="华为"></a>华为</h3><p>简历投递方式：在BOSS直聘上联系的华为HR。</p>
+<ol>
+<li>线上笔试：在正式面试之前，会有线上笔试环节，3道算法题，难易程度由浅入深，做出来两道基本就没问题了。</li>
+<li>1轮面试：视频面试，这轮面试会有两个面试官，每个面试官大概会面试45分钟，面试内容偏向Java基础为主；最后会写个算法题，不过也不复杂。</li>
+<li>2轮面试：这轮主要是几个领导一起电话面试，可能会问一些项目相关的内容，不过更多是框架相关的，不会涉及到很底层的技术细节。</li>
+<li>HR面试：沟通一下职级和薪资情况，华为的薪资是由基本工资和绩效工资组成的，然后年终可能是2个月，我尝试去argue了一下薪资，但是好像并没有什么卵用。</li>
+</ol>
+<p>总结：华为面试官和HR都很Nice，整体面试难度中规中矩，都是偏重于基础和简单的算法，另外面试流程也很快，基本上两周之内结束没问题。不过现在华为社招基本是OD，也就是挂靠到外企德科那边，不是正式员工，所以日后升职加薪可能会有所影响，这点大家需要自己考虑下。</p>
+<h3 id="蚂蚁金服"><a href="#蚂蚁金服" class="headerlink" title="蚂蚁金服"></a>蚂蚁金服</h3><p>简历投递方式：朋友直接内推的，内推过后一周之内就联系面试了。</p>
+<ol>
+<li>1轮面试：线上电话面试，杭州打来的，主要是介绍下项目，他会根据项目中的技术点，进行一些讨论。印象比较深的是，当时我们讨论下分布式一致性的解决方案，但感觉他对我的回答不太满意，哈哈。最后会发一个链接过来做题，题目主要考察Java多线程的使用，我当时的题目是在某种场景下找到最快的支付方式。</li>
+<li>2轮面试：上海打来的电话面试，这轮是主管面试，也是项目为主，然后拓展开去很多基础问题，比如分布式锁、分布式一致性、事物、Java线程等等。这轮没有做题，聊了大概一个小时，就结束了。</li>
+<li>3轮面试：这次是2轮面试官的主管来面试，让我直接去上海蚂蚁Z空间面试。这轮的话，主要是讲项目或者是说更宏观一点的东西，没有具体技术细节。</li>
+<li>HR面试：因为我面试的P6，所以3轮过后就直接HR面试了，HR侧重阿里味的考察，比如乐观、皮实等等。</li>
+</ol>
+<p>总结：面试难度适中，流程基本上一周一面，整体下来一个月，当然不包括后续的背调、体检之类的，因此如果要面试阿里，可以提前一些开始面试，然后一边面试一边复盘总结。</p>
+<h3 id="PDD"><a href="#PDD" class="headerlink" title="PDD"></a>PDD</h3><p>简历投递方式：BOSS直聘找到pdd HR。</p>
+<ol>
+<li>1轮面试：视频面试。前半小时聊项目，后半小时做题。</li>
+<li>2轮面试：视频面试。前半小时聊项目，后半小时做题。</li>
+<li>3轮面试：视频面试。前半小时做题，后半小时聊项目。</li>
+<li>HR面试：确定薪资，因为PDD的强度非常大，大家可以大胆一点要薪资，不然进去以后后悔就晚了。</li>
+</ol>
+<p>总结：PDD的面试流程非常简单粗暴，就是做题加上聊项目，一半一半，题目难度基本是Leetcode上的Medium难度，我面试下来也没有碰到很偏很怪的题目，面试准备的时候，把Leetcode上面常考的200题刷一刷就没问题了。虽然最后没有去PDD，但是PDD的面试官和HR都给我留下很好的印象，面试流程很舒服，就像和朋友交流一样；PDD的流程很快，大概两周之内出结果，因为不同公司的流程不一样，HR那边一直等了我好几周，可以让我拿到其他Offer了再回复她，这点上真的特别感激。</p>
+<h3 id="百度"><a href="#百度" class="headerlink" title="百度"></a>百度</h3><p>简历投递方式：BOSS直聘找到HR。</p>
+<ol>
+<li>1轮面试：视频面试。分享项目，然后问一些技术细节，主要偏向Java基础、缓存、分布式这块。</li>
+<li>2轮面试：视频面试。这轮和上轮差不多，不过会问更多的技术细节，让我在线写了一个生产者消费者模式，还有一个算法题。</li>
+<li>3轮面试：视频面试。主管面试，比较轻松一些，聊聊工作、聊聊规划就完了。</li>
+<li>HR面试：确定薪资，百度的薪资组成是Base加上股票。如果有其他公司的Offer，可以大胆argue一下，HR可能会有各种理由说不能加了，但是一定要坚持argue，我体验下来，argue的空间还是很大的。</li>
+</ol>
+<p>总结：面试侧重于纯技术，所以关于技术细节，一定要搞清楚弄明白；至于算法，百度考察的不深。面试流程很快，大概一周多就结束了。</p>
+<h3 id="Paypal"><a href="#Paypal" class="headerlink" title="Paypal"></a>Paypal</h3><p>简历投递方式：内推。</p>
+<ol>
+<li>1轮面试：视频面试，2个人轮流面试，时长2个小时。各种Java的细节，从包装类、多线程到分布式、缓存等等。每轮都需要做题，Medium难度。</li>
+<li>2轮面试：视频面试。3个人轮流面试，时长3小时，这个就看面试管的风格了，有的偏向于纯算法，有的偏向于基础。但是时长比较长，需要大家提前准备好。</li>
+<li>两轮面试之后，如果顺利的话HR就会去申请Offer，很快就拿到Offer了。</li>
+</ol>
+<p>总结：效率很高，面试官也很专业。薪资组成由Base加上股票组成，今年股价涨了不少，所以去年入职的同学赚了不少，哈哈。</p>
+<h3 id="字节跳动"><a href="#字节跳动" class="headerlink" title="字节跳动"></a>字节跳动</h3><p>简历投递方式：猎头</p>
+<ol>
+<li>1轮面试：基础技术面试。不讲项目，直接问基础，包括操作系统、计算机网络、Java基础、数据库、缓存、分布式等等，问的面很广。最后写一道算法题。</li>
+<li>2轮面试：项目和系统设计面试。侧重于系统设计，比如设计朋友圈、12306系统等，后面也需要写算法题。</li>
+<li>3轮面试：可能第二轮没有表现好，重新安排了面试官接着面试第二轮。这一轮也考察基础和系统设计，顺利通过了。</li>
+<li>4轮面试：交叉面试，这轮面试体验比较糟糕，面试官中途打电话、还处理了个线上的issue，哈哈。</li>
+</ol>
+<p>由于当时已经有好几个Offer，加上面试过程比较长，基本一周一面，所以也不想拖太久了。后面HR约最后一轮技术面的时候，我也直接拒绝了。</p>
+<p>总结：字节的面试是所有面试里面难度最大的，因为基础的考察面很广，而且算法题不是那种常考的题目，有时候会碰到Hard难度，也都是看运气了。如果要去面试字节的话，算法一定要提前多准备，尽量多刷一些，以防到时连题目都没见过，要你15分钟内写出来也就很难了。</p>
+<h2 id="经验总结"><a href="#经验总结" class="headerlink" title="经验总结"></a>经验总结</h2><p>多家面试总结下来，考察的范围都很广，包括基础知识、项目和算法。</p>
+<ul>
+<li>基础知识这块，需要花大量时间准备每一个细节，知其所以然，这样才能面试的时候问起来，都能头头是道。比如Java的AQS原理，多线程，JVM内存等，框架的话，有Spring，MySQL、Redis、Kafka、ES、ZK等，都要十分熟悉。</li>
+<li>项目，阿里比较注重项目，所以不仅要熟悉项目做了什么事情，而且要提炼出项目中的闪光点或者说不一样的地方，为什么要选择这种技术、架构怎么设计、以后如何扩展、出问题了怎么定位等等；这些在面试之前都要想清楚。</li>
+<li>算法，这点没的说，就是要多刷题。面试了这么多公司，除了阿里，其他公司的每一轮都会要求做算法题，所以在面试之前要对各种常见算法了然于心，比如DFS、BFS、树、贪心算法、常见DP等等，有时间的话多去刷刷题找感觉。</li>
+</ul>
+<h2 id="面试题分享"><a href="#面试题分享" class="headerlink" title="面试题分享"></a>面试题分享</h2><p>这部分分享一下我在面试准备过程中，以及面试时遇到的常考基础题，大家可以针对题目复习一下。</p>
+<h3 id="1-Java基础"><a href="#1-Java基础" class="headerlink" title="1. Java基础"></a>1. Java基础</h3><p>1.1 Hashmap 与 concurrentHashMap （重点）<br>1.2 集合相关问题<br>1.3 Java 泛型的理解<br>1.4 跳表（ConcurrentSkipListMap）的查询过程是怎么样的，查询和插入的时间复杂度?<br>1.5 java 字节流 字符流<br>1.8 包装类型和基本类型比较问题<br>1.9 为什么重写equals和hashcode<br>1.10 stringBuilder和stringBuffer的区别<br>1.11 Java序列化的原理<br>1.11 Java8、9、10、11的一些新特性介绍<br>1.12 java中四种修饰符的限制范围。<br>1.13 Object类中的方法。<br>1.14 浅拷贝 深拷贝<br>1.15 接口和抽象类的区别，注意JDK8的接口可以有实现。<br>1.16 动态代理的两种方式，以及区别。<br>1.16 传值和传引用的区别，Java是怎么样的，有没有传值引用。<br>1.17 一个ArrayList在循环过程中删除，会不会出问题，为什么。<br>1.18 Exception和Error区别<br>1.19 new关键字和newinstance()方法<br>1.20 Map、List、Set 分别说下你知道的线程安全类和线程不安全的类<br>1.21 Java防止SQL注入<br>1.22 反射原理及使用场景<br>1.23 static Vs Final ？ 如何让类不能被继承<br>1.24 内存泄露？内存溢出？<br>1.25 重写Vs重载<br>1.26 Lambda表达式实现<br>1.27 ClassNotFoundException和NoClassDefFoundError的区别</p>
+<h3 id="2-并发、多线程"><a href="#2-并发、多线程" class="headerlink" title="2. 并发、多线程"></a>2. 并发、多线程</h3><p>2.1 volatile 关键字 原理<br>2.2 对java中锁的理解<br>2.3 悲观锁 乐观锁<br>2.4 对CAS的理解，java中的CAS，如何不用unsafe实现CAS<br>2.5 java 线程创建方式<br>线程run和start的区别？两次start同一个线程会怎么样？<br>2.6 Java线程池的原理？线程池有哪些？线程池参数是什么？<br>2.7 ThreadLocal及其应用场景<br>2.8 对线程安全的理解<br>2.9 get需要加锁么，为什么？<br>2.10 Lock的底层原理。synchronized、Lock、ReentrantLock、ReadWriteLock。<br>2.11 AtomicInteger怎么实现原子修改的？<br>2.11 分布式环境下，怎么保证线程安全。<br>2.12 产生死锁的四个必要条件？<br>2.13 如何中断线程<br>2.14 线程的状态都有哪些。<br>2.15 wait、notify、notifyAll、await、signal、sleep、yield<br>2.16 Callable和Future的了解。<br>2.17 synchronized关键字的用法，优缺点。<br>2.18 可重入锁的用处及实现原理，写时复制的过程，读写锁，分段锁<br>2.19 ABC三个线程如何保证顺序执行。<br>2.20 双线程交替打印奇偶 （阿里）</p>
+<h3 id="3-JVM"><a href="#3-JVM" class="headerlink" title="3. JVM"></a>3. JVM</h3><p>3.1 常见GC算法、 CMS收集器、G1<br>3.2 jvm内存模型 &amp;&amp; Java内存模型<br>3.3 怎么判断对象可被回收？GC 可达性分析中哪些算是GC ROOT？<br>3.4 eden survivor区的比例，为什么是这个比例，eden survivor的工作过程。<br>3.4 fullgc是否可以回收方法区<br>3.5 什么对象会进老年代？ 为什么新生代使用复制算法？<br>3.6 被GC判断为”垃圾”的对象一定会回收吗<br>3.7 强制young gc会有什么问题？<br>3.8 类加载的过程 Java为什么要设计双亲委派模型？<br>3.9 什么时候会触发minor gc，什么时候会触发full gc？<br>3.10 G1和ZGC的区别<br>3.12 你知道强引用、弱引用和软引用吗? GC对他们执行怎样的操作。<br>3.13 JVM方法栈的工作过程，方法栈和本地方法栈有什么区别。<br>3.14 JVM的栈中引用如何和堆中的对象产生关联。<br>3.15 逃逸分析技术。<br>3.16 Java是否可以GC直接内存。<br>3.17 常用的JVM调优参数。<br>3.6 具体的性能调优步骤吗？fullgc的时候会导致接口的响应速度特别慢，该如何排查和解决。<br>3.18 dump文件的分析。<br>3.19 Java有没有主动触发GC的方式<br>3.20 假如现在在同一台机器上开两个java项目，有几个java虚拟机？<br>3.21 javac编译期工作流程</p>
+<h3 id="4-Spring"><a href="#4-Spring" class="headerlink" title="4. Spring"></a>4. Spring</h3><p>4.1 spring IOC 过程<br>4.2 循环依赖怎么解决的<br>4.3 spring AOP，动态代理是怎么实现的<br>4.4 spring BeanDefinition作用<br>4.5 spring @Autowired (@Resource, 类似）实现原理<br>4.6 bean的生命周期<br>4.7 Bean的默认作用范围是什么？其他的作用范围？<br>4.8 Spring的单例是怎么实现的？<br>4.11 SpringMVC不同用户登录的信息怎么保证线程安全的？<br>4.12 Spring用了哪些设计模式。<br>4.13 Spring注入bean的方式。<br>4.14 什么是IOC，什么是依赖注入。<br>4.15 Spring具有什么特点（IOC和AOP）<br>4.16 几种scope区别，aop实现有哪几种实现，<br>4.17 spring的事务及实现模式<br>4.19 对Spring、SpringMVC、springBoot理解<br>4.20 @transactional注解在什么情况下会失效，为什么。<br>4.21 SpringMVC的Controller是如何将参数和前端传来的数据一一对应的。<br>4.23 Spring如何维护它拥有的bean。<br>4.24 自定义注解的实现。<br>4.25 如何自己设计IOC框架<br>4.26 Quartz是如何完成定时任务的。<br>4.18 servlet的生命周期，怎么判断是get请求还是post请求，后台实现session共享的方法。Java web过滤器的生命周期？过滤器和拦截器的区别。<br>4.19 BeanFactory 和 FactoryBean 的区别<br>4.20 Spring中配置id或name相同的Bean可能引发的问题及解决方案<br>4.21 防止Web表单重复提交的方法</p>
+<h3 id="5-消息中间件"><a href="#5-消息中间件" class="headerlink" title="5. 消息中间件"></a>5. 消息中间件</h3><p>5.1 kafka有哪些组件，kafka controller选举过程，kafka leader重选举过程<br>5.2 kafka 最早是为了解决什么问题设计的<br>5.3 为什么kafka用zookeeper来存储metadata，而不是用db来存储<br>5.4 kafka 只有一次生产 只有一次消费怎么做<br>5.5 kafka的消费模式？kafka怎么做有序消费？kafka 重消费解决？消息丢失怎么解决？<br>5.6 Kafka的Replicas的作用？</p>
+<h3 id="6-算法"><a href="#6-算法" class="headerlink" title="6. 算法"></a>6. 算法</h3><p>6.1 B+树<br>6.2 hash和B+树的区别？分别应用于什么场景？哪个比较好？<br>6.3 红黑树了解么，时间复杂度? 五个特性<br>6.4 堆排序的时间复杂度<br>6.5 快速排序，堆排序，插入排序<br>6.6 一致性Hash算法，一致性Hash算法的应用</p>
+<p>限于篇幅，我没有给出答案，感兴趣的可以关注公众号『后端精进之路』，发送『面经』获取完整的答案, pdf有80页左右。</p>
+<hr>
+<p>本文由『后端精进之路』原创，首发于博客 <a target="_blank" rel="noopener" href="http://teckee.github.io/">http://teckee.github.io/</a> ， 转载请注明出处</p>
+<p>搜索『后端精进之路』关注公众号，立刻获取最新文章和<strong>价值2000元的BATJ精品面试课程</strong>。</p>
+<p><img src="https://user-gold-cdn.xitu.io/2019/11/25/16ea178d8af3d60a?w=2125&h=765&f=jpeg&s=353670" alt="后端精进之路.png"></p>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Vincent
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://lfeng.tech/interview_offer_share.html" title="Offer经验分享 - 蚂蚁金服、字节跳动、PDD、百度、华为、Paypal - Java社招面经">https://lfeng.tech/interview_offer_share.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/search/" rel="tag"># search</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/Distributed_System_2_framework_evolution.html" rel="prev" title="分布式思维-(2) 分布式架构演进">
+      <i class="fa fa-chevron-left"></i> 分布式思维-(2) 分布式架构演进
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/home-server-configuration.html" rel="next" title="家庭服务器搭建并提供公网Http服务">
+      家庭服务器搭建并提供公网Http服务 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9D%A2%E8%AF%95%E4%BD%93%E9%AA%8C"><span class="nav-number">1.</span> <span class="nav-text">面试体验</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8D%8E%E4%B8%BA"><span class="nav-number">1.1.</span> <span class="nav-text">华为</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%9A%82%E8%9A%81%E9%87%91%E6%9C%8D"><span class="nav-number">1.2.</span> <span class="nav-text">蚂蚁金服</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#PDD"><span class="nav-number">1.3.</span> <span class="nav-text">PDD</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%99%BE%E5%BA%A6"><span class="nav-number">1.4.</span> <span class="nav-text">百度</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Paypal"><span class="nav-number">1.5.</span> <span class="nav-text">Paypal</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%97%E8%8A%82%E8%B7%B3%E5%8A%A8"><span class="nav-number">1.6.</span> <span class="nav-text">字节跳动</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%8F%E9%AA%8C%E6%80%BB%E7%BB%93"><span class="nav-number">2.</span> <span class="nav-text">经验总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9D%A2%E8%AF%95%E9%A2%98%E5%88%86%E4%BA%AB"><span class="nav-number">3.</span> <span class="nav-text">面试题分享</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-Java%E5%9F%BA%E7%A1%80"><span class="nav-number">3.1.</span> <span class="nav-text">1. Java基础</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E5%B9%B6%E5%8F%91%E3%80%81%E5%A4%9A%E7%BA%BF%E7%A8%8B"><span class="nav-number">3.2.</span> <span class="nav-text">2. 并发、多线程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-JVM"><span class="nav-number">3.3.</span> <span class="nav-text">3. JVM</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-Spring"><span class="nav-number">3.4.</span> <span class="nav-text">4. Spring</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-%E6%B6%88%E6%81%AF%E4%B8%AD%E9%97%B4%E4%BB%B6"><span class="nav-number">3.5.</span> <span class="nav-text">5. 消息中间件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-%E7%AE%97%E6%B3%95"><span class="nav-number">3.6.</span> <span class="nav-text">6. 算法</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Vincent"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Vincent</p>
+  <div class="site-description" itemprop="description">Vincent's tech blog</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">64</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">23</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/teckee" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;teckee" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:h0ck@foxmail.com" title="E-Mail → mailto:h0ck@foxmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+  <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">沪ICP备19042895号-2 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Vincent</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'cgQ905Fj6xbazWtyi9b1hafr-gzGzoHsz',
+      appKey     : '68EFTwnd9XYY352gRUJlJyMu',
+      placeholder: "Just go go",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

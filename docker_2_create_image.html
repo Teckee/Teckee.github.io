@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"lfeng.tech","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="上篇文章引入了Docker的基本原理和操作，本节文章主要介绍如何制作Docker镜像和发布。 镜像文件结构Docker镜像的本质是一系列文件的集合，这些文件依次叠加，形成了最后的镜像文件,类似于下图所示的结构，  从底层往上，依次是文件系统层，操作系统层，专有镜像层，读写层。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Docker系列-(2) 镜像制作与发布">
+<meta property="og:url" content="https://lfeng.tech/docker_2_create_image.html">
+<meta property="og:site_name" content="Vincent&#39;s Notes">
+<meta property="og:description" content="上篇文章引入了Docker的基本原理和操作，本节文章主要介绍如何制作Docker镜像和发布。 镜像文件结构Docker镜像的本质是一系列文件的集合，这些文件依次叠加，形成了最后的镜像文件,类似于下图所示的结构，  从底层往上，依次是文件系统层，操作系统层，专有镜像层，读写层。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223333_50aa4.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223333_b8b5a.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223334_88861.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223334_00464.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223335_fe556.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223335_7d6b2.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223336_efbd6.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223336_185e7.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223337_4d0d2.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223337_3f8b1.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223337_60411.jpg">
+<meta property="article:published_time" content="2019-11-24T21:34:49.000Z">
+<meta property="article:modified_time" content="2022-12-11T14:33:37.610Z">
+<meta property="article:author" content="Vincent">
+<meta property="article:tag" content="Docker">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://imgs.lfeng.tech/images/blog/20221211223333_50aa4.jpg">
+
+<link rel="canonical" href="https://lfeng.tech/docker_2_create_image.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Docker系列-(2) 镜像制作与发布 | Vincent's Notes</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Vincent's Notes</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://lfeng.tech/docker_2_create_image.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Vincent">
+      <meta itemprop="description" content="Vincent's tech blog">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Vincent's Notes">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Docker系列-(2) 镜像制作与发布
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-11-24 21:34:49" itemprop="dateCreated datePublished" datetime="2019-11-24T21:34:49Z">2019-11-24</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-12-11 14:33:37" itemprop="dateModified" datetime="2022-12-11T14:33:37Z">2022-12-11</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/docker_2_create_image.html" class="post-meta-item leancloud_visitors" data-flag-title="Docker系列-(2) 镜像制作与发布" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/docker_2_create_image.html#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/docker_2_create_image.html" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><img src="https://imgs.lfeng.tech/images/blog/20221211223333_50aa4.jpg" alt="docker.png"></p>
+<p>上篇文章引入了Docker的基本原理和操作，本节文章主要介绍如何制作Docker镜像和发布。</p>
+<h2 id="镜像文件结构"><a href="#镜像文件结构" class="headerlink" title="镜像文件结构"></a>镜像文件结构</h2><p>Docker镜像的本质是一系列文件的集合，这些文件依次叠加，形成了最后的镜像文件,类似于下图所示的结构，</p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223333_b8b5a.jpg" alt="Screen Shot 2019-11-24 at 11.42.39 AM.png"></p>
+<p>从底层往上，依次是文件系统层，操作系统层，专有镜像层，读写层。</p>
+<span id="more"></span>
+
+<ul>
+<li><p>启动文件层：Docker启动时的用到的文件系统，启动完成后会自动脱离，用户不会与这一层直接打交道。</p>
+</li>
+<li><p>操作系统层：这一层主要是操作系统相关的一些文件，根据发行版本的不同，可能有CentsOS、Ubuntu等等。文件包含dev，/proc，/bin，/etc 等目录, 是一个最小化的操作系统，很多工具都没有提供，包括vi、wget、curl等。注意这一层不包含linux内核，只是可在任何满足要求的linux内核上运行。</p>
+</li>
+<li><p>专有镜像层：一般各大软件都会基于上面两层制作专有的镜像，比如nginx、tomcat等，都有专门的官方镜像，可以直接在docker hub上下载。</p>
+</li>
+<li><p>读写层：这是我们制作自己的镜像时需要操作的层，是一个动态的运行环境，在后续镜像制作中的比如ENV, Volume,cmd等操作最终落实到此运行环境中。</p>
+</li>
+</ul>
+<blockquote>
+<p>制作镜像的实质就是修改读写层。当需要修改镜像内的某个文件时，只对处于最上方的读写层进行了变动，不复写下层已有文件系统的内容，已有文件在只读层中的原始版本仍然存在，但会被读写层中的新版本文件所隐藏，当 docker commit 这个修改过的容器文件系统为一个新的镜像时，保存的内容仅为最上层读写文件系统中被更新过的文件。</p>
+</blockquote>
+<p>可以通过history命令查看镜像层，</p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223334_88861.jpg" alt="Screen Shot 2019-11-24 at 3.05.19 PM.png"></p>
+<h2 id="制作镜像"><a href="#制作镜像" class="headerlink" title="制作镜像"></a>制作镜像</h2><p>制作镜像有两种通用的方法，第一种是直接通过配置好的Container来生成镜像；另外一种是通过Dockerfile的方式，基于已有的镜像来生成新的镜像，这种方法更为常用。</p>
+<h3 id="配置Container制作镜像"><a href="#配置Container制作镜像" class="headerlink" title="配置Container制作镜像"></a>配置Container制作镜像</h3><p>这里以制作nginx的镜像为例，介绍整个制作流程。</p>
+<p>1）下载基础镜像，这里以Ubuntu作为基础镜像。由于本地没有镜像可以先利用<code>docker search</code>获取官方镜像的名称，然后<code>docker pull</code>将镜像下载到本地。</p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223334_00464.jpg" alt="Screen Shot 2019-11-24 at 3.18.12 PM.png"></p>
+<p>2）以交互方式启动镜像，方便在容器中安装软件。<code>-it</code>表示交互方式，<code>/bin/bash</code>为指定启动的终端。下图可以看到已经成功进入到容器内部了。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -it ubuntu:latest /bin/bash</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223335_fe556.jpg" alt="Screen Shot 2019-11-24 at 3.21.23 PM.png"></p>
+<p>3）现在按照Nginx正常的安装流程安装即可，由于Ubuntu镜像只是一个最小化的系统，可能你需要通过<code>apt-get install</code>来安装一些需要的软件。</p>
+<p>4）退出容器，使用commit指令生成新的镜像。</p>
+<blockquote>
+<p>注意退出容器的时候，也有两种方法，通常直接exit就可以，但是这样容器也会关闭。如果不想关闭容器，只是退出终端，可以使用Ctrl+P+Q快捷键，此时退出后，容器依然在后台运行。</p>
+</blockquote>
+<p>直接运行<code>docker commit</code>同时指定容器id或者name，以及镜像名就可以了，新的镜像制作完成了。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker commit e0c618df0979 ubuntu-nginx</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223335_7d6b2.jpg" alt="Screen Shot 2019-11-24 at 3.32.46 PM.png"></p>
+<p>接下来可以通过正常的方式启动镜像了。</p>
+<h3 id="使用Dockerfile制作"><a href="#使用Dockerfile制作" class="headerlink" title="使用Dockerfile制作"></a>使用Dockerfile制作</h3><p>上面介绍了手动进入容器内部，制作Docker镜像的方式，一般比较繁琐。通常我们会使用Dockerfile的方式制作镜像，这种方式下我们需要编写Dockerfile文件。</p>
+<h4 id="Dockerfile文件"><a href="#Dockerfile文件" class="headerlink" title="Dockerfile文件"></a>Dockerfile文件</h4><p>Dockerfile是一个文本格式的配置文件，用户可以使用Dockerfile快速创建自定义镜像。</p>
+<p>下面是一个简单的Dockerfile文件，先将编译生成的jar文件复制到容器，然后声明容器暴露的端口，最后指定在启动容器时需要运行的指令。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">FROM openjdk:8</span><br><span class="line">ADD [&quot;target/bazaar-1.0.0.jar&quot;, &quot;bazaar.jar&quot;]</span><br><span class="line">EXPOSE 1234</span><br><span class="line">ENTRYPOINT [&quot;java&quot;, &quot;-jar&quot;, &quot;/bazaar.jar&quot;]</span><br></pre></td></tr></table></figure>
+
+<p>Dockerfile中常用的指令集有：</p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223336_efbd6.jpg" alt="Picture1.png"></p>
+<ul>
+<li>FROM: 第一条指令必须为FROM指令，用于指定基础镜像。</li>
+<li>MAINTAINER: 指定维护者信息。</li>
+<li>RUN: 会在shell终端运行命令。</li>
+<li>EXPOSE: 格式为 EXPOSE [ …],声明容器需要暴露的端口号。镜像启动可以通过 –P 或 -p 进行端口映射的绑定。</li>
+<li>ENV: 指定一个环境变量，可以被后续的RUN引用，并且在容器中记录该环境变量。</li>
+<li>ADD: 该命令将复制指定的到容器中的。其中可以是Dockerfile所在目录的一个相对路径；也可以是tar文件（自动解压）。</li>
+<li>VOLUME: 格式为 VOLUME [path]。创建一个可以从本地主机或其他容器挂载点，一般用来存放需要保持的数据。</li>
+<li>USER: 指定运行容器时的用户名，后续的RUN也会指定该用户。</li>
+<li>WORKDIR: 指定工作空间，后续命令都在此目录下执行。</li>
+</ul>
+<p>比较复杂的是CMD与ENTRYPOINT的对比，两者都可以运行指令，但是稍有不同。</p>
+<ul>
+<li>CMD给出的是一个容器的默认的可执行体，可以被覆盖。</li>
+<li>ENTRYPOINT才是正统地用于定义容器启动以后的执行体，这个执行体一定会被执行。</li>
+</ul>
+<p>(1) CMD单独使用</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">FROM debian:wheezy</span><br><span class="line">CMD [&quot;/bin/ping&quot;, &quot;localhost&quot;]</span><br></pre></td></tr></table></figure>
+<p>启动后不指定任何参数，将会ping localhost，</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$ docker run -it test</span><br><span class="line">PING localhost (127.0.0.1): 48 data bytes</span><br><span class="line">56 bytes from 127.0.0.1: icmp_seq=0 ttl=64 time=0.076 ms</span><br><span class="line">56 bytes from 127.0.0.1: icmp_seq=1 ttl=64 time=0.087 ms</span><br><span class="line">56 bytes from 127.0.0.1: icmp_seq=2 ttl=64 time=0.090 ms</span><br><span class="line">^C--- localhost ping statistics ---</span><br><span class="line">3 packets transmitted, 3 packets received, 0% packet loss</span><br><span class="line">round-trip min/avg/max/stddev = 0.076/0.084/0.090/0.000 ms</span><br></pre></td></tr></table></figure>
+<p>但是如果启动容器的同时带有新的指令，则<strong>原有的CMD会被新的指令覆盖</strong>，</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker run -it test bash</span><br><span class="line">root@e8bb7249b843:/#</span><br></pre></td></tr></table></figure>
+
+<p>（2）CMD和ENTRYPOINT同时使用</p>
+<p>CMD通常用作传递参数给ENTRYPOINT，如下例子所示：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">FROM debian:wheezy</span><br><span class="line">ENTRYPOINT [&quot;/bin/ping&quot;]</span><br><span class="line">CMD [&quot;localhost&quot;]</span><br></pre></td></tr></table></figure>
+
+<p>直接运行镜像并不指定任何参数，将会一直ping localhost</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$ docker run -it test</span><br><span class="line">PING localhost (127.0.0.1): 48 data bytes</span><br><span class="line">56 bytes from 127.0.0.1: icmp_seq=0 ttl=64 time=0.096 ms</span><br><span class="line">56 bytes from 127.0.0.1: icmp_seq=1 ttl=64 time=0.088 ms</span><br><span class="line">56 bytes from 127.0.0.1: icmp_seq=2 ttl=64 time=0.088 ms</span><br><span class="line">^C--- localhost ping statistics ---</span><br><span class="line">3 packets transmitted, 3 packets received, 0% packet loss</span><br><span class="line">round-trip min/avg/max/stddev = 0.088/0.091/0.096/0.000 ms</span><br></pre></td></tr></table></figure>
+
+<p>如果直接运行的同时，指定一个参数，将会ping对应的参数，此时CMD被覆盖。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$ docker run -it test google.com</span><br><span class="line">PING google.com (173.194.45.70): 48 data bytes</span><br><span class="line">56 bytes from 173.194.45.70: icmp_seq=0 ttl=55 time=32.583 ms</span><br><span class="line">56 bytes from 173.194.45.70: icmp_seq=2 ttl=55 time=30.327 ms</span><br><span class="line">56 bytes from 173.194.45.70: icmp_seq=4 ttl=55 time=46.379 ms</span><br><span class="line">^C--- google.com ping statistics ---</span><br><span class="line">5 packets transmitted, 3 packets received, 40% packet loss</span><br><span class="line">round-trip min/avg/max/stddev = 30.327/36.430/46.379/7.095 ms</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>如果你想要制作的容器更加通用一些，可以在Dockerfile中使用<code>CMD [&quot;/path/dedicated_command&quot;]</code>，这样你可以在运行容器的同时，根据需求来覆盖已有的指令。</p>
+</blockquote>
+<h4 id="利用Dockerfile制作容器"><a href="#利用Dockerfile制作容器" class="headerlink" title="利用Dockerfile制作容器"></a>利用Dockerfile制作容器</h4><p>上面介绍了Dockerfile中常用的指令，一般我们写好Dockerfile之后，直接进入到Dockerfile所在的目录，运行docker build即可，Docker会根据Dockerfile中指定的步骤来生成我们的镜像。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker build -t your_image_name .</span><br></pre></td></tr></table></figure>
+
+<p>以上就是制作镜像的所有流程，接下来介绍镜像的发布。</p>
+<h2 id="镜像发布"><a href="#镜像发布" class="headerlink" title="镜像发布"></a>镜像发布</h2><p>镜像发布有两种选择，可以直接push到官方的docker hub，你只需要注册一个docker账号即可；也可以自己在本地创建私有仓库，将镜像push这里。</p>
+<h3 id="Docker-Hub"><a href="#Docker-Hub" class="headerlink" title="Docker Hub"></a>Docker Hub</h3><p>打开 <a target="_blank" rel="noopener" href="https://hub.docker.com/">https://hub.docker.com/</a> 注册好账户后，记住好自己的账户名，待会需要将本地的镜像打tag带上用户名，然后进行push。</p>
+<p>首先使用如下的指令就给本地镜像打tag，</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker tag myImage:v1 your_user_name/myImage:v1</span><br></pre></td></tr></table></figure>
+<p>接下来直接push就行，会自动push到官方仓库，注意可能会需要<code>docker login</code>一下，这里直接输入用户名密码即可。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker push your_user_name/myImage:v1</span><br></pre></td></tr></table></figure>
+<p>这样官方仓库就有你的Image了， 以后直接docker pull就行了。</p>
+<h3 id="本地私有仓库"><a href="#本地私有仓库" class="headerlink" title="本地私有仓库"></a>本地私有仓库</h3><p>(1) 首先下载registry镜像：docker pull registry.</p>
+<p>(2) 接着在5000端口启动，docker run -d –name reg -p 5000:5000 registry.</p>
+<p>(3) 配置http传输，私服默认只能使用https，需要配置开放http.</p>
+<p>以centos上的配置为例，</p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223336_185e7.jpg" alt="Picture1.png"></p>
+<p>注意图中的ip根据实际registry的ip来进行设置，可以通过docker inspect reg来找到。</p>
+<p>配置完毕重启下docker服务</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">systemctl daemon-reload </span><br><span class="line">systemctl restart docker</span><br></pre></td></tr></table></figure>
+
+<p>以上就完成了私有仓库的创建。</p>
+<p>接下来直接push Image到仓库即可，流程和push到官方仓库类似，只是打tag的用户名改成私有仓库的地址。</p>
+<p>（1）打tag</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker tag hello-world http://192.168.244.7:5000/hello-world </span><br></pre></td></tr></table></figure>
+
+<p>（2）push镜像</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker push 192.168.244.7:5000/hello-world</span><br></pre></td></tr></table></figure>
+
+<p>（3）查询镜像：</p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223337_4d0d2.jpg" alt="Picture1.png"></p>
+<p>（4）查询镜像版本：</p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223337_3f8b1.jpg" alt="Picture1.png"></p>
+<p>以上就是镜像制作和发布的全部内容，下节会介绍实际部署中，docker-compose的使用以及docker的网络通信。</p>
+<p>参考链接：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/21553353/what-is-the-difference-between-cmd-and-entrypoint-in-a-dockerfile">https://stackoverflow.com/questions/21553353/what-is-the-difference-between-cmd-and-entrypoint-in-a-dockerfile</a></li>
+</ul>
+<hr>
+<p>搜索『后端精进之路』，关注公众号，立刻获取最新文章和<strong>价值2000元的BATJ精品面试课程</strong>。</p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223337_60411.jpg" alt="后端精进之路.png"></p>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Vincent
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://lfeng.tech/docker_2_create_image.html" title="Docker系列-(2) 镜像制作与发布">https://lfeng.tech/docker_2_create_image.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Docker/" rel="tag"># Docker</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/docker_1_introduction.html" rel="prev" title="Docker系列-(1) 原理与基本操作">
+      <i class="fa fa-chevron-left"></i> Docker系列-(1) 原理与基本操作
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/docker_3_docker_compose.html" rel="next" title="Docker系列-(3) Docker-compose使用与负载均衡">
+      Docker系列-(3) Docker-compose使用与负载均衡 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%95%9C%E5%83%8F%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84"><span class="nav-number">1.</span> <span class="nav-text">镜像文件结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%B6%E4%BD%9C%E9%95%9C%E5%83%8F"><span class="nav-number">2.</span> <span class="nav-text">制作镜像</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%85%8D%E7%BD%AEContainer%E5%88%B6%E4%BD%9C%E9%95%9C%E5%83%8F"><span class="nav-number">2.1.</span> <span class="nav-text">配置Container制作镜像</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8Dockerfile%E5%88%B6%E4%BD%9C"><span class="nav-number">2.2.</span> <span class="nav-text">使用Dockerfile制作</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Dockerfile%E6%96%87%E4%BB%B6"><span class="nav-number">2.2.1.</span> <span class="nav-text">Dockerfile文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%A9%E7%94%A8Dockerfile%E5%88%B6%E4%BD%9C%E5%AE%B9%E5%99%A8"><span class="nav-number">2.2.2.</span> <span class="nav-text">利用Dockerfile制作容器</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%95%9C%E5%83%8F%E5%8F%91%E5%B8%83"><span class="nav-number">3.</span> <span class="nav-text">镜像发布</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Docker-Hub"><span class="nav-number">3.1.</span> <span class="nav-text">Docker Hub</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%AC%E5%9C%B0%E7%A7%81%E6%9C%89%E4%BB%93%E5%BA%93"><span class="nav-number">3.2.</span> <span class="nav-text">本地私有仓库</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Vincent"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Vincent</p>
+  <div class="site-description" itemprop="description">Vincent's tech blog</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">64</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">23</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/teckee" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;teckee" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:h0ck@foxmail.com" title="E-Mail → mailto:h0ck@foxmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+  <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">沪ICP备19042895号-2 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Vincent</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'cgQ905Fj6xbazWtyi9b1hafr-gzGzoHsz',
+      appKey     : '68EFTwnd9XYY352gRUJlJyMu',
+      placeholder: "Just go go",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"lfeng.tech","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="1. Spark基础Spark是一种基于内存的快速、通用、可扩展的大数据分析引擎。 下图是Spark的发展历史，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spark系列 - (1) Spark基础">
+<meta property="og:url" content="https://lfeng.tech/Spark_1_Basic_knowledge.html">
+<meta property="og:site_name" content="Vincent&#39;s Notes">
+<meta property="og:description" content="1. Spark基础Spark是一种基于内存的快速、通用、可扩展的大数据分析引擎。 下图是Spark的发展历史，">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223354_025af.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223354_1072a.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223355_18195.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223355_2a777.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223355_31103.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223355_7e1b8.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223355_a8cca.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223356_e90c7.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223356_d47c5.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223356_a06ff.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223356_f1be8.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223357_4dbe3.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223357_b978a.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223357_3e9c3.jpg">
+<meta property="article:published_time" content="2022-04-24T21:43:49.000Z">
+<meta property="article:modified_time" content="2022-12-11T14:33:57.600Z">
+<meta property="article:author" content="Vincent">
+<meta property="article:tag" content="Spark">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://imgs.lfeng.tech/images/blog/20221211223354_025af.jpg">
+
+<link rel="canonical" href="https://lfeng.tech/Spark_1_Basic_knowledge.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Spark系列 - (1) Spark基础 | Vincent's Notes</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Vincent's Notes</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://lfeng.tech/Spark_1_Basic_knowledge.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Vincent">
+      <meta itemprop="description" content="Vincent's tech blog">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Vincent's Notes">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Spark系列 - (1) Spark基础
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-04-24 21:43:49" itemprop="dateCreated datePublished" datetime="2022-04-24T21:43:49Z">2022-04-24</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-12-11 14:33:57" itemprop="dateModified" datetime="2022-12-11T14:33:57Z">2022-12-11</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Spark/" itemprop="url" rel="index"><span itemprop="name">Spark</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/Spark_1_Basic_knowledge.html" class="post-meta-item leancloud_visitors" data-flag-title="Spark系列 - (1) Spark基础" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/Spark_1_Basic_knowledge.html#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/Spark_1_Basic_knowledge.html" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><img src="https://imgs.lfeng.tech/images/blog/20221211223354_025af.jpg" alt="Spark"></p>
+<h2 id="1-Spark基础"><a href="#1-Spark基础" class="headerlink" title="1. Spark基础"></a>1. Spark基础</h2><p>Spark是一种基于内存的快速、通用、可扩展的大数据分析引擎。</p>
+<p>下图是Spark的发展历史，</p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223354_1072a.jpg"></p>
+<span id="more"></span>
+
+<h3 id="1-1-Spark核心模块"><a href="#1-1-Spark核心模块" class="headerlink" title="1.1 Spark核心模块"></a>1.1 Spark核心模块</h3><p><img src="https://imgs.lfeng.tech/images/blog/20221211223355_18195.jpg"></p>
+<ul>
+<li><p><strong>Spark Core</strong>：实现了 Spark 的基本功能，包含任务调度、内存管理、错误恢复、与存储 系统交互等模块。Spark Core 中还包含了对弹性分布式数据集(Resilient Distributed DataSet，简称 RDD)的 API 定义。</p>
+</li>
+<li><p><strong>Spark SQL</strong>：是 Spark 用来操作结构化数据的程序包。通过 Spark SQL，我们可以使用 SQL 或者 Apache Hive 版本的 SQL 方言(HQL)来查询数据。Spark SQL 支持多种数据源， 比如 Hive 表、Parquet 以及 JSON 等。</p>
+</li>
+<li><p><strong>Spark Streaming</strong>：是 Spark 提供的对实时数据进行流式计算的组件。提供了用来操作数据流的 API，并且与 Spark Core 中的 RDD API 高度对应。</p>
+</li>
+<li><p><strong>Spark MLlib</strong>：提供常见的机器学习(ML)功能的程序库。包括分类、回归、聚类、协同 过滤等，还提供了模型评估、数据 导入等额外的支持功能。</p>
+</li>
+<li><p><strong>集群管理器</strong>：Spark 设计为可以高效地在一个计算节点到数千个计算节点之间伸缩计 算。为了实现这样的要求，同时获得最大灵活性，Spark 支持在各种集群管理器(Cluster Manager)上运行，包括 Hadoop YARN、Apache Mesos，以及 Spark 自带的一个简易调度器，叫作独立调度器。</p>
+</li>
+</ul>
+<p><strong>Spark特点：</strong></p>
+<p>1）快：与Hadoop的MapReduce相比，Spark基于内存的运算要快100倍以上，基于硬盘的运算也要快10倍以 上。Spark实现了高效的DAG执行引擎，可以通过基于内存来高效处理数据流。计算的中间结果是存在于内存中 的。</p>
+<p>2）易用：Spark支持Java、Python和Scala的API，还支持超过80种高级算法，使用户可以快速构建不同的应 用。而且Spark支持交互式的Python和Scala的Shell，可以非常方便地在这些Shell中使用Spark集群来验证解决问 题的方法。</p>
+<p>3）通用：Spark提供了统一的解决方案。Spark可以用于批处理、交互式查询（Spark SQL）、实时流处理 （Spark Streaming）、机器学习（Spark MLlib）和图计算（GraphX）。这些不同类型的处理都可以在同一个应 用中无缝使用。减少了开发和维护的人力成本和部署平台的物力成本。</p>
+<p>4）兼容性：Spark可以非常方便地与其他的开源产品进行融合。比如，Spark可以使用Hadoop的YARN和 Apache Mesos作为它的资源管理和调度器，并且可以处理所有Hadoop支持的数据，包括HDFS、HBase等。这对 于已经部署Hadoop集群的用户特别重要，因为不需要做任何数据迁移就可以使用Spark的强大处理能力</p>
+<h3 id="1-2-Spark与Hadoop的区别"><a href="#1-2-Spark与Hadoop的区别" class="headerlink" title="1.2 Spark与Hadoop的区别"></a>1.2 Spark与Hadoop的区别</h3><p>Hadoop是一种分布式存储系统，而Spark是一种分布式计算框架。与其说是Spark和Hadoop的区别，倒不如说是Map Reduce和Spark的区别。</p>
+<p>下图展示了两者最主要的区别，</p>
+<ul>
+<li><p>MapReduce慢的原因：频繁读写磁盘导致额外的复制，序列化和磁盘IO开销。<br><img src="https://imgs.lfeng.tech/images/blog/20221211223355_2a777.jpg"></p>
+</li>
+<li><p>Spark为何快：内存计算+DAG（delay scheduling）<br><img src="https://imgs.lfeng.tech/images/blog/20221211223355_31103.jpg"></p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>比较项目</th>
+<th>Map Reduce</th>
+<th>Spark</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>框架</td>
+<td>MapReduce由Map和Reduce两个阶段组成，并且通过Shuffle将两个阶段连接起来。（套用MapReduce模型解决问题，不得不将问题分解为若干个有依赖关系的子问题，每个子问题对应一个MapReduce作业，最终所有作业形成一个DAG）</td>
+<td>Spark是通用的DAG框架，可以将多个有依赖关系的作业转换成一个大的DAG。（核心思想是将Map和Reduce两个操作进一步拆分为多个元操作，并通过一些控制程序组装后形成一个大的DAG作业。）</td>
+</tr>
+<tr>
+<td>中间结果存储方式（最大区别）</td>
+<td>Map 步骤是在不同机器上独立且同步运行的，它的主要目的是将数据转换为 key-value 的形式；而 Reduce 步骤是做聚合运算，它也是在不同机器上独立且同步运行的。Map 和 Reduce 中间夹杂着一步数据移动，也就是 shuffle，这步操作会涉及数量巨大的网络传输（network I/O），需要耗费大量的时间。 由于 MapReduce 的框架限制，一个 MapReduce 任务只能包含一次 Map 和一次 Reduce，计算完成之后，MapReduce 会将运算结果写回到磁盘中（更准确地说是分布式存储系统）供下次计算使用。这样的读写数据会引起大量的网络传输以及磁盘读写，极其耗时，而且它们都是没什么实际价值的废操作。</td>
+<td>在Spark中，使用内存（内存不够使用本次磁盘）替代了使用HDFS存储中间结果。对于迭代运算效率更高。</td>
+</tr>
+<tr>
+<td>操作模型</td>
+<td>Hadoop只提供了Map和Reduce两种操作，所有作业都得转换成Map和Reduce的操作</td>
+<td>Spark提供了多种数据集操作类型，比如transformation包括map，filter，groupByKey等，actions操作包括Count，collect，reduce，lookup等等。</td>
+</tr>
+<tr>
+<td>应用场景</td>
+<td>离线大规模分析处理</td>
+<td>Hadoop适用的场景基本都合适，特别对于迭代计算相比Hadoop有更大的优势。（只有map操作或者只有一次reduce操作的场景下，两种性能差别不大。）</td>
+</tr>
+</tbody></table>
+<p>总结：Spark采用更先进的架构，在灵活性、易用性、性能等方面都比MapReduce更有优势，有取代MapReduce的趋势，但hdfs和yarn依然有其不可替代的作用。</p>
+<h3 id="1-3-Spark的4种运行模式"><a href="#1-3-Spark的4种运行模式" class="headerlink" title="1.3 Spark的4种运行模式"></a>1.3 Spark的4种运行模式</h3><p>目前Spark的运行模式主要有以下4种:</p>
+<ul>
+<li>local:主要用于开发调试Spark应用程序</li>
+<li>Standlone:利用Spark自带的资源管理与调度器运行Spark集群，采用Master/Slave结构，为解决单点故障，可以采用Zookeeper实现高可靠(High Availability, HA)</li>
+<li>Apache Mesos:运行在著名的Mesos资源管理框架基础之上，该集群运行模式将资源管理管理交给Mesos,Spark只负责运行任务调度和计算</li>
+<li>Hadoop YARN:集群运行在Yarn资源管理器上，资源管理交给YARN，Spark只负责进行任务调度和计算。</li>
+</ul>
+<p>一个完整的Spark应用程序，在提交集群运行时，它涉及到如下图所示的组件：</p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223355_7e1b8.jpg"></p>
+<p>每个Spark应用都由一个驱动器程序(drive program)来发起集群上的各种并行操作。驱动器程序包含应用的main函数，驱动器负责创建SparkContext,SparkContext可以与不同种类的集群资源管理器(Cluster Manager)，例如Hadoop YARN，Mesos进行通信，获取到集群进行所需的资源后，SparkContext将得到集群中工作节点(Worker Node)上对应的Executor(不同的Spark程序有不同的Executor,他们之间是相互独立的进程，Executor为应用程序提供分布式计算以及数据存储功能)，之后SparkContext将应用程序代码发送到各Executor,最后将任务(Task)分配给executors执行。</p>
+<ul>
+<li>ClusterManager:在Standalone模式中即为Master节点（主节点），控制整个集群，监控Worker.在YARN中为ResourceManager</li>
+<li>Worker:从节点，负责控制计算节点，启动Executor或Driver。在YARN模式中为NodeManager,负责计算节点的控制。</li>
+<li>Driver:运行Application的main()函数并创建SparkContect。</li>
+<li>Executor:执行器，在worker node上执行任务的组件、用于启动线程池运行任务。每个Application拥有独立的一组Executor。</li>
+<li>SparkContext:整个应用的上下文，控制应用的生命周期。</li>
+<li>RDD：Spark的计算单元，一组RDD可形成执行的有向无环图RDD Graph。</li>
+<li>DAG Scheduler:根据作业(Job)构建基于Stage的DAG，并提交Stage给TaskScheduler。</li>
+<li>TaskScheduler:将任务(Task)分发给Executor。</li>
+<li>SparkEnv:线程级别的上下文，存储运行时的重要组件的引用。</li>
+</ul>
+<blockquote>
+<p>SparkEnv内构建并包含如下一些重要组件的引用。</p>
+<p>1、MapOutPutTracker:负责Shuffle元信息的存储。<br>2、BroadcastManager:负责广播变量的控制与元信息的存储。<br>3、BlockManager:负责存储管理、创建和查找快。<br>4、MetricsSystem:监控运行时性能指标信息。<br>5、SparkConf:负责存储配置信息。</p>
+</blockquote>
+<p>接下来介绍的4种运行模式，都遵循了下图所示的通用运行流程，</p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223355_a8cca.jpg"></p>
+<p>任务提交后，都会先启动Driver进程，随后Driver进程向集群管理器注册应用程序，之后集群管 理器根据此任务的配置文件分配Executor并启动，当Driver所需的资源全部满足后，Driver开始执行main函数，Spark查询为懒执行，当执行到action算子时开始反向推算，根据宽依赖进行 stage的划分，随后每一个stage对应一个taskset，taskset中有多个task，根据本地化原则，task会被分发到指定的Executor去执行，在任务执行的过程中，Executor也会不断与Driver进行通信，报告任务运行情况。</p>
+<h4 id="1-3-1-Local模式"><a href="#1-3-1-Local模式" class="headerlink" title="1.3.1 Local模式"></a>1.3.1 Local模式</h4><p>Local模式就是运行在一台计算机上的模式，通常就是用于在本机上练手和测试。 它可以通过以下集中方式设置Master。</p>
+<p>local: 所有计算都运行在一个线程当中，没有任何并行计算，通常我们在本机执行 一些测试代码，或者练手，就用这种模式;</p>
+<p>local[K]: 指定使用几个线程来运行计算，比如local[4]就是运行4个Worker线程。通 常我们的Cpu有几个Core，就指定几个线程，最大化利用Cpu的计算能力;</p>
+<p>local[*]: 这种模式直接帮你按照Cpu最多Cores来设置线程数了。</p>
+<p>提交任务的简易流程如下：</p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223356_e90c7.jpg"></p>
+<p>其中最重要的角色就是driver和executor。</p>
+<p><strong>Driver（驱动器）</strong></p>
+<p>Spark 的驱动器是执行开发程序中的 main 方法的进程。它负责开发人员编写的用来创 建 SparkContext、创建 RDD，以及进行 RDD 的转化操作和行动操作代码的执行。如果你 是用 spark shell，那么当你启动 Spark shell 的时候，系统后台自启了一个 Spark 驱动器程 序，就是在 Spark shell 中预加载的一个叫作 sc 的 SparkContext 对象。如果驱动器程序终 止，那么 Spark 应用也就结束了。主要负责：</p>
+<blockquote>
+<p>1）把用户程序转为任务<br>2）跟踪 Executor 的运行状况<br>3）为执行器节点调度任务<br>4）UI 展示应用运行状况</p>
+</blockquote>
+<p><strong>Executor（执行器）</strong></p>
+<p>Spark Executor 是一个工作进程，负责在 Spark 作业中运行任务，任务间相互独立。 Spark 应用启动时，Executor 节点被同时启动，并且始终伴随着整个 Spark 应用的生命周 期而存在。如果有 Executor 节点发生了故障或崩溃，Spark 应用也可以继续执行，会将出 错节点上的任务调度到其他 Executor 节点上继续运行。主要负责：</p>
+<blockquote>
+<p>1）负责运行组成 Spark 应用的任务，并将结果返回给驱动器进程；<br>2）通过自身的块管理器（Block Manager）为用户程序中要求缓存的 RDD 提供内存式存储。RDD 是直接缓存在 Executor 进程内的，因此任务可以在运行时充分利用缓存数据加速运算。</p>
+</blockquote>
+<p>下面以最简单的wordCount程序为例，说明整个数据流程。</p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223356_d47c5.jpg"><br><img src="https://imgs.lfeng.tech/images/blog/20221211223356_a06ff.jpg"></p>
+<h4 id="1-3-2-Standalone模式"><a href="#1-3-2-Standalone模式" class="headerlink" title="1.3.2 Standalone模式"></a>1.3.2 Standalone模式</h4><p>构建一个由 Master+Slave 构成的 Spark 集群，Spark 运行在集群中。整个运行流程如下：</p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223356_f1be8.jpg"></p>
+<p>这种模式下，可以利用Zookeeper进行HA配置。</p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223357_4dbe3.jpg"></p>
+<h4 id="1-3-3-Yarn模式"><a href="#1-3-3-Yarn模式" class="headerlink" title="1.3.3 Yarn模式"></a>1.3.3 Yarn模式</h4><p>此模式下，Spark客户端直接连接Yarn，不需要额外构建Spark集群，有yarn-client和yarn-cluster两种模式。主要区别在于：<strong>Driver程序的运行节点。</strong></p>
+<ul>
+<li>yarn-client：Driver 程序运行在客户端，适用于交互、调试，希望立即看到 app 的输出。</li>
+<li>yarn-cluster：Driver 程序运行在由 RM（ResourceManager）启动的 AP（APPMaster），适用于生产环境。</li>
+</ul>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223357_b978a.jpg"></p>
+<h4 id="1-3-4-Mesos模式"><a href="#1-3-4-Mesos模式" class="headerlink" title="1.3.4 Mesos模式"></a>1.3.4 Mesos模式</h4><p>Spark 客户端直接连接 Mesos；不需要额外构建 Spark 集群。国内应用比较少，更多的 是运用 yarn 调度。</p>
+<h4 id="1-3-5-总结"><a href="#1-3-5-总结" class="headerlink" title="1.3.5 总结"></a>1.3.5 总结</h4><p>几种模式的对比如下：</p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223357_3e9c3.jpg"></p>
+<h3 id="1-4-Spark重要概念"><a href="#1-4-Spark重要概念" class="headerlink" title="1.4 Spark重要概念"></a>1.4 Spark重要概念</h3><ul>
+<li><p><strong>SparkContext</strong> 是程序运行调度的核心，由高层调度器DAGScheduler划分程序的每个阶段，底层调度器</p>
+</li>
+<li><p><strong>TaskScheduler</strong>划分每个阶段的具体任务。 </p>
+</li>
+<li><p><strong>SchedulerBankend</strong> 管理整个集群中为正在运行的程序分配的计算资源Executor。 </p>
+</li>
+<li><p><strong>DAG</strong> （Directed Acyclic Graph）有向无环图。Spark实现了DAG计算模型，DAG计算模型是指将一个计算任务按照计算规则分解为 若干子任务，这些子任务之间根据逻辑关系构建成有向无环图 </p>
+</li>
+<li><p><strong>RDD</strong> （Resilient Distributed Dataset）弹性分布数据集。是不可变的、Lazy级别的、粗粒度的 （数据集级别的而不是单个数据级别的）数据集合，包含一个或多个数据分片，即Partition。</p>
+</li>
+<li><p><strong>DAGScheduler</strong> 负责高层调度，划分Stage并生成程序运行的有向无环图。</p>
+</li>
+<li><p><strong>TaskScheduler</strong> 负责具体Stage内部的底层调度，具体Task的调度、容错等 </p>
+</li>
+<li><p><strong>Job</strong> （正在执行的叫ActiveJob）是Top-level的工作单元，每个Action算子都会触发一次Job，一个Job可能包含一个或多个Stage </p>
+</li>
+<li><p><strong>Stage</strong> 是用来计算中间结果的Tasksets。Tasksets中的Task逻辑对于同一RDD内的不同Partition都一样。Stage在Shuffle的地方产生，此时下一个Stage要用到上一个Stage的全部数据，所以要等上一个Stage全部执行完才能开始。Stage有两种： ShuffleMapStage和ResultStage，除了最后一个Stage是ResultStage外，其他的Stage都是ShuffleMapStage。 ShuffleMapStage会产生中间结果，以文件的方式保存在集群里，Stage经常被不同的Job共享，前提是这些Job重用了同一个RDD。 </p>
+</li>
+<li><p>Task任务执行的工作单位，每个Task会被发送到一个节点上，每个Task对应RDD的一个Partition。Taskset划分的Stage会转换成一组相关联的任务集。</p>
+</li>
+<li><p>Transformation和Action Transformation算子会由DAGScheduler划分到pipeline中，是Lazy级别的不会触发任务的执行；Action算子会触发Job来执行pipeline中的运算。</p>
+</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Vincent
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://lfeng.tech/Spark_1_Basic_knowledge.html" title="Spark系列 - (1) Spark基础">https://lfeng.tech/Spark_1_Basic_knowledge.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Spark/" rel="tag"># Spark</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/home-server-configuration.html" rel="prev" title="家庭服务器搭建并提供公网Http服务">
+      <i class="fa fa-chevron-left"></i> 家庭服务器搭建并提供公网Http服务
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/openwrt_configuration.html" rel="next" title="R2s折腾OpenWRT">
+      R2s折腾OpenWRT <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-Spark%E5%9F%BA%E7%A1%80"><span class="nav-number">1.</span> <span class="nav-text">1. Spark基础</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-Spark%E6%A0%B8%E5%BF%83%E6%A8%A1%E5%9D%97"><span class="nav-number">1.1.</span> <span class="nav-text">1.1 Spark核心模块</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-Spark%E4%B8%8EHadoop%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-number">1.2.</span> <span class="nav-text">1.2 Spark与Hadoop的区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-Spark%E7%9A%844%E7%A7%8D%E8%BF%90%E8%A1%8C%E6%A8%A1%E5%BC%8F"><span class="nav-number">1.3.</span> <span class="nav-text">1.3 Spark的4种运行模式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-3-1-Local%E6%A8%A1%E5%BC%8F"><span class="nav-number">1.3.1.</span> <span class="nav-text">1.3.1 Local模式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-3-2-Standalone%E6%A8%A1%E5%BC%8F"><span class="nav-number">1.3.2.</span> <span class="nav-text">1.3.2 Standalone模式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-3-3-Yarn%E6%A8%A1%E5%BC%8F"><span class="nav-number">1.3.3.</span> <span class="nav-text">1.3.3 Yarn模式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-3-4-Mesos%E6%A8%A1%E5%BC%8F"><span class="nav-number">1.3.4.</span> <span class="nav-text">1.3.4 Mesos模式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-3-5-%E6%80%BB%E7%BB%93"><span class="nav-number">1.3.5.</span> <span class="nav-text">1.3.5 总结</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-4-Spark%E9%87%8D%E8%A6%81%E6%A6%82%E5%BF%B5"><span class="nav-number">1.4.</span> <span class="nav-text">1.4 Spark重要概念</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Vincent"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Vincent</p>
+  <div class="site-description" itemprop="description">Vincent's tech blog</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">64</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">23</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/teckee" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;teckee" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:h0ck@foxmail.com" title="E-Mail → mailto:h0ck@foxmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+  <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">沪ICP备19042895号-2 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Vincent</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'cgQ905Fj6xbazWtyi9b1hafr-gzGzoHsz',
+      appKey     : '68EFTwnd9XYY352gRUJlJyMu',
+      placeholder: "Just go go",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

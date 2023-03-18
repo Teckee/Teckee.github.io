@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"lfeng.tech","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="5. 早期编译优化早期编译优化主要指编译期进行的优化。 java的编译期可能指的以下三种：  前端编译器：将*.java文件变成*.class文件，例如Sun的Javac、Eclipse JDT中的增量式编译器（ECJ） JIT编译器（Just In Time Compiler）：将字节码变成机器码，例如HotSpot VM的C1、C2编译器 AOT编译器（Ahead Of Time Compi">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JVM性能优化系列-(5) 早期编译优化">
+<meta property="og:url" content="https://lfeng.tech/JVM_5_early_compile_optimization.html">
+<meta property="og:site_name" content="Vincent&#39;s Notes">
+<meta property="og:description" content="5. 早期编译优化早期编译优化主要指编译期进行的优化。 java的编译期可能指的以下三种：  前端编译器：将*.java文件变成*.class文件，例如Sun的Javac、Eclipse JDT中的增量式编译器（ECJ） JIT编译器（Just In Time Compiler）：将字节码变成机器码，例如HotSpot VM的C1、C2编译器 AOT编译器（Ahead Of Time Compi">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223339_135fd.jpg">
+<meta property="og:image" content="https://imgs.lfeng.tech/images/blog/20221211223339_30239.jpg">
+<meta property="article:published_time" content="2020-02-24T23:43:49.000Z">
+<meta property="article:modified_time" content="2022-12-11T14:33:39.706Z">
+<meta property="article:author" content="Vincent">
+<meta property="article:tag" content="Java">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://imgs.lfeng.tech/images/blog/20221211223339_135fd.jpg">
+
+<link rel="canonical" href="https://lfeng.tech/JVM_5_early_compile_optimization.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>JVM性能优化系列-(5) 早期编译优化 | Vincent's Notes</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Vincent's Notes</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://lfeng.tech/JVM_5_early_compile_optimization.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Vincent">
+      <meta itemprop="description" content="Vincent's tech blog">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Vincent's Notes">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          JVM性能优化系列-(5) 早期编译优化
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-02-24 23:43:49" itemprop="dateCreated datePublished" datetime="2020-02-24T23:43:49Z">2020-02-24</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-12-11 14:33:39" itemprop="dateModified" datetime="2022-12-11T14:33:39Z">2022-12-11</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/JVM_5_early_compile_optimization.html" class="post-meta-item leancloud_visitors" data-flag-title="JVM性能优化系列-(5) 早期编译优化" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/JVM_5_early_compile_optimization.html#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/JVM_5_early_compile_optimization.html" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><img src="https://imgs.lfeng.tech/images/blog/20221211223339_135fd.jpg" alt="JVM.jpg"></p>
+<h2 id="5-早期编译优化"><a href="#5-早期编译优化" class="headerlink" title="5. 早期编译优化"></a>5. 早期编译优化</h2><p>早期编译优化主要指编译期进行的优化。</p>
+<p>java的编译期可能指的以下三种：</p>
+<ol>
+<li><strong>前端编译器</strong>：将*.java文件变成*.class文件，例如Sun的Javac、Eclipse JDT中的增量式编译器（ECJ）</li>
+<li><strong>JIT编译器（Just In Time Compiler）</strong>：将字节码变成机器码，例如HotSpot VM的C1、C2编译器</li>
+<li><strong>AOT编译器（Ahead Of Time Compiler）</strong>：直接把*.java文件编译成本地机器码，例如GNU Compiler for the Java（GCJ）、Excelsior JET</li>
+</ol>
+<span id="more"></span>
+
+<blockquote>
+<p>本文中涉及到的编译器都仅限于第一类，第二类编译器跟java语言的关系不大。javac这类编译器对代码的运行效率几乎没有任何优化措施，但javac做了许多针对java语言代码过程的优化措施来改善程序员的编码风格和提高编码效率，java许多的语法特性都是靠编译器的语法糖来实现的。</p>
+</blockquote>
+<h3 id="5-1-javac编译器工作流程"><a href="#5-1-javac编译器工作流程" class="headerlink" title="5.1 javac编译器工作流程"></a>5.1 javac编译器工作流程</h3><p>Sun javac编译器的编译过程可以分为3个过程：</p>
+<ul>
+<li>解析与填充符号表过程</li>
+<li>插入式注解处理器的注解处理过程</li>
+<li>分析与字节码生成过程</li>
+</ul>
+<h4 id="1-解析与填充符号表"><a href="#1-解析与填充符号表" class="headerlink" title="1. 解析与填充符号表"></a>1. 解析与填充符号表</h4><p><strong>解析步骤</strong>包括了经典程序编译原理中的词法分析与语法分析两个过程。</p>
+<p>词法、语法分析：词法分析是将源代码的字符流转变为标记（Token）集合，单个字符是程序编写过程的最小元素，而标记则是编译过程的最小元素，关键字、变量名、字面量、运算符都可以成为标记<br>语法分析是根据Token序列构造抽象语法树的过程，抽象语法树（Abstract Syntax Tree,AST）是一种用来描述程序代码语法结构的树形表示方式，语法树的每一个节点都代表着程序代码中的一个语法结构（Construct），例如包、类型、修饰符、运算符、接口、返回值甚至代码注释等都可以是一个语法结构。</p>
+<p><strong>填充符号表</strong>：符号表（Symbol Table）是由一组符号地址和符号信息构成的表格，可以想象成K-V的形式。符号表中所登记的信息在编译的不同阶段都要用到。在语义分析中，符号表所登记的内容将用于语义检查和产生中间代码。在目标代码生成阶段，当对符号名进行地址分配时，符号表是地址分配的依据</p>
+<h4 id="2-注解处理器"><a href="#2-注解处理器" class="headerlink" title="2. 注解处理器"></a>2. 注解处理器</h4><p>注解处理器是用于提供对注解的支持，可以将其看成一组编译器的插件。</p>
+<h4 id="3-语义分析与字节码生成"><a href="#3-语义分析与字节码生成" class="headerlink" title="3. 语义分析与字节码生成"></a>3. 语义分析与字节码生成</h4><p>语法分析后，编译器获得了程序代码的抽象语法树表示，语法树能表示一个结构正确的源程序的抽象，但无法保证源程序是符合逻辑的。</p>
+<p>这部分主要分如下几步，完成语义分析与字节码生成：</p>
+<ol>
+<li>标注检查</li>
+</ol>
+<p>标注检查检查的内容包括变量使用前是否已被声明、变量与赋值之间的数据类型是否能够匹配等。在标注检查中，还有一个重要的动作称为常量折叠，这使得a=1+2比起a=3不会增加任何运算量</p>
+<ol start="2">
+<li>数据及控制流分析</li>
+</ol>
+<p>数据及控制流分析是对程序上下文逻辑更进一步的验证，可以检查出诸如程序局部变量在使用前是否赋值、方法的每条路径是否都有返回值、是否所有的受查异常都被正确处理等</p>
+<ol start="3">
+<li>解语法糖</li>
+</ol>
+<p>语法糖（Syntactic Sugar），也称糖衣语法，指在计算机语言中添加的某种语法，这种语法对语言的功能并没有影响，但方便使用。java在现代编程语言中属于低糖语言，java中的主要语法糖包括泛型、可变参数、自动装箱/拆箱等，虚拟机运行时不支持这些语法，它们在编译阶段还原回简单的基础语法结构，这个过程称为解语法糖</p>
+<ol start="4">
+<li>字节码生成</li>
+</ol>
+<p>字节码生成阶段不仅仅时把前面各个步骤所生成的信息（语法树、符号表）转化成字节码写到磁盘中，编译器还进行了少量的代码添加和转换工作</p>
+<h3 id="5-2-Java语法糖"><a href="#5-2-Java语法糖" class="headerlink" title="5.2 Java语法糖"></a>5.2 Java语法糖</h3><p>语法糖主要是为了方便程序员的代码开发，这些语法糖并不会提供实质性的功能改进，但是他们能提高效率。</p>
+<p>以下介绍了Java中常用的语法糖。</p>
+<h4 id="泛型与类型擦除"><a href="#泛型与类型擦除" class="headerlink" title="泛型与类型擦除"></a>泛型与类型擦除</h4><p><strong>Java中的参数化类型只在源码中存在，在编译后的字节码中，已经被替换为原来的原生类型了</strong>，并且在相应的地方插入了强制转换代码。对于运行期的Java 语言来说，ArrayList<Integer>和ArrayList<String>就是同一个类。所以说泛型技术实际上就是 Java语言的一颗语法糖，Java语言中的泛型实现方法称为类型擦除，基于这种方法实现的泛型称为伪泛型。</p>
+<p>以下两个方法，在编译时，由于类型擦除，变成了一样的原生类型List<E>,因此方法的特征签名变得一致，导致无法编译。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">void method（List&lt;Integer&gt; list）;</span><br><span class="line">void method (List&lt;String&gt; list);</span><br></pre></td></tr></table></figure>
+
+<p>但是如果两者的返回值不一致，在JDK1.6中则可以编译通过，并不是因为返回值不同，所以重载成功。只是因为加入返回值后，两个方法的字节码特征签名不一样了，所以可以共存。但是在JDK1.7和1.8中，依然无法通过，会报两个方法在类型擦除后具有相同的特征签名。</p>
+<blockquote>
+<p><strong>Java代码中的方法特征签名只包含方法名称、参数顺序和参数类型，而在字节码中的特征签名还包括方法返回值及受查异常表。</strong><br><strong>方法重载要求方法具备不同的特征签名</strong>，返回值并不包含在方法的特征签名中，所以返回值不参与重载选择。但是在Class字节码文件中，只要描述符不是完全一致的两个方法就可以共存。</p>
+</blockquote>
+<h4 id="自动装箱和拆箱"><a href="#自动装箱和拆箱" class="headerlink" title="自动装箱和拆箱"></a>自动装箱和拆箱</h4><p>自动装箱和拆箱实现了基本数据类型与对象数据类型之间的隐式转换。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">public void autobox() &#123;</span><br><span class="line">    Integer one = 1;</span><br><span class="line">    if (one == 1) &#123;</span><br><span class="line">        System.out.println(one);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>下面对自动装箱和自动拆箱进行详细介绍：</p>
+<blockquote>
+<p><strong>自动装箱</strong>就是Java自动将原始类型值转换成对应的对象，比如将int的变量转换成Integer对象，这个过程叫做装箱，反之将Integer对象转换成int类型值，这个过程叫做拆箱。因为这里的装箱和拆箱是自动进行的非人为转换，所以就称作为自动装箱和拆箱。原始类型byte,short,char,int,long,float,double和boolean对应的封装类为Byte,Short,Character,Integer,Long,Float,Double,Boolean。</p>
+</blockquote>
+<p>何时发生自动装箱和拆箱，</p>
+<ol>
+<li>赋值：</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Integer iObject = 3; //autobxing - primitive to wrapper conversion</span><br><span class="line">int iPrimitive = iObject; //unboxing - object to primitive conversion</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>方法调用：当我们在方法调用时，我们可以传入原始数据值或者对象，同样编译器会帮我们进行转换。</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">public static Integer show(Integer iParam)&#123;</span><br><span class="line">   System.out.println(&quot;autoboxing example - method invocation i: &quot; + iParam);</span><br><span class="line">   return iParam;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//autoboxing and unboxing in method invocation</span><br><span class="line">show(3); //autoboxing</span><br><span class="line">int result = show(3); //unboxing because return type of method is Integer</span><br></pre></td></tr></table></figure>
+
+<p>自动装箱的弊端，</p>
+<p>自动装箱有一个问题，那就是在一个循环中进行自动装箱操作的时候，如下面的例子就会创建多余的对象，影响程序的性能。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Integer sum = 0;</span><br><span class="line"> for(int i=1000; i&lt;5000; i++)&#123;</span><br><span class="line">   sum+=i;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>自动装箱与比较：</p>
+<p>下面程序的输出结果是什么？</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">public class Main &#123;</span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">         </span><br><span class="line">        Integer a = 1;</span><br><span class="line">        Integer b = 2;</span><br><span class="line">        Integer c = 3;</span><br><span class="line">        Integer d = 3;</span><br><span class="line">        Integer e = 321;</span><br><span class="line">        Integer f = 321;</span><br><span class="line">        Long g = 3L;</span><br><span class="line">        Long h = 2L;</span><br><span class="line">         </span><br><span class="line">        System.out.println(c==d);</span><br><span class="line">        System.out.println(e==f);</span><br><span class="line">        System.out.println(c==(a+b));</span><br><span class="line">        System.out.println(c.equals(a+b));</span><br><span class="line">        System.out.println(g==(a+b));</span><br><span class="line">        System.out.println(g.equals(a+b));</span><br><span class="line">        System.out.println(g.equals(a+h));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在解释具体的结果时，首先必须明白如下两点：</p>
+<ul>
+<li>当”==”运算符的两个操作数都是 包装器类型的引用，则是比较指向的是否是同一个对象，而如果其中有一个操作数是表达式（即包含算术运算）则比较的是数值（即会触发自动拆箱的过程）。</li>
+<li>对于包装器类型，equals方法并不会进行类型转换。</li>
+</ul>
+<p>下面是程序的具体输出结果：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">true</span><br><span class="line">false</span><br><span class="line">true</span><br><span class="line">true</span><br><span class="line">true</span><br><span class="line">false</span><br><span class="line">true</span><br></pre></td></tr></table></figure>
+
+<p>注意到对于Integer和Long，Java中，会对-128到127的对象进行缓存，当创建新的对象时，如果符合这个这个范围，并且已有存在的相同值的对象，则返回这个对象，否则创建新的Integer对象。</p>
+<p>对于上面的结果：</p>
+<p>c==d：指向相同的缓存对象，所以返回true；<br>e==f：不存在缓存，是不同的对象，所以返回false；<br>c==（a+b）：直接比较的数值，因此为true；<br>c.equals（a+b）：比较的对象，由于存在缓存，所以两个对象一样，返回true；<br>g==（a+b）：直接比较的数值，因此为true；<br>g.equals（a+b）：比较对象，由于equals也不会进行类型转换，a+b为Integer,g为Long，因此为false；<br>g.equals（a+h）：和上面不一样，a+h时，a会进行类型转换，转成Long，接着比较两个对象，由于Long存在缓存，所以两个对象一致，返回true。</p>
+<blockquote>
+<p>关于equals和==：</p>
+<ul>
+<li><code>.equals(...)</code> will only compare what it is written to compare, no more, no less.</li>
+<li>If a class does not override the equals method, then it defaults to the <code>equals(Object o)</code> method of the closest parent class that has overridden this method.</li>
+<li>If no parent classes have provided an override, then it defaults to the method from the ultimate parent class, Object, and so you’re left with the <code>Object#equals(Object o)</code> method. Per the Object API this is the same as ==; that is, it returns true if and only if both variables refer to the same object, if their references are one and the same. Thus you will be testing for object equality and not functional equality.</li>
+<li>Always remember to override hashCode if you override equals so as not to “break the contract”. As per the API, the result returned from the hashCode() method for two objects must be the same if their equals methods show that they are equivalent. The converse is not necessarily true.</li>
+</ul>
+</blockquote>
+<h4 id="遍历循环"><a href="#遍历循环" class="headerlink" title="遍历循环"></a>遍历循环</h4><p>遍历循环语句是java5的新特征之一，在遍历数组、集合方面，为开发人员提供了极大的方便。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">public void circle() &#123;</span><br><span class="line">    Integer[] array = &#123; 1, 2, 3, 4, 5 &#125;;</span><br><span class="line"></span><br><span class="line">    for (Integer i : array) &#123;</span><br><span class="line"></span><br><span class="line">    System.out.println(i);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>在编译后的版本中，代码还原成了迭代器的实现，这也是为遍历循环需要被遍历的类实现Iterable接口的原因。</p>
+<h4 id="变长参数"><a href="#变长参数" class="headerlink" title="变长参数"></a>变长参数</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Arrays.asList(1, 2, 3, 4, 5);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h4 id="条件编译"><a href="#条件编译" class="headerlink" title="条件编译"></a>条件编译</h4><p>条件编译也是java语言的一种语法糖，根据布尔常量值的真假，编译器将会把分支中不成立的代码块消除掉。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">public void ifdef() &#123;if (true) &#123;</span><br><span class="line"></span><br><span class="line">System.out.println(&quot;true&quot;);</span><br><span class="line"></span><br><span class="line">&#125; else &#123;//此处有警告--DeadCode</span><br><span class="line"></span><br><span class="line">System.out.println(&quot;false&quot;);</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="对枚举和字符串的switch支持"><a href="#对枚举和字符串的switch支持" class="headerlink" title="对枚举和字符串的switch支持"></a>对枚举和字符串的switch支持</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">public void enumStringSwitch() &#123;</span><br><span class="line"></span><br><span class="line">String str = &quot;fans&quot;;</span><br><span class="line"></span><br><span class="line">switch (str) &#123;</span><br><span class="line"></span><br><span class="line">case &quot;fans&quot;:</span><br><span class="line"></span><br><span class="line">break;case &quot;leiwen&quot;:</span><br><span class="line"></span><br><span class="line">break;default:</span><br><span class="line"></span><br><span class="line">break;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="try-with-resources"><a href="#try-with-resources" class="headerlink" title="try-with-resources"></a>try-with-resources</h4><p>在try语句中定义和关闭资源 jdk7提供了try-with-resources,可以自动关闭相关的资源(只要该资源实现了AutoCloseable接口，jdk7为绝大部分资源对象都实现了这个接口)。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">staticStringreadFirstLineFromFile(Stringpath)throwsIOException&#123;</span><br><span class="line"></span><br><span class="line">try(BufferedReaderbr=newBufferedReader(newFileReader(path)))&#123;</span><br><span class="line"></span><br><span class="line">returnbr.readLine();</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<hr>
+<p>本文由『后端精进之路』原创，首发于博客 <a target="_blank" rel="noopener" href="http://teckee.github.io/">http://teckee.github.io/</a> , 转载请注明出处</p>
+<p>搜索『后端精进之路』关注公众号，立刻获取最新文章和<strong>价值2000元的BATJ精品面试课程</strong>。</p>
+<p><img src="https://imgs.lfeng.tech/images/blog/20221211223339_30239.jpg" alt="后端精进之路.png"></p>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Vincent
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://lfeng.tech/JVM_5_early_compile_optimization.html" title="JVM性能优化系列-(5) 早期编译优化">https://lfeng.tech/JVM_5_early_compile_optimization.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Java/" rel="tag"># Java</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/JVM_4_write_high_performance_code.html" rel="prev" title="JVM性能优化系列-(4) 编写高效Java程序">
+      <i class="fa fa-chevron-left"></i> JVM性能优化系列-(4) 编写高效Java程序
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/JVM_6_late_compile_optimization.html" rel="next" title="JVM性能优化系列-(6) 晚期编译优化">
+      JVM性能优化系列-(6) 晚期编译优化 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#5-%E6%97%A9%E6%9C%9F%E7%BC%96%E8%AF%91%E4%BC%98%E5%8C%96"><span class="nav-number">1.</span> <span class="nav-text">5. 早期编译优化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#5-1-javac%E7%BC%96%E8%AF%91%E5%99%A8%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B"><span class="nav-number">1.1.</span> <span class="nav-text">5.1 javac编译器工作流程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E8%A7%A3%E6%9E%90%E4%B8%8E%E5%A1%AB%E5%85%85%E7%AC%A6%E5%8F%B7%E8%A1%A8"><span class="nav-number">1.1.1.</span> <span class="nav-text">1. 解析与填充符号表</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E6%B3%A8%E8%A7%A3%E5%A4%84%E7%90%86%E5%99%A8"><span class="nav-number">1.1.2.</span> <span class="nav-text">2. 注解处理器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-%E8%AF%AD%E4%B9%89%E5%88%86%E6%9E%90%E4%B8%8E%E5%AD%97%E8%8A%82%E7%A0%81%E7%94%9F%E6%88%90"><span class="nav-number">1.1.3.</span> <span class="nav-text">3. 语义分析与字节码生成</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-2-Java%E8%AF%AD%E6%B3%95%E7%B3%96"><span class="nav-number">1.2.</span> <span class="nav-text">5.2 Java语法糖</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B3%9B%E5%9E%8B%E4%B8%8E%E7%B1%BB%E5%9E%8B%E6%93%A6%E9%99%A4"><span class="nav-number">1.2.1.</span> <span class="nav-text">泛型与类型擦除</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%87%AA%E5%8A%A8%E8%A3%85%E7%AE%B1%E5%92%8C%E6%8B%86%E7%AE%B1"><span class="nav-number">1.2.2.</span> <span class="nav-text">自动装箱和拆箱</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%81%8D%E5%8E%86%E5%BE%AA%E7%8E%AF"><span class="nav-number">1.2.3.</span> <span class="nav-text">遍历循环</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%98%E9%95%BF%E5%8F%82%E6%95%B0"><span class="nav-number">1.2.4.</span> <span class="nav-text">变长参数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9D%A1%E4%BB%B6%E7%BC%96%E8%AF%91"><span class="nav-number">1.2.5.</span> <span class="nav-text">条件编译</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AF%B9%E6%9E%9A%E4%B8%BE%E5%92%8C%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9A%84switch%E6%94%AF%E6%8C%81"><span class="nav-number">1.2.6.</span> <span class="nav-text">对枚举和字符串的switch支持</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#try-with-resources"><span class="nav-number">1.2.7.</span> <span class="nav-text">try-with-resources</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Vincent"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Vincent</p>
+  <div class="site-description" itemprop="description">Vincent's tech blog</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">64</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">23</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/teckee" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;teckee" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:h0ck@foxmail.com" title="E-Mail → mailto:h0ck@foxmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+  <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">沪ICP备19042895号-2 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Vincent</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'cgQ905Fj6xbazWtyi9b1hafr-gzGzoHsz',
+      appKey     : '68EFTwnd9XYY352gRUJlJyMu',
+      placeholder: "Just go go",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

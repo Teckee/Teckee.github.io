@@ -20,10 +20,12 @@
     var CONFIG = {"hostname":"lfeng.tech","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta property="og:type" content="website">
+  <meta name="description" content="Vincent&#39;s tech blog">
+<meta property="og:type" content="website">
 <meta property="og:title" content="Vincent&#39;s Notes">
 <meta property="og:url" content="https://lfeng.tech/page/5/index.html">
 <meta property="og:site_name" content="Vincent&#39;s Notes">
+<meta property="og:description" content="Vincent&#39;s tech blog">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:author" content="Vincent">
 <meta name="twitter:card" content="summary">
@@ -155,12 +157,12 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://lfeng.tech/2019/08/21/Linux_4_IO/">
+    <link itemprop="mainEntityOfPage" href="https://lfeng.tech/Linux_4_IO.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
       <meta itemprop="name" content="Vincent">
-      <meta itemprop="description" content="">
+      <meta itemprop="description" content="Vincent's tech blog">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -169,7 +171,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2019/08/21/Linux_4_IO/" class="post-title-link" itemprop="url">Linux操作系统-(4) IO</a>
+            <a href="/Linux_4_IO.html" class="post-title-link" itemprop="url">Linux操作系统-(4) IO</a>
         </h2>
 
         <div class="post-meta">
@@ -199,7 +201,7 @@
             </span>
 
           
-            <span id="/2019/08/21/Linux_4_IO/" class="post-meta-item leancloud_visitors" data-flag-title="Linux操作系统-(4) IO" title="阅读次数">
+            <span id="/Linux_4_IO.html" class="post-meta-item leancloud_visitors" data-flag-title="Linux操作系统-(4) IO" title="阅读次数">
               <span class="post-meta-item-icon">
                 <i class="fa fa-eye"></i>
               </span>
@@ -214,8 +216,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/2019/08/21/Linux_4_IO/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2019/08/21/Linux_4_IO/" itemprop="commentCount"></span>
+    <a title="valine" href="/Linux_4_IO.html#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/Linux_4_IO.html" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -234,7 +236,7 @@
 <h2 id="4-I-O"><a href="#4-I-O" class="headerlink" title="4. I/O"></a>4. I/O</h2><h3 id="4-1-相关概念说明"><a href="#4-1-相关概念说明" class="headerlink" title="4.1 相关概念说明"></a>4.1 相关概念说明</h3><h4 id="4-1-1-用户空间与内核空间"><a href="#4-1-1-用户空间与内核空间" class="headerlink" title="4.1.1 用户空间与内核空间"></a>4.1.1 用户空间与内核空间</h4><p>现在操作系统都是采用虚拟存储器，那么对32位操作系统而言，它的寻址空间（虚拟存储空间）为4G（2的32次方）。<strong>操作系统的核心是内核，独立于普通的应用程序，可以访问受保护的内存空间，也有访问底层硬件设备的所有权限。</strong>为了保证用户进程不能直接操作内核（kernel），保证内核的安全，操心系统将虚拟空间划分为两部分，一部分为内核空间，一部分为用户空间。针对linux操作系统而言，将最高的1G字节（从虚拟地址0xC0000000到0xFFFFFFFF），供内核使用，称为内核空间，而将较低的3G字节（从虚拟地址0x00000000到0xBFFFFFFF），供各个进程使用，称为用户空间。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2019/08/21/Linux_4_IO/#more" rel="contents">
+              <a class="btn" href="/Linux_4_IO.html#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -258,12 +260,12 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://lfeng.tech/2019/08/16/Linux_3_Thread/">
+    <link itemprop="mainEntityOfPage" href="https://lfeng.tech/Linux_3_Thread.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
       <meta itemprop="name" content="Vincent">
-      <meta itemprop="description" content="">
+      <meta itemprop="description" content="Vincent's tech blog">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -272,7 +274,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2019/08/16/Linux_3_Thread/" class="post-title-link" itemprop="url">Linux操作系统-(3) 线程</a>
+            <a href="/Linux_3_Thread.html" class="post-title-link" itemprop="url">Linux操作系统-(3) 线程</a>
         </h2>
 
         <div class="post-meta">
@@ -302,7 +304,7 @@
             </span>
 
           
-            <span id="/2019/08/16/Linux_3_Thread/" class="post-meta-item leancloud_visitors" data-flag-title="Linux操作系统-(3) 线程" title="阅读次数">
+            <span id="/Linux_3_Thread.html" class="post-meta-item leancloud_visitors" data-flag-title="Linux操作系统-(3) 线程" title="阅读次数">
               <span class="post-meta-item-icon">
                 <i class="fa fa-eye"></i>
               </span>
@@ -317,8 +319,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/2019/08/16/Linux_3_Thread/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2019/08/16/Linux_3_Thread/" itemprop="commentCount"></span>
+    <a title="valine" href="/Linux_3_Thread.html#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/Linux_3_Thread.html" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -341,7 +343,7 @@
 </blockquote>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2019/08/16/Linux_3_Thread/#more" rel="contents">
+              <a class="btn" href="/Linux_3_Thread.html#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -365,12 +367,12 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://lfeng.tech/2019/08/11/Linux_2_process/">
+    <link itemprop="mainEntityOfPage" href="https://lfeng.tech/Linux_2_process.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
       <meta itemprop="name" content="Vincent">
-      <meta itemprop="description" content="">
+      <meta itemprop="description" content="Vincent's tech blog">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -379,7 +381,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2019/08/11/Linux_2_process/" class="post-title-link" itemprop="url">Linux操作系统-(2) 进程</a>
+            <a href="/Linux_2_process.html" class="post-title-link" itemprop="url">Linux操作系统-(2) 进程</a>
         </h2>
 
         <div class="post-meta">
@@ -409,7 +411,7 @@
             </span>
 
           
-            <span id="/2019/08/11/Linux_2_process/" class="post-meta-item leancloud_visitors" data-flag-title="Linux操作系统-(2) 进程" title="阅读次数">
+            <span id="/Linux_2_process.html" class="post-meta-item leancloud_visitors" data-flag-title="Linux操作系统-(2) 进程" title="阅读次数">
               <span class="post-meta-item-icon">
                 <i class="fa fa-eye"></i>
               </span>
@@ -424,8 +426,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/2019/08/11/Linux_2_process/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2019/08/11/Linux_2_process/" itemprop="commentCount"></span>
+    <a title="valine" href="/Linux_2_process.html#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/Linux_2_process.html" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -444,7 +446,7 @@
 <h2 id="2-进程"><a href="#2-进程" class="headerlink" title="2. 进程"></a>2. 进程</h2><h3 id="2-1-进程概念"><a href="#2-1-进程概念" class="headerlink" title="2.1 进程概念"></a>2.1 进程概念</h3><p><strong>进程是具有一定独立功能的程序关于某个数据集合上的一次运行活动，它是系统进行资源分配的一个独立单位。</strong>例如，用户运行自己的程序，系统就创建一个进程，并为它分配资源，包括各种表格、内存空间、磁盘空间、I/O设备等，然后该进程被放入到进程的就绪队列，进程调度程序选中它，为它分配CPU及其他相关资源，该进程就被运行起来。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2019/08/11/Linux_2_process/#more" rel="contents">
+              <a class="btn" href="/Linux_2_process.html#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -468,12 +470,12 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://lfeng.tech/2019/08/02/Linux_1_memory_management/">
+    <link itemprop="mainEntityOfPage" href="https://lfeng.tech/Linux_1_memory_management.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
       <meta itemprop="name" content="Vincent">
-      <meta itemprop="description" content="">
+      <meta itemprop="description" content="Vincent's tech blog">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -482,7 +484,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2019/08/02/Linux_1_memory_management/" class="post-title-link" itemprop="url">Linux操作系统-(1) 内存管理</a>
+            <a href="/Linux_1_memory_management.html" class="post-title-link" itemprop="url">Linux操作系统-(1) 内存管理</a>
         </h2>
 
         <div class="post-meta">
@@ -512,7 +514,7 @@
             </span>
 
           
-            <span id="/2019/08/02/Linux_1_memory_management/" class="post-meta-item leancloud_visitors" data-flag-title="Linux操作系统-(1) 内存管理" title="阅读次数">
+            <span id="/Linux_1_memory_management.html" class="post-meta-item leancloud_visitors" data-flag-title="Linux操作系统-(1) 内存管理" title="阅读次数">
               <span class="post-meta-item-icon">
                 <i class="fa fa-eye"></i>
               </span>
@@ -527,8 +529,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/2019/08/02/Linux_1_memory_management/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2019/08/02/Linux_1_memory_management/" itemprop="commentCount"></span>
+    <a title="valine" href="/Linux_1_memory_management.html#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/Linux_1_memory_management.html" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -551,7 +553,7 @@
 <p><strong>虚拟</strong>：虚拟性是一种管理技术，把物理上的一个实体变成逻辑上的一个或多个对应物。采用虚拟技术的目的是为用户提供易于使用、方便高效的操作环境。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2019/08/02/Linux_1_memory_management/#more" rel="contents">
+              <a class="btn" href="/Linux_1_memory_management.html#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -575,12 +577,12 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://lfeng.tech/2019/07/23/Crontab-usage/">
+    <link itemprop="mainEntityOfPage" href="https://lfeng.tech/Crontab-usage.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
       <meta itemprop="name" content="Vincent">
-      <meta itemprop="description" content="">
+      <meta itemprop="description" content="Vincent's tech blog">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -589,7 +591,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2019/07/23/Crontab-usage/" class="post-title-link" itemprop="url">Linux基础 - Crontab定时任务</a>
+            <a href="/Crontab-usage.html" class="post-title-link" itemprop="url">Linux基础 - Crontab定时任务</a>
         </h2>
 
         <div class="post-meta">
@@ -619,7 +621,7 @@
             </span>
 
           
-            <span id="/2019/07/23/Crontab-usage/" class="post-meta-item leancloud_visitors" data-flag-title="Linux基础 - Crontab定时任务" title="阅读次数">
+            <span id="/Crontab-usage.html" class="post-meta-item leancloud_visitors" data-flag-title="Linux基础 - Crontab定时任务" title="阅读次数">
               <span class="post-meta-item-icon">
                 <i class="fa fa-eye"></i>
               </span>
@@ -634,8 +636,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/2019/07/23/Crontab-usage/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2019/07/23/Crontab-usage/" itemprop="commentCount"></span>
+    <a title="valine" href="/Crontab-usage.html#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/Crontab-usage.html" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -662,7 +664,7 @@
 <p><img src="https://imgs.lfeng.tech/images/blog/20221211223339_31084.jpg" alt="Screen Shot 2019-11-22 at 10.20.04 PM.png"></p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2019/07/23/Crontab-usage/#more" rel="contents">
+              <a class="btn" href="/Crontab-usage.html#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -686,12 +688,12 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://lfeng.tech/2019/01/28/hexo-blog-domain/">
+    <link itemprop="mainEntityOfPage" href="https://lfeng.tech/hexo-blog-domain.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
       <meta itemprop="name" content="Vincent">
-      <meta itemprop="description" content="">
+      <meta itemprop="description" content="Vincent's tech blog">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -700,7 +702,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2019/01/28/hexo-blog-domain/" class="post-title-link" itemprop="url">域名购买与配置</a>
+            <a href="/hexo-blog-domain.html" class="post-title-link" itemprop="url">域名购买与配置</a>
         </h2>
 
         <div class="post-meta">
@@ -730,7 +732,7 @@
             </span>
 
           
-            <span id="/2019/01/28/hexo-blog-domain/" class="post-meta-item leancloud_visitors" data-flag-title="域名购买与配置" title="阅读次数">
+            <span id="/hexo-blog-domain.html" class="post-meta-item leancloud_visitors" data-flag-title="域名购买与配置" title="阅读次数">
               <span class="post-meta-item-icon">
                 <i class="fa fa-eye"></i>
               </span>
@@ -745,8 +747,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/2019/01/28/hexo-blog-domain/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2019/01/28/hexo-blog-domain/" itemprop="commentCount"></span>
+    <a title="valine" href="/hexo-blog-domain.html#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/hexo-blog-domain.html" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -768,7 +770,7 @@
 <p><img src="https://imgs.lfeng.tech/images/blog/20221211223338_2dd78.jpg" alt="Screen Shot 2019-12-08 at 11.36.16 AM.png"></p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2019/01/28/hexo-blog-domain/#more" rel="contents">
+              <a class="btn" href="/hexo-blog-domain.html#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -792,12 +794,12 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://lfeng.tech/2018/12/03/Zookeeper%20Introduction/">
+    <link itemprop="mainEntityOfPage" href="https://lfeng.tech/Zookeeper%20Introduction.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
       <meta itemprop="name" content="Vincent">
-      <meta itemprop="description" content="">
+      <meta itemprop="description" content="Vincent's tech blog">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -806,7 +808,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2018/12/03/Zookeeper%20Introduction/" class="post-title-link" itemprop="url">Zookeeper介绍</a>
+            <a href="/Zookeeper%20Introduction.html" class="post-title-link" itemprop="url">Zookeeper介绍</a>
         </h2>
 
         <div class="post-meta">
@@ -836,7 +838,7 @@
             </span>
 
           
-            <span id="/2018/12/03/Zookeeper%20Introduction/" class="post-meta-item leancloud_visitors" data-flag-title="Zookeeper介绍" title="阅读次数">
+            <span id="/Zookeeper%20Introduction.html" class="post-meta-item leancloud_visitors" data-flag-title="Zookeeper介绍" title="阅读次数">
               <span class="post-meta-item-icon">
                 <i class="fa fa-eye"></i>
               </span>
@@ -851,8 +853,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/2018/12/03/Zookeeper%20Introduction/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2018/12/03/Zookeeper%20Introduction/" itemprop="commentCount"></span>
+    <a title="valine" href="/Zookeeper%20Introduction.html#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/Zookeeper%20Introduction.html" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -873,7 +875,7 @@
 <p>在分布式应用中，由于工程师不能很好地使用锁机制，以及基于消息的协调机制不适合在某些应用中使用，因此需要有一种可靠的、可扩展的、分布式的、可配置的协调机制来统一系统的状态。Zookeeper的目的就在于此。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2018/12/03/Zookeeper%20Introduction/#more" rel="contents">
+              <a class="btn" href="/Zookeeper%20Introduction.html#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -897,12 +899,12 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://lfeng.tech/2018/11/30/Clean%20Code/">
+    <link itemprop="mainEntityOfPage" href="https://lfeng.tech/Clean%20Code.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
       <meta itemprop="name" content="Vincent">
-      <meta itemprop="description" content="">
+      <meta itemprop="description" content="Vincent's tech blog">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -911,7 +913,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2018/11/30/Clean%20Code/" class="post-title-link" itemprop="url">代码整洁之道</a>
+            <a href="/Clean%20Code.html" class="post-title-link" itemprop="url">代码整洁之道</a>
         </h2>
 
         <div class="post-meta">
@@ -941,7 +943,7 @@
             </span>
 
           
-            <span id="/2018/11/30/Clean%20Code/" class="post-meta-item leancloud_visitors" data-flag-title="代码整洁之道" title="阅读次数">
+            <span id="/Clean%20Code.html" class="post-meta-item leancloud_visitors" data-flag-title="代码整洁之道" title="阅读次数">
               <span class="post-meta-item-icon">
                 <i class="fa fa-eye"></i>
               </span>
@@ -956,8 +958,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/2018/11/30/Clean%20Code/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2018/11/30/Clean%20Code/" itemprop="commentCount"></span>
+    <a title="valine" href="/Clean%20Code.html#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/Clean%20Code.html" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -977,7 +979,7 @@
 </blockquote>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2018/11/30/Clean%20Code/#more" rel="contents">
+              <a class="btn" href="/Clean%20Code.html#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -1001,12 +1003,12 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://lfeng.tech/2018/08/10/Elasticsearch%20Basic%20Knowledge/">
+    <link itemprop="mainEntityOfPage" href="https://lfeng.tech/Elasticsearch%20Basic%20Knowledge.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
       <meta itemprop="name" content="Vincent">
-      <meta itemprop="description" content="">
+      <meta itemprop="description" content="Vincent's tech blog">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -1015,7 +1017,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2018/08/10/Elasticsearch%20Basic%20Knowledge/" class="post-title-link" itemprop="url">Elasticsearch 入门</a>
+            <a href="/Elasticsearch%20Basic%20Knowledge.html" class="post-title-link" itemprop="url">Elasticsearch 入门</a>
         </h2>
 
         <div class="post-meta">
@@ -1039,7 +1041,7 @@
             </span>
 
           
-            <span id="/2018/08/10/Elasticsearch%20Basic%20Knowledge/" class="post-meta-item leancloud_visitors" data-flag-title="Elasticsearch 入门" title="阅读次数">
+            <span id="/Elasticsearch%20Basic%20Knowledge.html" class="post-meta-item leancloud_visitors" data-flag-title="Elasticsearch 入门" title="阅读次数">
               <span class="post-meta-item-icon">
                 <i class="fa fa-eye"></i>
               </span>
@@ -1054,8 +1056,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/2018/08/10/Elasticsearch%20Basic%20Knowledge/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2018/08/10/Elasticsearch%20Basic%20Knowledge/" itemprop="commentCount"></span>
+    <a title="valine" href="/Elasticsearch%20Basic%20Knowledge.html#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/Elasticsearch%20Basic%20Knowledge.html" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -1077,7 +1079,7 @@
 <h3 id="Node"><a href="#Node" class="headerlink" title="Node"></a>Node</h3><p>作为集群（cluster）的一部分，存储数据。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2018/08/10/Elasticsearch%20Basic%20Knowledge/#more" rel="contents">
+              <a class="btn" href="/Elasticsearch%20Basic%20Knowledge.html#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -1101,12 +1103,12 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://lfeng.tech/2018/07/09/SQL%20optimazation/">
+    <link itemprop="mainEntityOfPage" href="https://lfeng.tech/SQL%20optimazation.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
       <meta itemprop="name" content="Vincent">
-      <meta itemprop="description" content="">
+      <meta itemprop="description" content="Vincent's tech blog">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -1115,7 +1117,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2018/07/09/SQL%20optimazation/" class="post-title-link" itemprop="url">SQL调优</a>
+            <a href="/SQL%20optimazation.html" class="post-title-link" itemprop="url">SQL调优</a>
         </h2>
 
         <div class="post-meta">
@@ -1139,7 +1141,7 @@
             </span>
 
           
-            <span id="/2018/07/09/SQL%20optimazation/" class="post-meta-item leancloud_visitors" data-flag-title="SQL调优" title="阅读次数">
+            <span id="/SQL%20optimazation.html" class="post-meta-item leancloud_visitors" data-flag-title="SQL调优" title="阅读次数">
               <span class="post-meta-item-icon">
                 <i class="fa fa-eye"></i>
               </span>
@@ -1154,8 +1156,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/2018/07/09/SQL%20optimazation/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2018/07/09/SQL%20optimazation/" itemprop="commentCount"></span>
+    <a title="valine" href="/SQL%20optimazation.html#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/SQL%20optimazation.html" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -1178,7 +1180,7 @@
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> tab_comp <span class="keyword">VALUES</span> (item1, price1, qty1)，(item2, price2, qty2)，(item3, price3, qty3);</span><br></pre></td></tr></table></figure>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2018/07/09/SQL%20optimazation/#more" rel="contents">
+              <a class="btn" href="/SQL%20optimazation.html#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -1262,7 +1264,7 @@
     <img class="site-author-image" itemprop="image" alt="Vincent"
       src="/images/avatar.jpg">
   <p class="site-author-name" itemprop="name">Vincent</p>
-  <div class="site-description" itemprop="description"></div>
+  <div class="site-description" itemprop="description">Vincent's tech blog</div>
 </div>
 <div class="site-state-wrap motion-element">
   <nav class="site-state">
